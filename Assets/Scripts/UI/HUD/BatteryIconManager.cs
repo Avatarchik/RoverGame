@@ -5,18 +5,42 @@ using System.Collections;
 public class BatteryIconManager : MonoBehaviour
 {
     public Image batteryFill;
+    public TimeOfDay timeOfDay;
+    public PlayerStats playerStats;
+    private float fillAmount = 0f;
 
-    public float fillAmount = 0f;
+    public float FillAmount
+    {
+        get { return fillAmount; }
+        set
+        {
+            fillAmount = value;
+        }
+    }
+
+
 
     public void FixedUpdate()
     {
-        if(fillAmount >= 1)
+        if(timeOfDay.timeInSeconds > 0 && timeOfDay.timeInSeconds < timeOfDay.dayLength * 0.5f)
         {
-            fillAmount = 0;
+            //its light outside, charge the battery!
+            if(fillAmount < 1)
+            {
+                fillAmount += (Time.deltaTime * playerStats.stats[playerStats.RECHARGE_RATE_ID].StatValue) * 0.001f;
+            }
         }
         else
         {
-            fillAmount += Time.deltaTime;
+            //its dark outside, dont charge!
+            if (fillAmount > 0)
+            {
+                fillAmount -= Time.deltaTime * 0.001f;
+            }
+            else
+            {
+                Debug.Log("player is dead");
+            }
         }
 
         batteryFill.fillAmount = fillAmount;

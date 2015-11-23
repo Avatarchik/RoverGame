@@ -8,7 +8,8 @@ public class PlayerStats : MonoBehaviour
 
     public int MOVE_SPEED_ID = 0;
     public int TURN_SPEED_ID = 1;
-    public int MAX_HEALTH_ID = 2;
+    public int MAX_Charge_ID = 2;
+    public int RECHARGE_RATE_ID = 3;
 
     public List<Stat> stats = new List<Stat> ();
 

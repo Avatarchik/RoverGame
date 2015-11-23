@@ -8,7 +8,7 @@ public class TimeOfDay : MonoBehaviour
 
     public int dayCount = 0;
 
-    private float dayLength;
+    public float dayLength;
 
 
     private IEnumerator Tick()

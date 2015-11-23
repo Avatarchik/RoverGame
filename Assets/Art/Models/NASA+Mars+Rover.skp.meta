@@ -1,0 +1,257 @@
+fileFormatVersion: 2
+guid: 98b8691f681643f4d92ee2d1bfac5552
+timeCreated: 1448220457
+licenseType: Free
+SketchUpImporter:
+  generateBackFace: 0
+  mergeCoplanarFaces: 0
+  selectedNodes: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f000000
+  assetHash:
+    serializedVersion: 2
+    Hash: 3419c67434eea106ebfcd2427f93218f
+  longitude: -.16700000000000001
+  latitude: 51.5
+  northCorrection: -0
+  fileUnit: 0
+  sketchUpImportData:
+    defaultCamera:
+      position: {x: 5.13647032, y: 6.40788364, z: -6.63028336}
+      lookAt: {x: -3.74952531, y: -.335850567, z: 1.1277343}
+      up: {x: -.373871505, y: .868144572, z: .326412678}
+      fov: 30
+      aspectRatio: 0
+      orthoSize: 1
+      isPerspective: 1
+    scenes:
+    - camera:
+        position: {x: 5.09007311, y: 4.85900545, z: -4.59065008}
+        lookAt: {x: -5.49900675, y: -.568974078, z: 1.96939099}
+        up: {x: -.339591324, y: .9167431, z: .210380226}
+        fov: 30
+        aspectRatio: 0
+        orthoSize: 1
+        isPerspective: 1
+      name: Page 1
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Body
+    100002: Group 1
+    100004: Group 17
+    100006: Group 19
+    100008: Group 2
+    100010: Group 23
+    100012: Group 7
+    100014: Group 8
+    100016: Instroment
+    100018: Linie01
+    100020: Linie02
+    100022: Linie03
+    100024: //RootNode
+    100026: obj0
+    100028: Objekt01
+    100030: Objekt02
+    100032: Objekt03
+    100034: RobotArm00
+    100036: RobotArm01
+    100038: Tele01Vide
+    100040: Teles01
+    100042: Teles02_ne
+    100044: Vieleck02
+    100046: Wheel01
+    100048: Wheel02
+    100050: Wheel03
+    100052: Wheel04
+    100054: Wheel05
+    100056: Wheel06
+    100058: Wheelax01
+    100060: Wheelax02
+    100062: Wing01
+    100064: Wing02
+    100066: Wing03
+    100068: Zylinder01
+    400000: Body
+    400002: Group 1
+    400004: Group 17
+    400006: Group 19
+    400008: Group 2
+    400010: Group 23
+    400012: Group 7
+    400014: Group 8
+    400016: Instroment
+    400018: Linie01
+    400020: Linie02
+    400022: Linie03
+    400024: //RootNode
+    400026: obj0
+    400028: Objekt01
+    400030: Objekt02
+    400032: Objekt03
+    400034: RobotArm00
+    400036: RobotArm01
+    400038: Tele01Vide
+    400040: Teles01
+    400042: Teles02_ne
+    400044: Vieleck02
+    400046: Wheel01
+    400048: Wheel02
+    400050: Wheel03
+    400052: Wheel04
+    400054: Wheel05
+    400056: Wheel06
+    400058: Wheelax01
+    400060: Wheelax02
+    400062: Wing01
+    400064: Wing02
+    400066: Wing03
+    400068: Zylinder01
+    2300000: Body
+    2300002: Group 17
+    2300004: Group 19
+    2300006: Instroment
+    2300008: Linie01
+    2300010: Linie02
+    2300012: Linie03
+    2300014: obj0
+    2300016: Objekt01
+    2300018: Objekt02
+    2300020: Objekt03
+    2300022: RobotArm00
+    2300024: RobotArm01
+    2300026: Tele01Vide
+    2300028: Teles01
+    2300030: Teles02_ne
+    2300032: Vieleck02
+    2300034: Wheel01
+    2300036: Wheel02
+    2300038: Wheel03
+    2300040: Wheel04
+    2300042: Wheel05
+    2300044: Wheel06
+    2300046: Wheelax01
+    2300048: Wheelax02
+    2300050: Wing01
+    2300052: Wing02
+    2300054: Wing03
+    2300056: Zylinder01
+    3300000: Body
+    3300002: Group 17
+    3300004: Group 19
+    3300006: Instroment
+    3300008: Linie01
+    3300010: Linie02
+    3300012: Linie03
+    3300014: obj0
+    3300016: Objekt01
+    3300018: Objekt02
+    3300020: Objekt03
+    3300022: RobotArm00
+    3300024: RobotArm01
+    3300026: Tele01Vide
+    3300028: Teles01
+    3300030: Teles02_ne
+    3300032: Vieleck02
+    3300034: Wheel01
+    3300036: Wheel02
+    3300038: Wheel03
+    3300040: Wheel04
+    3300042: Wheel05
+    3300044: Wheel06
+    3300046: Wheelax01
+    3300048: Wheelax02
+    3300050: Wing01
+    3300052: Wing02
+    3300054: Wing03
+    3300056: Zylinder01
+    4300000: Mesh Wheelax01
+    4300002: Mesh Wheelax02
+    4300004: Mesh Objekt02
+    4300006: Mesh Tele01Vide
+    4300008: Mesh Linie03
+    4300010: Mesh Teles02_ne
+    4300012: Mesh Group 17
+    4300014: Mesh Group 19
+    4300016: Mesh Instroment
+    4300018: Mesh Vieleck02
+    4300020: Mesh Zylinder01
+    4300022: Mesh Objekt01
+    4300024: Mesh Body
+    4300026: Mesh Linie02
+    4300028: Mesh Objekt03
+    4300030: Mesh RobotArm00
+    4300032: Mesh RobotArm01
+    4300034: Mesh Teles01
+    4300036: Mesh Wheel01
+    4300038: Mesh Wheel02
+    4300040: Mesh Wheel03
+    4300042: Mesh Wheel04
+    4300044: Mesh Wheel05
+    4300046: Mesh Wheel06
+    4300048: Mesh Wing01
+    4300050: Mesh Wing02
+    4300052: Mesh Wing03
+    4300054: Mesh Linie01
+    4300056: Mesh obj0
+  materials:
+    importMaterials: 1
+    materialName: 2
+    materialSearch: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .0253999997
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
