@@ -25,7 +25,7 @@ public class CameraDriver : MonoBehaviour
     private float rotationYL = 0.0f;
     private float rotationXL = 0.0f;
 
-    // Update is called once per frame
+
     void Update ()
     {
         rotationX += Input.GetAxis("Mouse X") * sensX * Time.deltaTime;
