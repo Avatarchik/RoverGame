@@ -15,16 +15,20 @@ public class CameraDriver : MonoBehaviour
     public float sensX = 100.0f;
     public float sensY = 100.0f;
 
+    public float minZoom = 10;
+    public float maxZoom = 70;
+
+    public float zoomSpeed = 20.0f;
+
     public AudioSource servoMotorSound;
 
     private float rotationY = 0.0f;
     private float rotationX = 0.0f;
 
-    private float zoomSpeed = 2.0f;
-
     private float rotationYL = 0.0f;
     private float rotationXL = 0.0f;
 
+    private float zoom;
 
     void Update ()
     {
@@ -46,5 +50,7 @@ public class CameraDriver : MonoBehaviour
 
         rotationXL = rotationX;
         rotationYL = rotationY;
+
+        playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView + (Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed), minZoom, maxZoom);
     }
 }
