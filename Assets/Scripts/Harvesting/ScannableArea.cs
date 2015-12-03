@@ -24,7 +24,8 @@ public class ScannableArea : MonoBehaviour
             scannable = value;
 
             //also something about showing an element on the screen?
-            harvestingMenu.Toggle();
+            if (harvestingMenu == null) harvestingMenu = GameObject.FindObjectOfType<Harvesting>() as Harvesting;
+            harvestingMenu.Open(tier1Element, tier2Element, tier3Element);
         }
     }
 

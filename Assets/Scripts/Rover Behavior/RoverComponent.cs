@@ -32,7 +32,6 @@ public class RoverComponent : MonoBehaviour
                 componentImage.color = badColor;
                 return;
             }
-            float actualModifierValue = 0;
 
             if(equippedItem.statModifier != null)
                 

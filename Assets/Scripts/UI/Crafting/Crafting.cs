@@ -2,22 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Crafting : MonoBehaviour
+public class Crafting : Menu
 {
-    public GameObject root;
     public CraftingInfoPanel craftingInfoPanel;
     public Inventory inventory;
 
     public List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
 
-    private bool open;
-
-    public void Toggle()
+    public override void Open()
     {
-        open = !open;
-        root.SetActive(open);
         SelectCraftingSlot(craftingSlots[0]);
+        base.Open();
     }
+
+
+    public override void Close()
+    {
+        base.Close();
+    }
+
 
     public void SelectCraftingSlot(CraftingSlot craftingSlot)
     {
@@ -61,7 +64,7 @@ public class Crafting : MonoBehaviour
         newII.amount = 1;
 
         inventory.AddInventoryItem(newII);
-        if (!inventory.open) inventory.Toggle();
+        if (!inventory.IsActive) inventory.Open();
 
         SelectCraftingSlot(craftingSlots[0]);
     }
@@ -71,7 +74,14 @@ public class Crafting : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.C))
         {
-            Toggle();
+            if(!IsActive)
+            {
+                Open();
+            }
+            else
+            {
+                Close();
+            }
         }
     }
 

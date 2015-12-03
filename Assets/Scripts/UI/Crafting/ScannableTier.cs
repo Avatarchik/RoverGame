@@ -12,7 +12,7 @@ public class ScannableTier : MonoBehaviour
     public Button harvestButton;
     public Text title;
     public Text description;
-    public Image icon;
+    public Image mainicon;
     public Image fillIcon;
 
     public GameObject scannerUIRoot;
@@ -24,7 +24,7 @@ public class ScannableTier : MonoBehaviour
 
     public void Harvest()
     {
-        playerInventory.AddInventoryItem(ingredient);
+        StartCoroutine(HarvestCoroutine());
     }
 
 
@@ -39,7 +39,6 @@ public class ScannableTier : MonoBehaviour
         ingredient = i;
         scannerUIRoot.SetActive(true);
         harvesterUIRoot.SetActive(false);
-
     }
 
 
@@ -77,10 +76,52 @@ public class ScannableTier : MonoBehaviour
 
         title.text = ingredient.ingredient.displayName;
         description.text = ingredient.ingredient.description;
-        icon.sprite = ingredient.ingredient.image;
+        mainicon.sprite = ingredient.ingredient.image;
 
         scannerUIRoot.SetActive(false);
         harvesterUIRoot.SetActive(true);
+    }
+
+
+    public IEnumerator HarvestCoroutine()
+    {
+        harvestButton.enabled = false;
+        float desiredTime = 1f;
+
+        switch (myTier)
+        {
+            case Tier.first:
+                desiredTime = 5f;
+                break;
+
+            case Tier.second:
+                desiredTime = 10f;
+                break;
+
+            case Tier.third:
+                desiredTime = 15f;
+                break;
+
+            default:
+                break;
+        }
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < desiredTime)
+        {
+            mainicon.fillAmount = 1 - (elapsedTime / desiredTime);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        mainicon.fillAmount = 1;
+
+        playerInventory.AddInventoryItem(ingredient);
+        playerInventory.Open();
+
+        harvestButton.enabled = true;
     }
 
 

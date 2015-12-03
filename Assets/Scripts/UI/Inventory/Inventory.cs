@@ -3,30 +3,30 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Inventory : MonoBehaviour
+public class Inventory : Menu
 {
-    public GameObject root;
     public InventorySlot inventorySlotPrefab;
     public Transform InventorySlotContainer;
-    public bool open;
 
     public List<InventoryIngredient> ingredientsInInventory = new List<InventoryIngredient>();
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
-    
 
-    public void Toggle()
+    public override void Open()
     {
-        open = !open;
-        root.SetActive(open);
+        base.Open();
+    }
+
+
+    public override void Close()
+    {
+        base.Close();
     }
 
 
     public void InitializeInventorySlots()
     {
-        List<InventoryIngredient> updatedIngredients = new List<InventoryIngredient>(0);
-
         for(int i = inventorySlots.Count -1; i >=0; i--)
         {
             Destroy(inventorySlots[i].gameObject);
@@ -119,7 +119,19 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.I)) Toggle();
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (!IsActive)
+            {
+                Open();
+            }
+            else
+            {
+                Close();
+            }
+        }
+            
+
     }
 
 
