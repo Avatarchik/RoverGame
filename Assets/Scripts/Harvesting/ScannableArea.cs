@@ -23,9 +23,16 @@ public class ScannableArea : MonoBehaviour
         {
             scannable = value;
 
-            //also something about showing an element on the screen?
             if (harvestingMenu == null) harvestingMenu = GameObject.FindObjectOfType<Harvesting>() as Harvesting;
-            harvestingMenu.Open(tier1Element, tier2Element, tier3Element);
+            if(scannable)
+            {
+                harvestingMenu.OpenNote();
+            }
+            else
+            {
+                harvestingMenu.CloseNote();
+            }
+            
         }
     }
 
@@ -38,15 +45,20 @@ public class ScannableArea : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        harvestingMenu.Close();
         if (other.tag == "Player") Scannable = false;
     }
 
 
     private void Update()
     {
-        if(Scannable && Input.GetKeyDown(KeyCode.Space))
+        if(Scannable)
         {
-            //attempting to scan area open scanning menu!
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                harvestingMenu.Open(tier1Element, tier2Element, tier3Element, rareElement, rareElementHarvestChance);
+                harvestingMenu.CloseNote();
+            }
         }
     }
 }

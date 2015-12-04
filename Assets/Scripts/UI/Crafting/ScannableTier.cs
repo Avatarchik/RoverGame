@@ -19,8 +19,30 @@ public class ScannableTier : MonoBehaviour
     public GameObject harvesterUIRoot;
 
     public InventoryIngredient ingredient;
+    public InventoryIngredient rareIngredient;
+
+    private int variance = 1; 
+    private float rareDropChance = 0.15f;
 
     private Inventory playerInventory;
+
+    public int Variance
+    {
+        get { return variance; }
+        set
+        {
+            variance = value;
+        }
+    }
+
+    public float RareDropChance
+    {
+        get { return rareDropChance; }
+        set
+        {
+            rareDropChance = value;
+        }
+    }
 
     public void Harvest()
     {
@@ -34,9 +56,11 @@ public class ScannableTier : MonoBehaviour
     }
 
 
-    public void Initialize(InventoryIngredient i)
+    public void Initialize(InventoryIngredient i, InventoryIngredient ri, float rdc)
     {
         ingredient = i;
+        RareDropChance = rdc;
+        rareIngredient = ri;
         scannerUIRoot.SetActive(true);
         harvesterUIRoot.SetActive(false);
     }
@@ -118,7 +142,19 @@ public class ScannableTier : MonoBehaviour
 
         mainicon.fillAmount = 1;
 
+        //add varianced ingredient amount
+        int val = ingredient.amount;
+        ingredient.amount = Mathf.RoundToInt(Random.Range(val - variance, val + variance));
         playerInventory.AddInventoryItem(ingredient);
+        ingredient.amount = val;
+
+        //possibly add a rare element drop
+        if(Random.Range(0f, 1f) < RareDropChance)
+        {
+            //actually add the rare drop, they got lucky.
+            playerInventory.AddInventoryItem(rareIngredient);
+        }
+
         playerInventory.Open();
 
         harvestButton.enabled = true;
