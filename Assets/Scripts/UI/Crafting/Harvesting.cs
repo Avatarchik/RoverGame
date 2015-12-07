@@ -35,12 +35,16 @@ public class Harvesting : Menu
 
     public void CloseNote()
     {
+        
         screenNotificationRoot.SetActive(false);
     }
 
 
     public override void Close()
     {
+        tier1.Halt();
+        tier2.Halt();
+        tier3.Halt();
         base.Close();
     }
 

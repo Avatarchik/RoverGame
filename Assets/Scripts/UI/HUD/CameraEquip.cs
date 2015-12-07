@@ -31,7 +31,9 @@ public class CameraEquip : MonoBehaviour
                 
                 break;
 
-            case 20:
+            case 40:
+            case 41:
+            case 42:
                 foreach (Item item in EquippableItems)
                 {
                     if (item.id == componentId)

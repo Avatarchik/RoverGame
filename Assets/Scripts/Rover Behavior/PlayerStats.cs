@@ -10,6 +10,10 @@ public class PlayerStats : MonoBehaviour
     public int TURN_SPEED_ID = 1;
     public int MAX_Charge_ID = 2;
     public int RECHARGE_RATE_ID = 3;
+    public int HARVEST_SPEED_ID = 4;
+    public int SCANNING_SPEED_ID = 5;
+    public int HEALTH_ID = 6;
+
 
     public List<Stat> stats = new List<Stat> ();
 
