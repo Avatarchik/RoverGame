@@ -7,6 +7,7 @@ public class PlayerStats : MonoBehaviour
     public enum Effect { EquipCamera, EquipWheels }
 
     public StatCollection statCollection;
+    public Inventory playerInventory;
 
     public const int MOVE_SPEED_ID = 0;
     public const int TURN_SPEED_ID = 1;
@@ -55,7 +56,7 @@ public class PlayerStats : MonoBehaviour
         //TODO need to get this to be modified by weight.
         // - cant go below 0
         // - cant approach 0 too quickly
-        get { return ModifyStat(MOVE_SPEED_ID); }
+        get { return ModifyStat(MOVE_SPEED_ID)/(Weight*0.1f); }
     }
 
     public float TurnSpeed
@@ -90,6 +91,6 @@ public class PlayerStats : MonoBehaviour
 
     public float Weight
     {
-        get { return ModifyStat(WEIGHT_ID); }
+        get { return ModifyStat(WEIGHT_ID) + playerInventory.Weight; }
     }
 }

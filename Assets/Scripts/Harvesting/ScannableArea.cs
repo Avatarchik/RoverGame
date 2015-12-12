@@ -13,7 +13,7 @@ public class ScannableArea : MonoBehaviour
     public float rareElementHarvestChance;
     public InventoryIngredient rareElement;
 
-    private bool scannable = true;
+    private bool scannable = false;
     private Harvesting harvestingMenu;
 
     public bool Scannable
@@ -52,7 +52,7 @@ public class ScannableArea : MonoBehaviour
 
     private void Update()
     {
-        if(Scannable)
+        if(scannable)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {

@@ -59,9 +59,12 @@ public class ScannableTier : MonoBehaviour
     public void Initialize(InventoryIngredient i, InventoryIngredient ri, float rdc)
     {
         fillIcon.fillAmount = 1f;
+        mainicon.fillAmount = 1f;
         ingredient = i;
         RareDropChance = rdc;
         rareIngredient = ri;
+        harvestButton.enabled = true;
+        scanButton.enabled = true;
         scannerUIRoot.SetActive(true);
         harvesterUIRoot.SetActive(false);
     }

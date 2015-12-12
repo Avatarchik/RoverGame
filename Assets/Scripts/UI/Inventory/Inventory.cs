@@ -7,10 +7,28 @@ public class Inventory : Menu
 {
     public InventorySlot inventorySlotPrefab;
     public Transform InventorySlotContainer;
+    public Text weightValue;
+
+    public PlayerStats playerStats;
 
     public List<InventoryIngredient> ingredientsInInventory = new List<InventoryIngredient>();
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
+
+    public float Weight
+    {
+        get
+        {
+            float weight = 0f;
+
+            foreach(InventoryIngredient ii in ingredientsInInventory)
+            {
+                weight += ii.amount * ii.ingredient.weight;
+            }
+
+            return weight;
+        }
+    }
 
 
     public override void Open()
@@ -130,8 +148,8 @@ public class Inventory : Menu
                 Close();
             }
         }
-            
 
+        weightValue.text = playerStats.Weight + " kg";
     }
 
 
