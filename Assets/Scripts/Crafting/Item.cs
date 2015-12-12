@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Item : Ingredient
 {
     public Recipe recipe;
-    public Modifier statModifier;
+    public List<Modifier> statModifiers = new List<Modifier> ();
 
     private void Awake()
     {

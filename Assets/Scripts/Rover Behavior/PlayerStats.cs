@@ -6,16 +6,90 @@ public class PlayerStats : MonoBehaviour
 {
     public enum Effect { EquipCamera, EquipWheels }
 
-    public int MOVE_SPEED_ID = 0;
-    public int TURN_SPEED_ID = 1;
-    public int MAX_Charge_ID = 2;
-    public int RECHARGE_RATE_ID = 3;
-    public int HARVEST_SPEED_ID = 4;
-    public int SCANNING_SPEED_ID = 5;
-    public int HEALTH_ID = 6;
+    public StatCollection statCollection;
 
-
-    public List<Stat> stats = new List<Stat> ();
+    public const int MOVE_SPEED_ID = 0;
+    public const int TURN_SPEED_ID = 1;
+    public const int MAX_Charge_ID = 2;
+    public const int RECHARGE_RATE_ID = 3;
+    public const int HARVEST_SPEED_ID = 4;
+    public const int SCANNING_SPEED_ID = 5;
+    public const int HEALTH_ID = 6;
+    public const int WEIGHT_ID = 7;
 
     public List<RoverComponent> roverComponents = new List<RoverComponent>();
+
+
+    public float ModifyStat(int statId)
+    {
+        float val = statCollection.playerStats[statId].statValue;
+
+        //look through all components for potential modifiers.
+        foreach (RoverComponent rc in roverComponents)
+        {
+            //check if item is null or 'broken'
+            if (rc.equippedItem != null)
+            {
+                //does it look like we have an item equipped thats supposed to modify stats?
+                if (rc.equippedItem.statModifiers.Count > 0)
+                {
+                    foreach(Modifier mod in rc.equippedItem.statModifiers)
+                    {
+                        //should it modify THIS stat?
+                        if (statId == mod.statId)
+                        {
+                            //yes
+                            val += mod.mofiderValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        return val;
+    }
+
+
+    public float MoveSpeed
+    {
+        //TODO need to get this to be modified by weight.
+        // - cant go below 0
+        // - cant approach 0 too quickly
+        get { return ModifyStat(MOVE_SPEED_ID); }
+    }
+
+    public float TurnSpeed
+    {
+        get { return ModifyStat(TURN_SPEED_ID); }
+    }
+
+    public float MaxCharge
+    {
+        get { return ModifyStat(MAX_Charge_ID); }
+    }
+
+    public float RechargeRate
+    {
+        get { return ModifyStat(RECHARGE_RATE_ID); }
+    }
+
+    public float HarvestSpeed
+    {
+        get { return ModifyStat(HARVEST_SPEED_ID); }
+    }
+
+    public float ScanningSpeed
+    {
+        get { return ModifyStat(SCANNING_SPEED_ID); }
+    }
+
+    public float Health
+    {
+        get { return ModifyStat(HEALTH_ID); }
+    }
+
+    public float Weight
+    {
+        get { return ModifyStat(WEIGHT_ID); }
+    }
 }

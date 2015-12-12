@@ -31,10 +31,7 @@ public class RoverComponent : MonoBehaviour
                 health = 0;
                 componentImage.color = badColor;
                 return;
-            }
-
-            if(equippedItem.statModifier != null)
-                
+            }                
 
             if (health/maxHealth > 0.5f)
             {
@@ -52,22 +49,6 @@ public class RoverComponent : MonoBehaviour
             {
                 equippedItem = null;
                 componentImage.color = badColor;
-            }
-        }
-    }
-
-
-    public float ActualModifierValue
-    {
-        get
-        {
-            if(equippedItem != null)
-            {
-                return equippedItem.statModifier.mofiderValue * (health / maxHealth);
-            }
-            else
-            {
-                return 0;
             }
         }
     }
