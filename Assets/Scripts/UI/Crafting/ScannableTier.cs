@@ -12,8 +12,9 @@ public class ScannableTier : MonoBehaviour
     public Button harvestButton;
     public Text title;
     public Text description;
-    public Image mainicon;
-    public Image fillIcon;
+    public Image fillIcon2;
+    public Image fillIcon1;
+    public Image mainIcon;
 
     public GameObject scannerUIRoot;
     public GameObject harvesterUIRoot;
@@ -58,8 +59,8 @@ public class ScannableTier : MonoBehaviour
 
     public void Initialize(InventoryIngredient i, InventoryIngredient ri, float rdc)
     {
-        fillIcon.fillAmount = 1f;
-        mainicon.fillAmount = 1f;
+        fillIcon1.fillAmount = 1f;
+        fillIcon2.fillAmount = 1f;
         ingredient = i;
         RareDropChance = rdc;
         rareIngredient = ri;
@@ -98,11 +99,12 @@ public class ScannableTier : MonoBehaviour
                 break;
         }
 
+        desiredTime = Mathf.Clamp(desiredTime - playerInventory.playerStats.ScanningSpeed, 0f, 10f);
         float elapsedTime = 0f;
 
         while(elapsedTime < desiredTime)
         {
-            fillIcon.fillAmount = 1 - (elapsedTime / desiredTime);
+            fillIcon1.fillAmount = 1 - (elapsedTime / desiredTime);
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -110,7 +112,7 @@ public class ScannableTier : MonoBehaviour
 
         title.text = ingredient.ingredient.displayName;
         description.text = ingredient.ingredient.description;
-        mainicon.sprite = ingredient.ingredient.image;
+        mainIcon.sprite = ingredient.ingredient.image;
 
         scannerUIRoot.SetActive(false);
         harvesterUIRoot.SetActive(true);
@@ -140,32 +142,30 @@ public class ScannableTier : MonoBehaviour
                 break;
         }
 
+        desiredTime = Mathf.Clamp(desiredTime - playerInventory.playerStats.HarvestSpeed, 0f, 10f);
         float elapsedTime = 0f;
 
         while (elapsedTime < desiredTime)
         {
-            mainicon.fillAmount = 1 - (elapsedTime / desiredTime);
+            fillIcon2.fillAmount = 1 - (elapsedTime / desiredTime);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        mainicon.fillAmount = 1;
+        fillIcon2.fillAmount = 1;
 
-        //add varianced ingredient amount
         int val = ingredient.amount;
         ingredient.amount = Mathf.RoundToInt(Random.Range(val - variance, val + variance));
-        playerInventory.AddInventoryItem(ingredient);
+        playerInventory.AddInventoryItem(ingredient.ingredient, ingredient.amount);
         ingredient.amount = val;
 
-        //possibly add a rare element drop
         if(Random.Range(0f, 1f) < RareDropChance)
         {
-            //actually add the rare drop, they got lucky.
-            playerInventory.AddInventoryItem(rareIngredient);
+            playerInventory.AddInventoryItem(rareIngredient.ingredient, rareIngredient.amount);
         }
 
-        playerInventory.Open();
+        if(!playerInventory.IsActive) playerInventory.Open();
 
         harvestButton.enabled = true;
     }

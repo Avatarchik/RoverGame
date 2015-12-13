@@ -34,7 +34,7 @@ public class HarvestableElement : InteractibleObject
             interactible = false;
             foreach (InventoryIngredient ii in inventoryIngredients)
             {
-                playerInventory.AddInventoryItem(ii);
+                playerInventory.AddInventoryItem(ii.ingredient, ii.amount);
             }
         }
 

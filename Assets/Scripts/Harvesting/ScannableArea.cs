@@ -45,7 +45,6 @@ public class ScannableArea : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        harvestingMenu.Close();
         if (other.tag == "Player") Scannable = false;
     }
 
@@ -56,8 +55,19 @@ public class ScannableArea : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                harvestingMenu.Open(tier1Element, tier2Element, tier3Element, rareElement, rareElementHarvestChance);
-                harvestingMenu.CloseNote();
+                if(!harvestingMenu.IsActive)
+                {
+                    //gotta open it
+                    harvestingMenu.Open(tier1Element, tier2Element, tier3Element, rareElement, rareElementHarvestChance);
+                    harvestingMenu.CloseNote();
+                }
+                else
+                {
+                    //gotta close it
+                    harvestingMenu.Close();
+                    harvestingMenu.OpenNote();
+                }
+                
             }
         }
     }

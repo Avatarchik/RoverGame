@@ -20,6 +20,19 @@ public class PlayerStats : MonoBehaviour
 
     public List<RoverComponent> roverComponents = new List<RoverComponent>();
 
+    private int movementEnabled = 0;
+
+    public void EnableMovement()
+    {
+        movementEnabled++;
+    }
+
+
+    public void DisableMovement()
+    {
+        movementEnabled--;
+    }
+
 
     public float ModifyStat(int statId)
     {
@@ -56,12 +69,32 @@ public class PlayerStats : MonoBehaviour
         //TODO need to get this to be modified by weight.
         // - cant go below 0
         // - cant approach 0 too quickly
-        get { return ModifyStat(MOVE_SPEED_ID)/(Weight*0.1f); }
+        get
+        {
+            if (movementEnabled == 0)
+            {
+                return ModifyStat(MOVE_SPEED_ID) / (Weight * 0.01f);
+            }
+            else
+            {
+                return 0f;
+            }
+        }
     }
 
     public float TurnSpeed
     {
-        get { return ModifyStat(TURN_SPEED_ID); }
+        get
+        {
+            if(movementEnabled == 0)
+            {
+                return ModifyStat(TURN_SPEED_ID);
+            }
+            else
+            {
+                return 0f;
+            }
+        }
     }
 
     public float MaxCharge
@@ -92,5 +125,12 @@ public class PlayerStats : MonoBehaviour
     public float Weight
     {
         get { return ModifyStat(WEIGHT_ID) + playerInventory.Weight; }
+    }
+
+
+    private void Awake()
+    {
+        Menu.OnMenuOpen += DisableMovement;
+        Menu.OnMenuClose += EnableMovement;
     }
 }

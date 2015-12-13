@@ -27,7 +27,7 @@ public class BatteryIconManager : MonoBehaviour
             //its light outside, charge the battery!
             if(fillAmount < 1)
             {
-                fillAmount += (Time.deltaTime * playerStats.RechargeRate) * 0.0001f;
+                fillAmount += Time.deltaTime * playerStats.RechargeRate * 0.001f;
             }
         }
         else

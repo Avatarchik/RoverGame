@@ -30,27 +30,38 @@ public class CameraDriver : MonoBehaviour
 
     private float zoom;
 
-    void Update ()
+    private PlayerStats playerStats;
+
+    private void Update ()
     {
-        rotationX += Input.GetAxis("Mouse X") * sensX * Time.deltaTime;
-        rotationY += Input.GetAxis("Mouse Y") * sensY * Time.deltaTime;
-        rotationY = Mathf.Clamp(rotationY, minY, maxY);
-
-        if (rotationY != rotationYL || rotationX != rotationXL)
+        if(playerStats.TurnSpeed > 0)
         {
-            //will need to play audio too
-            playerCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
-            model.localEulerAngles = new Vector3(0, rotationX, 0);
-            if (!servoMotorSound.isPlaying) servoMotorSound.Play();
-        }
-        else
-        {
-            if (servoMotorSound.isPlaying) servoMotorSound.Pause();
-        }
+            rotationX += Input.GetAxis("Mouse X") * sensX * Time.deltaTime * playerStats.TurnSpeed;
+            rotationY += Input.GetAxis("Mouse Y") * sensY * Time.deltaTime * playerStats.TurnSpeed;
+            rotationY = Mathf.Clamp(rotationY, minY, maxY);
 
-        rotationXL = rotationX;
-        rotationYL = rotationY;
+            if (rotationY != rotationYL || rotationX != rotationXL)
+            {
+                //will need to play audio too
+                playerCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
+                model.localEulerAngles = new Vector3(0, rotationX, 0);
+                if (!servoMotorSound.isPlaying) servoMotorSound.Play();
+            }
+            else
+            {
+                if (servoMotorSound.isPlaying) servoMotorSound.Pause();
+            }
 
-        playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView + (Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed), minZoom, maxZoom);
+            rotationXL = rotationX;
+            rotationYL = rotationY;
+
+            playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView + (Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed), minZoom, maxZoom);
+        }
+    }
+
+
+    private void Awake()
+    {
+        playerStats = GameObject.FindObjectOfType<PlayerStats>() as PlayerStats;
     }
 }

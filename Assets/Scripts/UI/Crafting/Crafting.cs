@@ -9,16 +9,24 @@ public class Crafting : Menu
 
     public List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
 
+    private bool canClose = true;
+
     public override void Open()
     {
-        SelectCraftingSlot(craftingSlots[0]);
-        base.Open();
+        if(!isActive)
+        {
+            SelectCraftingSlot(craftingSlots[0]);
+            base.Open();
+        }
     }
 
 
     public override void Close()
     {
-        base.Close();
+        if(isActive && canClose)
+        {
+            base.Close();
+        }
     }
 
 
@@ -32,23 +40,15 @@ public class Crafting : Menu
         craftingSlot.IsSelected = true;
 
         craftingInfoPanel.SelectedRecipe = craftingSlot.Item.recipe;
+        craftingInfoPanel.craftButton.interactable = true;
 
-        foreach(RecipePortion rp in craftingSlot.Item.recipe.requiredIngredients)
+        foreach (RecipePortion rp in craftingSlot.Item.recipe.requiredIngredients)
         {
-            foreach(InventoryIngredient ii in inventory.ingredientsInInventory)
+            if (inventory.GetIngredientAmount(rp.ingredient) < rp.ingredientCount)
             {
-                if(ii.ingredient.id == rp.ingredient.id)
-                {
-                    if (ii.amount < rp.ingredientCount)
-                    {
-                        craftingInfoPanel.craftButton.interactable = false;
-                        return;
-                    }
-                }
+                craftingInfoPanel.craftButton.interactable = false;
             }
         }
-
-        craftingInfoPanel.craftButton.interactable = true;
     }
 
 
@@ -56,16 +56,45 @@ public class Crafting : Menu
     {
         foreach (RecipePortion rp in craftingInfoPanel.SelectedRecipe.requiredIngredients)
         {
-            inventory.RemoveIngredient(rp.ingredient, rp.ingredientCount);
+            inventory.RemoveInventoryItem(rp.ingredient, rp.ingredientCount);
         }
+        
+        StartCoroutine(CraftingCoroutine());
+    }
+
+
+    public IEnumerator CraftingCoroutine()
+    {
+        canClose = false;
+        craftingInfoPanel.craftButton.interactable = false;
+
+        float desiredTime = 5f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < desiredTime)
+        {
+            craftingInfoPanel.harvestImage.fillAmount = (elapsedTime / desiredTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        craftingInfoPanel.harvestImage.fillAmount = 0f;
 
         InventoryIngredient newII = new InventoryIngredient();
         newII.ingredient = craftingInfoPanel.SelectedRecipe.craftedItem;
         newII.amount = 1;
 
-        inventory.AddInventoryItem(newII);
+        inventory.AddInventoryItem(newII.ingredient, newII.amount);
         if (!inventory.IsActive) inventory.Open();
 
+        canClose = true;
+        SelectCraftingSlot(craftingSlots[0]);
+        SelectSlot();
+    }
+
+
+    private void SelectSlot()
+    {
         SelectCraftingSlot(craftingSlots[0]);
     }
 

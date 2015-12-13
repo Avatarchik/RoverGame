@@ -3,9 +3,16 @@ using System.Collections;
 
 public class Menu : MonoBehaviour
 {
+    public delegate void MenuOpen();
+    public static event MenuOpen OnMenuOpen;
+
+    public delegate void MenuClose();
+    public static event MenuClose OnMenuClose;
+
     public GameObject root;
 
-    private bool isActive = false;
+    [HideInInspector]
+    public bool isActive = false;
 
     public bool IsActive
     {
@@ -16,6 +23,7 @@ public class Menu : MonoBehaviour
     {
         isActive = true;
         root.SetActive(true);
+        OnMenuOpen();
     }
 
 
@@ -23,5 +31,6 @@ public class Menu : MonoBehaviour
     {
         isActive = false;
         root.SetActive(false);
+        OnMenuClose();
     }
 }

@@ -11,7 +11,7 @@ public class Inventory : Menu
 
     public PlayerStats playerStats;
 
-    public List<InventoryIngredient> ingredientsInInventory = new List<InventoryIngredient>();
+    public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
@@ -21,9 +21,9 @@ public class Inventory : Menu
         {
             float weight = 0f;
 
-            foreach(InventoryIngredient ii in ingredientsInInventory)
+            foreach(Ingredient i in ingredientsInInventory)
             {
-                weight += ii.amount * ii.ingredient.weight;
+                weight += i.weight;
             }
 
             return weight;
@@ -43,6 +43,28 @@ public class Inventory : Menu
     }
 
 
+    public int GetIngredientAmount(int ingredientId)
+    {
+        int count = 0;
+        foreach(Ingredient i in ingredientsInInventory)
+        {
+            if (i.id == ingredientId) count++;
+        }
+        return count;
+    }
+
+
+    public int GetIngredientAmount(Ingredient ingredient)
+    {
+        int count = 0;
+        foreach (Ingredient i in ingredientsInInventory)
+        {
+            if (i.id == ingredient.id) count++;
+        }
+        return count;
+    }
+
+
     public void InitializeInventorySlots()
     {
         for(int i = inventorySlots.Count -1; i >=0; i--)
@@ -51,82 +73,58 @@ public class Inventory : Menu
         }
 
         inventorySlots.Clear();
-
-        foreach(InventoryIngredient inventoryIngredient in ingredientsInInventory)
+        List<Ingredient> encounteredIngredients = new List<Ingredient> ();
+        foreach(Ingredient i in ingredientsInInventory)
         {
-            BuildInventorySlot(inventoryIngredient);
+            if(!encounteredIngredients.Contains(i))
+            {
+                BuildInventorySlot(i, GetIngredientAmount(i));
+                encounteredIngredients.Add(i);
+            }
         }
     }
 
 
-    public void BuildInventorySlot(InventoryIngredient inventoryIngredient)
+    public void BuildInventorySlot(Ingredient ingredient, int count)
     {
         InventorySlot newSlot = Instantiate(inventorySlotPrefab) as InventorySlot;
         newSlot.transform.SetParent(InventorySlotContainer);
         newSlot.transform.localScale = Vector3.one;
         newSlot.inventory = this;
 
-        newSlot.titleText.text = inventoryIngredient.ingredient.displayName;
-        newSlot.descriptionText.text = inventoryIngredient.ingredient.description;
-        newSlot.image.sprite = inventoryIngredient.ingredient.image;
-        newSlot.Amount = inventoryIngredient.amount;
+        newSlot.titleText.text = ingredient.displayName;
+        newSlot.descriptionText.text = ingredient.description;
+        newSlot.image.sprite = ingredient.image;
+        newSlot.Amount = count;
         newSlot.equipbutton.gameObject.SetActive(false);
-        newSlot.ii.ingredient = inventoryIngredient.ingredient;
-        newSlot.ii.amount = inventoryIngredient.amount;
+        newSlot.ii.ingredient = ingredient;
+        newSlot.ii.amount = count;
 
         inventorySlots.Add(newSlot);
     }
 
 
-    public void AddInventoryItem(InventoryIngredient ii)
+    public void AddInventoryItem(Ingredient ingredient, int count)
     {
-        for (int i = 0; i < ingredientsInInventory.Count; i++)
+        for(int i = count; i > 0; i--)
         {
-            if (ingredientsInInventory[i].ingredient.id == ii.ingredient.id)
-            {
-                ingredientsInInventory[i].amount += ii.amount;
-                InitializeInventorySlots();
-                return;
-            }
-        }
-
-        ingredientsInInventory.Add(ii);
-        InitializeInventorySlots();
-    }
-
-
-    public void RemoveInventoryItem(InventoryIngredient ii)
-    {
-        for(int i = 0; i < ingredientsInInventory.Count; i++)
-        {
-            if (ingredientsInInventory[i].ingredient.id == ii.ingredient.id)
-            {
-                ingredientsInInventory[i].amount -= ii.amount;
-
-                if (ingredientsInInventory[i].amount == 0)
-                {
-                    ingredientsInInventory[i] = null;
-                    ingredientsInInventory.RemoveAt(i);
-                }
-            }
+            ingredientsInInventory.Add(ingredient);
         }
 
         InitializeInventorySlots();
     }
 
 
-    public void RemoveIngredient(Ingredient ingredient, int amount)
+    public void RemoveInventoryItem(Ingredient ingredient, int count)
     {
-        for (int i = 0; i < ingredientsInInventory.Count; i++)
+        while(count > 0)
         {
-            if (ingredientsInInventory[i].ingredient.id == ingredient.id)
+            for(int i = 0; i < ingredientsInInventory.Count; i++)
             {
-                ingredientsInInventory[i].amount -= amount;
-
-                if (ingredientsInInventory[i].amount == 0)
+                if(ingredientsInInventory[i].id == ingredient.id)
                 {
-                    ingredientsInInventory[i] = null;
                     ingredientsInInventory.RemoveAt(i);
+                    count--;
                 }
             }
         }

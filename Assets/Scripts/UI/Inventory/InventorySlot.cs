@@ -32,7 +32,7 @@ public class InventorySlot : MonoBehaviour
 
     private void EquipCamera()
     {
-        inventory.RemoveInventoryItem(ii);
+        inventory.RemoveInventoryItem(ii.ingredient, ii.amount);
         CameraEquip.Equip(ii.ingredient.id);
     }
 

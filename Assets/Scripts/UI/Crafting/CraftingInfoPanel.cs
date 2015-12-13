@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class CraftingInfoPanel : MonoBehaviour
 {
     public Image image;
+    public Image harvestImage;
     public Text titleText;
     public Text descriptionText;
     public Button craftButton;
