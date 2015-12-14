@@ -5,5 +5,5 @@ using System.Collections;
 public class Modifier
 {
     public int statId;
-    public float mofiderValue;
+    public float modifierValue;
 }

@@ -53,7 +53,7 @@ public class PlayerStats : MonoBehaviour
                         if (statId == mod.statId)
                         {
                             //yes
-                            val += mod.mofiderValue;
+                            val += (mod.modifierValue * (rc.health/rc.maxHealth));
                         }
                     }
                 }
