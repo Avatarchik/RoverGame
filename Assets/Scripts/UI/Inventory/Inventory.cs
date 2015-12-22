@@ -43,7 +43,7 @@ public class Inventory : Menu
     }
 
 
-    public int GetIngredientAmount(int ingredientId)
+    public virtual int GetIngredientAmount(int ingredientId)
     {
         int count = 0;
         foreach(Ingredient i in ingredientsInInventory)
@@ -54,7 +54,7 @@ public class Inventory : Menu
     }
 
 
-    public int GetIngredientAmount(Ingredient ingredient)
+    public virtual int GetIngredientAmount(Ingredient ingredient)
     {
         int count = 0;
         foreach (Ingredient i in ingredientsInInventory)
@@ -65,7 +65,7 @@ public class Inventory : Menu
     }
 
 
-    public void InitializeInventorySlots()
+    public virtual void InitializeInventorySlots()
     {
         for(int i = inventorySlots.Count -1; i >=0; i--)
         {
@@ -85,7 +85,7 @@ public class Inventory : Menu
     }
 
 
-    public void BuildInventorySlot(Ingredient ingredient, int count)
+    public virtual void BuildInventorySlot(Ingredient ingredient, int count)
     {
         InventorySlot newSlot = Instantiate(inventorySlotPrefab) as InventorySlot;
         newSlot.transform.SetParent(InventorySlotContainer);
@@ -104,7 +104,7 @@ public class Inventory : Menu
     }
 
 
-    public void AddInventoryItem(Ingredient ingredient, int count)
+    public virtual void AddInventoryItem(Ingredient ingredient, int count)
     {
         for(int i = count; i > 0; i--)
         {
@@ -115,7 +115,7 @@ public class Inventory : Menu
     }
 
 
-    public void RemoveInventoryItem(Ingredient ingredient, int count)
+    public virtual void RemoveInventoryItem(Ingredient ingredient, int count)
     {
         while(count > 0)
         {
@@ -133,7 +133,7 @@ public class Inventory : Menu
     }
 
 
-    private void Update()
+    public virtual void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
