@@ -33,4 +33,10 @@ public class ContainerObject : InteractibleObject
         //base.Interact();
         containerMenu.Open(ingredientsInInventory, this);
     }
+
+
+    private void Awake()
+    {
+        if (containerMenu == null) containerMenu = GameObject.FindObjectOfType<Container>() as Container;
+    }
 }

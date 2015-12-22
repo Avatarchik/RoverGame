@@ -12,11 +12,13 @@ public class InventorySlot : MonoBehaviour
     public Text amountText;
 
     public Button equipbutton;
+    public Button transferButton;
 
     public Inventory inventory;
 
     private bool equippable = false;
     private bool stackable = true;
+    private Container container;
 
     public int amount = 0;
 
@@ -27,6 +29,16 @@ public class InventorySlot : MonoBehaviour
             amount = value;
             amountText.text = amount + "";
         }
+    }
+
+
+    public void SetContainerData()
+    {
+        if (container == null) container = GameObject.FindObjectOfType<Container>() as Container;
+        container.selectedIngredient = ii.ingredient;
+        container.transferModal.Open(container.GetIngredientAmount(ii.ingredient), false);
+
+        Debug.Log("this happened?");
     }
 
 
@@ -45,5 +57,6 @@ public class InventorySlot : MonoBehaviour
         equipbutton.gameObject.SetActive(equippable);
         amountText.gameObject.SetActive(stackable);
         equipbutton.onClick.AddListener(EquipCamera);
+        transferButton.onClick.AddListener(SetContainerData);
     }
 }

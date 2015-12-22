@@ -11,6 +11,8 @@ public class Inventory : Menu
 
     public PlayerStats playerStats;
 
+    public Container container;
+
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
@@ -29,11 +31,34 @@ public class Inventory : Menu
             return weight;
         }
     }
+    
 
 
     public override void Open()
     {
         base.Open();
+    }
+
+
+    public void Open(bool containerExchange = false)
+    {
+        if(containerExchange)
+        {
+            foreach (InventorySlot invis in inventorySlots)
+            {
+                invis.equipbutton.gameObject.SetActive(false);
+                invis.transferButton.gameObject.SetActive(true);
+            }
+            base.Open();
+        }
+        else
+        {
+            foreach (InventorySlot invis in inventorySlots)
+            {
+                invis.transferButton.gameObject.SetActive(false);
+            }
+            base.Open();
+        }
     }
 
 
@@ -92,6 +117,8 @@ public class Inventory : Menu
         newSlot.transform.localScale = Vector3.one;
         newSlot.inventory = this;
 
+        if (!container.IsActive) newSlot.transferButton.gameObject.SetActive(false);
+
         newSlot.titleText.text = ingredient.displayName;
         newSlot.descriptionText.text = ingredient.description;
         newSlot.image.sprite = ingredient.image;
@@ -133,7 +160,7 @@ public class Inventory : Menu
     }
 
 
-    public virtual void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
