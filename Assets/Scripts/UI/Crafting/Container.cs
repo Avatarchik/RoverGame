@@ -131,6 +131,15 @@ public class Container : Menu
     }
 
 
+    private void Update()
+    {
+        if(IsActive)
+        {
+            if (Input.GetKeyDown(KeyCode.E)) Close();
+        }
+    }
+
+
     private void Awake()
     {
         playerInventory = GameObject.FindObjectOfType<Inventory>() as Inventory;

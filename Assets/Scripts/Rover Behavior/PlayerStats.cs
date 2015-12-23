@@ -25,12 +25,14 @@ public class PlayerStats : MonoBehaviour
     public void EnableMovement()
     {
         movementEnabled++;
+        Debug.Log("movement enabled " + movementEnabled);
     }
 
 
     public void DisableMovement()
     {
         movementEnabled--;
+        Debug.Log("movement enabled " + movementEnabled);
     }
 
 
