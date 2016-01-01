@@ -27,14 +27,12 @@ public class InteractibleObject : MonoBehaviour
     public virtual void OnMouseEnter()
     {
         gameObject.GetComponent<Renderer> ().material.SetColor("_EmissionColor", mouseOverColor);
-        Debug.Log("mousing over");
     }
 
 
     public virtual void OnMouseExit()
     {
         gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", baseColor);
-        Debug.Log("mousing out");
     }
 
 
