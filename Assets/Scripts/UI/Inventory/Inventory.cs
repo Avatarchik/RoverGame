@@ -160,6 +160,13 @@ public class Inventory : Menu
     }
 
 
+    public virtual void RemoveAllInventoryItems()
+    {
+        ingredientsInInventory.Clear();
+        InitializeInventorySlots();
+    }
+
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
