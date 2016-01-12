@@ -152,6 +152,7 @@ public class Inventory : Menu
                 {
                     ingredientsInInventory.RemoveAt(i);
                     count--;
+                    break;
                 }
             }
         }

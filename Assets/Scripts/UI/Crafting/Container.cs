@@ -83,6 +83,7 @@ public class Container : Menu
                 {
                     ingredientsInInventory.RemoveAt(i);
                     count--;
+                    break;
                 }
             }
         }
