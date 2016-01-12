@@ -36,9 +36,16 @@ public class InventorySlot : MonoBehaviour
     {
         if (container == null) container = GameObject.FindObjectOfType<Container>() as Container;
         container.selectedIngredient = ii.ingredient;
-        container.transferModal.Open(inventory.GetIngredientAmount(ii.ingredient), false);
-
-        Debug.Log("this happened?");
+        int ingredientAmount = inventory.GetIngredientAmount(ii.ingredient);
+        if (ingredientAmount < 5)
+        {
+            inventory.RemoveInventoryItem(ii.ingredient, 1);
+            container.AddInventoryItem(ii.ingredient, 1);
+        }
+        else
+        {
+            container.transferModal.Open(ingredientAmount, false);
+        }
     }
 
 
