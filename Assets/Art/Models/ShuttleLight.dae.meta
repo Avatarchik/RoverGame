@@ -1,20 +1,49 @@
 fileFormatVersion: 2
-guid: c21ade05d7eb14f54a3d2793f3fa47dd
+guid: 4320d9ca99af75e408fb2702a0c13769
+timeCreated: 1452662822
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: pCylinder1
-    100002: //RootNode
-    100004: ramp
-    400000: pCylinder1
-    400002: //RootNode
-    400004: ramp
-    2300000: pCylinder1
-    2300002: ramp
-    3300000: pCylinder1
-    3300002: ramp
-    4300000: pCylinder1
-    4300002: ramp
+    100000: light_ncl1_1
+    100002: metal
+    100004: pCube5
+    100006: pCube6
+    100008: pCube7
+    100010: pCube8
+    100012: pCube9
+    100014: pTorus3
+    100016: //RootNode
+    400000: light_ncl1_1
+    400002: metal
+    400004: pCube5
+    400006: pCube6
+    400008: pCube7
+    400010: pCube8
+    400012: pCube9
+    400014: pTorus3
+    400016: //RootNode
+    2300000: light_ncl1_1
+    2300002: pCube5
+    2300004: pCube6
+    2300006: pCube7
+    2300008: pCube8
+    2300010: pCube9
+    2300012: pTorus3
+    3300000: light_ncl1_1
+    3300002: pCube5
+    3300004: pCube6
+    3300006: pCube7
+    3300008: pCube8
+    3300010: pCube9
+    3300012: pTorus3
+    4300000: light_ncl1_1
+    4300002: pCube5
+    4300004: pCube6
+    4300006: pCube7
+    4300008: pCube8
+    4300010: pCube9
+    4300012: pTorus3
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -54,11 +83,11 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 1
-    tangentImportMode: 4
+    normalImportMode: 0
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -74,7 +103,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
