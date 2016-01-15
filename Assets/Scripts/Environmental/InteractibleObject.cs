@@ -44,7 +44,7 @@ public class InteractibleObject : MonoBehaviour
 
     private void Awake()
     {
-        objectRenderer.material.EnableKeyword("_EMISSION");
+        if(objectRenderer != null) objectRenderer.material.EnableKeyword("_EMISSION");
         baseColor = objectRenderer.material.GetColor("_EmissionColor");
     }
 }

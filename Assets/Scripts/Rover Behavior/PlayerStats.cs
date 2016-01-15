@@ -18,6 +18,8 @@ public class PlayerStats : MonoBehaviour
     public const int HEALTH_ID = 6;
     public const int WEIGHT_ID = 7;
 
+    public float OverallHealth;
+
     public List<RoverComponent> roverComponents = new List<RoverComponent>();
 
     private int movementEnabled = 0;
@@ -119,14 +121,25 @@ public class PlayerStats : MonoBehaviour
         get { return ModifyStat(SCANNING_SPEED_ID); }
     }
 
-    public float Health
+    public float MaxHealth
     {
         get { return ModifyStat(HEALTH_ID); }
+    }
+
+    public float Health
+    {
+        get { return OverallHealth; }
     }
 
     public float Weight
     {
         get { return ModifyStat(WEIGHT_ID) + playerInventory.Weight; }
+    }
+
+
+    public void ModifyHealth(float addedModifier)
+    {
+        OverallHealth += addedModifier;
     }
 
 
