@@ -48,10 +48,4 @@ public class Door : MonoBehaviour
             yield return null;
         }
     }
-
-
-    private void Awake()
-    {
-        IsOpen = !IsOpen;
-    }
 }

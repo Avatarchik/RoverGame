@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class DoorSwitch : MonoBehaviour {
+public class DoorSwitch : InteractibleObject
+{
+    public List<Door> doorsIControl = new List<Door>();
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    public override void Interact()
+    {
+        foreach(Door door in doorsIControl)
+        {
+            door.IsOpen = !door.IsOpen;
+        }
+    }
 }
