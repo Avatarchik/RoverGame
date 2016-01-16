@@ -3,12 +3,7 @@ using System.Collections;
 
 public class Door : MonoBehaviour
 {
-    public GameObject doorModel;
-
-    public Transform closedPosition;
-    public Transform openPosition;
-
-    public float moveTime = 2f;
+    public Animator doorAnimator;
 
 
     private bool isOpen = false;
@@ -24,28 +19,25 @@ public class Door : MonoBehaviour
 
                 if (isOpen)
                 {
-                    StartCoroutine(MoveDoor(closedPosition, openPosition));
+                    OpenDoor();
                 }
                 else
                 {
-                    StartCoroutine(MoveDoor(openPosition, closedPosition));
+                    CloseDoor();
                 }
             }
         }
     }
 
 
-    private IEnumerator MoveDoor(Transform start, Transform end)
+    public virtual void OpenDoor()
     {
-        float elapsedTime = 0f;
+        
+    }
 
-        while(elapsedTime <= moveTime)
-        {
-            doorModel.transform.position = Vector3.Lerp(start.position, end.position, elapsedTime/moveTime);
-            doorModel.transform.rotation = Quaternion.Lerp(start.rotation, end.rotation, elapsedTime/moveTime);
 
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+    public virtual void CloseDoor()
+    {
+
     }
 }

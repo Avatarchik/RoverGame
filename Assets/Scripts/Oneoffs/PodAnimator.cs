@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PodAnimator : MonoBehaviour {
+public class PodAnimator : MonoBehaviour
+{
+    public Animator animator;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject door;
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public void OpenDoor()
+    {
+        door.SetActive(false);
+    }
 }
