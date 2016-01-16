@@ -78,13 +78,13 @@ public class PlayerStats : MonoBehaviour
         {
             if (movementEnabled == 0)
             {
-                Cursor.lockState = CursorLockMode.Locked;
+                //Cursor.lockState = CursorLockMode.Locked;
                // Cursor.visible = false;
                 return ModifyStat(MOVE_SPEED_ID) / (Weight * 0.01f);
             }
             else
             {
-                Cursor.lockState = CursorLockMode.None;
+               // Cursor.lockState = CursorLockMode.None;
                 //Cursor.visible = true;
                 return 0f;
             }
