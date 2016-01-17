@@ -3,12 +3,15 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
-    public static FadeMenu FadeMenu;
+    public static FadeMenu FadeMenuInstance;
+    public static MessageMenu MessageMenuInstance;
 
     public FadeMenu fadeMenu;
-	// Use this for initialization
-	void Start ()
+    public MessageMenu messageMenu;
+
+    private void Awake ()
     {
-        FadeMenu = fadeMenu;
+        FadeMenuInstance = fadeMenu;
+        MessageMenuInstance = messageMenu;
 	}
 }

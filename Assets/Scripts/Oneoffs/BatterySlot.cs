@@ -11,6 +11,8 @@ public class BatterySlot : InteractibleObject
     private bool hasItem;
     private Inventory playerInventory;
 
+    private const string MESSAGE_STRING = "Its missing a {0}.";
+
 
     public Inventory PlayerInventory
     {
@@ -33,5 +35,18 @@ public class BatterySlot : InteractibleObject
             podAnimator.hazardLight.gameObject.SetActive(true);
             hasItem = true;
         }
+        else
+        {
+            StopAllCoroutines();
+            UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING, desiredObject.displayName));
+            StartCoroutine(CloseMessage());
+        }
+    }
+
+
+    private IEnumerator CloseMessage()
+    {
+        yield return new WaitForSeconds(3f);
+        UIManager.MessageMenuInstance.Close();
     }
 }
