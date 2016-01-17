@@ -13,10 +13,16 @@ public class PodAnimator : MonoBehaviour
     public Transform landingSpot;
     public Transform reorientingSpot;
     public ScionPostProcess scion;
+
+    public Light hazardLight;
+    public BatterySlot batterySlot;
 	
     public void OpenDoor()
     {
-        animator.SetBool("Open", true);
+        if(batterySlot.HasItem)
+        {
+            animator.SetBool("Open", true);
+        }
     }
 
 

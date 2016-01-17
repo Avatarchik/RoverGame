@@ -92,7 +92,7 @@ public class Container : Menu
     }
 
 
-    public void InitializeInventorySlots()
+    public virtual void InitializeInventorySlots()
     {
         for (int i = containerSlots.Count - 1; i >= 0; i--)
         {
@@ -112,7 +112,7 @@ public class Container : Menu
     }
 
 
-    public void BuildInventorySlot(Ingredient ingredient, int count)
+    public virtual void BuildInventorySlot(Ingredient ingredient, int count)
     {
         ContainerSlot newSlot = Instantiate(containerSlotPrefab) as ContainerSlot;
         newSlot.transform.SetParent(InventorySlotContainer);

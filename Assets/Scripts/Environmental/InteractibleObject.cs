@@ -5,8 +5,11 @@ public class InteractibleObject : MonoBehaviour
 {
     public float detectionDistance = 1000f;
     public Renderer objectRenderer;
-    public Color mouseOverColor = Color.green;
-    public Color baseColor;
+    public Material highlightMaterial;
+    public Material baseMaterial;
+    public bool interactible = true;
+
+    
 
 
     public virtual void OnMouseDown()
@@ -26,13 +29,13 @@ public class InteractibleObject : MonoBehaviour
 
     public virtual void OnMouseEnter()
     {
-        //gameObject.GetComponent<Renderer> ().material.SetColor("_EmissionColor", mouseOverColor);
+        if (objectRenderer != null && interactible) objectRenderer.material = highlightMaterial;
     }
 
 
     public virtual void OnMouseExit()
     {
-        //gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", baseColor);
+        if (objectRenderer != null) objectRenderer.material = baseMaterial;
     }
 
 
@@ -44,10 +47,6 @@ public class InteractibleObject : MonoBehaviour
 
     private void Awake()
     {
-        if (objectRenderer != null)
-        {
-            objectRenderer.material.EnableKeyword("_EMISSION");
-            baseColor = objectRenderer.material.GetColor("_EmissionColor");
-        }
+        if (objectRenderer != null) baseMaterial = objectRenderer.material;
     }
 }
