@@ -18,9 +18,12 @@ public class PlayerStats : MonoBehaviour
     public const int HEALTH_ID = 6;
     public const int WEIGHT_ID = 7;
 
+    public float OverallHealth;
+
     public List<RoverComponent> roverComponents = new List<RoverComponent>();
 
     private int movementEnabled = 0;
+    private CursorLockMode desiredCursorLocking;
 
     public void EnableMovement()
     {
@@ -75,10 +78,14 @@ public class PlayerStats : MonoBehaviour
         {
             if (movementEnabled == 0)
             {
+                //Cursor.lockState = CursorLockMode.Locked;
+               // Cursor.visible = false;
                 return ModifyStat(MOVE_SPEED_ID) / (Weight * 0.01f);
             }
             else
             {
+               // Cursor.lockState = CursorLockMode.None;
+                //Cursor.visible = true;
                 return 0f;
             }
         }
@@ -119,14 +126,31 @@ public class PlayerStats : MonoBehaviour
         get { return ModifyStat(SCANNING_SPEED_ID); }
     }
 
-    public float Health
+    public float MaxHealth
     {
         get { return ModifyStat(HEALTH_ID); }
+    }
+
+    public float Health
+    {
+        get { return OverallHealth; }
     }
 
     public float Weight
     {
         get { return ModifyStat(WEIGHT_ID) + playerInventory.Weight; }
+    }
+
+
+    public void ModifyHealth(float addedModifier)
+    {
+        OverallHealth += addedModifier;
+    }
+
+
+    private void Update()
+    {
+        Cursor.lockState = desiredCursorLocking;
     }
 
 

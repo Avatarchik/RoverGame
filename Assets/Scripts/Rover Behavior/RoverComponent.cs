@@ -19,6 +19,27 @@ public class RoverComponent : MonoBehaviour
 
     private float statValue;
 
+
+    public Color color
+    {
+        get
+        {
+            if (equippedItem == null) return badColor;
+
+            if (Health / maxHealth > 0.5f)
+            {
+                return goodColor;
+            }
+            else if (health / maxHealth > 0.25f)
+            {
+                return midColor;
+            }
+
+            return badColor;
+        }
+    }
+
+
     public float Health
     {
         get { return health; }

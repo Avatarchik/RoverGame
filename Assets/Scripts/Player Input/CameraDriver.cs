@@ -44,9 +44,10 @@ public class CameraDriver : MonoBehaviour
             {
                 //will need to play audio too
                 playerCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
-                model.localEulerAngles = new Vector3(0, rotationX, 0);
+                transform.localEulerAngles = new Vector3(0, rotationX, 0);
                 if (!servoMotorSound.isPlaying) servoMotorSound.Play();
             }
+
             else
             {
                 if (servoMotorSound.isPlaying) servoMotorSound.Pause();
