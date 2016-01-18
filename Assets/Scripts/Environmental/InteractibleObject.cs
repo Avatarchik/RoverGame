@@ -5,8 +5,9 @@ public class InteractibleObject : MonoBehaviour
 {
     public float detectionDistance = 1000f;
     public Renderer objectRenderer;
-    public Material highlightMaterial;
-    public Material baseMaterial;
+    //public Material highlightMaterial;
+    //public Material baseMaterial;
+    public GameObject silhouette;
     public bool interactible = true;
 
     
@@ -29,13 +30,13 @@ public class InteractibleObject : MonoBehaviour
 
     public virtual void OnMouseEnter()
     {
-        if (objectRenderer != null && interactible) objectRenderer.material = highlightMaterial;
+        if (objectRenderer != null && interactible) silhouette.SetActive(true);//objectRenderer.material = highlightMaterial;
     }
 
 
     public virtual void OnMouseExit()
     {
-        if (objectRenderer != null) objectRenderer.material = baseMaterial;
+        if (objectRenderer != null) silhouette.SetActive(false);//objectRenderer.material = baseMaterial;
     }
 
 
@@ -47,6 +48,6 @@ public class InteractibleObject : MonoBehaviour
 
     private void Awake()
     {
-        if (objectRenderer != null) baseMaterial = objectRenderer.material;
+       // if (objectRenderer != null) // baseMaterial = objectRenderer.material;
     }
 }
