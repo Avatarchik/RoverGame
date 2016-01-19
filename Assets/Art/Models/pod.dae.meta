@@ -99,6 +99,31 @@ ModelImporter:
     100182: transform22
     100184: transform23
     100186: transform9
+    100188: pCube39
+    100190: pCube40
+    100192: pCube41
+    100194: pCylinder14
+    100196: pCylinder15
+    100198: pCylinder19
+    100200: pCylinder19_ncl1_1
+    100202: pCylinder20
+    100204: pCylinder20_ncl1_1
+    100206: pCylinder21
+    100208: pCylinder22
+    100210: pCylinder23
+    100212: pCylinder9_ncl1_1
+    100214: polySurface17
+    100216: polySurface17_ncl1_1
+    100218: polySurface17_ncl1_2
+    100220: polySurface18
+    100222: polySurface18_ncl1_1
+    100224: polySurface18_ncl1_2
+    100226: polySurface19
+    100228: polySurface19_ncl1_1
+    100230: polySurface19_ncl1_2
+    100232: pPipe1
+    100234: pSphere4
+    100236: pSphere4_ncl1_1
     400000: pCone5
     400002: pCylinder8
     400004: //RootNode
@@ -193,6 +218,31 @@ ModelImporter:
     400182: transform22
     400184: transform23
     400186: transform9
+    400188: pCube39
+    400190: pCube40
+    400192: pCube41
+    400194: pCylinder14
+    400196: pCylinder15
+    400198: pCylinder19
+    400200: pCylinder19_ncl1_1
+    400202: pCylinder20
+    400204: pCylinder20_ncl1_1
+    400206: pCylinder21
+    400208: pCylinder22
+    400210: pCylinder23
+    400212: pCylinder9_ncl1_1
+    400214: polySurface17
+    400216: polySurface17_ncl1_1
+    400218: polySurface17_ncl1_2
+    400220: polySurface18
+    400222: polySurface18_ncl1_1
+    400224: polySurface18_ncl1_2
+    400226: polySurface19
+    400228: polySurface19_ncl1_1
+    400230: polySurface19_ncl1_2
+    400232: pPipe1
+    400234: pSphere4
+    400236: pSphere4_ncl1_1
     2300000: pCone5
     2300002: pCylinder8
     2300004: box
@@ -259,6 +309,28 @@ ModelImporter:
     2300126: pCylinder12_ncl1_1
     2300128: pCylinder16
     2300130: pCylinder7_ncl1_1
+    2300132: pCube39
+    2300134: pCube40
+    2300136: pCube41
+    2300138: pCylinder14
+    2300140: pCylinder15
+    2300142: pCylinder19
+    2300144: pCylinder19_ncl1_1
+    2300146: pCylinder20
+    2300148: pCylinder20_ncl1_1
+    2300150: pCylinder9_ncl1_1
+    2300152: polySurface17
+    2300154: polySurface17_ncl1_1
+    2300156: polySurface17_ncl1_2
+    2300158: polySurface18
+    2300160: polySurface18_ncl1_1
+    2300162: polySurface18_ncl1_2
+    2300164: polySurface19
+    2300166: polySurface19_ncl1_1
+    2300168: polySurface19_ncl1_2
+    2300170: pPipe1
+    2300172: pSphere4
+    2300174: pSphere4_ncl1_1
     3300000: pCone5
     3300002: pCylinder8
     3300004: box
@@ -325,6 +397,28 @@ ModelImporter:
     3300126: pCylinder12_ncl1_1
     3300128: pCylinder16
     3300130: pCylinder7_ncl1_1
+    3300132: pCube39
+    3300134: pCube40
+    3300136: pCube41
+    3300138: pCylinder14
+    3300140: pCylinder15
+    3300142: pCylinder19
+    3300144: pCylinder19_ncl1_1
+    3300146: pCylinder20
+    3300148: pCylinder20_ncl1_1
+    3300150: pCylinder9_ncl1_1
+    3300152: polySurface17
+    3300154: polySurface17_ncl1_1
+    3300156: polySurface17_ncl1_2
+    3300158: polySurface18
+    3300160: polySurface18_ncl1_1
+    3300162: polySurface18_ncl1_2
+    3300164: polySurface19
+    3300166: polySurface19_ncl1_1
+    3300168: polySurface19_ncl1_2
+    3300170: pPipe1
+    3300172: pSphere4
+    3300174: pSphere4_ncl1_1
     4300000: pCone5
     4300002: pCylinder8
     4300004: pCone3
@@ -391,6 +485,29 @@ ModelImporter:
     4300126: pCube17_ncl1_1
     4300128: pCube20_ncl1_1
     4300130: Crate2
+    4300132: pCylinder19
+    4300134: pCylinder20
+    4300136: pSphere4
+    4300138: pCube41
+    4300140: pCylinder9_ncl1_1
+    4300142: pCylinder19_ncl1_1
+    4300144: pCylinder20_ncl1_1
+    4300146: pSphere4_ncl1_1
+    4300148: polySurface17
+    4300150: polySurface18
+    4300152: polySurface19
+    4300154: polySurface17_ncl1_1
+    4300156: polySurface18_ncl1_1
+    4300158: polySurface19_ncl1_1
+    4300160: polySurface17_ncl1_2
+    4300162: polySurface18_ncl1_2
+    4300164: polySurface19_ncl1_2
+    4300166: pCube39
+    4300168: pCube40
+    4300170: pCylinder14
+    4300172: pCylinder15
+    4300174: pPipe1
+    7400000: Take 001
     9500000: //RootNode
   materials:
     importMaterials: 1
