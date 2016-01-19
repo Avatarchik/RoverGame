@@ -55,13 +55,13 @@ public class PodAnimator : MonoBehaviour
         animator.SetBool("Fall", true);
         yield return new WaitForSeconds(fallAnimation.length);
 
-        UIManager.FadeMenu.Fade(fadeOutTime, Color.clear, Color.black);
+        UIManager.FadeMenuInstance.Fade(fadeOutTime, Color.clear, Color.black);
         playerTransform.SetParent(environment);
         playerTransform.position = landingSpot.position;
         playerTransform.rotation = landingSpot.rotation;
         yield return new WaitForSeconds(4f);
 
-        UIManager.FadeMenu.Fade(fadeInTime, Color.black, Color.clear);
+        UIManager.FadeMenuInstance.Fade(fadeInTime, Color.black, Color.clear);
         playerTransform.position = landingSpot.position;
         playerTransform.rotation = landingSpot.rotation;
 
@@ -83,7 +83,7 @@ public class PodAnimator : MonoBehaviour
         }
         playerTransform.position = reorientingSpot.position;
         playerTransform.rotation = reorientingSpot.rotation;
-        UIManager.FadeMenu.Close();
+        UIManager.FadeMenuInstance.Close();
         player.EnableMovement();
 
         this.gameObject.SetActive(false);
