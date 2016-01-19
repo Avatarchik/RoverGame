@@ -17,6 +17,11 @@ public class Inventory : Menu
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
+    public PlayerStats PlayerStatsInstance
+    {
+        get { return (playerStats != null) ? playerStats : playerStats = GameObject.FindObjectOfType<PlayerStats>() as PlayerStats; }
+    }
+
     public float Weight
     {
         get
@@ -182,7 +187,7 @@ public class Inventory : Menu
             }
         }
 
-        weightValue.text = playerStats.Weight + " kg";
+        weightValue.text = PlayerStatsInstance.Weight + " kg";
     }
 
 

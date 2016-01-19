@@ -7,6 +7,7 @@ public class Crafting : Menu
     public CraftingInfoPanel craftingInfoPanel;
     public Inventory inventory;
 
+    public List<Recipe> recipes = new List<Recipe>();
     public List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
 
     private bool canClose = true;
@@ -96,22 +97,6 @@ public class Crafting : Menu
     private void SelectSlot()
     {
         SelectCraftingSlot(craftingSlots[0]);
-    }
-
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            if(!IsActive)
-            {
-                Open();
-            }
-            else
-            {
-                Close();
-            }
-        }
     }
 
 
