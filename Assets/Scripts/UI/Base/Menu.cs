@@ -10,6 +10,7 @@ public class Menu : MonoBehaviour
     public static event MenuClose OnMenuClose;
 
     public GameObject root;
+    public bool stopsMovement = true;
 
     [HideInInspector]
     public bool isActive = false;
@@ -21,16 +22,22 @@ public class Menu : MonoBehaviour
 
     public virtual void Open()
     {
-        isActive = true;
-        root.SetActive(true);
-        OnMenuOpen();
+        if(!IsActive)
+        {
+            isActive = true;
+            root.SetActive(true);
+            if (stopsMovement) OnMenuOpen();
+        }
     }
 
 
     public virtual void Close()
     {
-        isActive = false;
-        root.SetActive(false);
-        OnMenuClose();
+        if(IsActive)
+        {
+            isActive = false;
+            root.SetActive(false);
+            if (stopsMovement) OnMenuClose();
+        }
     }
 }
