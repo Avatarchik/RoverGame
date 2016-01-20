@@ -8,6 +8,7 @@ public class Inventory : Menu
     public InventorySlot inventorySlotPrefab;
     public Transform InventorySlotContainer;
     public Text weightValue;
+    public Button closeButton;
 
     public PlayerStats playerStats;
 
@@ -52,7 +53,7 @@ public class Inventory : Menu
             foreach (InventorySlot invis in inventorySlots)
             {
                 invis.equipbutton.gameObject.SetActive(false);
-                invis.transferButton.gameObject.SetActive(true);
+                invis.transferButton.interactable = true;
             }
             base.Open();
         }
@@ -60,7 +61,7 @@ public class Inventory : Menu
         {
             foreach (InventorySlot invis in inventorySlots)
             {
-                invis.transferButton.gameObject.SetActive(false);
+                invis.transferButton.interactable = false;
             }
             base.Open();
         }
@@ -108,6 +109,7 @@ public class Inventory : Menu
         {
             if(!encounteredIngredients.Contains(i))
             {
+                Debug.Log("first encountering " + i.displayName);
                 BuildInventorySlot(i, GetIngredientAmount(i));
                 encounteredIngredients.Add(i);
             }
@@ -122,7 +124,7 @@ public class Inventory : Menu
         newSlot.transform.localScale = Vector3.one;
         newSlot.inventory = this;
 
-        if (!container.IsActive && newSlot.transferButton != null) newSlot.transferButton.gameObject.SetActive(false);
+       // if (!container.IsActive && newSlot.transferButton != null) newSlot.transferButton.gameObject.SetActive(false);
 
         newSlot.titleText.text = ingredient.displayName;
         newSlot.descriptionText.text = ingredient.description;
@@ -130,14 +132,18 @@ public class Inventory : Menu
         newSlot.Amount = count;
         newSlot.equipbutton.gameObject.SetActive(false);
         newSlot.ii.ingredient = ingredient;
-        newSlot.ii.amount = count;
+        newSlot.Amount = count;
 
         inventorySlots.Add(newSlot);
+        newSlot.gameObject.SetActive(true);
+        Debug.Log("new inventory slot added!");
     }
 
 
     public virtual void AddInventoryItem(Ingredient ingredient, int count)
     {
+        Debug.Log("adding an item!");
+
         for(int i = count; i > 0; i--)
         {
             ingredientsInInventory.Add(ingredient);
@@ -175,7 +181,7 @@ public class Inventory : Menu
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
         {
             if (!IsActive)
             {
@@ -193,6 +199,7 @@ public class Inventory : Menu
 
     private void Awake()
     {
+        closeButton.onClick.AddListener(Close);
         InitializeInventorySlots();
     }
 }

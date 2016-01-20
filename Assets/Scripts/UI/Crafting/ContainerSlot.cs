@@ -19,6 +19,8 @@ public class ContainerSlot : InventorySlot
         }
         else
         {
+            container.root.SetActive(false);
+            container.playerInventory.root.SetActive(false);
             container.transferModal.Open(ingredientAmount, true);
         }
     }

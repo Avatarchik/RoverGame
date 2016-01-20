@@ -43,7 +43,8 @@ public class TransferModal : Menu
         {
             cs.transferButton.interactable = true;
         }
-
+        container.root.SetActive(true);
+        container.playerInventory.root.SetActive(true);
         base.Close();
     }
 
