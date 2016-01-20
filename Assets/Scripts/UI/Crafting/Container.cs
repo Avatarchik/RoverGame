@@ -9,6 +9,7 @@ public class Container : Menu
     public ContainerSlot containerSlotPrefab;
     public Ingredient selectedIngredient;
     public Transform InventorySlotContainer;
+    public Button closeButton;
 
     public TransferModal transferModal;
 
@@ -143,6 +144,7 @@ public class Container : Menu
 
     private void Awake()
     {
+        closeButton.onClick.AddListener(Close);
         playerInventory = GameObject.FindObjectOfType<Inventory>() as Inventory;
         InitializeInventorySlots();
     }

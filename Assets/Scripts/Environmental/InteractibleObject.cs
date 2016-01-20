@@ -33,20 +33,27 @@ public class InteractibleObject : MonoBehaviour
 
     public virtual void OnMouseEnter()
     {
-        if (objectRenderer != null && Interactible) silhouette.SetActive(true);
-        UIManager.MessageMenuInstance.Open(objectName);
+        if (objectRenderer != null && Interactible)
+        {
+            silhouette.SetActive(true);
+            UIManager.MessageMenuInstance.Open(objectName);
+        }
     }
 
 
     public virtual void OnMouseExit()
     {
-        if (objectRenderer != null) silhouette.SetActive(false);
-        UIManager.MessageMenuInstance.Close();
+        if (objectRenderer != null)
+        {
+            silhouette.SetActive(false);
+            UIManager.MessageMenuInstance.Close();
+        }
     }
 
 
     public virtual void Interact()
     {
         Debug.Log("interacting");
+        silhouette.SetActive(false);
     }
 }

@@ -62,6 +62,11 @@ public class ScionMenu : Menu
     private float defaultVignetteIntensity;
     private float defaultVignetteScale;
 
+    public ScionPostProcess ScionInstance
+    {
+        get { return (ScionInstance != null) ? scion : scion = GameObject.FindObjectOfType<ScionPostProcess>() as ScionPostProcess; }
+    }
+
     public override void Close()
     {
         base.Close();
@@ -76,118 +81,118 @@ public class ScionMenu : Menu
 
     private void RestoreDefaults()
     {
-        scion.adaptionSpeed                     = defaultAdaptionSpeed;
+        ScionInstance.adaptionSpeed                     = defaultAdaptionSpeed;
 
         //bloom
-        scion.bloom                             = defaultBloomOn;
-        scion.bloomBrightness                   = defaultBloomBrightness;
-        scion.bloomDistanceMultiplier           = defaultBloomDownsamples;
-        scion.bloomIntensity                    = defaultBloomIntensity;
+        ScionInstance.bloom                             = defaultBloomOn;
+        ScionInstance.bloomBrightness                   = defaultBloomBrightness;
+        ScionInstance.bloomDistanceMultiplier           = defaultBloomDownsamples;
+        ScionInstance.bloomIntensity                    = defaultBloomIntensity;
 
         //chromatic aberration
-        scion.chromaticAberration               = defaultChromaticAberrationOn;
-        scion.chromaticAberrationDistortion     = defaultChromaticAberrationDistortion;
-        defaultChromaticAberrationIntensity     = scion.chromaticAberrationIntensity;
+        ScionInstance.chromaticAberration               = defaultChromaticAberrationOn;
+        ScionInstance.chromaticAberrationDistortion     = defaultChromaticAberrationDistortion;
+        defaultChromaticAberrationIntensity     = ScionInstance.chromaticAberrationIntensity;
 
         //color grading
-        scion.colorGradingBlendFactor           = defaultColorGradingFactor;
+        ScionInstance.colorGradingBlendFactor           = defaultColorGradingFactor;
 
         //depth of field
-        scion.depthAdaptionSpeed                = defaultDepthAdaptationSpeed;
-        scion.depthOfFieldTemporalBlend         = defaultDepthOfTemporalBlend;
-        scion.depthOfFieldTemporalSteps         = defaultDepthSteps;
-        scion.depthOfFieldTemporalSupersampling = defaultDepthTemporalSamplingOn;
+        ScionInstance.depthAdaptionSpeed                = defaultDepthAdaptationSpeed;
+        ScionInstance.depthOfFieldTemporalBlend         = defaultDepthOfTemporalBlend;
+        ScionInstance.depthOfFieldTemporalSteps         = defaultDepthSteps;
+        ScionInstance.depthOfFieldTemporalSupersampling = defaultDepthTemporalSamplingOn;
 
         //exposure
-        scion.exposureCompensation              = defaultExposureCompensation;
-        scion.fNumber                           = defaultFNumber;
-        scion.shutterSpeed                      = defaultShutterSpeed;
+        ScionInstance.exposureCompensation              = defaultExposureCompensation;
+        ScionInstance.fNumber                           = defaultFNumber;
+        ScionInstance.shutterSpeed                      = defaultShutterSpeed;
 
         //grain
-        scion.grain                             = defaultGrainOn;
-        scion.grainIntensity                    = defaultGrainIntensity;
+        ScionInstance.grain                             = defaultGrainOn;
+        ScionInstance.grainIntensity                    = defaultGrainIntensity;
 
         //ISO
-        scion.ISO                               = defaultISO;
+        ScionInstance.ISO                               = defaultISO;
 
         //lens flare
-        scion.lensFlare                         = defaultLensFlareOn;
-        scion.lensFlareBlurStrength             = defaultLensFlareBlurStrength;
-        scion.lensFlareDiffractionUVScale       = defaultLensFlareDiffractionUVScale;
-        scion.lensFlareDownsamples              = defaultLensFlareDownsamples;
-        scion.lensFlareGhostDispersal           = defaultLensFlareGhostDispersal;
-        scion.lensFlareGhostDistortion          = defaultLensFlareGhostDistortion;
-        scion.lensFlareGhostEdgeFade            = defaultLensFlareGhostEdgeFade;
-        scion.lensFlareGhostIntensity           = defaultLensFlareGhostIntensity;
-        scion.lensFlareHaloDistortion           = defaultLensFlareHaloDistortion;
-        scion.lensFlareHaloIntensity            = defaultLensFlareHaloIntensity;
-        scion.lensFlareHaloWidth                = defaultLensFlareHaloWidth;
+        ScionInstance.lensFlare                         = defaultLensFlareOn;
+        ScionInstance.lensFlareBlurStrength             = defaultLensFlareBlurStrength;
+        ScionInstance.lensFlareDiffractionUVScale       = defaultLensFlareDiffractionUVScale;
+        ScionInstance.lensFlareDownsamples              = defaultLensFlareDownsamples;
+        ScionInstance.lensFlareGhostDispersal           = defaultLensFlareGhostDispersal;
+        ScionInstance.lensFlareGhostDistortion          = defaultLensFlareGhostDistortion;
+        ScionInstance.lensFlareGhostEdgeFade            = defaultLensFlareGhostEdgeFade;
+        ScionInstance.lensFlareGhostIntensity           = defaultLensFlareGhostIntensity;
+        ScionInstance.lensFlareHaloDistortion           = defaultLensFlareHaloDistortion;
+        ScionInstance.lensFlareHaloIntensity            = defaultLensFlareHaloIntensity;
+        ScionInstance.lensFlareHaloWidth                = defaultLensFlareHaloWidth;
 
         //COC
-        scion.maxCoCRadius                      = defaultMaxCOCRadius;
+        ScionInstance.maxCoCRadius                      = defaultMaxCOCRadius;
 
         //vignette
-        scion.vignette                          = defaultVignetteOn;
-        scion.vignetteIntensity                 = defaultVignetteIntensity;
-        scion.vignetteScale                     = defaultVignetteScale;
+        ScionInstance.vignette                          = defaultVignetteOn;
+        ScionInstance.vignetteIntensity                 = defaultVignetteIntensity;
+        ScionInstance.vignetteScale                     = defaultVignetteScale;
     }
 
 
     private void Awake()
     {
-        defaultAdaptionSpeed                 = scion.adaptionSpeed;
+        defaultAdaptionSpeed                 = ScionInstance.adaptionSpeed;
 
         //bloom
-        defaultBloomOn                       = scion.bloom;
-        defaultBloomBrightness               = scion.bloomBrightness;
-        defaultBloomDownsamples              = scion.bloomDistanceMultiplier;
-        defaultBloomIntensity                = scion.bloomIntensity;
+        defaultBloomOn                       = ScionInstance.bloom;
+        defaultBloomBrightness               = ScionInstance.bloomBrightness;
+        defaultBloomDownsamples              = ScionInstance.bloomDistanceMultiplier;
+        defaultBloomIntensity                = ScionInstance.bloomIntensity;
 
         //chromatic aberration
-        defaultChromaticAberrationOn         = scion.chromaticAberration;
-        defaultChromaticAberrationDistortion = scion.chromaticAberrationDistortion;
-        defaultChromaticAberrationIntensity  = scion.chromaticAberrationIntensity;
+        defaultChromaticAberrationOn         = ScionInstance.chromaticAberration;
+        defaultChromaticAberrationDistortion = ScionInstance.chromaticAberrationDistortion;
+        defaultChromaticAberrationIntensity  = ScionInstance.chromaticAberrationIntensity;
 
         //color grading
-        defaultColorGradingFactor            = scion.colorGradingBlendFactor;
+        defaultColorGradingFactor            = ScionInstance.colorGradingBlendFactor;
 
         //depth of field
-        defaultDepthAdaptationSpeed          = scion.depthAdaptionSpeed;
-        defaultDepthOfTemporalBlend          = scion.depthOfFieldTemporalBlend;
-        defaultDepthSteps                    = scion.depthOfFieldTemporalSteps;
-        defaultDepthTemporalSamplingOn       = scion.depthOfFieldTemporalSupersampling;
+        defaultDepthAdaptationSpeed          = ScionInstance.depthAdaptionSpeed;
+        defaultDepthOfTemporalBlend          = ScionInstance.depthOfFieldTemporalBlend;
+        defaultDepthSteps                    = ScionInstance.depthOfFieldTemporalSteps;
+        defaultDepthTemporalSamplingOn       = ScionInstance.depthOfFieldTemporalSupersampling;
 
         //exposure
-        defaultExposureCompensation          = scion.exposureCompensation;
-        defaultFNumber                       = scion.fNumber;
-        defaultShutterSpeed                  = scion.shutterSpeed;
+        defaultExposureCompensation          = ScionInstance.exposureCompensation;
+        defaultFNumber                       = ScionInstance.fNumber;
+        defaultShutterSpeed                  = ScionInstance.shutterSpeed;
 
         //grain
-        defaultGrainOn                       = scion.grain;
-        defaultGrainIntensity                = scion.grainIntensity;
+        defaultGrainOn                       = ScionInstance.grain;
+        defaultGrainIntensity                = ScionInstance.grainIntensity;
 
         //ISO
-        defaultISO                           = scion.ISO;
+        defaultISO                           = ScionInstance.ISO;
 
         //lens flare
-        defaultLensFlareOn                   = scion.lensFlare;
-        defaultLensFlareBlurStrength         = scion.lensFlareBlurStrength;
-        defaultLensFlareDiffractionUVScale   = scion.lensFlareDiffractionUVScale;
-        defaultLensFlareDownsamples          = scion.lensFlareDownsamples;
-        defaultLensFlareGhostDispersal       = scion.lensFlareGhostDispersal;
-        defaultLensFlareGhostDistortion      = scion.lensFlareGhostDistortion;
-        defaultLensFlareGhostEdgeFade        = scion.lensFlareGhostEdgeFade;
-        defaultLensFlareGhostIntensity       = scion.lensFlareGhostIntensity;
-        defaultLensFlareHaloDistortion       = scion.lensFlareHaloDistortion;
-        defaultLensFlareHaloIntensity        = scion.lensFlareHaloIntensity;
-        defaultLensFlareHaloWidth            = scion.lensFlareHaloWidth;
+        defaultLensFlareOn                   = ScionInstance.lensFlare;
+        defaultLensFlareBlurStrength         = ScionInstance.lensFlareBlurStrength;
+        defaultLensFlareDiffractionUVScale   = ScionInstance.lensFlareDiffractionUVScale;
+        defaultLensFlareDownsamples          = ScionInstance.lensFlareDownsamples;
+        defaultLensFlareGhostDispersal       = ScionInstance.lensFlareGhostDispersal;
+        defaultLensFlareGhostDistortion      = ScionInstance.lensFlareGhostDistortion;
+        defaultLensFlareGhostEdgeFade        = ScionInstance.lensFlareGhostEdgeFade;
+        defaultLensFlareGhostIntensity       = ScionInstance.lensFlareGhostIntensity;
+        defaultLensFlareHaloDistortion       = ScionInstance.lensFlareHaloDistortion;
+        defaultLensFlareHaloIntensity        = ScionInstance.lensFlareHaloIntensity;
+        defaultLensFlareHaloWidth            = ScionInstance.lensFlareHaloWidth;
 
         //COC
-        defaultMaxCOCRadius                  = scion.maxCoCRadius;
+        defaultMaxCOCRadius                  = ScionInstance.maxCoCRadius;
 
         //vignette
-        defaultVignetteOn                    = scion.vignette;
-        defaultVignetteIntensity             = scion.vignetteIntensity;
-        defaultVignetteScale                 = scion.vignetteScale;
+        defaultVignetteOn                    = ScionInstance.vignette;
+        defaultVignetteIntensity             = ScionInstance.vignetteIntensity;
+        defaultVignetteScale                 = ScionInstance.vignetteScale;
     }
 }

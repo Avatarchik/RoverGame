@@ -19,6 +19,10 @@ public class Crafting : Menu
         if(!isActive)
         {
             SelectCraftingSlot(craftingSlots[0]);
+            foreach(CraftingSlot cs in craftingSlots)
+            {
+                cs.gameObject.SetActive(true);
+            }
             base.Open();
         }
     }
@@ -86,9 +90,8 @@ public class Crafting : Menu
         InventoryIngredient newII = new InventoryIngredient();
         newII.ingredient = craftingInfoPanel.SelectedRecipe.craftedItem;
         newII.amount = 1;
-
+        Debug.Log("adding inventory item! " + newII.ingredient.displayName + " : " + newII.amount);
         inventory.AddInventoryItem(newII.ingredient, newII.amount);
-        if (!inventory.IsActive) inventory.Open();
 
         canClose = true;
         SelectCraftingSlot(craftingSlots[0]);
