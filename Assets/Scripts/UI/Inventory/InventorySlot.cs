@@ -60,8 +60,8 @@ public class InventorySlot : MonoBehaviour
 
     private void Start()
     {
-        stackable = ii.ingredient.stackable;
-        equippable = ii.ingredient.equippable;
+        //stackable = ii.ingredient.stackable;
+        //equippable = ii.ingredient.equippable;
         
         equipbutton.gameObject.SetActive(equippable);
         //amountText.gameObject.SetActive(stackable);
