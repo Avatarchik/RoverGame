@@ -41,4 +41,10 @@ public class CharacterDriver : MonoBehaviour
         }
 
     }
+
+
+    private void Awake()
+    {
+        gameObject.GetComponent<Animator>().enabled = false;
+    }
 }

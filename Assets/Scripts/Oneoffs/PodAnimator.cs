@@ -47,20 +47,21 @@ public class PodAnimator : MonoBehaviour
        // float elapsedTime = 0f;
       //  float cachedBloomIntensity = scion.bloomIntensity;
 
-        Transform playerTransform = player.transform;
-        playerTransform.SetParent(transform);
 
         player.DisableMovement();
-        scion.GetComponent<CameraShake>().Shake(5f, 0.02f);
 
+        player.GetComponentInChildren<Rigidbody>().useGravity = false;
+        scion.GetComponent<CameraShake>().Shake(5f, 0.02f);
+        playerAnimator.enabled = true;
         animator.SetBool("Fall", true);
+        playerAnimator.SetBool("Fall", true);
         yield return new WaitForSeconds(fallAnimation.length);
 
         UIManager.FadeMenuInstance.Fade(fadeOutTime, Color.clear, Color.black);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
 
         /*playerTransform.SetParent(environment);
         playerTransform.position = landingSpot.position;
