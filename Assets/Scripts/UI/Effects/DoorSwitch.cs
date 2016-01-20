@@ -9,9 +9,12 @@ public class DoorSwitch : InteractibleObject
 
     public override void Interact()
     {
-        foreach(Door door in doorsIControl)
+        if(Interactible)
         {
-            door.IsOpen = !door.IsOpen;
+            foreach (Door door in doorsIControl)
+            {
+                door.IsOpen = !door.IsOpen;
+            }
         }
     }
 }

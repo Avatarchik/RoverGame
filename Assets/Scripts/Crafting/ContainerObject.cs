@@ -31,7 +31,7 @@ public class ContainerObject : InteractibleObject
     public override void Interact()
     {
         //base.Interact();
-        containerMenu.Open(ingredientsInInventory, this);
+        if(Interactible) containerMenu.Open(ingredientsInInventory, this);
     }
 
 

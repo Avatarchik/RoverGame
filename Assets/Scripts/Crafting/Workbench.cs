@@ -15,6 +15,6 @@ public class Workbench : InteractibleObject
 
     public override void Interact()
     {
-        craftingMenu.Open();
+        if (Interactible) craftingMenu.Open();
     } 
 }

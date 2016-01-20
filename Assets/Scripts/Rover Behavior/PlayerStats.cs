@@ -22,7 +22,7 @@ public class PlayerStats : MonoBehaviour
 
     public List<RoverComponent> roverComponents = new List<RoverComponent>();
 
-    private int movementEnabled = 0;
+    public int movementEnabled = 0;
     private CursorLockMode desiredCursorLocking;
 
     public void EnableMovement()

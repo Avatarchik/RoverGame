@@ -122,7 +122,7 @@ public class Inventory : Menu
         newSlot.transform.localScale = Vector3.one;
         newSlot.inventory = this;
 
-        if (!container.IsActive) newSlot.transferButton.gameObject.SetActive(false);
+        if (!container.IsActive && newSlot.transferButton != null) newSlot.transferButton.gameObject.SetActive(false);
 
         newSlot.titleText.text = ingredient.displayName;
         newSlot.descriptionText.text = ingredient.description;

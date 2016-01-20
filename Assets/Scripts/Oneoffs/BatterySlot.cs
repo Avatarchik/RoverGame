@@ -28,18 +28,21 @@ public class BatterySlot : InteractibleObject
 
     public override void Interact()
     {
-        if(PlayerInventory.GetIngredientAmount(desiredObject) > 0)
+        if(Interactible)
         {
-            PlayerInventory.RemoveInventoryItem(desiredObject, 1);
-            doorSwitch.interactible = true;
-            podAnimator.hazardLight.gameObject.SetActive(true);
-            hasItem = true;
-        }
-        else
-        {
-            StopAllCoroutines();
-            UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING, desiredObject.displayName));
-            StartCoroutine(CloseMessage());
+            if (PlayerInventory.GetIngredientAmount(desiredObject) > 0)
+            {
+                PlayerInventory.RemoveInventoryItem(desiredObject, 1);
+                doorSwitch.interactible = true;
+                podAnimator.hazardLight.gameObject.SetActive(true);
+                hasItem = true;
+            }
+            else
+            {
+                StopAllCoroutines();
+                UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING, desiredObject.displayName));
+                StartCoroutine(CloseMessage());
+            }
         }
     }
 

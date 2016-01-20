@@ -4,13 +4,16 @@ using System.Collections;
 public class InteractibleObject : MonoBehaviour
 {
     public float detectionDistance = 1000f;
+    public string objectName = "Container";
     public Renderer objectRenderer;
-    //public Material highlightMaterial;
-    //public Material baseMaterial;
+
     public GameObject silhouette;
     public bool interactible = true;
 
-    
+    public bool Interactible
+    {
+        get { return interactible && UIManager.PlayerStatsInstance.movementEnabled == 0; }
+    }
 
 
     public virtual void OnMouseDown()
@@ -30,24 +33,20 @@ public class InteractibleObject : MonoBehaviour
 
     public virtual void OnMouseEnter()
     {
-        if (objectRenderer != null && interactible) silhouette.SetActive(true);//objectRenderer.material = highlightMaterial;
+        if (objectRenderer != null && Interactible) silhouette.SetActive(true);
+        UIManager.MessageMenuInstance.Open(objectName);
     }
 
 
     public virtual void OnMouseExit()
     {
-        if (objectRenderer != null) silhouette.SetActive(false);//objectRenderer.material = baseMaterial;
+        if (objectRenderer != null) silhouette.SetActive(false);
+        UIManager.MessageMenuInstance.Close();
     }
 
 
     public virtual void Interact()
     {
         Debug.Log("interacting");
-    }
-
-
-    private void Awake()
-    {
-       // if (objectRenderer != null) // baseMaterial = objectRenderer.material;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,6 +7,7 @@ public class Crafting : Menu
 {
     public CraftingInfoPanel craftingInfoPanel;
     public Inventory inventory;
+    public Button closeButton;
 
     public List<Recipe> recipes = new List<Recipe>();
     public List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
@@ -103,7 +105,7 @@ public class Crafting : Menu
     private void Awake()
     {
         CraftingSlot.OnSelectCraftingSlot += SelectCraftingSlot;
-
+        closeButton.onClick.AddListener(Close);
         craftingInfoPanel.craftButton.onClick.AddListener(CraftItem);
     }
 }
