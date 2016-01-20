@@ -55,7 +55,7 @@ public class PodAnimator : MonoBehaviour
         playerAnimator.enabled = true;
         animator.SetBool("Fall", true);
         playerAnimator.SetBool("Fall", true);
-        yield return new WaitForSeconds(fallAnimation.length);
+        yield return new WaitForSeconds(5.3f);
 
         UIManager.FadeMenuInstance.Fade(fadeOutTime, Color.clear, Color.black);
 
