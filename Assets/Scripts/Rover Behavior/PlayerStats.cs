@@ -23,7 +23,7 @@ public class PlayerStats : MonoBehaviour
     public List<RoverComponent> roverComponents = new List<RoverComponent>();
 
     public int movementEnabled = 0;
-    private CursorLockMode desiredCursorLocking;
+    private CursorLockMode desiredCursorLocking = CursorLockMode.Locked;
 
     public void EnableMovement()
     {
@@ -79,12 +79,12 @@ public class PlayerStats : MonoBehaviour
             if (movementEnabled == 0)
             {
                 //Cursor.lockState = CursorLockMode.Locked;
-               // Cursor.visible = false;
+                //Cursor.visible = false;
                 return ModifyStat(MOVE_SPEED_ID) / (Weight * 0.01f);
             }
             else
             {
-               // Cursor.lockState = CursorLockMode.None;
+                //Cursor.lockState = CursorLockMode.None;
                 //Cursor.visible = true;
                 return 0f;
             }
@@ -150,7 +150,17 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        Cursor.lockState = desiredCursorLocking;
+        if(movementEnabled == 0)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        
     }
 
 

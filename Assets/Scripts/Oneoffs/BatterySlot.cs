@@ -11,7 +11,8 @@ public class BatterySlot : InteractibleObject
     private bool hasItem;
     private Inventory playerInventory;
 
-    private const string MESSAGE_STRING = "Its missing a {0}.";
+    private const string MESSAGE_STRING_1 = "Its missing a {0}.";
+    private const string MESSAGE_STRING_2 = "I already gave it a {0}.";
 
 
     public Inventory PlayerInventory
@@ -40,7 +41,15 @@ public class BatterySlot : InteractibleObject
             else
             {
                 StopAllCoroutines();
-                UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING, desiredObject.displayName));
+                if(HasItem)
+                {
+                    UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING_2, desiredObject.displayName));
+                }
+                else
+                {
+                    UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING_1, desiredObject.displayName));
+                }
+                
                 StartCoroutine(CloseMessage());
             }
         }

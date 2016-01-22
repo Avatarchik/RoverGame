@@ -74,7 +74,8 @@ public class Crafting : Menu
     {
         canClose = false;
         craftingInfoPanel.craftButton.interactable = false;
-
+        InventoryIngredient newII = new InventoryIngredient();
+        newII.ingredient = craftingInfoPanel.SelectedRecipe.craftedItem;
         float desiredTime = 5f;
         float elapsedTime = 0f;
 
@@ -86,11 +87,8 @@ public class Crafting : Menu
         }
 
         craftingInfoPanel.harvestImage.fillAmount = 0f;
-
-        InventoryIngredient newII = new InventoryIngredient();
-        newII.ingredient = craftingInfoPanel.SelectedRecipe.craftedItem;
+        
         newII.amount = 1;
-        Debug.Log("adding inventory item! " + newII.ingredient.displayName + " : " + newII.amount);
         inventory.AddInventoryItem(newII.ingredient, newII.amount);
 
         canClose = true;
