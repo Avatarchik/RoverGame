@@ -11,7 +11,8 @@ public class BatterySlot : InteractibleObject
     private bool hasItem;
     private Inventory playerInventory;
 
-    private const string MESSAGE_STRING = "Its missing a {0}.";
+    private const string MESSAGE_STRING_1 = "Its missing a {0}.";
+    private const string MESSAGE_STRING_2 = "I already gave it a {0}.";
 
 
     public Inventory PlayerInventory
@@ -28,18 +29,29 @@ public class BatterySlot : InteractibleObject
 
     public override void Interact()
     {
-        if(PlayerInventory.GetIngredientAmount(desiredObject) > 0)
+        if(Interactible)
         {
-            PlayerInventory.RemoveInventoryItem(desiredObject, 1);
-            doorSwitch.interactible = true;
-            podAnimator.hazardLight.gameObject.SetActive(true);
-            hasItem = true;
-        }
-        else
-        {
-            StopAllCoroutines();
-            UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING, desiredObject.displayName));
-            StartCoroutine(CloseMessage());
+            if (PlayerInventory.GetIngredientAmount(desiredObject) > 0)
+            {
+                PlayerInventory.RemoveInventoryItem(desiredObject, 1);
+                doorSwitch.interactible = true;
+                podAnimator.hazardLight.gameObject.SetActive(true);
+                hasItem = true;
+            }
+            else
+            {
+                StopAllCoroutines();
+                if(HasItem)
+                {
+                    UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING_2, desiredObject.displayName));
+                }
+                else
+                {
+                    UIManager.MessageMenuInstance.Open(string.Format(MESSAGE_STRING_1, desiredObject.displayName));
+                }
+                
+                StartCoroutine(CloseMessage());
+            }
         }
     }
 

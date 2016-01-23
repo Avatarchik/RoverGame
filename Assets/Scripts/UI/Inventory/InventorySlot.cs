@@ -44,6 +44,8 @@ public class InventorySlot : MonoBehaviour
         }
         else
         {
+            inventory.root.SetActive(false);
+            container.root.SetActive(false);
             container.transferModal.Open(ingredientAmount, false);
         }
     }
@@ -58,11 +60,11 @@ public class InventorySlot : MonoBehaviour
 
     private void Start()
     {
-        stackable = ii.ingredient.stackable;
-        equippable = ii.ingredient.equippable;
+        //stackable = ii.ingredient.stackable;
+        //equippable = ii.ingredient.equippable;
         
         equipbutton.gameObject.SetActive(equippable);
-        amountText.gameObject.SetActive(stackable);
+        //amountText.gameObject.SetActive(stackable);
         equipbutton.onClick.AddListener(EquipCamera);
         transferButton.onClick.AddListener(SetContainerData);
     }

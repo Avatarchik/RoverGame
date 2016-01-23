@@ -4,14 +4,20 @@ using System.Collections.Generic;
 
 public class DoorSwitch : InteractibleObject
 {
+    public Renderer button;
+    public Material unpoweredButton;
+    public Material poweredButton;
     public List<Door> doorsIControl = new List<Door>();
 
 
     public override void Interact()
     {
-        foreach(Door door in doorsIControl)
+        if(Interactible)
         {
-            door.IsOpen = !door.IsOpen;
+            foreach (Door door in doorsIControl)
+            {
+                door.IsOpen = !door.IsOpen;
+            }
         }
     }
 }

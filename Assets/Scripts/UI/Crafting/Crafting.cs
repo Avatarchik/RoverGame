@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,7 +7,9 @@ public class Crafting : Menu
 {
     public CraftingInfoPanel craftingInfoPanel;
     public Inventory inventory;
+    public Button closeButton;
 
+    public List<Recipe> recipes = new List<Recipe>();
     public List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
 
     private bool canClose = true;
@@ -16,6 +19,10 @@ public class Crafting : Menu
         if(!isActive)
         {
             SelectCraftingSlot(craftingSlots[0]);
+            foreach(CraftingSlot cs in craftingSlots)
+            {
+                cs.gameObject.SetActive(true);
+            }
             base.Open();
         }
     }
@@ -67,7 +74,8 @@ public class Crafting : Menu
     {
         canClose = false;
         craftingInfoPanel.craftButton.interactable = false;
-
+        InventoryIngredient newII = new InventoryIngredient();
+        newII.ingredient = craftingInfoPanel.SelectedRecipe.craftedItem;
         float desiredTime = 5f;
         float elapsedTime = 0f;
 
@@ -79,13 +87,9 @@ public class Crafting : Menu
         }
 
         craftingInfoPanel.harvestImage.fillAmount = 0f;
-
-        InventoryIngredient newII = new InventoryIngredient();
-        newII.ingredient = craftingInfoPanel.SelectedRecipe.craftedItem;
+        
         newII.amount = 1;
-
         inventory.AddInventoryItem(newII.ingredient, newII.amount);
-        if (!inventory.IsActive) inventory.Open();
 
         canClose = true;
         SelectCraftingSlot(craftingSlots[0]);
@@ -99,26 +103,10 @@ public class Crafting : Menu
     }
 
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            if(!IsActive)
-            {
-                Open();
-            }
-            else
-            {
-                Close();
-            }
-        }
-    }
-
-
     private void Awake()
     {
         CraftingSlot.OnSelectCraftingSlot += SelectCraftingSlot;
-
+        closeButton.onClick.AddListener(Close);
         craftingInfoPanel.craftButton.onClick.AddListener(CraftItem);
     }
 }
