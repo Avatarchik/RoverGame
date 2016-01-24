@@ -1,20 +1,27 @@
 fileFormatVersion: 2
-guid: c21ade05d7eb14f54a3d2793f3fa47dd
+guid: 840a3041bc9fc354eac41fab1221f32f
+timeCreated: 1453650006
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: pCylinder1
-    100002: //RootNode
-    100004: ramp
-    400000: pCylinder1
-    400002: //RootNode
-    400004: ramp
-    2300000: pCylinder1
-    2300002: ramp
-    3300000: pCylinder1
-    3300002: ramp
-    4300000: pCylinder1
-    4300002: ramp
+    100000: //RootNode
+    100002: pPlane20
+    100004: pPlane21
+    100006: pPlane22
+    400000: //RootNode
+    400002: pPlane20
+    400004: pPlane21
+    400006: pPlane22
+    2300000: pPlane20
+    2300002: pPlane21
+    2300004: pPlane22
+    3300000: pPlane20
+    3300002: pPlane21
+    3300004: pPlane22
+    4300000: pPlane21
+    4300002: pPlane20
+    4300004: pPlane22
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -54,11 +61,11 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 1
-    tangentImportMode: 4
+    normalImportMode: 0
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -74,7 +81,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
