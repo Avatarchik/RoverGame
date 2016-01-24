@@ -16,7 +16,7 @@ public class TimeOfDay : MonoBehaviour
         float elapsedTime = 0f;
         while(elapsedTime < 1f)
         {
-            gameObject.transform.Rotate(Vector3.right, (minutesPerSecond / dayLength)*360);
+           // gameObject.transform.Rotate(Vector3.right, (minutesPerSecond / dayLength)*360);
 
             if (timeInSeconds < dayLength)
             {
