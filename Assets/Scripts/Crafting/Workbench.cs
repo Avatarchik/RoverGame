@@ -15,6 +15,11 @@ public class Workbench : InteractibleObject
 
     public override void Interact()
     {
-        if (Interactible) craftingMenu.Open();
+        if (Interactible)
+        {
+            silhouette.SetActive(false);
+            UIManager.MessageMenuInstance.Close();
+            craftingMenu.Open();
+        }
     } 
 }
