@@ -47,6 +47,7 @@ public class PodAnimator : MonoBehaviour
         float elapsedTime = 0f;
         float cachedBloomIntensity = scion.bloomIntensity;
         Transform playerTransform = player.transform;
+        FadeMenu fadeMenu = UIManager.GetMenu<FadeMenu>();
 
         player.DisableMovement();
 
@@ -57,7 +58,7 @@ public class PodAnimator : MonoBehaviour
         playerAnimator.SetBool("Fall", true);
         yield return new WaitForSeconds(5.3f);
 
-        UIManager.FadeMenuInstance.Fade(fadeOutTime, Color.clear, Color.black);
+        fadeMenu.Fade(fadeOutTime, Color.clear, Color.black);
 
         yield return new WaitForSeconds(5f);
 
@@ -66,7 +67,7 @@ public class PodAnimator : MonoBehaviour
         playerTransform.rotation = landingSpot.rotation;
         yield return new WaitForSeconds(4f);
 
-        UIManager.FadeMenuInstance.Fade(fadeInTime, Color.black, Color.clear);
+        fadeMenu.Fade(fadeInTime, Color.black, Color.clear);
         playerTransform.position = landingSpot.position;
         playerTransform.rotation = landingSpot.rotation;
 
@@ -88,7 +89,7 @@ public class PodAnimator : MonoBehaviour
         }
         playerTransform.position = reorientingSpot.position;
         playerTransform.rotation = reorientingSpot.rotation;
-        UIManager.FadeMenuInstance.Close();
+        fadeMenu.Close();
         player.EnableMovement();
 
         this.gameObject.SetActive(false);

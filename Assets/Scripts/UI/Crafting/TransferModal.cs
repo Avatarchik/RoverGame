@@ -26,7 +26,7 @@ public class TransferModal : Menu
     {
         foreach(ContainerSlot cs in container.containerSlots)
         {
-            cs.transferButton.interactable = false;
+            //cs.transferButton.interactable = false;
         }
 
         toInventory = transferToInventory;
@@ -41,7 +41,7 @@ public class TransferModal : Menu
     {
         foreach (ContainerSlot cs in container.containerSlots)
         {
-            cs.transferButton.interactable = true;
+            //cs.transferButton.interactable = true;
         }
         container.root.SetActive(true);
         container.playerInventory.root.SetActive(true);

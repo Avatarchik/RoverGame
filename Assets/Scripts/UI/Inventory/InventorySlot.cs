@@ -7,14 +7,7 @@ public class InventorySlot : MonoBehaviour
     public InventoryIngredient ii;
 
     public Image image;
-    public Text titleText;
-    public Text descriptionText;
     public Text amountText;
-
-    public Button equipbutton;
-    public Button transferButton;
-
-    public Inventory inventory;
 
     private bool equippable = false;
     private bool stackable = true;
@@ -34,6 +27,7 @@ public class InventorySlot : MonoBehaviour
 
     public void SetContainerData()
     {
+        Inventory inventory = UIManager.GetMenu<Inventory>();
         if (container == null) container = GameObject.FindObjectOfType<Container>() as Container;
         container.selectedIngredient = ii.ingredient;
         int ingredientAmount = inventory.GetIngredientAmount(ii.ingredient);
@@ -53,19 +47,14 @@ public class InventorySlot : MonoBehaviour
 
     private void EquipCamera()
     {
+        Inventory inventory = UIManager.GetMenu<Inventory>();
         inventory.RemoveInventoryItem(ii.ingredient, ii.amount);
         CameraEquip.Equip(ii.ingredient.id);
     }
 
 
-    private void Start()
+    private void Awake()
     {
-        //stackable = ii.ingredient.stackable;
-        //equippable = ii.ingredient.equippable;
-        
-        equipbutton.gameObject.SetActive(equippable);
-        //amountText.gameObject.SetActive(stackable);
-        equipbutton.onClick.AddListener(EquipCamera);
-        transferButton.onClick.AddListener(SetContainerData);
+
     }
 }

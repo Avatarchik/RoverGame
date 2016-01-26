@@ -24,11 +24,4 @@ public class ContainerSlot : InventorySlot
             container.transferModal.Open(ingredientAmount, true);
         }
     }
-
-
-    public void Start()
-    {
-        equipbutton.gameObject.SetActive(false);
-        transferButton.onClick.AddListener(SetMyContainerData);
-    }
 }

@@ -118,14 +118,10 @@ public class Container : Menu
         ContainerSlot newSlot = Instantiate(containerSlotPrefab) as ContainerSlot;
         newSlot.transform.SetParent(InventorySlotContainer);
         newSlot.transform.localScale = Vector3.one;
-        newSlot.inventory = this.playerInventory;
         newSlot.container = this;
 
-        newSlot.titleText.text = ingredient.displayName;
-        newSlot.descriptionText.text = ingredient.description;
         newSlot.image.sprite = ingredient.image;
         newSlot.Amount = count;
-        newSlot.equipbutton.gameObject.SetActive(false);
         newSlot.ii.ingredient = ingredient;
         newSlot.ii.amount = count;
 

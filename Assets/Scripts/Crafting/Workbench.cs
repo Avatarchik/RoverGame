@@ -18,7 +18,7 @@ public class Workbench : InteractibleObject
         if (Interactible)
         {
             silhouette.SetActive(false);
-            UIManager.MessageMenuInstance.Close();
+            UIManager.Close<MessageMenu>();
             craftingMenu.Open();
         }
     } 
