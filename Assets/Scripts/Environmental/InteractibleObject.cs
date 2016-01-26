@@ -12,7 +12,8 @@ public class InteractibleObject : MonoBehaviour
 
     public bool Interactible
     {
-        get { return interactible && UIManager.PlayerStatsInstance.movementEnabled == 0; }
+        //TODO we need a clearer reference to the players stats!
+        get { return interactible && GameManager.Get<PlayerStats>().movementEnabled == 0; }
     }
 
 
@@ -36,7 +37,8 @@ public class InteractibleObject : MonoBehaviour
         if (objectRenderer != null && Interactible)
         {
             silhouette.SetActive(true);
-            UIManager.MessageMenuInstance.Open(objectName);
+            MessageMenu messageMenu = UIManager.Open<MessageMenu>();
+            messageMenu.messageText.text = objectName;
         }
     }
 
@@ -46,7 +48,7 @@ public class InteractibleObject : MonoBehaviour
         if (objectRenderer != null)
         {
             silhouette.SetActive(false);
-            UIManager.MessageMenuInstance.Close();
+            UIManager.Close<MessageMenu>();
         }
     }
 

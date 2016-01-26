@@ -52,8 +52,8 @@ public class Inventory : Menu
         {
             foreach (InventorySlot invis in inventorySlots)
             {
-                invis.equipbutton.gameObject.SetActive(false);
-                invis.transferButton.interactable = true;
+                //invis.equipbutton.gameObject.SetActive(false);
+                //invis.transferButton.interactable = true;
             }
             base.Open();
         }
@@ -61,7 +61,7 @@ public class Inventory : Menu
         {
             foreach (InventorySlot invis in inventorySlots)
             {
-                invis.transferButton.interactable = false;
+                //invis.transferButton.interactable = false;
             }
             base.Open();
         }
@@ -122,15 +122,11 @@ public class Inventory : Menu
         InventorySlot newSlot = Instantiate(inventorySlotPrefab) as InventorySlot;
         newSlot.transform.SetParent(InventorySlotContainer);
         newSlot.transform.localScale = Vector3.one;
-        newSlot.inventory = this;
 
        // if (!container.IsActive && newSlot.transferButton != null) newSlot.transferButton.gameObject.SetActive(false);
 
-        newSlot.titleText.text = ingredient.displayName;
-        newSlot.descriptionText.text = ingredient.description;
         newSlot.image.sprite = ingredient.image;
         newSlot.Amount = count;
-        newSlot.equipbutton.gameObject.SetActive(false);
         newSlot.ii.ingredient = ingredient;
         newSlot.Amount = count;
 
