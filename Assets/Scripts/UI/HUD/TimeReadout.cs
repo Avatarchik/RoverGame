@@ -17,7 +17,7 @@ public class TimeReadout : MonoBehaviour
 
     private void Update()
     {
-        if(timeOfDay.dayCount != dayCount)
+        if(timeOfDay != null && timeOfDay.dayCount != dayCount)
         {
             dayCount = timeOfDay.dayCount;
 
@@ -45,40 +45,43 @@ public class TimeReadout : MonoBehaviour
             dayString.text = defaultDayString.Substring(0, defaultDayString.Length - cleaveCount) + dayCount;
         }
 
-        int total = Mathf.RoundToInt(timeOfDay.timeInSeconds);
-        int hours = Mathf.FloorToInt(total / 3600);
-        string hourString = "0";
-        if(hours >= 10)
+        if(timeOfDay != null)
         {
-            hourString = hours + "";
-        }
-        else
-        {
-            hourString = hourString + hours;
-        }
-        total -= hours * 3600;
+            int total = Mathf.RoundToInt(timeOfDay.timeInSeconds);
+            int hours = Mathf.FloorToInt(total / 3600);
+            string hourString = "0";
+            if (hours >= 10)
+            {
+                hourString = hours + "";
+            }
+            else
+            {
+                hourString = hourString + hours;
+            }
+            total -= hours * 3600;
 
-        int minutes = Mathf.FloorToInt(total / 60);
-        string minuteString = "0";
-        if (minutes >= 10)
-        {
-            minuteString = minutes + "";
-        }
-        else
-        {
-            minuteString = minuteString + minutes;
-        }
-        total -= minutes * 60;
-        string secondString = "0";
-        if (total >= 10)
-        {
-            secondString = total + "";
-        }
-        else
-        {
-            secondString = secondString + total;
-        }
+            int minutes = Mathf.FloorToInt(total / 60);
+            string minuteString = "0";
+            if (minutes >= 10)
+            {
+                minuteString = minutes + "";
+            }
+            else
+            {
+                minuteString = minuteString + minutes;
+            }
+            total -= minutes * 60;
+            string secondString = "0";
+            if (total >= 10)
+            {
+                secondString = total + "";
+            }
+            else
+            {
+                secondString = secondString + total;
+            }
 
-        timeString.text = string.Format(timeStringFormat, hourString, minuteString, secondString);
+            timeString.text = string.Format(timeStringFormat, hourString, minuteString, secondString);
+        }
     }
 }

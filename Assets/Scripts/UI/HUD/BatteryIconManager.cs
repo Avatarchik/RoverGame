@@ -22,7 +22,7 @@ public class BatteryIconManager : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if(timeOfDay.timeInSeconds > 0 && timeOfDay.timeInSeconds < timeOfDay.dayLength * 0.5f)
+        if(timeOfDay != null && timeOfDay.timeInSeconds > 0 && timeOfDay.timeInSeconds < timeOfDay.dayLength * 0.5f)
         {
             //its light outside, charge the battery!
             if(fillAmount < 1)
@@ -39,7 +39,7 @@ public class BatteryIconManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("player is dead");
+                //Debug.Log("player is dead");
             }
         }
 

@@ -42,11 +42,11 @@ public class PodAnimator : MonoBehaviour
     private IEnumerator FallCoroutine()
     {
         float fadeOutTime = 0f;
-       // float fadeInTime = 4f;
-        //float getupTime = 3f;
-       // float elapsedTime = 0f;
-      //  float cachedBloomIntensity = scion.bloomIntensity;
-
+        float fadeInTime = 4f;
+        float getupTime = 3f;
+        float elapsedTime = 0f;
+        float cachedBloomIntensity = scion.bloomIntensity;
+        Transform playerTransform = player.transform;
 
         player.DisableMovement();
 
@@ -61,9 +61,7 @@ public class PodAnimator : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-        SceneManager.LoadScene(0);
-
-        /*playerTransform.SetParent(environment);
+        playerTransform.SetParent(environment);
         playerTransform.position = landingSpot.position;
         playerTransform.rotation = landingSpot.rotation;
         yield return new WaitForSeconds(4f);
@@ -93,6 +91,6 @@ public class PodAnimator : MonoBehaviour
         UIManager.FadeMenuInstance.Close();
         player.EnableMovement();
 
-        this.gameObject.SetActive(false);*/
+        this.gameObject.SetActive(false);
     }
 }
