@@ -25,7 +25,7 @@ public class ScannableTier : MonoBehaviour
     private int variance = 1; 
     private float rareDropChance = 0.15f;
 
-    private Inventory playerInventory;
+    private Player player;
 
     public int Variance
     {
@@ -99,7 +99,7 @@ public class ScannableTier : MonoBehaviour
                 break;
         }
 
-        desiredTime = Mathf.Clamp(desiredTime - playerInventory.playerStats.ScanningSpeed, 0f, 10f);
+        desiredTime = Mathf.Clamp(desiredTime - player.Stats.ScanningSpeed, 0f, 10f);
         float elapsedTime = 0f;
 
         while(elapsedTime < desiredTime)
@@ -122,6 +122,7 @@ public class ScannableTier : MonoBehaviour
     public IEnumerator HarvestCoroutine()
     {
         harvestButton.enabled = false;
+        Inventory inventory = UIManager.GetMenu<Inventory>();
         float desiredTime = 1f;
 
         switch (myTier)
@@ -142,7 +143,7 @@ public class ScannableTier : MonoBehaviour
                 break;
         }
 
-        desiredTime = Mathf.Clamp(desiredTime - playerInventory.playerStats.HarvestSpeed, 0f, 10f);
+        desiredTime = Mathf.Clamp(desiredTime - player.Stats.HarvestSpeed, 0f, 10f);
         float elapsedTime = 0f;
 
         while (elapsedTime < desiredTime)
@@ -157,15 +158,15 @@ public class ScannableTier : MonoBehaviour
 
         int val = ingredient.amount;
         ingredient.amount = Mathf.RoundToInt(Random.Range(val - variance, val + variance));
-        playerInventory.AddInventoryItem(ingredient.ingredient, ingredient.amount);
+        inventory.AddInventoryItem(ingredient.ingredient, ingredient.amount);
         ingredient.amount = val;
 
         if(Random.Range(0f, 1f) < RareDropChance)
         {
-            playerInventory.AddInventoryItem(rareIngredient.ingredient, rareIngredient.amount);
+            inventory.AddInventoryItem(rareIngredient.ingredient, rareIngredient.amount);
         }
 
-        if(!playerInventory.IsActive) playerInventory.Open();
+        if(!inventory.IsActive) inventory.Open();
 
         harvestButton.enabled = true;
     }
@@ -175,7 +176,5 @@ public class ScannableTier : MonoBehaviour
     {
         harvestButton.onClick.AddListener(Harvest);
         scanButton.onClick.AddListener(Scan);
-
-        if (playerInventory == null) playerInventory = GameObject.FindObjectOfType<Inventory>() as Inventory;
     }
 }
