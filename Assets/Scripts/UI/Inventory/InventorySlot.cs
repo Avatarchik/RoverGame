@@ -8,6 +8,7 @@ public class InventorySlot : MonoBehaviour
 
     public Image image;
     public Text amountText;
+    public Button moreInfo;
 
     private bool equippable = false;
     private bool stackable = true;
@@ -40,7 +41,8 @@ public class InventorySlot : MonoBehaviour
         {
             inventory.root.SetActive(false);
             container.root.SetActive(false);
-            container.transferModal.Open(ingredientAmount, false);
+            TransferModal transferModal = UIManager.GetMenu<TransferModal>();
+            transferModal.Open(ingredientAmount, false);
         }
     }
 
@@ -53,8 +55,16 @@ public class InventorySlot : MonoBehaviour
     }
 
 
+    private void OpenToolTip()
+    {
+        ToolTip toolTip = UIManager.Open<ToolTip>();
+        if (toolTip == null) toolTip = GameObject.FindObjectOfType<ToolTip>();
+        toolTip.Open(ii.ingredient);
+    }
+
+
     private void Awake()
     {
-
+        moreInfo.onClick.AddListener(OpenToolTip);
     }
 }

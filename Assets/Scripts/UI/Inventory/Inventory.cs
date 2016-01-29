@@ -7,21 +7,14 @@ public class Inventory : Menu
 {
     public InventorySlot inventorySlotPrefab;
     public Transform InventorySlotContainer;
-    public Text weightValue;
+    //public Text weightValue;
     public Button closeButton;
-
-    public PlayerStats playerStats;
-
-    public Container container;
 
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
-    public PlayerStats PlayerStatsInstance
-    {
-        get { return (playerStats != null) ? playerStats : playerStats = GameObject.FindObjectOfType<PlayerStats>() as PlayerStats; }
-    }
+    
 
     public float Weight
     {
@@ -189,7 +182,7 @@ public class Inventory : Menu
             }
         }
 
-        weightValue.text = PlayerStatsInstance.Weight + " kg";
+       // weightValue.text = PlayerStatsInstance.Weight + " kg";
     }
 
 

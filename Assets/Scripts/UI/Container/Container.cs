@@ -5,13 +5,10 @@ using System.Collections.Generic;
 
 public class Container : Menu
 {
-    public Inventory playerInventory;
     public ContainerSlot containerSlotPrefab;
     public Ingredient selectedIngredient;
     public Transform InventorySlotContainer;
     public Button closeButton;
-
-    public TransferModal transferModal;
 
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
     public List<ContainerSlot> containerSlots = new List<ContainerSlot>();
@@ -27,7 +24,6 @@ public class Container : Menu
 
     public void Open(List<Ingredient> ingredients, ContainerObject container)
     {
-        playerInventory.Open(true);
         currentContainer = container;
         ingredientsInInventory = ingredients;
         InitializeInventorySlots();
@@ -118,7 +114,6 @@ public class Container : Menu
         ContainerSlot newSlot = Instantiate(containerSlotPrefab) as ContainerSlot;
         newSlot.transform.SetParent(InventorySlotContainer);
         newSlot.transform.localScale = Vector3.one;
-        newSlot.container = this;
 
         newSlot.image.sprite = ingredient.image;
         newSlot.Amount = count;
@@ -141,7 +136,6 @@ public class Container : Menu
     private void Awake()
     {
         closeButton.onClick.AddListener(Close);
-        playerInventory = GameObject.FindObjectOfType<Inventory>() as Inventory;
         InitializeInventorySlots();
     }
 }

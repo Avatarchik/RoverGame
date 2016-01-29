@@ -4,11 +4,8 @@ using System.Collections.Generic;
 
 public class HarvestableElement : InteractibleObject
 {
-    public Inventory playerInventory;
     public List<InventoryIngredient> inventoryIngredients = new List<InventoryIngredient>();
     
-    private bool interactible = true;
-
 
     public override void OnMouseDown()
     {
@@ -34,16 +31,10 @@ public class HarvestableElement : InteractibleObject
             interactible = false;
             foreach (InventoryIngredient ii in inventoryIngredients)
             {
-                playerInventory.AddInventoryItem(ii.ingredient, ii.amount);
+                UIManager.GetMenu<Inventory>().AddInventoryItem(ii.ingredient, ii.amount);
             }
         }
 
         Destroy(gameObject);
-    }
-
-
-    private void Awake()
-    {
-        if (playerInventory == null) playerInventory = GameObject.FindObjectOfType<Inventory>() as Inventory;
     }
 }
