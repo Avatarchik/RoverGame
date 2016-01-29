@@ -47,7 +47,7 @@ public class PlayerStats : MonoBehaviour
         foreach (RoverComponent rc in roverComponents)
         {
             //check if item is null or 'broken'
-            if (rc.equippedItem != null)
+            if (rc != null && rc.equippedItem != null)
             {
                 //does it look like we have an item equipped thats supposed to modify stats?
                 if (rc.equippedItem.statModifiers.Count > 0)

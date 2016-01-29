@@ -41,7 +41,8 @@ public class InventorySlot : MonoBehaviour
         {
             inventory.root.SetActive(false);
             container.root.SetActive(false);
-            container.transferModal.Open(ingredientAmount, false);
+            TransferModal transferModal = UIManager.GetMenu<TransferModal>();
+            transferModal.Open(ingredientAmount, false);
         }
     }
 

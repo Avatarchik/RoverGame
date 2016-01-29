@@ -23,7 +23,7 @@ public class ToolTip : Menu
     }
 
 
-    public void Open(Ingredient ingredient)
+    public virtual void Open(Ingredient ingredient)
     {
         titleText.text = ingredient.displayName;
         descriptionText.text = ingredient.description;

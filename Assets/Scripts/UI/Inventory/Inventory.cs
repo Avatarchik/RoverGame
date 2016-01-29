@@ -10,8 +10,6 @@ public class Inventory : Menu
     //public Text weightValue;
     public Button closeButton;
 
-    public Container container;
-
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();

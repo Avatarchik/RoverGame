@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
 
     public static bool Exists
     {
-        get { return instance != null; }
+        get { return Instance != null; }
     }
 
 
@@ -71,10 +71,12 @@ public class UIManager : MonoBehaviour
     public static T GetMenu<T>() where T : Menu
     {
         if (!Exists) return null;
-
+        Debug.Log("we exist!");
         T menu = Instance.menus.FirstOrDefault(m => m is T) as T;
 
         if (!menu) menu = FindObjectOfType<T>();
+
+        if (!menu) menu = GameObject.FindObjectOfType<T>();
 
         if (!menu) menu = Create<T>(Instance.prefabs.FirstOrDefault(m => m is T) as T);
 
