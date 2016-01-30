@@ -33,7 +33,7 @@ public class ToolTip : Menu
     }
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         closeButton.onClick.AddListener(Close);
     }
