@@ -71,7 +71,7 @@ public class UIManager : MonoBehaviour
     public static T GetMenu<T>() where T : Menu
     {
         if (!Exists) return null;
-        Debug.Log("we exist!");
+
         T menu = Instance.menus.FirstOrDefault(m => m is T) as T;
 
         if (!menu) menu = FindObjectOfType<T>();

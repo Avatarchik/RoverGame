@@ -3,9 +3,6 @@ using System.Collections;
 
 public class Door : MonoBehaviour
 {
-    public Animator doorAnimator;
-
-
     private bool isOpen = false;
 
     public bool IsOpen

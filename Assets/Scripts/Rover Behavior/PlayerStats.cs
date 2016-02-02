@@ -7,7 +7,6 @@ public class PlayerStats : MonoBehaviour
     public enum Effect { EquipCamera, EquipWheels }
 
     public StatCollection statCollection;
-    public Inventory playerInventory;
 
     public const int MOVE_SPEED_ID = 0;
     public const int TURN_SPEED_ID = 1;
@@ -19,11 +18,20 @@ public class PlayerStats : MonoBehaviour
     public const int WEIGHT_ID = 7;
 
     public float OverallHealth;
+    public float minSpeed;
 
     public List<RoverComponent> roverComponents = new List<RoverComponent>();
 
     public int movementEnabled = 0;
     private CursorLockMode desiredCursorLocking = CursorLockMode.Locked;
+
+    private Inventory playerInventory = null;
+
+    private Inventory PlayerInventory
+    {
+        get { return (playerInventory != null) ? playerInventory : playerInventory = UIManager.GetMenu<Inventory>();  }
+    }
+
 
     public void EnableMovement()
     {
@@ -80,7 +88,9 @@ public class PlayerStats : MonoBehaviour
             {
                 //Cursor.lockState = CursorLockMode.Locked;
                 //Cursor.visible = false;
-                return ModifyStat(MOVE_SPEED_ID) / (Weight * 0.01f);
+                float speed = ModifyStat(MOVE_SPEED_ID); /// (Weight * 0.01f)) + minSpeed;
+                Debug.Log("speed : " + speed);
+                return speed;
             }
             else
             {
@@ -138,7 +148,7 @@ public class PlayerStats : MonoBehaviour
 
     public float Weight
     {
-        get { return ModifyStat(WEIGHT_ID) + playerInventory.Weight; }
+        get { return ModifyStat(WEIGHT_ID) + PlayerInventory.Weight; }
     }
 
 

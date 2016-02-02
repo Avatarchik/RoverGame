@@ -7,6 +7,6 @@ public class ForceRespawn : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player") spawner.Respawn();
+        //if(other.gameObject.tag == "Player") spawner.Respawn();
     }
 }

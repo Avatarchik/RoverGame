@@ -5,20 +5,48 @@ using System.Collections.Generic;
 
 public class Container : Menu
 {
+    public GameObject background;
     public ContainerSlot containerSlotPrefab;
-    public Ingredient selectedIngredient;
     public Transform InventorySlotContainer;
     public Button closeButton;
+    public Button toggleButton;
 
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
     public List<ContainerSlot> containerSlots = new List<ContainerSlot>();
 
     private ContainerObject currentContainer;
 
+    private const string GIVE_TEXT = "Give";
+    private const string TAKE_TEXT = "Take";
+
 
     public override void Open()
     {
         base.Open();
+    }
+
+
+    public void Toggle()
+    {
+        Inventory playerInventory = UIManager.GetMenu<Inventory>();
+
+        if(background.activeSelf)
+        {
+            //the container is up. we need to switch to the inventory.
+            background.SetActive(false);
+            root.GetComponent<Image>().enabled = false;
+            toggleButton.GetComponentInChildren<Text>().text = TAKE_TEXT;
+            playerInventory.Open(true);
+            
+        }
+        else
+        {
+            //the inventory is up. we need to switch to the container
+            background.SetActive(true);
+            root.GetComponent<Image>().enabled = true;
+            toggleButton.GetComponentInChildren<Text>().text = GIVE_TEXT;
+            playerInventory.Close();
+        }
     }
 
 
@@ -137,5 +165,6 @@ public class Container : Menu
     {
         closeButton.onClick.AddListener(Close);
         InitializeInventorySlots();
+        toggleButton.onClick.AddListener(Toggle);
     }
 }
