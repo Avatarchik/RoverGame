@@ -154,6 +154,13 @@ ModelImporter:
     100292: pTorus3
     100294: SpaceBags
     100296: Vent1
+    100298: Bottom
+    100300: Lid
+    100302: OpenPlasticContainer
+    100304: transform27
+    100306: Container
+    100308: Container1
+    100310: pipe04
     400000: Airduck
     400002: Airduck1
     400004: Airduck_ncl1_1
@@ -303,6 +310,13 @@ ModelImporter:
     400292: pTorus3
     400294: SpaceBags
     400296: Vent1
+    400298: Bottom
+    400300: Lid
+    400302: OpenPlasticContainer
+    400304: transform27
+    400306: Container
+    400308: Container1
+    400310: pipe04
     2300000: Airduck_ncl1_1
     2300002: AirVent
     2300004: AirVent1
@@ -420,6 +434,11 @@ ModelImporter:
     2300228: pSphere7
     2300230: pTorus3
     2300232: Vent1
+    2300234: Bottom
+    2300236: Lid
+    2300238: Airduck
+    2300240: Container
+    2300242: Container1
     3300000: Airduck_ncl1_1
     3300002: AirVent
     3300004: AirVent1
@@ -537,6 +556,11 @@ ModelImporter:
     3300228: pSphere7
     3300230: pTorus3
     3300232: Vent1
+    3300234: Bottom
+    3300236: Lid
+    3300238: Airduck
+    3300240: Container
+    3300242: Container1
     4300000: pCube56
     4300002: pCube57
     4300004: PodEx
@@ -654,6 +678,11 @@ ModelImporter:
     4300228: pCube68
     4300230: pCylinder36
     4300232: pasted__pCube73
+    4300234: Lid
+    4300236: Bottom
+    4300238: Airduck
+    4300240: Container
+    4300242: Container1
     7400000: Take 001
     9500000: //RootNode
   materials:
