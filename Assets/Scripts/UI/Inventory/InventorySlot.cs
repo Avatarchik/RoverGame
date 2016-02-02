@@ -7,14 +7,8 @@ public class InventorySlot : MonoBehaviour
     public InventoryIngredient ii;
 
     public Image image;
-    public Text titleText;
-    public Text descriptionText;
     public Text amountText;
-
-    public Button equipbutton;
-    public Button transferButton;
-
-    public Inventory inventory;
+    public Button moreInfo;
 
     private bool equippable = false;
     private bool stackable = true;
@@ -34,6 +28,7 @@ public class InventorySlot : MonoBehaviour
 
     public void SetContainerData()
     {
+        Inventory inventory = UIManager.GetMenu<Inventory>();
         if (container == null) container = GameObject.FindObjectOfType<Container>() as Container;
         container.selectedIngredient = ii.ingredient;
         int ingredientAmount = inventory.GetIngredientAmount(ii.ingredient);
@@ -46,26 +41,30 @@ public class InventorySlot : MonoBehaviour
         {
             inventory.root.SetActive(false);
             container.root.SetActive(false);
-            container.transferModal.Open(ingredientAmount, false);
+            TransferModal transferModal = UIManager.GetMenu<TransferModal>();
+            transferModal.Open(ingredientAmount, false);
         }
     }
 
 
     private void EquipCamera()
     {
+        Inventory inventory = UIManager.GetMenu<Inventory>();
         inventory.RemoveInventoryItem(ii.ingredient, ii.amount);
         CameraEquip.Equip(ii.ingredient.id);
     }
 
 
-    private void Start()
+    private void OpenToolTip()
     {
-        //stackable = ii.ingredient.stackable;
-        //equippable = ii.ingredient.equippable;
-        
-        equipbutton.gameObject.SetActive(equippable);
-        //amountText.gameObject.SetActive(stackable);
-        equipbutton.onClick.AddListener(EquipCamera);
-        transferButton.onClick.AddListener(SetContainerData);
+        ToolTip toolTip = UIManager.Open<ToolTip>();
+        if (toolTip == null) toolTip = GameObject.FindObjectOfType<ToolTip>();
+        toolTip.Open(ii.ingredient);
+    }
+
+
+    private void Awake()
+    {
+        moreInfo.onClick.AddListener(OpenToolTip);
     }
 }

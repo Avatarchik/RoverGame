@@ -7,21 +7,14 @@ public class Inventory : Menu
 {
     public InventorySlot inventorySlotPrefab;
     public Transform InventorySlotContainer;
-    public Text weightValue;
+    //public Text weightValue;
     public Button closeButton;
-
-    public PlayerStats playerStats;
-
-    public Container container;
 
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
-    public PlayerStats PlayerStatsInstance
-    {
-        get { return (playerStats != null) ? playerStats : playerStats = GameObject.FindObjectOfType<PlayerStats>() as PlayerStats; }
-    }
+    
 
     public float Weight
     {
@@ -52,8 +45,8 @@ public class Inventory : Menu
         {
             foreach (InventorySlot invis in inventorySlots)
             {
-                invis.equipbutton.gameObject.SetActive(false);
-                invis.transferButton.interactable = true;
+                //invis.equipbutton.gameObject.SetActive(false);
+                //invis.transferButton.interactable = true;
             }
             base.Open();
         }
@@ -61,7 +54,7 @@ public class Inventory : Menu
         {
             foreach (InventorySlot invis in inventorySlots)
             {
-                invis.transferButton.interactable = false;
+                //invis.transferButton.interactable = false;
             }
             base.Open();
         }
@@ -122,15 +115,11 @@ public class Inventory : Menu
         InventorySlot newSlot = Instantiate(inventorySlotPrefab) as InventorySlot;
         newSlot.transform.SetParent(InventorySlotContainer);
         newSlot.transform.localScale = Vector3.one;
-        newSlot.inventory = this;
 
        // if (!container.IsActive && newSlot.transferButton != null) newSlot.transferButton.gameObject.SetActive(false);
 
-        newSlot.titleText.text = ingredient.displayName;
-        newSlot.descriptionText.text = ingredient.description;
         newSlot.image.sprite = ingredient.image;
         newSlot.Amount = count;
-        newSlot.equipbutton.gameObject.SetActive(false);
         newSlot.ii.ingredient = ingredient;
         newSlot.Amount = count;
 
@@ -193,7 +182,7 @@ public class Inventory : Menu
             }
         }
 
-        weightValue.text = PlayerStatsInstance.Weight + " kg";
+       // weightValue.text = PlayerStatsInstance.Weight + " kg";
     }
 
 

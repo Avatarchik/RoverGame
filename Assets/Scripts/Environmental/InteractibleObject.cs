@@ -10,9 +10,22 @@ public class InteractibleObject : MonoBehaviour
     public GameObject silhouette;
     public bool interactible = true;
 
+    private PlayerStats playerStats;
+
+    private PlayerStats PlayerStats
+    {
+        get
+        {
+            if(playerStats == null) playerStats = GameManager.Get<PlayerStats>();
+            if (playerStats == null) playerStats = GameObject.FindObjectOfType<PlayerStats>();
+            return playerStats;
+        }
+    }
+
     public bool Interactible
     {
-        get { return interactible && UIManager.PlayerStatsInstance.movementEnabled == 0; }
+        //TODO we need a clearer reference to the players stats!
+        get { return interactible && PlayerStats.movementEnabled == 0; }
     }
 
 
@@ -36,7 +49,9 @@ public class InteractibleObject : MonoBehaviour
         if (objectRenderer != null && Interactible)
         {
             silhouette.SetActive(true);
-            UIManager.MessageMenuInstance.Open(objectName);
+            MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
+            if (!messageMenu) messageMenu = GameObject.FindObjectOfType<MessageMenu>();
+            messageMenu.Open(objectName);
         }
     }
 
@@ -46,7 +61,7 @@ public class InteractibleObject : MonoBehaviour
         if (objectRenderer != null)
         {
             silhouette.SetActive(false);
-            UIManager.MessageMenuInstance.Close();
+            UIManager.Close<MessageMenu>();
         }
     }
 

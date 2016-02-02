@@ -6,7 +6,6 @@ public class TransferModal : Menu
 {
     public Slider slider;
     public int transferMaximum;
-    public Container container;
     public Button cancelButton;
     public Button confirmTransferButton;
     public Text selectedAmountDisplay;
@@ -14,6 +13,13 @@ public class TransferModal : Menu
     public bool toInventory;
 
     private int selectedAmount;
+    private Container containerInstance;
+
+
+    public Container ContainerInstance
+    {
+        get { return (containerInstance != null) ? containerInstance : containerInstance = UIManager.GetMenu<Container>(); }
+    }
 
 
     public override void Open()
@@ -24,9 +30,9 @@ public class TransferModal : Menu
 
     public void Open(int i, bool transferToInventory)
     {
-        foreach(ContainerSlot cs in container.containerSlots)
+        foreach(ContainerSlot cs in ContainerInstance.containerSlots)
         {
-            cs.transferButton.interactable = false;
+            //cs.transferButton.interactable = false;
         }
 
         toInventory = transferToInventory;
@@ -39,12 +45,12 @@ public class TransferModal : Menu
 
     public override void Close()
     {
-        foreach (ContainerSlot cs in container.containerSlots)
+        foreach (ContainerSlot cs in ContainerInstance.containerSlots)
         {
-            cs.transferButton.interactable = true;
+            //cs.transferButton.interactable = true;
         }
-        container.root.SetActive(true);
-        container.playerInventory.root.SetActive(true);
+        ContainerInstance.root.SetActive(true);
+        UIManager.GetMenu<Inventory>().root.SetActive(true);
         base.Close();
     }
 
@@ -53,14 +59,14 @@ public class TransferModal : Menu
     {
         if(toInventory)
         {
-            container.playerInventory.AddInventoryItem(container.selectedIngredient, Mathf.RoundToInt(slider.value));
-            container.RemoveInventoryItem(container.selectedIngredient, Mathf.RoundToInt(slider.value));
+            UIManager.GetMenu<Inventory>().AddInventoryItem(ContainerInstance.selectedIngredient, Mathf.RoundToInt(slider.value));
+            ContainerInstance.RemoveInventoryItem(ContainerInstance.selectedIngredient, Mathf.RoundToInt(slider.value));
             Close();
         }
         else
         {
-            container.playerInventory.RemoveInventoryItem(container.selectedIngredient, Mathf.RoundToInt(slider.value));
-            container.AddInventoryItem(container.selectedIngredient, Mathf.RoundToInt(slider.value));
+            UIManager.GetMenu<Inventory>().RemoveInventoryItem(ContainerInstance.selectedIngredient, Mathf.RoundToInt(slider.value));
+            ContainerInstance.AddInventoryItem(ContainerInstance.selectedIngredient, Mathf.RoundToInt(slider.value));
             Close();
         }
         

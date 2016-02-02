@@ -19,6 +19,12 @@ public class MessageMenu : Menu
     }
 
 
+    public void SetText(string message)
+    {
+        messageText.text = message;
+    }
+
+
     public override void Close()
     {
         base.Close();

@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 public class ContainerObject : InteractibleObject
 {
-    public Container containerMenu;
-
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
+    private Container containerMenu;
+
+    private Container ContainerMenu
+    {
+        get { return (containerMenu != null) ? containerMenu : containerMenu = UIManager.GetMenu<Container>(); }
+    }
 
 
     public void AddIngredient(Ingredient ingredient)
@@ -30,13 +34,6 @@ public class ContainerObject : InteractibleObject
 
     public override void Interact()
     {
-        //base.Interact();
-        if(Interactible) containerMenu.Open(ingredientsInInventory, this);
-    }
-
-
-    private void Awake()
-    {
-        if (containerMenu == null) containerMenu = GameObject.FindObjectOfType<Container>() as Container;
+        if(Interactible) ContainerMenu.Open(ingredientsInInventory, this);
     }
 }
