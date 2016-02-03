@@ -93,7 +93,7 @@ public class Container : Menu
         {
             ingredientsInInventory.Add(ingredient);
         }
-
+        Debug.Log("item added");
         InitializeInventorySlots();
     }
 
@@ -102,6 +102,12 @@ public class Container : Menu
     {
         while (count > 0)
         {
+            if(ingredientsInInventory.Count <= 0)
+            {
+                Debug.LogError("Inventory is Empty! We cannot transfer from an empty inventory.");
+                break;
+            }
+
             for (int i = 0; i < ingredientsInInventory.Count; i++)
             {
                 if (ingredientsInInventory[i].id == ingredient.id)
@@ -134,6 +140,7 @@ public class Container : Menu
                 encounteredIngredients.Add(i);
             }
         }
+        Debug.Log("inventroy slots initialized");
     }
 
 

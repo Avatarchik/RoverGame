@@ -5,8 +5,7 @@ using System.Collections.Generic;
 
 public class CraftingInfoPanel : MonoBehaviour
 {
-    public Image image;
-    public Image harvestImage;
+    public Image craftingFillBar;
     public Text titleText;
     public Text descriptionText;
     public Button craftButton;
@@ -26,7 +25,6 @@ public class CraftingInfoPanel : MonoBehaviour
         set
         {
             selectedRecipe = value;
-            image.sprite = selectedRecipe.image;
             titleText.text = selectedRecipe.displayName;
             descriptionText.text = selectedRecipe.description;
 
@@ -44,7 +42,8 @@ public class CraftingInfoPanel : MonoBehaviour
                 ris.transform.localScale = Vector3.one;
 
                 ris.image.sprite = rp.ingredient.image;
-                ris.amountText.text = rp.ingredientCount + "";
+                ris.possessedAmountText.text = UIManager.GetMenu<Inventory>().GetIngredientAmount(rp.ingredient).ToString();
+                ris.neededAmountText.text = rp.ingredientCount + "";
 
                 spawnedRIS.Add(ris);
             }

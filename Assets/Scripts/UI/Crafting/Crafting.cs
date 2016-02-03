@@ -6,11 +6,12 @@ using System.Collections.Generic;
 public class Crafting : Menu
 {
     public CraftingInfoPanel craftingInfoPanel;
-    public Inventory inventory;
+    public Transform craftingSlotContainer;
     public Button closeButton;
+    public CraftingSlot craftingSlotPrefab;
 
     public List<Recipe> recipes = new List<Recipe>();
-    public List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
+    private List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
 
     private bool canClose = true;
 
@@ -18,11 +19,7 @@ public class Crafting : Menu
     {
         if(!isActive)
         {
-            SelectCraftingSlot(craftingSlots[0]);
-            foreach(CraftingSlot cs in craftingSlots)
-            {
-                cs.gameObject.SetActive(true);
-            }
+            InitializeSlots(recipes);
             base.Open();
         }
     }
@@ -46,12 +43,12 @@ public class Crafting : Menu
 
         craftingSlot.IsSelected = true;
 
-        craftingInfoPanel.SelectedRecipe = craftingSlot.Item.recipe;
+        craftingInfoPanel.SelectedRecipe = craftingSlot.recipe;
         craftingInfoPanel.craftButton.interactable = true;
 
-        foreach (RecipePortion rp in craftingSlot.Item.recipe.requiredIngredients)
+        foreach (RecipePortion rp in craftingSlot.recipe.requiredIngredients)
         {
-            if (inventory.GetIngredientAmount(rp.ingredient) < rp.ingredientCount)
+            if (UIManager.GetMenu<Inventory>().GetIngredientAmount(rp.ingredient) < rp.ingredientCount)
             {
                 craftingInfoPanel.craftButton.interactable = false;
             }
@@ -63,7 +60,7 @@ public class Crafting : Menu
     {
         foreach (RecipePortion rp in craftingInfoPanel.SelectedRecipe.requiredIngredients)
         {
-            inventory.RemoveInventoryItem(rp.ingredient, rp.ingredientCount);
+            UIManager.GetMenu<Inventory>().RemoveInventoryItem(rp.ingredient, rp.ingredientCount);
         }
         
         StartCoroutine(CraftingCoroutine());
@@ -81,19 +78,43 @@ public class Crafting : Menu
 
         while (elapsedTime < desiredTime)
         {
-            craftingInfoPanel.harvestImage.fillAmount = (elapsedTime / desiredTime);
+            craftingInfoPanel.craftingFillBar.fillAmount = (elapsedTime / desiredTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        craftingInfoPanel.harvestImage.fillAmount = 0f;
+        craftingInfoPanel.craftingFillBar.fillAmount = 0f;
         
         newII.amount = 1;
-        inventory.AddInventoryItem(newII.ingredient, newII.amount);
+        UIManager.GetMenu<Inventory>().AddInventoryItem(newII.ingredient, newII.amount);
 
         canClose = true;
         SelectCraftingSlot(craftingSlots[0]);
         SelectSlot();
+    }
+
+
+    private void InitializeSlots(List<Recipe> recipeList)
+    {
+        //TODO optomize this to reuse slots!
+        foreach(CraftingSlot cs in craftingSlots)
+        {
+            Destroy(cs.gameObject);
+        }
+        craftingSlots.Clear();
+
+        foreach(Recipe recipe in recipes)
+        {
+            CraftingSlot newCraftingSlot = Instantiate(craftingSlotPrefab) as CraftingSlot;
+            newCraftingSlot.transform.SetParent(craftingSlotContainer);
+            newCraftingSlot.titleText.text = recipe.displayName;
+            newCraftingSlot.ingredient = recipe.craftedItem;
+            newCraftingSlot.recipe = recipe;
+
+            craftingSlots.Add(newCraftingSlot);
+        }
+
+        if(craftingSlots.Count > 0) SelectCraftingSlot(craftingSlots[0]);
     }
 
 

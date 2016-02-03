@@ -16,7 +16,8 @@ public class CraftingSlot : MonoBehaviour
     public Color activeColor;
     public Color inactiveColor;
 
-    public Item Item;
+    public Recipe recipe;
+    public Ingredient ingredient;
 
     private bool isSelected = false;
 

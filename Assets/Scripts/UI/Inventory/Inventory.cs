@@ -63,6 +63,8 @@ public class Inventory : Menu
 
     public override void Close()
     {
+        Container container = UIManager.GetMenu<Container>();
+        if (container.IsActive) container.Close();
         base.Close();
     }
 
@@ -102,7 +104,6 @@ public class Inventory : Menu
         {
             if(!encounteredIngredients.Contains(i))
             {
-                Debug.Log("first encountering " + i.displayName);
                 BuildInventorySlot(i, GetIngredientAmount(i));
                 encounteredIngredients.Add(i);
             }
@@ -125,14 +126,11 @@ public class Inventory : Menu
 
         inventorySlots.Add(newSlot);
         newSlot.gameObject.SetActive(true);
-        Debug.Log("new inventory slot added!");
     }
 
 
     public virtual void AddInventoryItem(Ingredient ingredient, int count)
     {
-        Debug.Log("adding an item!");
-
         for(int i = count; i > 0; i--)
         {
             ingredientsInInventory.Add(ingredient);

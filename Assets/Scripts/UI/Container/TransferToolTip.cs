@@ -18,10 +18,13 @@ public class TransferToolTip : ToolTip
     }
 
 
-    public void Open(InventoryIngredient ii, bool transferToInventory)
+    public void SetContent(InventoryIngredient ii, bool transferToInventory)
     {
         inventoryIngredient = ii;
-        toInventory = transferToInventory; 
+        toInventory = transferToInventory;
+
+        titleText.text = ii.ingredient.displayName;
+        descriptionText.text = ii.ingredient.description;
     }
 
 
@@ -32,6 +35,7 @@ public class TransferToolTip : ToolTip
         TransferModal transferModal = UIManager.GetMenu<TransferModal>();
         int amount = 0;
 
+        //TODO remove duplicated code!!
         if (toInventory)
         {
             //we need to add to the inventory
@@ -48,6 +52,7 @@ public class TransferToolTip : ToolTip
             else
             {
                 //we just need to throw one over
+                if (amount == 1) Close();
                 inventory.AddInventoryItem(inventoryIngredient.ingredient, 1);
                 container.RemoveInventoryItem(inventoryIngredient.ingredient, 1);
             }
@@ -68,6 +73,7 @@ public class TransferToolTip : ToolTip
             else
             {
                 //we just need to throw one over
+                if (amount == 1) Close();
                 inventory.RemoveInventoryItem(inventoryIngredient.ingredient, 1);
                 container.AddInventoryItem(inventoryIngredient.ingredient, 1);
             }

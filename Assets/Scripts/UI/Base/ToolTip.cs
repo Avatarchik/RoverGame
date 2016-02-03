@@ -33,6 +33,15 @@ public class ToolTip : Menu
     }
 
 
+    public void SetContent(Ingredient ingredient)
+    {
+        titleText.text = ingredient.displayName;
+        descriptionText.text = ingredient.description;
+
+        gameObject.GetComponent<RectTransform>().position = Input.mousePosition;
+    }
+
+
     protected virtual void Awake()
     {
         closeButton.onClick.AddListener(Close);
