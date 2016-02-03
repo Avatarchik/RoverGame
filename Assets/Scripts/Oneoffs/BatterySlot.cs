@@ -7,6 +7,7 @@ public class BatterySlot : InteractibleObject
     public Ingredient desiredObject;
     public PodAnimator podAnimator;
     public DoorSwitch doorSwitch;
+    public GameObject batteryModel;
 
     private bool hasItem;
     private Inventory playerInventory;
@@ -34,9 +35,11 @@ public class BatterySlot : InteractibleObject
             if (PlayerInventory.GetIngredientAmount(desiredObject) > 0)
             {
                 PlayerInventory.RemoveInventoryItem(desiredObject, 1);
+                batteryModel.SetActive(true);
                 doorSwitch.interactible = true;
                 podAnimator.hazardLight.gameObject.SetActive(true);
                 hasItem = true;
+                interactible = false;
             }
             else
             {
