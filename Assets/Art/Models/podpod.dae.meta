@@ -161,6 +161,14 @@ ModelImporter:
     100306: Container
     100308: Container1
     100310: pipe04
+    100312: Arm3
+    100314: armpart1
+    100316: armpart2
+    100318: armpart3
+    100320: Arm4
+    100322: armpart1_ncl1_1
+    100324: armpart2_ncl1_1
+    100326: armpart3_ncl1_1
     400000: Airduck
     400002: Airduck1
     400004: Airduck_ncl1_1
@@ -317,6 +325,14 @@ ModelImporter:
     400306: Container
     400308: Container1
     400310: pipe04
+    400312: Arm3
+    400314: armpart1
+    400316: armpart2
+    400318: armpart3
+    400320: Arm4
+    400322: armpart1_ncl1_1
+    400324: armpart2_ncl1_1
+    400326: armpart3_ncl1_1
     2300000: Airduck_ncl1_1
     2300002: AirVent
     2300004: AirVent1
@@ -439,6 +455,14 @@ ModelImporter:
     2300238: Airduck
     2300240: Container
     2300242: Container1
+    2300244: Arm3
+    2300246: armpart1
+    2300248: armpart2
+    2300250: armpart3
+    2300252: Arm4
+    2300254: armpart1_ncl1_1
+    2300256: armpart2_ncl1_1
+    2300258: armpart3_ncl1_1
     3300000: Airduck_ncl1_1
     3300002: AirVent
     3300004: AirVent1
@@ -561,6 +585,14 @@ ModelImporter:
     3300238: Airduck
     3300240: Container
     3300242: Container1
+    3300244: Arm3
+    3300246: armpart1
+    3300248: armpart2
+    3300250: armpart3
+    3300252: Arm4
+    3300254: armpart1_ncl1_1
+    3300256: armpart2_ncl1_1
+    3300258: armpart3_ncl1_1
     4300000: pCube56
     4300002: pCube57
     4300004: PodEx
@@ -683,6 +715,14 @@ ModelImporter:
     4300238: Airduck
     4300240: Container
     4300242: Container1
+    4300244: Arm3
+    4300246: armpart1
+    4300248: armpart2
+    4300250: armpart3
+    4300252: Arm4
+    4300254: armpart1_ncl1_1
+    4300256: armpart2_ncl1_1
+    4300258: armpart3_ncl1_1
     7400000: Take 001
     9500000: //RootNode
   materials:
