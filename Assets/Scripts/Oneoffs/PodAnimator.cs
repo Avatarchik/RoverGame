@@ -21,8 +21,10 @@ public class PodAnimator : MonoBehaviour
 	
     public void OpenDoor()
     {
+        Debug.Log("a");
         if(batterySlot.HasItem)
         {
+            Debug.Log("b");
             animator.SetBool("Open", true);
         }
     }
