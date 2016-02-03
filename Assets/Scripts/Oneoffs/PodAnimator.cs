@@ -16,6 +16,8 @@ public class PodAnimator : MonoBehaviour
 
     public Light hazardLight;
     public BatterySlot batterySlot;
+
+    private bool isFalling = false;
 	
     public void OpenDoor()
     {
@@ -28,18 +30,24 @@ public class PodAnimator : MonoBehaviour
 
     public void Fall()
     {
-        StartCoroutine(FallCoroutine());
+        if(!isFalling)
+        {
+            StartCoroutine(FallCoroutine());
+            isFalling = true;
+        }
+        
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player") StartCoroutine(FallCoroutine());
+        if (other.tag == "Player") Fall();
     }
 
 
     private IEnumerator FallCoroutine()
     {
+        Debug.Log("falling?");
         float fadeOutTime = 0f;
         float fadeInTime = 4f;
         float getupTime = 3f;
@@ -89,6 +97,7 @@ public class PodAnimator : MonoBehaviour
         playerTransform.position = reorientingSpot.position;
         playerTransform.rotation = reorientingSpot.rotation;
         fadeMenu.Close();
+        Destroy(playerAnimator);
         player.EnableMovement();
 
         this.gameObject.SetActive(false);
