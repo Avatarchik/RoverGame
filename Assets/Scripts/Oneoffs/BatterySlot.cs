@@ -24,7 +24,7 @@ public class BatterySlot : InteractibleObject
 
     public bool HasItem
     {
-        get { return hasItem; }
+        get { return true; }
     }
 
 
@@ -34,6 +34,7 @@ public class BatterySlot : InteractibleObject
         {
             if (PlayerInventory.GetIngredientAmount(desiredObject) > 0)
             {
+                Debug.Log("should have item!!");
                 PlayerInventory.RemoveInventoryItem(desiredObject, 1);
                 batteryModel.SetActive(true);
                 doorSwitch.interactible = true;

@@ -12,10 +12,13 @@ public class DoorSwitch : InteractibleObject
 
     public override void Interact()
     {
+        Debug.Log("1");
         if(Interactible)
         {
+            Debug.Log("2");
             foreach (Door door in doorsIControl)
             {
+                Debug.Log("3");
                 door.IsOpen = !door.IsOpen;
             }
         }
