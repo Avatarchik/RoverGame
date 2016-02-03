@@ -9,7 +9,6 @@ public class PodAnimator : MonoBehaviour
     public Animator playerAnimator;
     public PlayerStats player;
     public AnimationClip fallAnimation;
-    public GameObject door;
     public Transform environment;
     public Transform landingSpot;
     public Transform reorientingSpot;

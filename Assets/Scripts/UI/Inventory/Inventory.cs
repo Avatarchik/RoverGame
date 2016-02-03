@@ -20,7 +20,7 @@ public class Inventory : Menu
     {
         get
         {
-            float weight = 0f;
+            float weight = 0.01f;
 
             foreach(Ingredient i in ingredientsInInventory)
             {
