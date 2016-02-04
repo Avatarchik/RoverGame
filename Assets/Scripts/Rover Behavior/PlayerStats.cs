@@ -86,7 +86,7 @@ public class PlayerStats : MonoBehaviour
             {
                 //Cursor.lockState = CursorLockMode.Locked;
                 //Cursor.visible = false;
-                float speed = ModifyStat(MOVE_SPEED_ID); /// (Weight * 0.01f)) + minSpeed;
+                float speed = ModifyStat(MOVE_SPEED_ID) + minSpeed; /// (Weight * 0.01f)) + minSpeed;
                 return speed;
             }
             else
