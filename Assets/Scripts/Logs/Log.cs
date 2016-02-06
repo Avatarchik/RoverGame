@@ -8,4 +8,16 @@ public class Log : ScriptableObject
     public string content = "";
 
     public string author = "";
+
+
+    private void Initialize()
+    {
+        content = content.Replace("\\n", "\n");
+    }
+
+
+    private void Start()
+    {
+
+    }
 }

@@ -14,7 +14,7 @@ public class CharacterDriver : MonoBehaviour
     private bool flashLightActive = false;
     
 
-    private void Update ()
+    private void FixedUpdate ()
     {
         if (Input.GetAxis("RoverMove") != 0)
         {
