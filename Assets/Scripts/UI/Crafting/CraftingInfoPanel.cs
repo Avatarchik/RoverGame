@@ -42,6 +42,7 @@ public class CraftingInfoPanel : MonoBehaviour
                 ris.transform.localScale = Vector3.one;
 
                 ris.image.sprite = rp.ingredient.image;
+                ris.displayName.text = rp.ingredient.displayName;
                 ris.possessedAmountText.text = UIManager.GetMenu<Inventory>().GetIngredientAmount(rp.ingredient).ToString();
                 ris.neededAmountText.text = rp.ingredientCount + "";
 

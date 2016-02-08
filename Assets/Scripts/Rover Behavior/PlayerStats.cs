@@ -21,6 +21,7 @@ public class PlayerStats : MonoBehaviour
     public float minSpeed;
 
     public List<RoverComponent> roverComponents = new List<RoverComponent>();
+    public List<Recipe> knownRecipes = new List<Recipe>();
 
     public int movementEnabled = 0;
     private CursorLockMode desiredCursorLocking = CursorLockMode.Locked;
@@ -42,6 +43,25 @@ public class PlayerStats : MonoBehaviour
     public void DisableMovement()
     {
         movementEnabled--;
+    }
+
+
+    public void AddRecipe(Recipe r)
+    {
+        if (!knownRecipes.Contains(r)) knownRecipes.Add(r);
+    }
+
+
+    public void RemoveRecipe(Recipe r)
+    {
+        for(int i = 0; i< knownRecipes.Count; i++)
+        {
+            if(r == knownRecipes[i])
+            {
+                knownRecipes.RemoveAt(i);
+                break;
+            }
+        }
     }
 
 

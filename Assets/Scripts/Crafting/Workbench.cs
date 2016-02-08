@@ -15,8 +15,7 @@ public class Workbench : InteractibleObject
 
             silhouette.SetActive(false);
             UIManager.Close<MessageMenu>();
-            craftingMenu.recipes = recipes;
-            craftingMenu.Open();
+            craftingMenu.Open(recipes);
         }
     } 
 }

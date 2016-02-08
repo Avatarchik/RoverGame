@@ -12,8 +12,20 @@ public class Crafting : Menu
 
     public List<Recipe> recipes = new List<Recipe>();
     private List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
+    private PlayerStats playerStatsReference;
 
     private bool canClose = true;
+
+    public PlayerStats PlayerStatsReference
+    {
+        get
+        {
+            if (playerStatsReference == null) playerStatsReference = GameManager.Get<PlayerStats>();
+            if (playerStatsReference == null) playerStatsReference = GameObject.FindObjectOfType<PlayerStats>();
+
+            return playerStatsReference;
+        }
+    }
 
     public override void Open()
     {
@@ -22,6 +34,37 @@ public class Crafting : Menu
             InitializeSlots(recipes);
             base.Open();
         }
+    }
+
+
+    public void Open(List<Recipe> recipes)
+    {
+        if(!isActive)
+        {
+            List<Recipe> recipesToOpen = new List<Recipe> ();
+
+            recipes.Clear();
+            recipesToOpen.AddRange(recipes);
+            recipesToOpen.AddRange(PlayerStatsReference.knownRecipes);
+            recipesToOpen = SanitizeRecipes(recipesToOpen);
+
+            recipes = recipesToOpen;
+
+            Open();
+        }
+    }
+
+
+    public List<Recipe> SanitizeRecipes(List<Recipe> recipesToSanitize)
+    {
+        List<Recipe> sanitizedRecipes = new List<Recipe> ();
+
+        foreach(Recipe r in recipesToSanitize)
+        {
+            if (!sanitizedRecipes.Contains(r)) sanitizedRecipes.Add(r);
+        }
+
+        return sanitizedRecipes;
     }
 
 

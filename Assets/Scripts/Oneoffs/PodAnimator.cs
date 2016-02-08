@@ -21,10 +21,8 @@ public class PodAnimator : MonoBehaviour
 	
     public void OpenDoor()
     {
-        Debug.Log("a");
         if(batterySlot.HasItem)
         {
-            Debug.Log("b");
             animator.SetBool("Open", true);
         }
     }
@@ -52,8 +50,6 @@ public class PodAnimator : MonoBehaviour
         Debug.Log("falling?");
         float fadeOutTime = 0f;
         float fadeInTime = 4f;
-        float getupTime = 3f;
-        float elapsedTime = 0f;
         float cachedBloomIntensity = scion.bloomIntensity;
         Transform playerTransform = player.transform;
         FadeMenu fadeMenu = UIManager.GetMenu<FadeMenu>();

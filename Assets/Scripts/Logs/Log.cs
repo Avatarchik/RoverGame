@@ -10,14 +10,14 @@ public class Log : ScriptableObject
     public string author = "";
 
 
-    private void Initialize()
+    protected virtual void Initialize()
     {
         content = content.Replace("\\n", "\n");
     }
 
 
-    private void Start()
+    protected virtual void Start()
     {
-
+        Initialize();
     }
 }

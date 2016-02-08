@@ -10,6 +10,9 @@ public class LogObject : InteractibleObject
         if (Interactible)
         {
             LogMenu logMenu = UIManager.GetMenu<LogMenu>();
+
+            
+
             logMenu.AddLog(log);
             logMenu.Open();
         }

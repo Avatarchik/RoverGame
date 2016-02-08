@@ -8,6 +8,7 @@ public class Inventory : Menu
     public InventorySlot inventorySlotPrefab;
     public Transform InventorySlotContainer;
     //public Text weightValue;
+    public Button transferButton;
     public Button closeButton;
 
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
@@ -43,19 +44,14 @@ public class Inventory : Menu
     {
         if(containerExchange)
         {
-            foreach (InventorySlot invis in inventorySlots)
-            {
-                //invis.equipbutton.gameObject.SetActive(false);
-                //invis.transferButton.interactable = true;
-            }
+            transferButton.gameObject.SetActive(true);
+            closeButton.onClick.AddListener(delegate () { UIManager.Close<Container>(); });
             base.Open();
         }
         else
         {
-            foreach (InventorySlot invis in inventorySlots)
-            {
-                //invis.transferButton.interactable = false;
-            }
+            transferButton.gameObject.SetActive(false);
+            closeButton.onClick.RemoveListener(delegate () { UIManager.Close<Container>(); });
             base.Open();
         }
     }
@@ -64,6 +60,7 @@ public class Inventory : Menu
     public override void Close()
     {
         Container container = UIManager.GetMenu<Container>();
+        transferButton.gameObject.SetActive(false);
         if (container.IsActive) container.Close();
         base.Close();
     }
@@ -184,9 +181,17 @@ public class Inventory : Menu
     }
 
 
+    private void Transfer()
+    {
+        Close();
+        UIManager.Open<Container>();
+    }
+
+
     private void Awake()
     {
         closeButton.onClick.AddListener(Close);
         InitializeInventorySlots();
+        transferButton.onClick.AddListener(Transfer);
     }
 }

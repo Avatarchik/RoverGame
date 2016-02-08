@@ -30,23 +30,8 @@ public class Container : Menu
     {
         Inventory playerInventory = UIManager.GetMenu<Inventory>();
 
-        if(background.activeSelf)
-        {
-            //the container is up. we need to switch to the inventory.
-            background.SetActive(false);
-            root.GetComponent<Image>().enabled = false;
-            toggleButton.GetComponentInChildren<Text>().text = TAKE_TEXT;
-            playerInventory.Open(true);
-            
-        }
-        else
-        {
-            //the inventory is up. we need to switch to the container
-            background.SetActive(true);
-            root.GetComponent<Image>().enabled = true;
-            toggleButton.GetComponentInChildren<Text>().text = GIVE_TEXT;
-            playerInventory.Close();
-        }
+        Close();
+        playerInventory.Open(true);
     }
 
 
