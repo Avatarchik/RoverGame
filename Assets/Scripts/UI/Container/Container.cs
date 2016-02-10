@@ -85,14 +85,14 @@ public class Container : Menu
 
     public virtual void RemoveInventoryItem(Ingredient ingredient, int count)
     {
+        if(ingredientsInInventory.Count < count)
+        {
+            Debug.LogError("unable to comply, insufficient inventory ingredients");
+            return;
+        }
+
         while (count > 0)
         {
-            if(ingredientsInInventory.Count <= 0)
-            {
-                Debug.LogError("Inventory is Empty! We cannot transfer from an empty inventory.");
-                break;
-            }
-
             for (int i = 0; i < ingredientsInInventory.Count; i++)
             {
                 if (ingredientsInInventory[i].id == ingredient.id)

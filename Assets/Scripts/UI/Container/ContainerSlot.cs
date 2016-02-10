@@ -7,6 +7,8 @@ public class ContainerSlot : InventorySlot
 {
     private void OpenTransferToolTip()
     {
+        Debug.Log("opening tooltip from container");
+
         TransferToolTip toolTip = UIManager.Open<TransferToolTip>();
         toolTip.SetContent(ii, true);
     }
