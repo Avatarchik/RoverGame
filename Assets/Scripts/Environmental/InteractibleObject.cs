@@ -8,6 +8,7 @@ public class InteractibleObject : MonoBehaviour
 
     public GameObject silhouette;
     public bool interactible = true;
+    public InteractibleObject[] secondaryInteractibles = new InteractibleObject[0];
 
     private PlayerStats playerStats;
 
@@ -69,6 +70,10 @@ public class InteractibleObject : MonoBehaviour
     {
         Debug.Log("interacting");
         SetSilhouette(false);
+        foreach(InteractibleObject io in secondaryInteractibles)
+        {
+            io.Interact();
+        }
     }
 
 

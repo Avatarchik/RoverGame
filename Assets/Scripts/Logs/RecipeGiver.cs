@@ -7,11 +7,12 @@ public class RecipeGiver : InteractibleObject
 
     public override void Interact()
     {
+        Debug.Log("attempting to interact");
         if(Interactible)
         {
-            Debug.Log("this is happening");
+            Debug.Log("giving player the recipe");
             PlayerStats playerStats = GameManager.Get<PlayerStats>();
-
+            if (playerStats == null) playerStats = GameObject.FindObjectOfType<PlayerStats>();
             playerStats.AddRecipe(recipe);
         }
     }

@@ -13,6 +13,8 @@ public class Inventory : Menu
 
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
+    public bool ContainerExchange = false;
+
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
     
@@ -54,6 +56,8 @@ public class Inventory : Menu
             closeButton.onClick.RemoveListener(delegate () { UIManager.Close<Container>(); });
             base.Open();
         }
+
+        ContainerExchange = containerExchange;
     }
 
 
