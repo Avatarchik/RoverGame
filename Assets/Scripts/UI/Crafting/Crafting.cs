@@ -46,6 +46,7 @@ public class Crafting : Menu
             recipes.Clear();
             recipesToOpen.AddRange(recipes);
             recipesToOpen.AddRange(PlayerStatsReference.knownRecipes);
+            Debug.Log(recipesToOpen.Count);
             recipesToOpen = SanitizeRecipes(recipesToOpen);
 
             recipes = recipesToOpen;
@@ -58,13 +59,13 @@ public class Crafting : Menu
     public List<Recipe> SanitizeRecipes(List<Recipe> recipesToSanitize)
     {
         List<Recipe> sanitizedRecipes = new List<Recipe> ();
-
+        //TODO this is removing recipes it shouldnt?
         foreach(Recipe r in recipesToSanitize)
         {
             if (!sanitizedRecipes.Contains(r)) sanitizedRecipes.Add(r);
         }
 
-        return sanitizedRecipes;
+        return recipesToSanitize;
     }
 
 
@@ -145,9 +146,10 @@ public class Crafting : Menu
             Destroy(cs.gameObject);
         }
         craftingSlots.Clear();
-
+        int i = 0;
         foreach(Recipe recipe in recipes)
         {
+            Debug.Log(" creating slot at :" + i);
             CraftingSlot newCraftingSlot = Instantiate(craftingSlotPrefab) as CraftingSlot;
             newCraftingSlot.transform.SetParent(craftingSlotContainer);
             newCraftingSlot.titleText.text = recipe.displayName;
@@ -155,6 +157,7 @@ public class Crafting : Menu
             newCraftingSlot.recipe = recipe;
 
             craftingSlots.Add(newCraftingSlot);
+            i++;
         }
 
         if(craftingSlots.Count > 0) SelectCraftingSlot(craftingSlots[0]);

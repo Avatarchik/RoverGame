@@ -3,12 +3,10 @@ using System.Collections;
 
 public class InteractibleObject : MonoBehaviour
 {
-    public float detectionDistance = 1000f;
     public string objectName = "Container";
 
     public GameObject silhouette;
     public bool interactible = true;
-    public InteractibleObject[] secondaryInteractibles = new InteractibleObject[0];
 
     private PlayerStats playerStats;
 
@@ -29,22 +27,7 @@ public class InteractibleObject : MonoBehaviour
     }
 
 
-    public virtual void OnMouseDown()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance);
-
-        foreach(RaycastHit hit in hits)
-        {
-            if(hit.collider.gameObject == gameObject)
-            {
-                Interact();
-            }
-        }
-    }
-
-
-    public virtual void OnMouseEnter()
+    public virtual void HoverEnter()
     {
         if (Interactible)
         {
@@ -59,7 +42,7 @@ public class InteractibleObject : MonoBehaviour
     }
 
 
-    public virtual void OnMouseExit()
+    public virtual void HoverExit()
     {
         SetSilhouette(false);
          UIManager.Close<MessageMenu>();
@@ -70,10 +53,6 @@ public class InteractibleObject : MonoBehaviour
     {
         Debug.Log("interacting");
         SetSilhouette(false);
-        foreach(InteractibleObject io in secondaryInteractibles)
-        {
-            io.Interact();
-        }
     }
 
 
