@@ -43,8 +43,8 @@ public class CameraDriver : MonoBehaviour
             if (rotationY != rotationYL || rotationX != rotationXL)
             {
                 //will need to play audio too
-                playerCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
-                transform.localEulerAngles = new Vector3(0, rotationX, 0);
+                playerCamera.transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+                //playerCamera.transform.localEulerAngles = new Vector3(0, rotationX, 0);
                 if (!servoMotorSound.isPlaying) servoMotorSound.Play();
             }
 

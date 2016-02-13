@@ -47,11 +47,12 @@ public class Crafting : Menu
             recipesToOpen.AddRange(recipes);
             recipesToOpen.AddRange(PlayerStatsReference.knownRecipes);
             Debug.Log(recipesToOpen.Count);
-            recipesToOpen = SanitizeRecipes(recipesToOpen);
+            //recipesToOpen = SanitizeRecipes(recipesToOpen);
+            recipes.Clear();
+            recipes.AddRange(recipesToOpen);
 
-            recipes = recipesToOpen;
-
-            Open();
+            InitializeSlots(recipes);
+            base.Open();
         }
     }
 
@@ -140,6 +141,8 @@ public class Crafting : Menu
 
     private void InitializeSlots(List<Recipe> recipeList)
     {
+        recipes.Clear();
+        recipes.AddRange(recipeList);
         //TODO optomize this to reuse slots!
         foreach(CraftingSlot cs in craftingSlots)
         {
@@ -147,6 +150,7 @@ public class Crafting : Menu
         }
         craftingSlots.Clear();
         int i = 0;
+        Debug.Log("recipe count! : "+recipes.Count);
         foreach(Recipe recipe in recipes)
         {
             Debug.Log(" creating slot at :" + i);
