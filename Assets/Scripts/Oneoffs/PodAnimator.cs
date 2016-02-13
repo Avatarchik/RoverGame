@@ -84,7 +84,7 @@ public class PodAnimator : MonoBehaviour
         scion.grainIntensity = 1f;
         yield return new WaitForSeconds(0.6f);
         scion.grainIntensity = 0f;
-
+        player.GetComponentInChildren<Rigidbody>().useGravity = true;
         playerTransform.position = reorientingSpot.position;
         playerTransform.rotation = reorientingSpot.rotation;
         fadeMenu.Close();
