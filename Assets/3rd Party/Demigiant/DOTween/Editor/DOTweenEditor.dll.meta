@@ -1,10 +1,7 @@
 fileFormatVersion: 2
-guid: 6e38ac6b1c3556b4c888ca8552375e1e
-<<<<<<< HEAD:Assets/Demigiant/DOTween/DOTween.dll.meta
-timeCreated: 1453617918
+guid: 0d6555af380a7264a9cd5a9083b1c4ad
+timeCreated: 1452458841
 licenseType: Free
-=======
->>>>>>> master:Assets/3rd Party/Demigiant/DOTween/DOTween.dll.meta
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
@@ -12,12 +9,16 @@ PluginImporter:
   isPreloaded: 0
   platformData:
     Any:
-      enabled: 1
+      enabled: 0
       settings: {}
     Editor:
-      enabled: 0
+      enabled: 1
       settings:
         DefaultValueInitialized: true
+    WindowsStoreApps:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
   userData: 
   assetBundleName: 
   assetBundleVariant: 
