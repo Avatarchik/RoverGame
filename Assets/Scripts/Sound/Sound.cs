@@ -64,7 +64,7 @@ public class Sound : MonoBehaviour
 
     public void Play()
     {
-        Play(GameManager.Get<SoundManager>().Find(soundId));
+        Play(CurrentSoundClip);
     }
 
 
@@ -74,7 +74,8 @@ public class Sound : MonoBehaviour
         CachedAudioSource.Stop();
 
         CurrentSoundClip = soundClip;
-
+        CachedAudioSource.clip = CurrentSoundClip.clip;
+        CachedAudioSource.Play();
     }
 
 

@@ -26,6 +26,13 @@ public class SoundManager : MonoBehaviour
     }
 
 
+    public SoundClip Stop(SoundClip soundclip)
+    {
+        soundclip.GetComponent<AudioSource>().Stop();
+        return soundclip;
+    }
+
+
     public SoundClip Find (int soundId)
     {
         SoundClip soundClip = null;
@@ -46,12 +53,41 @@ public class SoundManager : MonoBehaviour
 
     private void Initialize(SoundClip soundclip)
     {
-        switch(soundclip.type)
+       /* switch(soundclip.type)
         {
             case SoundType.Music:
                 sources.FindAll(s => { return s.CurrentSoundClip.id != soundclip.id && s.CurrentSoundClip.type == soundclip.type && s.IsPlaying; }).ForEach(s => s.Stop());
                 break;
+        }*/
+        sources.FindAll(s => { return s.CurrentSoundClip.id != soundclip.id && s.CurrentSoundClip.type == soundclip.type && s.IsPlaying; }).ForEach(s => s.Stop());
+
+        foreach (Sound sound in sources)
+        {
+            if (sound.currentSoundClip == soundclip)
+            {
+                sound.Play();
+                return;
+            }
         }
+
+        Sound newSound = Instantiate(soundPrefab);
+        newSound.transform.SetParent(transform);
+        newSound.Play();
+    }
+
+
+    public bool IsSoundclipPlaying(SoundClip soundclip)
+    {
+        bool b = false;
+        foreach(Sound sound in sources)
+        {
+            if(sound.currentSoundClip == soundclip)
+            {
+                b = sound.GetComponent<AudioSource>().isPlaying;
+            }
+        }
+
+        return b;
     }
 
 
