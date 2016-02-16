@@ -39,6 +39,12 @@ public class CharacterDriver : MonoBehaviour
         {
             CachedSoundManager.Stop(ROVER_MOVEMENT_SOUND_ID);
         }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            flashLightActive = !flashLightActive;
+            flashLight.gameObject.SetActive(flashLightActive);
+        }
     }
     
 
@@ -46,23 +52,17 @@ public class CharacterDriver : MonoBehaviour
     {
         if (Input.GetAxis("RoverMove") != 0)
         {
-            transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverMove") * 2f);
+            transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverMove") * 1.5f);
         }
 
         if (Input.GetAxis("RoverTurn") != 0)
         {
-            transform.Rotate(Vector3.up, playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * 35f);
+            transform.Rotate(Vector3.up, playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * 25f);
         }
 
         if (Input.GetAxis("RoverStrafe") != 0)
         {
             transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverStrafe"));
-        }
-
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            flashLightActive = !flashLightActive;
-            flashLight.gameObject.SetActive(flashLightActive);
         }
     }
 

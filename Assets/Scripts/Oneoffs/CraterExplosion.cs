@@ -10,6 +10,7 @@ public class CraterExplosion : InteractibleObject
     public Ingredient desiredIngredient;
     public string failString = "You will need an {0} to clear this landslide";
 
+    public int explosionDelay = 10;
     public float shakeIntensity = 1f;
     public float shakeDecay = 0.05f;
 
@@ -22,7 +23,9 @@ public class CraterExplosion : InteractibleObject
         Inventory inventory = UIManager.GetMenu<Inventory>();
         MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
 
-        if(inventory.GetIngredientAmount(desiredIngredient) > 0)
+        if (!interactible) interactible = inventory.GetIngredientAmount(desiredIngredient) > 0;
+        
+        if(Interactible)
         {
             triggered = true;
             inventory.RemoveInventoryItem(desiredIngredient, 1);
@@ -54,7 +57,9 @@ public class CraterExplosion : InteractibleObject
 
     private IEnumerator DetonateDelay()
     {
-        yield return new WaitForSeconds(10f);
+        CountDown countDown = UIManager.GetMenu<CountDown>();
+        countDown.SetText(explosionDelay);
+        yield return new WaitForSeconds(explosionDelay);
         TriggerExplosion();
     }
 
