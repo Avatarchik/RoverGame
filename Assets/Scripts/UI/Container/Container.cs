@@ -30,23 +30,8 @@ public class Container : Menu
     {
         Inventory playerInventory = UIManager.GetMenu<Inventory>();
 
-        if(background.activeSelf)
-        {
-            //the container is up. we need to switch to the inventory.
-            background.SetActive(false);
-            root.GetComponent<Image>().enabled = false;
-            toggleButton.GetComponentInChildren<Text>().text = TAKE_TEXT;
-            playerInventory.Open(true);
-            
-        }
-        else
-        {
-            //the inventory is up. we need to switch to the container
-            background.SetActive(true);
-            root.GetComponent<Image>().enabled = true;
-            toggleButton.GetComponentInChildren<Text>().text = GIVE_TEXT;
-            playerInventory.Close();
-        }
+        Close();
+        playerInventory.Open(true);
     }
 
 
@@ -100,14 +85,14 @@ public class Container : Menu
 
     public virtual void RemoveInventoryItem(Ingredient ingredient, int count)
     {
+        if(ingredientsInInventory.Count < count)
+        {
+            Debug.LogError("unable to comply, insufficient inventory ingredients");
+            return;
+        }
+
         while (count > 0)
         {
-            if(ingredientsInInventory.Count <= 0)
-            {
-                Debug.LogError("Inventory is Empty! We cannot transfer from an empty inventory.");
-                break;
-            }
-
             for (int i = 0; i < ingredientsInInventory.Count; i++)
             {
                 if (ingredientsInInventory[i].id == ingredient.id)

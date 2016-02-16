@@ -3,9 +3,7 @@ using System.Collections;
 
 public class InteractibleObject : MonoBehaviour
 {
-    public float detectionDistance = 1000f;
     public string objectName = "Container";
-    public Renderer objectRenderer;
 
     public GameObject silhouette;
     public bool interactible = true;
@@ -29,46 +27,37 @@ public class InteractibleObject : MonoBehaviour
     }
 
 
-    public virtual void OnMouseDown()
+    public virtual void HoverEnter()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance);
-
-        foreach(RaycastHit hit in hits)
+        if (Interactible)
         {
-            if(hit.collider.gameObject == gameObject)
+            SetSilhouette(true);
+            if(objectName != "")
             {
-                Interact();
+                MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
+                if (!messageMenu) messageMenu = GameObject.FindObjectOfType<MessageMenu>();
+                messageMenu.Open(objectName);
             }
         }
     }
 
 
-    public virtual void OnMouseEnter()
+    public virtual void HoverExit()
     {
-        if (objectRenderer != null && Interactible)
-        {
-            silhouette.SetActive(true);
-            MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
-            if (!messageMenu) messageMenu = GameObject.FindObjectOfType<MessageMenu>();
-            messageMenu.Open(objectName);
-        }
-    }
-
-
-    public virtual void OnMouseExit()
-    {
-        if (objectRenderer != null)
-        {
-            silhouette.SetActive(false);
-            UIManager.Close<MessageMenu>();
-        }
+        SetSilhouette(false);
+         UIManager.Close<MessageMenu>();
     }
 
 
     public virtual void Interact()
     {
         Debug.Log("interacting");
-        silhouette.SetActive(false);
+        SetSilhouette(false);
+    }
+
+
+    protected virtual void SetSilhouette(bool b)
+    {
+        if(silhouette != null) silhouette.SetActive(b);
     }
 }

@@ -77,4 +77,17 @@ public class Pool : MonoBehaviour
             child.rotation = rotation;
         }
     }
+
+
+    public void Recycle(GameObject prefab)
+    {
+        if (prefab == null) return;
+
+        if(used.Contains(prefab))
+        {
+            used.Remove(prefab);
+            if (prefab.transform.parent != instances) prefab.transform.SetParent(instances);
+            free.Add(prefab);
+        }
+    }
 }

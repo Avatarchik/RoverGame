@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CameraDriver : MonoBehaviour
 {
+    private const int ROVER_MOVEMENT_SOUND_ID = 20;
+
     public Camera playerCamera;
     public Transform model;
 
@@ -20,8 +22,6 @@ public class CameraDriver : MonoBehaviour
 
     public float zoomSpeed = 20.0f;
 
-    public AudioSource servoMotorSound;
-
     private float rotationY = 0.0f;
     private float rotationX = 0.0f;
 
@@ -31,6 +31,18 @@ public class CameraDriver : MonoBehaviour
     private float zoom;
 
     private PlayerStats playerStats;
+    private SoundManager cachedSoundManager;
+
+    public SoundManager CachedSoundManager
+    {
+        get
+        {
+            if (cachedSoundManager == null) cachedSoundManager = GameManager.Get<SoundManager>();
+            if (cachedSoundManager == null) cachedSoundManager = GameObject.FindObjectOfType<SoundManager>();
+
+            return cachedSoundManager;
+        }
+    }
 
     private void Update ()
     {
@@ -43,14 +55,14 @@ public class CameraDriver : MonoBehaviour
             if (rotationY != rotationYL || rotationX != rotationXL)
             {
                 //will need to play audio too
-                playerCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
-                transform.localEulerAngles = new Vector3(0, rotationX, 0);
-                if (!servoMotorSound.isPlaying) servoMotorSound.Play();
+                playerCamera.transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+                //playerCamera.transform.localEulerAngles = new Vector3(0, rotationX, 0);
+               // if (!CachedSoundManager.IsPlaying(cachedSoundManager.Find(ROVER_MOVEMENT_SOUND_ID)))
+                CachedSoundManager.Play(ROVER_MOVEMENT_SOUND_ID);
             }
-
             else
             {
-                if (servoMotorSound.isPlaying) servoMotorSound.Pause();
+                CachedSoundManager.Stop(ROVER_MOVEMENT_SOUND_ID);
             }
 
             rotationXL = rotationX;

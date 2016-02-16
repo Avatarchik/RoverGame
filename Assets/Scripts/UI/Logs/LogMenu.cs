@@ -34,6 +34,12 @@ public class LogMenu : Menu
     }
 
 
+    public void AddLog(Log log)
+    {
+        if (!logs.Contains(log)) logs.Insert(0, log); 
+    }
+
+
     public void SelectLogSlot(LogSlot logSlot)
     {
         foreach (LogSlot ls in logSlots)

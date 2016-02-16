@@ -12,8 +12,20 @@ public class Crafting : Menu
 
     public List<Recipe> recipes = new List<Recipe>();
     private List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
+    private PlayerStats playerStatsReference;
 
     private bool canClose = true;
+
+    public PlayerStats PlayerStatsReference
+    {
+        get
+        {
+            if (playerStatsReference == null) playerStatsReference = GameManager.Get<PlayerStats>();
+            if (playerStatsReference == null) playerStatsReference = GameObject.FindObjectOfType<PlayerStats>();
+
+            return playerStatsReference;
+        }
+    }
 
     public override void Open()
     {
@@ -22,6 +34,39 @@ public class Crafting : Menu
             InitializeSlots(recipes);
             base.Open();
         }
+    }
+
+
+    public void Open(List<Recipe> recipes)
+    {
+        if(!isActive)
+        {
+            List<Recipe> recipesToOpen = new List<Recipe> ();
+
+            recipes.Clear();
+            recipesToOpen.AddRange(recipes);
+            recipesToOpen.AddRange(PlayerStatsReference.knownRecipes);
+            Debug.Log(recipesToOpen.Count);
+            //recipesToOpen = SanitizeRecipes(recipesToOpen);
+            recipes.Clear();
+            recipes.AddRange(recipesToOpen);
+
+            InitializeSlots(recipes);
+            base.Open();
+        }
+    }
+
+
+    public List<Recipe> SanitizeRecipes(List<Recipe> recipesToSanitize)
+    {
+        List<Recipe> sanitizedRecipes = new List<Recipe> ();
+        //TODO this is removing recipes it shouldnt?
+        foreach(Recipe r in recipesToSanitize)
+        {
+            if (!sanitizedRecipes.Contains(r)) sanitizedRecipes.Add(r);
+        }
+
+        return recipesToSanitize;
     }
 
 
@@ -96,15 +141,19 @@ public class Crafting : Menu
 
     private void InitializeSlots(List<Recipe> recipeList)
     {
+        recipes.Clear();
+        recipes.AddRange(recipeList);
         //TODO optomize this to reuse slots!
         foreach(CraftingSlot cs in craftingSlots)
         {
             Destroy(cs.gameObject);
         }
         craftingSlots.Clear();
-
+        int i = 0;
+        Debug.Log("recipe count! : "+recipes.Count);
         foreach(Recipe recipe in recipes)
         {
+            Debug.Log(" creating slot at :" + i);
             CraftingSlot newCraftingSlot = Instantiate(craftingSlotPrefab) as CraftingSlot;
             newCraftingSlot.transform.SetParent(craftingSlotContainer);
             newCraftingSlot.titleText.text = recipe.displayName;
@@ -112,6 +161,7 @@ public class Crafting : Menu
             newCraftingSlot.recipe = recipe;
 
             craftingSlots.Add(newCraftingSlot);
+            i++;
         }
 
         if(craftingSlots.Count > 0) SelectCraftingSlot(craftingSlots[0]);

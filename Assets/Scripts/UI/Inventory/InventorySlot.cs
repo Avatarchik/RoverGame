@@ -35,10 +35,12 @@ public class InventorySlot : MonoBehaviour
 
     private void OpenToolTip()
     {
-        if(UIManager.GetMenu<Container>().IsActive)
+        if(UIManager.GetMenu<Inventory>().ContainerExchange)
         {
-            TransferToolTip toolTip = UIManager.Open<TransferToolTip>();
+            Debug.Log("opening tooltip from inventory");
+            TransferToolTip toolTip = UIManager.GetMenu<TransferToolTip>();
             toolTip.SetContent(ii, false);
+            toolTip.Open();
         }
         else
         {
