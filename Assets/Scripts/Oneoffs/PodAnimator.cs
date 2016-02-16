@@ -47,7 +47,7 @@ public class PodAnimator : MonoBehaviour
 
     private IEnumerator FallCoroutine()
     {
-        Debug.Log("falling?");
+        /*Debug.Log("falling?");
         float fadeOutTime = 0f;
         float fadeInTime = 4f;
         float cachedBloomIntensity = scion.bloomIntensity;
@@ -91,6 +91,7 @@ public class PodAnimator : MonoBehaviour
         
         player.EnableMovement();
 
-        this.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);*/
+        yield return null;
     }
 }

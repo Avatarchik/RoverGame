@@ -117,6 +117,12 @@ public class ObjectPool : MonoBehaviour
     }
 
 
+    public static void Recycle(GameObject prefab)
+    {
+        GetPool(prefab).Recycle(prefab);
+    }
+
+
 
     private static Pool GetPool (GameObject go)
     {
