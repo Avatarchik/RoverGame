@@ -54,11 +54,12 @@ public class CameraDriver : MonoBehaviour
 
             if (rotationY != rotationYL || rotationX != rotationXL)
             {
-                //will need to play audio too
-                playerCamera.transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
-                //playerCamera.transform.localEulerAngles = new Vector3(0, rotationX, 0);
-               // if (!CachedSoundManager.IsPlaying(cachedSoundManager.Find(ROVER_MOVEMENT_SOUND_ID)))
-                CachedSoundManager.Play(ROVER_MOVEMENT_SOUND_ID);
+                //TODO get rid of magic numbers
+                playerCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
+                transform.Rotate(Vector3.up, playerStats.MoveSpeed * Time.fixedDeltaTime* Input.GetAxis("Mouse X") * playerStats.TurnSpeed * 15f);
+
+                if (!CachedSoundManager.IsPlaying(cachedSoundManager.Find(ROVER_MOVEMENT_SOUND_ID)))
+                    CachedSoundManager.Play(ROVER_MOVEMENT_SOUND_ID);
             }
             else
             {

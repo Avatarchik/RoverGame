@@ -143,6 +143,7 @@ public class Inventory : Menu
 
     public virtual void RemoveInventoryItem(Ingredient ingredient, int count)
     {
+        bool foundNothing = true;
         while(count > 0)
         {
             for(int i = 0; i < ingredientsInInventory.Count; i++)
@@ -151,8 +152,15 @@ public class Inventory : Menu
                 {
                     ingredientsInInventory.RemoveAt(i);
                     count--;
+                    foundNothing = false;
                     break;
                 }
+            }
+
+            if(foundNothing)
+            {
+                Debug.LogError("No item : " + ingredient.displayName + " : id : " + ingredient.id + " was found");
+                break;
             }
         }
 

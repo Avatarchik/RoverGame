@@ -157,4 +157,11 @@ public class SoundManager : MonoBehaviour
 
 		return source;
 	}
+
+
+    private void Start()
+    {
+        Debug.Log("wakka wakka");
+        Play(1010);
+    }
 }
