@@ -28,6 +28,13 @@ public class CharacterDriver : MonoBehaviour
     }
 
 
+    private void Reset()
+    {
+        transform.rotation = Quaternion.identity;
+        transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+    }
+
+
     private void Update()
     {
         if (Input.GetAxis("RoverMove") != 0 || Input.GetAxis("RoverTurn") != 0 || Input.GetAxis("RoverStrafe") != 0)
@@ -39,6 +46,17 @@ public class CharacterDriver : MonoBehaviour
         {
             CachedSoundManager.Stop(ROVER_MOVEMENT_SOUND_ID);
         }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            flashLightActive = !flashLightActive;
+            flashLight.gameObject.SetActive(flashLightActive);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reset();
+        }
     }
     
 
@@ -46,23 +64,12 @@ public class CharacterDriver : MonoBehaviour
     {
         if (Input.GetAxis("RoverMove") != 0)
         {
-            transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverMove") * 2f);
+            transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverMove") * 1.75f);
         }
 
         if (Input.GetAxis("RoverTurn") != 0)
         {
-            transform.Rotate(Vector3.up, playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * 35f);
-        }
-
-        if (Input.GetAxis("RoverStrafe") != 0)
-        {
-            transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverStrafe"));
-        }
-
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            flashLightActive = !flashLightActive;
-            flashLight.gameObject.SetActive(flashLightActive);
+            transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * 1.75f);
         }
     }
 

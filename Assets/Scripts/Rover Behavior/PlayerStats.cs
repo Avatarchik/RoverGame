@@ -187,7 +187,6 @@ public class PlayerStats : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        
     }
 
 

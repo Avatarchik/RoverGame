@@ -4,12 +4,15 @@ using System.Collections.Generic;
 
 public class CraterExplosion : InteractibleObject
 {
+    private const int EXPLOSION_SOUND_ID = 30;
+
     public GameObject explosionPrefab1;
     public GameObject explosionPrefab2;
     public Transform explosionOrigin;
     public Ingredient desiredIngredient;
     public string failString = "You will need an {0} to clear this landslide";
 
+    public int explosionDelay = 10;
     public float shakeIntensity = 1f;
     public float shakeDecay = 0.05f;
 
@@ -19,11 +22,13 @@ public class CraterExplosion : InteractibleObject
 
     public override void Interact()
     {
+        Debug.Log("Interacting");
         Inventory inventory = UIManager.GetMenu<Inventory>();
         MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
-
+        
         if(inventory.GetIngredientAmount(desiredIngredient) > 0)
         {
+            Debug.Log("wakka wakka");
             triggered = true;
             inventory.RemoveInventoryItem(desiredIngredient, 1);
             StartCoroutine(DetonateDelay());
@@ -31,13 +36,17 @@ public class CraterExplosion : InteractibleObject
         else if (!triggered)
         {
             StopAllCoroutines();
+            interactible = false;
             messageMenu.Open(failString);
+            
         }
     }
 
     public void TriggerExplosion()
     {
         CameraShake cameraShakeInstance = GameObject.FindObjectOfType<CameraShake>();
+        GameManager.Get<SoundManager>().Play(EXPLOSION_SOUND_ID);
+
         GameObject explosion1 = Instantiate(explosionPrefab1, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
         GameObject explosion2 = Instantiate(explosionPrefab2, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
         explosion1.transform.SetParent(explosionOrigin);
@@ -54,7 +63,10 @@ public class CraterExplosion : InteractibleObject
 
     private IEnumerator DetonateDelay()
     {
-        yield return new WaitForSeconds(10f);
+        Debug.Log("delaying!");
+        CountDown countDown = UIManager.GetMenu<CountDown>();
+        countDown.SetText(explosionDelay);
+        yield return new WaitForSeconds(explosionDelay);
         TriggerExplosion();
     }
 
@@ -63,5 +75,6 @@ public class CraterExplosion : InteractibleObject
     {
         yield return new WaitForSeconds(5f);
         UIManager.Close<MessageMenu>();
+        interactible = true;
     }
 }
