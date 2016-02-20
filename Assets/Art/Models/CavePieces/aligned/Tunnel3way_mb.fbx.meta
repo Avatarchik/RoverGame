@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: b8f1c3e1ee1ef3448ba2d0d0efc7256b
-timeCreated: 1455939428
+guid: b83e4de3fabcdb54c9bfec53ac6d4996
+timeCreated: 1455943434
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: pCube5
+    4300000: CaveThreeWay02
   materials:
     importMaterials: 1
     materialName: 0

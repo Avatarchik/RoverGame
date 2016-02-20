@@ -1,15 +1,18 @@
 fileFormatVersion: 2
-guid: b8f1c3e1ee1ef3448ba2d0d0efc7256b
-timeCreated: 1455939428
+guid: b543e0a6c7ea4e4489446eafaf227c04
+timeCreated: 1455919045
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
+    100000: ID12
+    100002: //RootNode
+    400000: ID12
+    400002: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: pCube5
+    4300000: SketchUp
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -68,7 +71,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
