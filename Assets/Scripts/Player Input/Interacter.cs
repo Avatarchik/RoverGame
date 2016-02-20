@@ -2,46 +2,49 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Interacter : MonoBehaviour
+namespace Sol
 {
-    public float detectionDistance = 50f;
-
-    private List<InteractibleObject> hoveredInteractibleObjects = new List<InteractibleObject>();
-
-
-    public void Update()
+    public class Interacter : MonoBehaviour
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance);
+        public float detectionDistance = 50f;
 
-        List<InteractibleObject> interactibles = new List<InteractibleObject>();
+        private List<InteractibleObject> hoveredInteractibleObjects = new List<InteractibleObject>();
 
-        foreach (RaycastHit hit in hits)
+
+        public void Update()
         {
-            InteractibleObject[] ios = hit.collider.gameObject.GetComponents<InteractibleObject>();
-            interactibles.AddRange(ios);
-        }
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance);
 
-        SetInteractibleObjects(interactibles);
-    }
+            List<InteractibleObject> interactibles = new List<InteractibleObject>();
 
-
-    public void SetInteractibleObjects(List<InteractibleObject> currentLitObjects)
-    {
-        foreach (InteractibleObject inob in hoveredInteractibleObjects)
-        {
-            inob.HoverExit();
-        }
-        hoveredInteractibleObjects.Clear();
-        
-
-        foreach(InteractibleObject io in currentLitObjects)
-        {
-            if(!hoveredInteractibleObjects.Contains(io))
+            foreach (RaycastHit hit in hits)
             {
-                io.HoverEnter();
-                hoveredInteractibleObjects.Add(io);
-                if (Input.GetMouseButtonDown(0)) io.Interact();
+                InteractibleObject[] ios = hit.collider.gameObject.GetComponents<InteractibleObject>();
+                interactibles.AddRange(ios);
+            }
+
+            SetInteractibleObjects(interactibles);
+        }
+
+
+        public void SetInteractibleObjects(List<InteractibleObject> currentLitObjects)
+        {
+            foreach (InteractibleObject inob in hoveredInteractibleObjects)
+            {
+                inob.HoverExit();
+            }
+            hoveredInteractibleObjects.Clear();
+
+
+            foreach (InteractibleObject io in currentLitObjects)
+            {
+                if (!hoveredInteractibleObjects.Contains(io))
+                {
+                    io.HoverEnter();
+                    hoveredInteractibleObjects.Add(io);
+                    if (Input.GetMouseButtonDown(0)) io.Interact();
+                }
             }
         }
     }

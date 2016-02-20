@@ -2,29 +2,32 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class EndDemo : MonoBehaviour
+namespace Sol
 {
-    private void OnTriggerEnter(Collider other)
+    public class EndDemo : MonoBehaviour
     {
-        if(other.gameObject.tag == "Player")
+        private void OnTriggerEnter(Collider other)
         {
-            //we need to end the demo.
-            StartCoroutine(EndDemoCoroutine());
+            if (other.gameObject.tag == "Player")
+            {
+                //we need to end the demo.
+                StartCoroutine(EndDemoCoroutine());
+            }
         }
-    }
 
 
-    private IEnumerator EndDemoCoroutine()
-    {
-        //TODO take out all these magic numbers!
-        UIManager.GetMenu<FadeMenu>().Fade(0.5f, Color.clear, Color.black);
-        GameObject.FindObjectOfType<PlayerStats>().DisableMovement();
-        yield return new WaitForSeconds(0.5f);
-        UIManager.GetMenu<MessageMenu>().Open("To Be Continued...");
-        yield return new WaitForSeconds(3f);
-       // GameManager.Get<SoundManager>().Stop(10);
-     //   GameManager.Get<SoundManager>().Stop(10);
-        Destroy(GameManager.Instance.gameObject);
-        SceneManager.LoadScene(0);
+        private IEnumerator EndDemoCoroutine()
+        {
+            //TODO take out all these magic numbers!
+            UIManager.GetMenu<FadeMenu>().Fade(0.5f, Color.clear, Color.black);
+            GameObject.FindObjectOfType<PlayerStats>().DisableMovement();
+            yield return new WaitForSeconds(0.5f);
+            UIManager.GetMenu<MessageMenu>().Open("To Be Continued...");
+            yield return new WaitForSeconds(3f);
+            // GameManager.Get<SoundManager>().Stop(10);
+            //   GameManager.Get<SoundManager>().Stop(10);
+            Destroy(GameManager.Instance.gameObject);
+            SceneManager.LoadScene(0);
+        }
     }
 }

@@ -3,26 +3,30 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Hud : MonoBehaviour
+namespace Sol
 {
-    public GameObject root;
-    public PlayerStats player;
-    public float showComponentFade;
-    public float showComponentWait;
-
-    public Slider healthBar;
-
-    public List<RoverComponent> roverComponents = new List<RoverComponent>();
-
-
-    public void Open()
+    public class Hud : MonoBehaviour
     {
-        root.SetActive(true);
+        public GameObject root;
+        public PlayerStats player;
+        public float showComponentFade;
+        public float showComponentWait;
+
+        public Slider healthBar;
+
+        public List<RoverComponent> roverComponents = new List<RoverComponent>();
+
+
+        public void Open()
+        {
+            root.SetActive(true);
+        }
+
+
+        public void Close()
+        {
+            root.SetActive(false);
+        }
     }
 
-
-    public void Close()
-    {
-        root.SetActive(false);
-    }
 }

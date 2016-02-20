@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ForceRespawn : MonoBehaviour
+namespace Sol
 {
-    public Spawner spawner;
-
-    public void OnTriggerEnter(Collider other)
+    public class ForceRespawn : MonoBehaviour
     {
-        //if(other.gameObject.tag == "Player") spawner.Respawn();
+        public Spawner spawner;
+
+        public void OnTriggerEnter(Collider other)
+        {
+            //if(other.gameObject.tag == "Player") spawner.Respawn();
+        }
     }
 }

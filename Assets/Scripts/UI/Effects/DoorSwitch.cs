@@ -2,24 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class DoorSwitch : InteractibleObject
+namespace Sol
 {
-    public Renderer button;
-    public Material unpoweredButton;
-    public Material poweredButton;
-    public List<Door> doorsIControl = new List<Door>();
-
-
-    public override void Interact()
+    public class DoorSwitch : InteractibleObject
     {
-        Debug.Log("1");
-        if(Interactible)
+        public Renderer button;
+        public Material unpoweredButton;
+        public Material poweredButton;
+        public List<Door> doorsIControl = new List<Door>();
+
+
+        public override void Interact()
         {
-            Debug.Log("2");
-            foreach (Door door in doorsIControl)
+            Debug.Log("1");
+            if (Interactible)
             {
-                Debug.Log("3");
-                door.IsOpen = !door.IsOpen;
+                Debug.Log("2");
+                foreach (Door door in doorsIControl)
+                {
+                    Debug.Log("3");
+                    door.IsOpen = !door.IsOpen;
+                }
             }
         }
     }
