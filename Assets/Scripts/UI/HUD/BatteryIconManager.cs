@@ -2,47 +2,51 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class BatteryIconManager : MonoBehaviour
+namespace Sol
 {
-    public Image batteryFill;
-    public TimeOfDay timeOfDay;
-    public PlayerStats playerStats;
-    private float fillAmount = 0f;
-
-    public float FillAmount
+    public class BatteryIconManager : MonoBehaviour
     {
-        get { return fillAmount; }
-        set
+        public Image batteryFill;
+        public TimeOfDay timeOfDay;
+        public PlayerStats playerStats;
+        private float fillAmount = 0f;
+
+        public float FillAmount
         {
-            fillAmount = value;
-        }
-    }
-
-
-
-    public void FixedUpdate()
-    {
-        if(timeOfDay != null && timeOfDay.timeInSeconds > 0 && timeOfDay.timeInSeconds < timeOfDay.dayLength * 0.5f)
-        {
-            //its light outside, charge the battery!
-            if(fillAmount < 1)
+            get { return fillAmount; }
+            set
             {
-                fillAmount += Time.deltaTime * playerStats.RechargeRate * 0.001f;
+                fillAmount = value;
             }
         }
-        else
+
+
+
+        public void FixedUpdate()
         {
-            //its dark outside, dont charge!
-            if (fillAmount > 0)
+            if (timeOfDay != null && timeOfDay.timeInSeconds > 0 && timeOfDay.timeInSeconds < timeOfDay.dayLength * 0.5f)
             {
-                fillAmount -= Time.deltaTime * 0.0001f;
+                //its light outside, charge the battery!
+                if (fillAmount < 1)
+                {
+                    fillAmount += Time.deltaTime * playerStats.RechargeRate * 0.001f;
+                }
             }
             else
             {
-                //Debug.Log("player is dead");
+                //its dark outside, dont charge!
+                if (fillAmount > 0)
+                {
+                    fillAmount -= Time.deltaTime * 0.0001f;
+                }
+                else
+                {
+                    //Debug.Log("player is dead");
+                }
             }
-        }
 
-        batteryFill.fillAmount = fillAmount;
+            batteryFill.fillAmount = fillAmount;
+        }
     }
 }
+

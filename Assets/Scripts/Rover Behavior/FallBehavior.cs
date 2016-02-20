@@ -1,52 +1,56 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FallBehavior : MonoBehaviour
+namespace Sol
 {
-    public PlayerStats player;
-    public Rigidbody playerBody;
-
-    public float fallDamageThreshhold = 5f;
-    public float fallDamageMultiplier = 1.5f;
-
-    private float yLastFrame;
-    private float yThisFrame;
-
-    private bool takeFallingDamage;
-    private float maxFallSpeed;
-
-
-    private void TakeFallingDamage(float velocity)
+    public class FallBehavior : MonoBehaviour
     {
-        Debug.Log("taking damage!");
-        player.ModifyHealth(-1 * velocity * fallDamageMultiplier);
-    }
+        public PlayerStats player;
+        public Rigidbody playerBody;
+
+        public float fallDamageThreshhold = 5f;
+        public float fallDamageMultiplier = 1.5f;
+
+        private float yLastFrame;
+        private float yThisFrame;
+
+        private bool takeFallingDamage;
+        private float maxFallSpeed;
 
 
-    private void FixedUpdate()
-    {
-        float velocity = Mathf.Abs(playerBody.velocity.y);
-        if (velocity > -0.1f && velocity < 0.1f) velocity = 0;
-        Debug.Log(velocity);
-        if (!takeFallingDamage)
+        private void TakeFallingDamage(float velocity)
         {
-            if (velocity > fallDamageThreshhold) takeFallingDamage = true;
+            Debug.Log("taking damage!");
+            player.ModifyHealth(-1 * velocity * fallDamageMultiplier);
         }
-        else
+
+
+        private void FixedUpdate()
         {
-            if(velocity == 0)
+            float velocity = Mathf.Abs(playerBody.velocity.y);
+            if (velocity > -0.1f && velocity < 0.1f) velocity = 0;
+            Debug.Log(velocity);
+            if (!takeFallingDamage)
             {
-                //we hit the ground, take the damage!
-                TakeFallingDamage(maxFallSpeed);
-                takeFallingDamage = false;
+                if (velocity > fallDamageThreshhold) takeFallingDamage = true;
             }
             else
             {
-                if (velocity <= fallDamageThreshhold) takeFallingDamage = false; //we slowed down in midair somehow?
-                //still falling, moar damage 
-                if (velocity > maxFallSpeed) maxFallSpeed = velocity;
+                if (velocity == 0)
+                {
+                    //we hit the ground, take the damage!
+                    TakeFallingDamage(maxFallSpeed);
+                    takeFallingDamage = false;
+                }
+                else
+                {
+                    if (velocity <= fallDamageThreshhold) takeFallingDamage = false; //we slowed down in midair somehow?
+                                                                                     //still falling, moar damage 
+                    if (velocity > maxFallSpeed) maxFallSpeed = velocity;
+                }
             }
         }
+
     }
-    
+
 }

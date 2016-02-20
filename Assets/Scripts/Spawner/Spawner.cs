@@ -2,53 +2,56 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Spawner : InteractibleObject
+namespace Sol
 {
-    public Transform spawnPos;
-    public List<RoverComponent> savedRoverComponents = new List<RoverComponent>();
-
-
-    private PlayerStats player;
-
-
-    public PlayerStats Player
+    public class Spawner : InteractibleObject
     {
-        get
+        public Transform spawnPos;
+        public List<RoverComponent> savedRoverComponents = new List<RoverComponent>();
+
+
+        private PlayerStats player;
+
+
+        public PlayerStats Player
         {
+            get
+            {
 
-            return (player != null) ? player : player = GameObject.FindObjectOfType<PlayerStats>() as PlayerStats;
+                return (player != null) ? player : player = GameObject.FindObjectOfType<PlayerStats>() as PlayerStats;
+            }
+            set
+            {
+                player = value;
+            }
         }
-        set
+
+
+        public override void Interact()
         {
-            player = value;
+            SaveRoverComponents();
+            Debug.Log("rover components saved!");
         }
-    }
 
 
-    public override void Interact()
-    {
-        SaveRoverComponents();
-        Debug.Log("rover components saved!");
-    }
+        public void Respawn()
+        {
+            //reset palyers position to respawn position
+            Player.transform.position = spawnPos.position;
+
+            //revert rover to last saved amount
+            Player.roverComponents.Clear();
+            Player.roverComponents.AddRange(savedRoverComponents);
+
+            //clear out the player's inventory
+            GameObject.FindObjectOfType<Inventory>().RemoveAllInventoryItems();
+        }
 
 
-    public void Respawn()
-    {
-        //reset palyers position to respawn position
-        Player.transform.position = spawnPos.position;
-
-        //revert rover to last saved amount
-        Player.roverComponents.Clear();
-        Player.roverComponents.AddRange(savedRoverComponents);
-
-        //clear out the player's inventory
-        GameObject.FindObjectOfType<Inventory>().RemoveAllInventoryItems();
-    }
-
-
-    public void SaveRoverComponents()
-    {
-        savedRoverComponents.Clear();
-        savedRoverComponents.AddRange(Player.roverComponents);
+        public void SaveRoverComponents()
+        {
+            savedRoverComponents.Clear();
+            savedRoverComponents.AddRange(Player.roverComponents);
+        }
     }
 }

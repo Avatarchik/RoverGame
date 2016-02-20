@@ -2,20 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Workbench : InteractibleObject
+namespace Sol
 {
-    public List<Recipe> recipes = new List<Recipe>();
-
-
-    public override void Interact()
+    public class Workbench : InteractibleObject
     {
-        if (Interactible)
-        {
-            Crafting craftingMenu = UIManager.GetMenu<Crafting>();
+        public List<Recipe> recipes = new List<Recipe>();
 
-            silhouette.SetActive(false);
-            UIManager.Close<MessageMenu>();
-            craftingMenu.Open(recipes);
+
+        public override void Interact()
+        {
+            if (Interactible)
+            {
+                Crafting craftingMenu = UIManager.GetMenu<Crafting>();
+
+                silhouette.SetActive(false);
+                UIManager.Close<MessageMenu>();
+                craftingMenu.Open(recipes);
+            }
         }
-    } 
+    }
+
 }

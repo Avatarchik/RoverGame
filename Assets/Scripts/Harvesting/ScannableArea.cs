@@ -2,73 +2,77 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScannableArea : MonoBehaviour
+namespace Sol
 {
-    public float harvestTime;
-
-    public InventoryIngredient tier1Element;
-    public InventoryIngredient tier2Element;
-    public InventoryIngredient tier3Element;
-
-    public float rareElementHarvestChance;
-    public InventoryIngredient rareElement;
-
-    private bool scannable = false;
-    private Harvesting harvestingMenu;
-
-    public bool Scannable
+    public class ScannableArea : MonoBehaviour
     {
-        get { return scannable; }
-        set
+        public float harvestTime;
+
+        public InventoryIngredient tier1Element;
+        public InventoryIngredient tier2Element;
+        public InventoryIngredient tier3Element;
+
+        public float rareElementHarvestChance;
+        public InventoryIngredient rareElement;
+
+        private bool scannable = false;
+        private Harvesting harvestingMenu;
+
+        public bool Scannable
         {
-            scannable = value;
-
-            if (harvestingMenu == null) harvestingMenu = GameObject.FindObjectOfType<Harvesting>() as Harvesting;
-            if(scannable)
+            get { return scannable; }
+            set
             {
-                harvestingMenu.OpenNote();
-            }
-            else
-            {
-                harvestingMenu.CloseNote();
-            }
-            
-        }
-    }
+                scannable = value;
 
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Player") Scannable = true;
-    }
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player") Scannable = false;
-    }
-
-
-    private void Update()
-    {
-        if(scannable)
-        {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                if(!harvestingMenu.IsActive)
+                if (harvestingMenu == null) harvestingMenu = GameObject.FindObjectOfType<Harvesting>() as Harvesting;
+                if (scannable)
                 {
-                    //gotta open it
-                    harvestingMenu.Open(tier1Element, tier2Element, tier3Element, rareElement, rareElementHarvestChance);
-                    harvestingMenu.CloseNote();
+                    harvestingMenu.OpenNote();
                 }
                 else
                 {
-                    //gotta close it
-                    harvestingMenu.Close();
-                    harvestingMenu.OpenNote();
+                    harvestingMenu.CloseNote();
                 }
-                
+
+            }
+        }
+
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.tag == "Player") Scannable = true;
+        }
+
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.tag == "Player") Scannable = false;
+        }
+
+
+        private void Update()
+        {
+            if (scannable)
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (!harvestingMenu.IsActive)
+                    {
+                        //gotta open it
+                        harvestingMenu.Open(tier1Element, tier2Element, tier3Element, rareElement, rareElementHarvestChance);
+                        harvestingMenu.CloseNote();
+                    }
+                    else
+                    {
+                        //gotta close it
+                        harvestingMenu.Close();
+                        harvestingMenu.OpenNote();
+                    }
+
+                }
             }
         }
     }
 }
+

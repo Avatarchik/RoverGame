@@ -2,38 +2,41 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ContainerObject : InteractibleObject
+namespace Sol
 {
-    public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
-    private Container containerMenu;
-
-    private Container ContainerMenu
+    public class ContainerObject : InteractibleObject
     {
-        get { return (containerMenu != null) ? containerMenu : containerMenu = UIManager.GetMenu<Container>(); }
-    }
+        public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
+        private Container containerMenu;
 
-
-    public void AddIngredient(Ingredient ingredient)
-    {
-        ingredientsInInventory.Add(ingredient);
-    }
-
-
-    public void RemoveIngredient(Ingredient ingredient)
-    {
-        for(int i = 0; i < ingredientsInInventory.Count; i++)
+        private Container ContainerMenu
         {
-            if (ingredientsInInventory[i] == ingredient)
+            get { return (containerMenu != null) ? containerMenu : containerMenu = UIManager.GetMenu<Container>(); }
+        }
+
+
+        public void AddIngredient(Ingredient ingredient)
+        {
+            ingredientsInInventory.Add(ingredient);
+        }
+
+
+        public void RemoveIngredient(Ingredient ingredient)
+        {
+            for (int i = 0; i < ingredientsInInventory.Count; i++)
             {
-                ingredientsInInventory.RemoveAt(i);
-                break;
+                if (ingredientsInInventory[i] == ingredient)
+                {
+                    ingredientsInInventory.RemoveAt(i);
+                    break;
+                }
             }
         }
-    }
 
 
-    public override void Interact()
-    {
-        if(Interactible) ContainerMenu.Open(ingredientsInInventory, this);
+        public override void Interact()
+        {
+            if (Interactible) ContainerMenu.Open(ingredientsInInventory, this);
+        }
     }
 }

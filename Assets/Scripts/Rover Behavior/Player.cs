@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour
+namespace Sol
 {
-    private PlayerStats playerStats;
-
-
-    public PlayerStats Stats
+    public class Player : MonoBehaviour
     {
-        get { return (playerStats != null) ? playerStats : playerStats = GameObject.FindObjectOfType<PlayerStats>(); }
+        private PlayerStats playerStats;
+
+
+        public PlayerStats Stats
+        {
+            get { return (playerStats != null) ? playerStats : playerStats = GameObject.FindObjectOfType<PlayerStats>(); }
+        }
     }
+
 }

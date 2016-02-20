@@ -3,19 +3,23 @@ using UnityEngine.UI;
 using System.Collections;
 
 
-public class ContainerSlot : InventorySlot
+namespace Sol
 {
-    private void OpenTransferToolTip()
+    public class ContainerSlot : InventorySlot
     {
-        Debug.Log("opening tooltip from container");
+        private void OpenTransferToolTip()
+        {
+            Debug.Log("opening tooltip from container");
 
-        TransferToolTip toolTip = UIManager.Open<TransferToolTip>();
-        toolTip.SetContent(ii, true);
+            TransferToolTip toolTip = UIManager.Open<TransferToolTip>();
+            toolTip.SetContent(ii, true);
+        }
+
+
+        private void Awake()
+        {
+            moreInfo.onClick.AddListener(OpenTransferToolTip);
+        }
     }
 
-
-    private void Awake()
-    {
-        moreInfo.onClick.AddListener(OpenTransferToolTip);
-    }
 }

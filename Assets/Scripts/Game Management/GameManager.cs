@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     protected Dictionary<System.Type, object> singletons = new Dictionary<System.Type, object>();
 
     protected static GameManager instance;
-    protected static bool isQuitting;
-
 
     public static T As<T> () where T: GameManager
     {
