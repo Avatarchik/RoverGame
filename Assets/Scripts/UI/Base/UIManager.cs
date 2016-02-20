@@ -12,7 +12,7 @@ namespace Sol
 
         public List<Menu> prefabs = new List<Menu>();
 
-        protected Dictionary<System.Type, Menu> cachedMenus = new Dictionary<System.Type, Menu>();
+        protected List<Menu> cachedMenus = new List<Menu>();
 
 
         public static UIManager Instance
@@ -32,22 +32,24 @@ namespace Sol
             get { return (canvasRoot != null) ? canvasRoot : canvasRoot = Instance.GetComponent<Canvas>(); }
         }
 
-
+        ///<summary>
         ///Reset cached menus
+        ///</summary>
         public static void ClearMenus()
         {
             if (!Exists) return;
 
-            foreach (System.Type type in Instance.cachedMenus.Keys)
+            foreach (Menu menu in Instance.cachedMenus)
             {
-                Destroy(Instance.cachedMenus[type]);
+                Destroy(menu);
             }
 
             Instance.cachedMenus.Clear();
         }
 
-
+        ///<summary>
         ///Open menu of type T and close all others as  desired
+        ///</summary>
         public static T Open<T>(bool closeOthers = false) where T : Menu
         {
             if (!Exists) return null;
@@ -61,8 +63,9 @@ namespace Sol
             return menu;
         }
 
-
+        ///<summary>
         ///Close menu of type T
+        ///</summary>
         public static T Close<T>() where T : Menu
         {
             if (!Exists) return null;
@@ -74,25 +77,34 @@ namespace Sol
             return menu;
         }
 
+        ///<summary>
         //Close all menus
+        ///</summary>
         public static void CloseAll()
         {
-            foreach (System.Type type in Instance.cachedMenus.Keys)
+            foreach (Menu menu in Instance.cachedMenus)
             {
-                if (Instance.cachedMenus[type]) Instance.cachedMenus[type].Close();
+                if (menu) menu.Close();
             }
         }
 
-
+        ///<summary>
         ///Retrieve menu without opening it, create it if it doesnt exist.
+        ///</summary>
         public static T GetMenu<T>() where T : Menu
         {
             if (!Exists) return null;
 
             T menu = null;
 
-            System.Type type = typeof(T);
-            if (Instance.cachedMenus.ContainsKey(type)) menu = Instance.cachedMenus[type] as T;
+            foreach (Menu m in Instance.cachedMenus)
+            {
+                if (m is T)
+                {
+                    menu = m as T;
+                    break;
+                }
+            }
 
             if (!menu) menu = FindObjectOfType<T>();
 
@@ -108,13 +120,14 @@ namespace Sol
                 }
             }
 
-            if (menu && !Instance.cachedMenus.ContainsKey(type)) Instance.cachedMenus.Add(type, menu);
+            if (menu && !Instance.cachedMenus.Contains(menu)) Instance.cachedMenus.Add(menu);
             
             return menu;
         }
 
-
+        ///<summary>
         ///Create a new menu of type T
+        ///</summary>
         protected static T Create<T>(T menuPrefab) where T : Menu
         {
             T menu = null;

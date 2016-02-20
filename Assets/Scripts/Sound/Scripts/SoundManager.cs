@@ -161,7 +161,6 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("wakka wakka");
         Play(1010);
     }
 }
