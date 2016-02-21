@@ -72,7 +72,7 @@ namespace Sol
                 rotationXL = rotationX;
                 rotationYL = rotationY;
 
-                playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView + (Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed), minZoom, maxZoom);
+               // playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView + (Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed), minZoom, maxZoom);
             }
         }
 

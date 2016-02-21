@@ -5,10 +5,10 @@ using System.Collections;
 
 public class CameraCollision : MonoBehaviour {
 	public bool canScroll = true; //whether or not you can zoom in and out
-    public Transform focusPoint; //used as the focal rotation point, and raycast point | must be centered on the player(x and z)
-    public float detectionRadius = 0.1f; //radius detection | used to prevent the camera from peering through when standing up against a wall
-    public float zoomDistance = 1.0f; //the distance the camera will zoom per scroll
-    public int maxZoomOut = 5; //used to limit distance you can zoom out, away from your character
+	public Transform focusPoint; //used as the focal rotation point, and raycast point | must be centered on the player(x and z)
+	public float detectionRadius = 0.15f; //radius detection | used to prevent the camera from peering through when standing up against a wall
+	public float zoomDistance = 1.0f; //the distance the camera will zoom per scroll
+	public int maxZoomOut = 5; //used to limit distance you can zoom out, away from your character
 	private int maxZoomIn; //used to limit distance you can zoom in, towards your character
 	private RaycastHit hit; //used to detect objects in front of camera
 	private GameObject camFollow; //monitors camera's position
@@ -17,7 +17,7 @@ public class CameraCollision : MonoBehaviour {
 	//This variable is a gameObject, created on start (just below)
 
 	//Use this for initialization
-	private void Start () {
+	void Start () {
 		focusPoint = transform.parent.transform;
 
 		//create camSpot
@@ -40,13 +40,36 @@ public class CameraCollision : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //distance between camFollow and camSpot
-        float distFromCamSpot = Vector3.Distance(camFollow.transform.position, camSpot.transform.position);
+		//If player mouse-scrolls foward
+		if(Input.GetAxis("Mouse ScrollWheel") > 0) {
+			if(canScroll == true) {
+				//can only zoom in four intervals from camSpot's starting pos
+				if(maxZoomIn > 0) {
+					//zoom camSpot in
+					camSpot.transform.position = camSpot.transform.position + 1 * -camFollow.transform.forward;
+					maxZoomOut += 1; maxZoomIn -= 1;
+				}
+			}
+		}
+		//If player mouse-scrolls backward
+		if(Input.GetAxis("Mouse ScrollWheel") < 0) {
+			if(canScroll == true) {
+				//can only zoom out four intervals from camSpot's starting pos
+				if(maxZoomOut > 0) {
+					//zoom camSpot out
+					camSpot.transform.position = camSpot.transform.position - 1 * -camFollow.transform.forward;
+					maxZoomOut -= 1; maxZoomIn += 1;
+				}
+			}
+		}
+		
+		//distance between camFollow and camSpot
+		float distFromCamSpot = Vector3.Distance(camFollow.transform.position, camSpot.transform.position);
 		//distance between camFollow and camera
 		float distFromCamera = Vector3.Distance(camFollow.transform.position, transform.position);
-
-        //ShereCast from camFollow to camSpot
-        if (Physics.SphereCast(camFollow.transform.position, detectionRadius, camFollow.transform.forward, out hit, distFromCamSpot)) {
+		
+		//ShereCast from camFollow to camSpot
+		if(Physics.SphereCast(camFollow.transform.position, detectionRadius, camFollow.transform.forward, out hit, distFromCamSpot)) {
 			//**MAKE SURE YOUR PLAYER IS NOT BETWEEN THE FOCUS-POINT AND CAMERA**
 			//get distance betwen camFollow and hitPoint of raycast
 			var distFromHit = Vector3.Distance(camFollow.transform.position, hit.point);
