@@ -10,7 +10,7 @@ public class ObjectiveDisplay : MonoBehaviour
     public Objective objective;
 
     private bool isFilling = true;
-    public float fillSpeed = 0.1f;
+    public float fillSpeed = 0.05f;
     private string filledString = "";
 
     public bool Isfilling

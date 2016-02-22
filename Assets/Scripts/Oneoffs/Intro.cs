@@ -12,6 +12,7 @@ namespace Sol
         public CameraDriver cameraDriver;
         public CharacterDriver characterDriver;
 
+        public Objective pressAnyKeyObjective;
         public Objective lookObjective;
         public Objective moveObjective;
         public Objective escapePodObjective;
@@ -35,6 +36,14 @@ namespace Sol
             CachedPlayerStats.DisableMovement();
 
             fadeMenu.Fade(0f, Color.clear, Color.black);
+            bool anyKeyPressed = false;
+            od = objectiveTracker.AddObjective(pressAnyKeyObjective);
+            while (!anyKeyPressed || od.Isfilling)
+            {
+                anyKeyPressed = Input.anyKey;
+                yield return null;
+            }
+
             yield return new WaitForSeconds(1f);
 
             for(int i = 0; i < introObjectives.Count; i++)
@@ -60,15 +69,12 @@ namespace Sol
             float prevMoveSpeedMultiplier = characterDriver.movementSpeedMultiplier;
             characterDriver.movementSpeedMultiplier = 0f;
 
-            while(Input.GetAxis("Mouse X") == 0)
+            while(Input.GetAxis("Mouse X") == 0 && Input.GetAxis("Mouse Y") == 0)
             {
                 yield return null;
             }
 
-            while (Input.GetAxis("Mouse Y") == 0)
-            {
-                yield return null;
-            }
+            yield return new WaitForSeconds(1f);
 
             od = objectiveTracker.AddObjective(moveObjective);
             while (od.Isfilling)
@@ -77,15 +83,12 @@ namespace Sol
             }
             characterDriver.movementSpeedMultiplier = prevMoveSpeedMultiplier;
 
-            while (Input.GetAxis("RoverMove") == 0)
+            while (Input.GetAxis("RoverMove") == 0 && Input.GetAxis("RoverTurn") == 0)
             {
                 yield return null;
             }
 
-            while (Input.GetAxis("RoverTurn") == 0)
-            {
-                yield return null;
-            }
+            yield return new WaitForSeconds(1f);
 
             objectiveTracker.AddObjective(escapePodObjective);
         }
