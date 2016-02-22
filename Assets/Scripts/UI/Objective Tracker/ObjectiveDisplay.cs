@@ -9,10 +9,45 @@ public class ObjectiveDisplay : MonoBehaviour
 
     public Objective objective;
 
+    private bool isFilling = true;
+    public float fillSpeed = 0.1f;
+    private string filledString = "";
 
-    private void Initialize()
+    public bool Isfilling
+    {
+        get { return isFilling; }
+    }
+
+    public IEnumerator FillText(string s)
+    {
+        isFilling = true;
+        char[] chars = s.ToCharArray();
+
+        for(int i = 0; i < chars.Length; i++)
+        {
+            yield return new WaitForSeconds(fillSpeed);
+            filledString = filledString + chars[i];
+            objectiveText.text = filledString;
+        }
+
+        isFilling = false;
+    }
+
+    public void Initialize()
     {
         permanentText.text = objective.permanentText;
-        objectiveText.text = objective.objectiveText;
+
+        StartCoroutine(FillText(objective.objectiveText));
+    }
+
+    /// <summary>
+    /// type speed refers to wait time before each char is typed
+    /// </summary>
+    /// <param name="typeSpeed"></param>
+    public void Initialize(float typeSpeed)
+    {
+        permanentText.text = objective.permanentText;
+        fillSpeed = typeSpeed;
+        StartCoroutine(FillText(objective.objectiveText));
     }
 }

@@ -13,6 +13,8 @@ namespace Sol
 
         public Light flashLight;
 
+        public float movementSpeedMultiplier = 1.75f;
+
         //public AudioSource servoMotorSound;
 
         private bool flashLightActive = false;
@@ -66,12 +68,12 @@ namespace Sol
         {
             if (Input.GetAxis("RoverMove") != 0)
             {
-                transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverMove") * 1.75f);
+                transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverMove") * movementSpeedMultiplier);
             }
 
             if (Input.GetAxis("RoverTurn") != 0)
             {
-                transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * 1.75f);
+                transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * movementSpeedMultiplier);
             }
         }
 

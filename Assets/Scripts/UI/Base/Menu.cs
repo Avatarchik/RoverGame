@@ -26,7 +26,7 @@ public class Menu : MonoBehaviour
         {
             isActive = true;
             root.SetActive(true);
-            if (stopsMovement) OnMenuOpen();
+            if (stopsMovement && OnMenuClose != null) OnMenuOpen();
         }
     }
 
