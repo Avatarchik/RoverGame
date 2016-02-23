@@ -6,6 +6,9 @@ namespace Sol
 {
     public class Intro : MonoBehaviour
     {
+        delegate void CompleteObjective();
+        CompleteObjective onCompleteObjective;
+
         private PlayerStats playerStats = null;
 
         public MouseLook mouseLook;
@@ -19,6 +22,8 @@ namespace Sol
         public Objective constructExplosiveObjective;
         public Objective clearLandslideObjective;
 
+        public float displaySpeed = 0.01f;
+
         public List<Objective> introObjectives = new List<Objective>();
         
 
@@ -26,7 +31,6 @@ namespace Sol
         {
             get { return (playerStats != null) ? playerStats : playerStats = GameObject.FindObjectOfType<PlayerStats>(); }
         }
-
 
         private IEnumerator RunTutorial()
         {
@@ -37,7 +41,7 @@ namespace Sol
 
             fadeMenu.Fade(0f, Color.clear, Color.black);
             bool anyKeyPressed = false;
-            od = objectiveTracker.AddObjective(pressAnyKeyObjective);
+            od = objectiveTracker.AddObjective(pressAnyKeyObjective, displaySpeed);
             while (!anyKeyPressed || od.Isfilling)
             {
                 anyKeyPressed = Input.anyKey;
@@ -49,7 +53,7 @@ namespace Sol
             for(int i = 0; i < introObjectives.Count; i++)
             {
                 yield return new WaitForSeconds(Random.Range(0.1f, 0.4f));
-                od = objectiveTracker.AddObjective(introObjectives[i]);
+                od = objectiveTracker.AddObjective(introObjectives[i], displaySpeed);
                 while(od.Isfilling)
                 {
                     yield return null;
@@ -58,8 +62,9 @@ namespace Sol
 
             fadeMenu.Fade(1f, Color.black, Color.clear);
             yield return new WaitForSeconds(1f);
+            fadeMenu.Close();
 
-            od = objectiveTracker.AddObjective(lookObjective);
+            od = objectiveTracker.AddObjective(lookObjective, displaySpeed);
             while(od.Isfilling)
             {
                 yield return null;
@@ -76,7 +81,7 @@ namespace Sol
 
             yield return new WaitForSeconds(1f);
 
-            od = objectiveTracker.AddObjective(moveObjective);
+            od = objectiveTracker.AddObjective(moveObjective, displaySpeed);
             while (od.Isfilling)
             {
                 yield return null;
@@ -90,12 +95,20 @@ namespace Sol
 
             yield return new WaitForSeconds(1f);
 
-            objectiveTracker.AddObjective(escapePodObjective);
+            objectiveTracker.AddObjective(escapePodObjective, displaySpeed);
+        }
+
+
+        public void NextObjective()
+        {
+            ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
+            ObjectiveDisplay od = objectiveTracker.AddObjective(constructExplosiveObjective, displaySpeed);
         }
 
 
         private void Awake()
         {
+            onCompleteObjective += NextObjective;
             StartCoroutine(RunTutorial());
         }
     }

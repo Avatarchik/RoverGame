@@ -7,6 +7,7 @@ namespace Sol
     {
         private const int ROVER_MOVEMENT_SOUND_ID = 20;
 
+        public CharacterDriver characterDriver;
         public Camera playerCamera;
         public Transform model;
 
@@ -23,6 +24,8 @@ namespace Sol
         public float maxZoom = 70;
 
         public float zoomSpeed = 20.0f;
+
+        public Transform centerOfMass;
 
         private float rotationY = 0.0f;
         private float rotationX = 0.0f;
@@ -48,31 +51,9 @@ namespace Sol
 
         private void Update()
         {
-            if (playerStats.TurnSpeed > 0)
+            if (playerStats.TurnSpeed > 0 && characterDriver.strafing)
             {
-                rotationX += Input.GetAxis("Mouse X") * sensX * Time.deltaTime * playerStats.TurnSpeed;
-                rotationY += Input.GetAxis("Mouse Y") * sensY * Time.deltaTime * playerStats.TurnSpeed;
-                rotationY = Mathf.Clamp(rotationY, minY, maxY);
-
-                if (rotationY != rotationYL || rotationX != rotationXL)
-                {
-                    //TODO get rid of magic numbers
-                    //playerCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
-                  //  playerCamera.transform.Rotate(Vector3.right, playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("Mouse Y") * playerStats.TurnSpeed * -20f);
-                    transform.Rotate(Vector3.up, playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("Mouse X") * playerStats.TurnSpeed * 20f);
-
-                    //if (!CachedSoundManager.IsPlaying(cachedSoundManager.Find(ROVER_MOVEMENT_SOUND_ID)))
-                      //  CachedSoundManager.Play(ROVER_MOVEMENT_SOUND_ID);
-                }
-                else
-                {
-                  //  CachedSoundManager.Stop(ROVER_MOVEMENT_SOUND_ID);
-                }
-
-                rotationXL = rotationX;
-                rotationYL = rotationY;
-
-               // playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView + (Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed), minZoom, maxZoom);
+                 transform.Rotate(Vector3.up, playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("Mouse X") * playerStats.TurnSpeed * 20f);
             }
         }
 
@@ -80,6 +61,7 @@ namespace Sol
         private void Awake()
         {
             playerStats = GameObject.FindObjectOfType<PlayerStats>() as PlayerStats;
+           // GetComponent<Rigidbody>().centerOfMass = centerOfMass.position;
         }
     }
 

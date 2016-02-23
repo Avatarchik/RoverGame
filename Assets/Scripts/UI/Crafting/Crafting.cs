@@ -39,14 +39,14 @@ namespace Sol
         }
 
 
-        public void Open(List<Recipe> recipes)
+        public void Open(List<Recipe> r)
         {
             if (!isActive)
             {
                 List<Recipe> recipesToOpen = new List<Recipe>();
 
                 recipes.Clear();
-                recipesToOpen.AddRange(recipes);
+                recipesToOpen.AddRange(r);
                 recipesToOpen.AddRange(PlayerStatsReference.knownRecipes);
                 Debug.Log(recipesToOpen.Count);
                 //recipesToOpen = SanitizeRecipes(recipesToOpen);

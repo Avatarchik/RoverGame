@@ -13,12 +13,14 @@ namespace Sol
 
         public Light flashLight;
 
+        public bool strafing = true;
         public float movementSpeedMultiplier = 1.75f;
 
         //public AudioSource servoMotorSound;
 
         private bool flashLightActive = false;
         private SoundManager cachedSoundManager;
+
 
         public SoundManager CachedSoundManager
         {
@@ -57,10 +59,8 @@ namespace Sol
                 flashLight.gameObject.SetActive(flashLightActive);
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                Reset();
-            }
+            if (Input.GetKeyDown(KeyCode.B)) strafing = !strafing;
+            if (Input.GetKeyDown(KeyCode.R))Reset();
         }
 
 
@@ -70,11 +70,21 @@ namespace Sol
             {
                 transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverMove") * movementSpeedMultiplier);
             }
-
-            if (Input.GetAxis("RoverTurn") != 0)
+            if(strafing)
             {
-                transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * movementSpeedMultiplier);
+                if (Input.GetAxis("RoverTurn") != 0)
+                {
+                    transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * movementSpeedMultiplier);
+                }
             }
+            else
+            {
+                if (Input.GetAxis("RoverTurn") != 0)
+                {
+                    transform.Rotate(Vector3.up, playerStats.TurnSpeed *Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * movementSpeedMultiplier * 18f);
+                }
+            }
+            
         }
 
 
