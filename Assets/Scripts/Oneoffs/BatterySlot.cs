@@ -20,7 +20,7 @@ namespace Sol
 
         public Inventory PlayerInventory
         {
-            get { return (playerInventory != null) ? playerInventory : playerInventory = GameObject.FindObjectOfType<Inventory>() as Inventory; }
+            get { return (playerInventory != null) ? playerInventory : playerInventory = UIManager.GetMenu<Inventory>(); }
         }
 
 

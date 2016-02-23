@@ -25,6 +25,7 @@ namespace Sol
         {
             if (batterySlot.HasItem)
             {
+                GameObject.FindObjectOfType<Intro>().NextObjective();
                 animator.SetBool("Open", true);
             }
         }
@@ -49,6 +50,8 @@ namespace Sol
 
         private IEnumerator FallCoroutine()
         {
+            
+
             /*Debug.Log("falling?");
             float fadeOutTime = 0f;
             float fadeInTime = 4f;

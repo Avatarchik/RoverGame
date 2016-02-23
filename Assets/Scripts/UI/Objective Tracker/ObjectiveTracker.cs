@@ -10,14 +10,14 @@ public class ObjectiveTracker : Menu
     public List<ObjectiveDisplay> displayedObjectives = new List<ObjectiveDisplay>();
 
 
-    public ObjectiveDisplay AddObjective(Objective objective)
+    public ObjectiveDisplay AddObjective(Objective objective, float displaySpeed = 0f)
     {
         if (!IsActive) Open();
 
         ObjectiveDisplay od = Instantiate(objectivePrefab);
         od.transform.SetParent(objectiveContainer, false);
         od.objective = objective;
-        od.Initialize();
+        od.Initialize(displaySpeed);
         displayedObjectives.Add(od);
 
         return od;

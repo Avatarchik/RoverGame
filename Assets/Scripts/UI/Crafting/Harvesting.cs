@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 
 namespace Sol
 {
@@ -101,20 +100,12 @@ namespace Sol
             {
                 distance += Vector3.Distance(path[i - 1], path[i]);
             }
-
-            playerCamera.transform.DOPath(path, distance / animationSpeed, PathType.CatmullRom, PathMode.Full3D).SetLookAt(lookPoint);
         }
 
 
         private void LateUpdate()
         {
             playerCamera.transform.eulerAngles = new Vector3(playerCamera.transform.eulerAngles.x, playerCamera.transform.eulerAngles.y, 0);
-        }
-
-
-        private void Awake()
-        {
-            DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
         }
     }
 }
