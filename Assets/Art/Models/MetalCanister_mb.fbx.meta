@@ -1,21 +1,22 @@
 fileFormatVersion: 2
-guid: c21ade05d7eb14f54a3d2793f3fa47dd
+guid: a77de870fb0cd054f83b628eb55e6cb3
+timeCreated: 1456285392
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: pCylinder1
-    100002: //RootNode
-    100004: ramp
-    400000: pCylinder1
-    400002: //RootNode
-    400004: ramp
-    2300000: pCylinder1
-    2300002: ramp
-    3300000: pCylinder1
-    3300002: ramp
-    4300000: pCylinder1
-    4300002: ramp
-    9500000: //RootNode
+    100000: //RootNode
+    100002: pCylinder107
+    100004: pCylinder108
+    400000: //RootNode
+    400002: pCylinder107
+    400004: pCylinder108
+    2300000: pCylinder107
+    2300002: pCylinder108
+    3300000: pCylinder107
+    3300002: pCylinder108
+    4300000: pCylinder108
+    4300002: pCylinder107
   materials:
     importMaterials: 1
     materialName: 0
@@ -54,11 +55,11 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 1
-    tangentImportMode: 4
+    normalImportMode: 0
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
