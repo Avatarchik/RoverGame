@@ -29,7 +29,7 @@ public class AutoIntensity : MonoBehaviour
 
 	public Vector3 dayRotateSpeed;
 	public Vector3 nightRotateSpeed;
-
+    public bool go = false;
 	float skySpeed = 1;
 
 
@@ -47,32 +47,33 @@ public class AutoIntensity : MonoBehaviour
 
 	void FixedUpdate () 
 	{
-	
-		float tRange = 1 - minPoint;
-		float dot = Mathf.Clamp01 ((Vector3.Dot (mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
-		float i = ((maxIntensity - minIntensity) * dot) + minIntensity;
+	    if(go)
+        {
+            float tRange = 1 - minPoint;
+            float dot = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
+            float i = ((maxIntensity - minIntensity) * dot) + minIntensity;
 
-		mainLight.intensity = i;
+            mainLight.intensity = i;
 
-		tRange = 1 - minAmbientPoint;
-		dot = Mathf.Clamp01 ((Vector3.Dot (mainLight.transform.forward, Vector3.down) - minAmbientPoint) / tRange);
-		i = ((maxAmbient - minAmbient) * dot) + minAmbient;
-		RenderSettings.ambientIntensity = i;
+            tRange = 1 - minAmbientPoint;
+            dot = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minAmbientPoint) / tRange);
+            i = ((maxAmbient - minAmbient) * dot) + minAmbient;
+            RenderSettings.ambientIntensity = i;
 
-		mainLight.color = nightDayColor.Evaluate(dot);
-		RenderSettings.ambientLight = mainLight.color;
+            mainLight.color = nightDayColor.Evaluate(dot);
+            RenderSettings.ambientLight = mainLight.color;
 
-		RenderSettings.fogColor = nightDayFogColor.Evaluate(dot);
-		RenderSettings.fogDensity = fogDensityCurve.Evaluate(dot) * fogScale;
-        scion.minMaxExposure = new Vector2(minExposure.Evaluate(dot), maxExposure.Evaluate(dot));
+            RenderSettings.fogColor = nightDayFogColor.Evaluate(dot);
+            RenderSettings.fogDensity = fogDensityCurve.Evaluate(dot) * fogScale;
+            scion.minMaxExposure = new Vector2(minExposure.Evaluate(dot), maxExposure.Evaluate(dot));
 
-		i = ((dayAtmosphereThickness - nightAtmosphereThickness) * dot) + nightAtmosphereThickness;
-		skyMat.SetFloat ("_AtmosphereThickness", i);
+            i = ((dayAtmosphereThickness - nightAtmosphereThickness) * dot) + nightAtmosphereThickness;
+            skyMat.SetFloat("_AtmosphereThickness", i);
 
-		if (dot > 0) 
-			transform.Rotate (dayRotateSpeed * Time.deltaTime * skySpeed);
-		else
-			transform.Rotate (nightRotateSpeed * Time.deltaTime * skySpeed);
-
+            if (dot > 0)
+                transform.Rotate(dayRotateSpeed * Time.deltaTime * skySpeed);
+            else
+                transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
+        }
 	}
 }

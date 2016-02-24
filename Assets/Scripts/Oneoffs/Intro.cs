@@ -6,11 +6,17 @@ namespace Sol
 {
     public class Intro : MonoBehaviour
     {
+        private const int VOICE_ID_1 = 2010;
+        private const int VOICE_ID_2 = 2011;
+        private const int VOICE_ID_3 = 2012;
+        private const int MUSIC_ID_1 = 40;
+
         delegate void CompleteObjective();
         CompleteObjective onCompleteObjective;
 
         private PlayerStats playerStats = null;
 
+        public AutoIntensity autoIntensity;
         public MouseLook mouseLook;
         public CameraDriver cameraDriver;
         public CharacterDriver characterDriver;
@@ -37,7 +43,10 @@ namespace Sol
             FadeMenu fadeMenu = UIManager.GetMenu<FadeMenu>();
             ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
             ObjectiveDisplay od;
+            SoundManager soundManager = GameManager.Get<SoundManager>();
+
             CachedPlayerStats.DisableMovement();
+            
 
             fadeMenu.Fade(0f, Color.clear, Color.black);
             bool anyKeyPressed = false;
@@ -48,11 +57,11 @@ namespace Sol
                 yield return null;
             }
 
+            soundManager.Play(VOICE_ID_1);
             yield return new WaitForSeconds(1f);
-
-            for(int i = 0; i < introObjectives.Count; i++)
+            for (int i = 0; i < introObjectives.Count; i++)
             {
-                yield return new WaitForSeconds(Random.Range(0.1f, 0.4f));
+                yield return new WaitForSeconds(Random.Range(0.3f, 0.6f));
                 od = objectiveTracker.AddObjective(introObjectives[i], displaySpeed);
                 while(od.Isfilling)
                 {
@@ -60,10 +69,11 @@ namespace Sol
                 }
             }
 
-            fadeMenu.Fade(1f, Color.black, Color.clear);
-            yield return new WaitForSeconds(1f);
+            fadeMenu.Fade(2f, Color.black, Color.clear);
+            yield return new WaitForSeconds(4f);
             fadeMenu.Close();
-
+            soundManager.Play(VOICE_ID_2);
+            yield return new WaitForSeconds(2f);
             od = objectiveTracker.AddObjective(lookObjective, displaySpeed);
             while(od.Isfilling)
             {
@@ -79,7 +89,7 @@ namespace Sol
                 yield return null;
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(3f);
 
             od = objectiveTracker.AddObjective(moveObjective, displaySpeed);
             while (od.Isfilling)
@@ -94,8 +104,11 @@ namespace Sol
             }
 
             yield return new WaitForSeconds(1f);
-
+            soundManager.Play(VOICE_ID_3);
+            yield return new WaitForSeconds(12f);
             objectiveTracker.AddObjective(escapePodObjective, displaySpeed);
+
+            autoIntensity.go = true;
         }
 
 
@@ -103,6 +116,7 @@ namespace Sol
         {
             ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
             ObjectiveDisplay od = objectiveTracker.AddObjective(constructExplosiveObjective, displaySpeed);
+            GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
         }
 
 
