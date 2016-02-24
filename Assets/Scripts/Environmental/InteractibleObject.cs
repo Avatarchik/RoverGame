@@ -37,7 +37,6 @@ namespace Sol
                 if (objectName != "")
                 {
                     MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
-                    if (!messageMenu) messageMenu = GameObject.FindObjectOfType<MessageMenu>();
                     messageMenu.Open(objectName);
                 }
             }
