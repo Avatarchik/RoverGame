@@ -182,12 +182,17 @@ namespace Sol
             if (movementEnabled == 0)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = true;
+                Cursor.visible = false;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+            }
+
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
             }
         }
 
