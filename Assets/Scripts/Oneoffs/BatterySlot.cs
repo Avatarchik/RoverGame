@@ -36,7 +36,6 @@ namespace Sol
             {
                 if (PlayerInventory.GetIngredientAmount(desiredObject) > 0)
                 {
-                    Debug.Log("should have item!!");
                     PlayerInventory.RemoveInventoryItem(desiredObject, 1);
                     batteryModel.SetActive(true);
                     doorSwitch.interactible = true;
@@ -48,14 +47,8 @@ namespace Sol
                 {
                     StopAllCoroutines();
                     MessageMenu messageMenu = UIManager.Open<MessageMenu>();
-                    if (HasItem)
-                    {
-                        messageMenu.SetText(string.Format(AFFIRMATIVE_STRING, desiredObject.displayName));
-                    }
-                    else
-                    {
-                        messageMenu.SetText(string.Format(NEGATIVE_STRING, desiredObject.displayName));
-                    }
+                    
+                    messageMenu.SetText(string.Format(NEGATIVE_STRING, desiredObject.displayName), 1);
 
                     StartCoroutine(CloseMessage());
                 }

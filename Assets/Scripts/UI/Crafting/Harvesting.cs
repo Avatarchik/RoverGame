@@ -22,7 +22,6 @@ namespace Sol
 
         public override void Open()
         {
-            Debug.Log("woot open");
             Travel(true);
             base.Open();
         }
