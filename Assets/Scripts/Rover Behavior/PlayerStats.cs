@@ -182,7 +182,7 @@ namespace Sol
             if (movementEnabled == 0)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                Cursor.visible = true;
             }
             else
             {
