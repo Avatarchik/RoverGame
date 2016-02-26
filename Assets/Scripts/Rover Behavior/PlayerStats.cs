@@ -189,6 +189,11 @@ namespace Sol
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
+
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
 
 
