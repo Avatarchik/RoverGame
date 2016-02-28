@@ -14,36 +14,67 @@ namespace Sol
         public Toggle openSystemToggle;
 
 
-        public void OpenMap(bool b)
+        public void OpenMap(bool b = true)
         {
             //TODO implement a map menu
             if (b) { }
         }
 
 
-        public void OpenCrafting(bool b)
+        public void OpenCrafting(bool b = true)
         {
-            if(b) UIManager.Open<Crafting>();
+            if (b)
+            {
+                if (!IsActive) Open();
+                CloseAll();
+                UIManager.Open<Crafting>();
+            }
         }
 
 
-        public void OpenInventory(bool b)
+        public void OpenInventory(bool b = true)
         {
-            if(b) UIManager.Open<Inventory>();
+            if (b)
+            {
+                if (!IsActive) Open();
+                CloseAll();
+                OpenInventoryTransfer(b, false);
+            }
         }
 
 
-        public void OpenLogs(bool b)
+        public void OpenInventoryTransfer(bool b = true, bool transfer = false)
         {
-            if(b) UIManager.Open<LogMenu>();
+            if (b)
+            {
+                if (!IsActive) Open();
+                Inventory inventory= UIManager.GetMenu<Inventory>();
+                
+                inventory.Open(transfer);
+                openInventoryToggle.Select();
+            }
         }
 
 
-        public void OpenSystem(bool b)
+        public void OpenLogs(bool b = true)
         {
-            if(b) { }
-            //TODO implement systems menu
-            //UIManager.Open<SystemM>();
+            if (b)
+            {
+                if (!IsActive) Open();
+                CloseAll();
+                UIManager.Open<LogMenu>();
+            }
+        }
+
+
+        public void OpenSystem(bool b = true)
+        {
+            if(b)
+            {
+                if (!IsActive) Open();
+                CloseAll();
+                UIManager.GetMenu<SystemMenu>().OpenGraphics() ;
+            }
         }
 
 
@@ -52,6 +83,57 @@ namespace Sol
             UIManager.Close<Crafting>();
             UIManager.Close<Inventory>();
             UIManager.Close<LogMenu> ();
+            UIManager.Close<Container>();
+            UIManager.Close<SystemMenu>();
+        }
+
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
+            {
+                if(IsActive)
+                {
+                    CloseAll();
+                    Close();
+                }
+                else
+                {
+                    Open();
+                    OpenSystem();
+                    openSystemToggle.Select();
+                }
+            }
+
+            if(Input.GetKeyDown(KeyCode.I))
+            {
+                if (IsActive)
+                {
+                    CloseAll();
+                    Close();
+                }
+                else
+                {
+                    Open();
+                    OpenInventoryTransfer(true, false);
+                    openInventoryToggle.Select();
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                if (IsActive)
+                {
+                    CloseAll();
+                    Close();
+                }
+                else
+                {
+                    Open();
+                    OpenLogs();
+                    openLogFilesToggle.Select();
+                }
+            }
         }
 
 

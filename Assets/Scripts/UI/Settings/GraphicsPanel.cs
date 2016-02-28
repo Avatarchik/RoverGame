@@ -7,6 +7,7 @@ namespace Sol
 {
     public class GraphicsPanel : MonoBehaviour
     {
+        public GameObject root;
         public Dropdown fullScreenDropdown;
         public Dropdown vsyncDropdown;
         public Dropdown bloomDropdown;
@@ -16,6 +17,18 @@ namespace Sol
         public ScionPostProcess Scion
         {
             get { return (scion != null) ? scion : scion = GameObject.FindObjectOfType<ScionPostProcess>(); }
+        }
+
+
+        public void Activate()
+        {
+            root.SetActive(true);
+        }
+
+
+        public void Deactivate()
+        {
+            root.SetActive(false);
         }
         
 

@@ -12,9 +12,10 @@ namespace Sol
             if (Interactible)
             {
                 LogMenu logMenu = UIManager.GetMenu<LogMenu>();
+                InGameMainMenu igmm = UIManager.GetMenu<InGameMainMenu>();
 
                 logMenu.AddLog(log);
-                logMenu.Open();
+                igmm.OpenLogs();
             }
         }
     }

@@ -9,7 +9,6 @@ namespace Sol
     {
         public CraftingInfoPanel craftingInfoPanel;
         public Transform craftingSlotContainer;
-        public Button closeButton;
         public CraftingSlot craftingSlotPrefab;
         public ToggleGroup toggleGroup;
 
@@ -133,8 +132,9 @@ namespace Sol
             UIManager.GetMenu<Inventory>().AddInventoryItem(newII.ingredient, newII.amount);
 
             canClose = true;
-            SelectCraftingSlot(craftingSlots[0]);
-            SelectSlot();
+            Close();
+            //SelectCraftingSlot(craftingSlots[0]);
+            //SelectSlot();
         }
 
 
@@ -176,7 +176,6 @@ namespace Sol
         private void Awake()
         {
             CraftingSlot.OnSelectCraftingSlot += SelectCraftingSlot;
-            closeButton.onClick.AddListener(Close);
             craftingInfoPanel.craftButton.onClick.AddListener(CraftItem);
         }
     }

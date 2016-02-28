@@ -48,7 +48,9 @@ namespace Sol
             Inventory inventory = UIManager.GetMenu<Inventory>();
 
             CachedPlayerStats.DisableMovement();
+            playerStats.DisableMovement();
 
+            //Press any key!!
             fadeMenu.Fade(0f, Color.clear, Color.black);
             bool anyKeyPressed = false;
             od = objectiveTracker.AddObjective(pressAnyKeyObjective, displaySpeed);
@@ -58,6 +60,7 @@ namespace Sol
                 yield return null;
             }
 
+            //start playing sound and run through the console
             soundManager.Play(VOICE_ID_1);
             yield return new WaitForSeconds(1f);
             for (int i = 0; i < introObjectives.Count; i++)
@@ -73,6 +76,8 @@ namespace Sol
             fadeMenu.Fade(2f, Color.black, Color.clear);
             yield return new WaitForSeconds(4f);
             fadeMenu.Close();
+
+            //look around and move around
             soundManager.Play(VOICE_ID_2);
             yield return new WaitForSeconds(2f);
             od = objectiveTracker.AddObjective(lookObjective, displaySpeed);
@@ -105,6 +110,8 @@ namespace Sol
             }
 
             yield return new WaitForSeconds(1f);
+
+            //escape the pod
             soundManager.Play(VOICE_ID_3);
             yield return new WaitForSeconds(12f);
             objectiveTracker.AddObjective(escapePodObjective, displaySpeed);
