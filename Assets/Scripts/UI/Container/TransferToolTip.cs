@@ -2,8 +2,13 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class TransferToolTip : ToolTip
+public class TransferToolTip : Menu
 {
+    public Text titleText;
+    public Text descriptionText;
+
+    public Button closeButton;
+
     public Button transferButton;
 
     private int currentAmount = 0;
@@ -52,6 +57,7 @@ public class TransferToolTip : ToolTip
             else
             {
                 //we just need to throw one over
+                Debug.Log("container -> inventory");
                 if (amount == 1) Close();
                 inventory.AddInventoryItem(inventoryIngredient.ingredient, 1);
                 container.RemoveInventoryItem(inventoryIngredient.ingredient, 1);
@@ -73,6 +79,7 @@ public class TransferToolTip : ToolTip
             else
             {
                 //we just need to throw one over
+                Debug.Log("inventory -> container");
                 if (amount == 1) Close();
                 inventory.RemoveInventoryItem(inventoryIngredient.ingredient, 1);
                 container.AddInventoryItem(inventoryIngredient.ingredient, 1);
@@ -81,7 +88,7 @@ public class TransferToolTip : ToolTip
     }
 
 
-    protected override void Awake()
+    private void Awake()
     {
         transferButton.onClick.AddListener(OpenTransferModal);
         closeButton.onClick.AddListener(Close);

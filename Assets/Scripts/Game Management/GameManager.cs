@@ -26,7 +26,10 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return (!instance) ? instance : instance = GameObject.FindObjectOfType<GameManager>();
+            if (instance == null) instance = GameObject.FindObjectOfType<GameManager>();
+            if (instance == null) instance = GameObject.Find("_GameManager").GetComponent<GameManager>();
+
+            return instance;
         }
     }
 

@@ -8,9 +8,12 @@ public class Inventory : Menu
     public InventorySlot inventorySlotPrefab;
     public Transform InventorySlotContainer;
     //public Text weightValue;
+    public Button transferButton;
     public Button closeButton;
 
     public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
+
+    public bool ContainerExchange = false;
 
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
@@ -43,27 +46,25 @@ public class Inventory : Menu
     {
         if(containerExchange)
         {
-            foreach (InventorySlot invis in inventorySlots)
-            {
-                //invis.equipbutton.gameObject.SetActive(false);
-                //invis.transferButton.interactable = true;
-            }
+            transferButton.gameObject.SetActive(true);
+            closeButton.onClick.AddListener(delegate () { UIManager.Close<Container>(); });
             base.Open();
         }
         else
         {
-            foreach (InventorySlot invis in inventorySlots)
-            {
-                //invis.transferButton.interactable = false;
-            }
+            transferButton.gameObject.SetActive(false);
+            closeButton.onClick.RemoveListener(delegate () { UIManager.Close<Container>(); });
             base.Open();
         }
+
+        ContainerExchange = containerExchange;
     }
 
 
     public override void Close()
     {
         Container container = UIManager.GetMenu<Container>();
+        transferButton.gameObject.SetActive(false);
         if (container.IsActive) container.Close();
         base.Close();
     }
@@ -142,6 +143,7 @@ public class Inventory : Menu
 
     public virtual void RemoveInventoryItem(Ingredient ingredient, int count)
     {
+        bool foundNothing = true;
         while(count > 0)
         {
             for(int i = 0; i < ingredientsInInventory.Count; i++)
@@ -150,8 +152,15 @@ public class Inventory : Menu
                 {
                     ingredientsInInventory.RemoveAt(i);
                     count--;
+                    foundNothing = false;
                     break;
                 }
+            }
+
+            if(foundNothing)
+            {
+                Debug.LogError("No item : " + ingredient.displayName + " : id : " + ingredient.id + " was found");
+                break;
             }
         }
 
@@ -184,9 +193,17 @@ public class Inventory : Menu
     }
 
 
+    private void Transfer()
+    {
+        Close();
+        UIManager.Open<Container>();
+    }
+
+
     private void Awake()
     {
         closeButton.onClick.AddListener(Close);
         InitializeInventorySlots();
+        transferButton.onClick.AddListener(Transfer);
     }
 }

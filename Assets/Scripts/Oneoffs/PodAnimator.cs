@@ -16,6 +16,8 @@ public class PodAnimator : MonoBehaviour
 
     public Light hazardLight;
     public BatterySlot batterySlot;
+
+    private bool isFalling = false;
 	
     public void OpenDoor()
     {
@@ -28,22 +30,26 @@ public class PodAnimator : MonoBehaviour
 
     public void Fall()
     {
-        StartCoroutine(FallCoroutine());
+        if(!isFalling)
+        {
+            StartCoroutine(FallCoroutine());
+            isFalling = true;
+        }
+        
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player") StartCoroutine(FallCoroutine());
+        if (other.tag == "Player") Fall();
     }
 
 
     private IEnumerator FallCoroutine()
     {
+        /*Debug.Log("falling?");
         float fadeOutTime = 0f;
         float fadeInTime = 4f;
-        float getupTime = 3f;
-        float elapsedTime = 0f;
         float cachedBloomIntensity = scion.bloomIntensity;
         Transform playerTransform = player.transform;
         FadeMenu fadeMenu = UIManager.GetMenu<FadeMenu>();
@@ -57,18 +63,19 @@ public class PodAnimator : MonoBehaviour
         playerAnimator.SetBool("Fall", true);
         yield return new WaitForSeconds(5.3f);
 
+        Destroy(playerAnimator);
         fadeMenu.Fade(fadeOutTime, Color.clear, Color.black);
-
+        playerTransform.position = reorientingSpot.position;
         yield return new WaitForSeconds(5f);
 
         playerTransform.SetParent(environment);
-        playerTransform.position = landingSpot.position;
-        playerTransform.rotation = landingSpot.rotation;
+        playerTransform.position = reorientingSpot.position;
+        playerTransform.rotation = reorientingSpot.rotation;
         yield return new WaitForSeconds(4f);
 
         fadeMenu.Fade(fadeInTime, Color.black, Color.clear);
-        playerTransform.position = landingSpot.position;
-        playerTransform.rotation = landingSpot.rotation;
+        playerTransform.position = reorientingSpot.position;
+        playerTransform.rotation = reorientingSpot.rotation;
 
         scion.grainIntensity = 1f;
         yield return new WaitForSeconds(1f);
@@ -77,20 +84,14 @@ public class PodAnimator : MonoBehaviour
         scion.grainIntensity = 1f;
         yield return new WaitForSeconds(0.6f);
         scion.grainIntensity = 0f;
-
-        while (elapsedTime <= getupTime)
-        {
-            playerTransform.position = Vector3.Lerp(landingSpot.position, reorientingSpot.position, elapsedTime / getupTime);
-            playerTransform.rotation = Quaternion.Lerp(landingSpot.rotation, reorientingSpot.rotation, elapsedTime / getupTime);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        player.GetComponentInChildren<Rigidbody>().useGravity = true;
         playerTransform.position = reorientingSpot.position;
         playerTransform.rotation = reorientingSpot.rotation;
         fadeMenu.Close();
+        
         player.EnableMovement();
 
-        this.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);*/
+        yield return null;
     }
 }
