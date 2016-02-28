@@ -6,15 +6,25 @@ using UnityEngine.UI;
 
 public class InGameMainMenu : Menu 
 {
+	public Button openMapButton;
+	public Button openCraftingButton;
 	public Button openInventoryButton;
 	public Button openLogFilesButton;
-	public Button openMapButton;
-	public Button openOptionsButton;
-	public Button openLoadSaveButton;
-	public Button openQuitGameButton;
-	public Button openCloseButton;
+	public Button openSystemButton;
 
+	public void OpenMapButton()
+	{
+		Debug.Log ("Open Map Button was pressed");
+		/* Wait for functionality */
+		//UIManager.Open<Map> ();
+	}
 
+	public void OpenCraftingButton()
+	{
+		Debug.Log ("Open Craft Button was pressed");
+		/* Wait for functionality */
+		UIManager.Open<Crafting> ();
+	}
 
 	public void OpenInventoryButton()
 	{
@@ -29,37 +39,11 @@ public class InGameMainMenu : Menu
 		//UIManager.Open<Log Files> ();
 	}
 
-	public void OpenMapButton()
+	public void OpenSystemButton()
 	{
-		Debug.Log ("Open Map Button was pressed");
-		/* Wait for functionality */
-		//UIManager.Open<Map> ();
-	}
-
-	public void OpenOptionsButton()
-	{
-		Debug.Log ("Open Options Button was pressed");
-		UIManager.Open<OptionsMenu> ();
-	}
-
-	public void OpenLoadSaveButton()
-	{
-		Debug.Log ("Open Load Save Button was pressed");
-		/* Wait for functionality */
-		//UIManager.Open<LoadSave> ();
-	}
-
-	public void OpenQuitGameButton()
-	{
-		Debug.Log ("Quit Game Button was pressed");
-		Application.Quit ();
-	}
-
-	public void OpenCloseButton()
-	{	
-		/* This isn't actually working, so I'm calling the wrong function apparently, also throws warnings when pressed! */
-		Debug.Log ("Close Menu Button was pressed");
-		base.Close();
+		Debug.Log ("Open Log Files Button was pressed");
+		/* Wait for namespace to be created elsewhere */
+		//UIManager.Open<Log Files> ();
 	}
 
 	// Use this for initialization
@@ -71,25 +55,26 @@ public class InGameMainMenu : Menu
 	// Update is called once per frame
 	void Update () 
 	{
+		openBase ();
+	}
 
-		/* Logic is wrong, need to be fixed - and/or this isn't in the appropriate class?
+	public void openBase()
+	{
+		// Logic is wrong, need to be fixed - and/or this isn't in the appropriate class?
 		if (Input.GetKeyDown (KeyCode.Escape) && !isActive) {
-			base.Open ();
-		} else
+			base.Open();
+		} else if (Input.GetKeyDown (KeyCode.Escape) && isActive) {
 			base.Close ();
-		*/
-
+		}
 	}
 
 	private void Awake()
 	{
+		openMapButton.onClick.AddListener (OpenMapButton);
+		openCraftingButton.onClick.AddListener (OpenCraftingButton);
 		openInventoryButton.onClick.AddListener (OpenInventoryButton);
 		openLogFilesButton.onClick.AddListener (OpenLogFilesButton);
-		openMapButton.onClick.AddListener (OpenMapButton);
-		openOptionsButton.onClick.AddListener (OpenOptionsButton);
-		openLoadSaveButton.onClick.AddListener(OpenLoadSaveButton);
-		openQuitGameButton.onClick.AddListener (OpenQuitGameButton);
-
+		openSystemButton.onClick.AddListener (OpenSystemButton);
 }
 
 }
