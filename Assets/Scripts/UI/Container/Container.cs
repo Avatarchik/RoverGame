@@ -127,7 +127,6 @@ namespace Sol
                     encounteredIngredients.Add(i);
                 }
             }
-            Debug.Log("inventroy slots initialized");
         }
 
 
