@@ -2,45 +2,65 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Interacter : MonoBehaviour
+namespace Sol
 {
-    public float detectionDistance = 50f;
-
-    private List<InteractibleObject> hoveredInteractibleObjects = new List<InteractibleObject>();
-
-
-    public void Update()
+    public class Interacter : MonoBehaviour
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance);
+        public float detectionDistance = 50f;
 
-        List<InteractibleObject> interactibles = new List<InteractibleObject>();
+        private List<InteractibleObject> hoveredInteractibleObjects = new List<InteractibleObject>();
 
-        foreach (RaycastHit hit in hits)
+
+        public void Update()
         {
-            InteractibleObject[] ios = hit.collider.gameObject.GetComponents<InteractibleObject>();
-            interactibles.AddRange(ios);
-        }
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance);
 
-        SetInteractibleObjects(interactibles);
-    }
+            List<InteractibleObject> interactibles = new List<InteractibleObject>();
 
-
-    public void SetInteractibleObjects(List<InteractibleObject> currentLitObjects)
-    {
-        foreach (InteractibleObject inob in hoveredInteractibleObjects)
-        {
-            inob.HoverExit();
-        }
-        hoveredInteractibleObjects.Clear();
-        
-
-        foreach(InteractibleObject io in currentLitObjects)
-        {
-            if(!hoveredInteractibleObjects.Contains(io))
+            foreach (RaycastHit hit in hits)
             {
-                io.HoverEnter();
-                hoveredInteractibleObjects.Add(io);
+                InteractibleObject[] ios = hit.collider.gameObject.GetComponents<InteractibleObject>();
+                interactibles.AddRange(ios);
+            }
+
+            SetInteractibleObjects(interactibles);
+        }
+
+
+        public void SetInteractibleObjects(List<InteractibleObject> currentLitObjects)
+        {
+            List<InteractibleObject> overlappingItems = new List<InteractibleObject>();
+            List<InteractibleObject> uniqueOldItems = new List<InteractibleObject>();
+            List<InteractibleObject> uniqueNewItems = new List<InteractibleObject>();
+
+            foreach (InteractibleObject co in currentLitObjects)
+            {
+                if (hoveredInteractibleObjects.Contains(co))
+                {
+                    //its currently lit, and it was previously lit. DO NOTHING
+                    overlappingItems.Add(co);
+                }
+                else
+                {
+                    //its currently list, but it wasnt lit before. TURN IT ON
+                    co.HoverEnter();
+                    hoveredInteractibleObjects.Add(co);
+                }
+            }
+
+            for(int i = hoveredInteractibleObjects.Count - 1; i >= 0; i--)
+            {
+                if (!currentLitObjects.Contains(hoveredInteractibleObjects[i]))
+                {
+                    //its hovered, but not currently lit. TURN IT OFF
+                    hoveredInteractibleObjects[i].HoverExit();
+                    hoveredInteractibleObjects.Remove(hoveredInteractibleObjects[i]);
+                }
+            }
+
+            foreach (InteractibleObject io in currentLitObjects)
+            {
                 if (Input.GetMouseButtonDown(0)) io.Interact();
             }
         }

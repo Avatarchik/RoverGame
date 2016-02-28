@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PodDoor : Door
+namespace Sol
 {
-    public PodAnimator podAnimator;
-
-    public override void OpenDoor()
+    public class PodDoor : Door
     {
-        podAnimator.OpenDoor();
-    }
+        public PodAnimator podAnimator;
+
+        public override void OpenDoor()
+        {
+            podAnimator.OpenDoor();
+        }
 
 
-    public override void CloseDoor()
-    {
-       
+        public override void CloseDoor()
+        {
+
+        }
     }
 }

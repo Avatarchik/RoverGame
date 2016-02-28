@@ -2,79 +2,88 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CraterExplosion : InteractibleObject
+namespace Sol
 {
-    private const int EXPLOSION_SOUND_ID = 30;
-
-    public GameObject explosionPrefab1;
-    public GameObject explosionPrefab2;
-    public Transform explosionOrigin;
-    public Ingredient desiredIngredient;
-    public string failString = "You will need an {0} to clear this landslide";
-
-    public int explosionDelay = 10;
-    public float shakeIntensity = 1f;
-    public float shakeDecay = 0.05f;
-
-    public List<GameObject> rockWall = new List<GameObject>();
-
-    private bool triggered = false;
-
-    public override void Interact()
+    public class CraterExplosion : InteractibleObject
     {
-        Debug.Log("Interacting");
-        Inventory inventory = UIManager.GetMenu<Inventory>();
-        MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
-        
-        if(inventory.GetIngredientAmount(desiredIngredient) > 0)
+        private const int EXPLOSION_SOUND_ID = 30;
+
+        public GameObject explosiveDevice;
+        public GameObject explosionPrefab1;
+        public GameObject explosionPrefab2;
+        public Transform explosionOrigin;
+        public Ingredient desiredIngredient;
+        public string failString = "You will need an {0} to clear this landslide";
+
+        public int explosionDelay = 10;
+        public float shakeIntensity = 1f;
+        public float shakeDecay = 0.05f;
+
+        public List<GameObject> rockWall = new List<GameObject>();
+
+        private bool triggered = false;
+
+        public override void Interact()
         {
-            Debug.Log("wakka wakka");
-            triggered = true;
-            inventory.RemoveInventoryItem(desiredIngredient, 1);
-            StartCoroutine(DetonateDelay());
+            Debug.Log("Interacting");
+            Inventory inventory = UIManager.GetMenu<Inventory>();
+            MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
+
+            if (inventory.GetIngredientAmount(desiredIngredient) > 0)
+            {
+                Debug.Log("wakka wakka");
+                triggered = true;
+                inventory.RemoveInventoryItem(desiredIngredient, 1);
+                StartCoroutine(DetonateDelay());
+            }
+            else if (!triggered)
+            {
+                StopAllCoroutines();
+                interactible = false;
+                messageMenu.Open(failString);
+
+            }
         }
-        else if (!triggered)
+
+        public void TriggerExplosion()
         {
-            StopAllCoroutines();
-            interactible = false;
-            messageMenu.Open(failString);
-            
+            Intro intro = GameObject.FindObjectOfType<Intro>();
+            CameraShake cameraShakeInstance = GameObject.FindObjectOfType<CameraShake>();
+            GameManager.Get<SoundManager>().Play(EXPLOSION_SOUND_ID);
+
+            GameObject explosion1 = Instantiate(explosionPrefab1, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
+            GameObject explosion2 = Instantiate(explosionPrefab2, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
+            explosion1.transform.SetParent(explosionOrigin);
+            explosion2.transform.SetParent(explosionOrigin);
+
+            cameraShakeInstance.Shake(shakeIntensity, shakeDecay);
+
+            foreach (GameObject go in rockWall)
+            {
+                go.SetActive(false);
+            }
+
+            intro.NextObjective(intro.enterTunnelsObjective, true);
         }
-    }
 
-    public void TriggerExplosion()
-    {
-        CameraShake cameraShakeInstance = GameObject.FindObjectOfType<CameraShake>();
-        GameManager.Get<SoundManager>().Play(EXPLOSION_SOUND_ID);
 
-        GameObject explosion1 = Instantiate(explosionPrefab1, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
-        GameObject explosion2 = Instantiate(explosionPrefab2, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
-        explosion1.transform.SetParent(explosionOrigin);
-        explosion2.transform.SetParent(explosionOrigin);
-
-        cameraShakeInstance.Shake(shakeIntensity, shakeDecay);
-
-        foreach(GameObject go in rockWall)
+        private IEnumerator DetonateDelay()
         {
-            go.SetActive(false);
+            Debug.Log("delaying!");
+            explosiveDevice.SetActive(true);
+            CountDown countDown = UIManager.GetMenu<CountDown>();
+            countDown.SetText(explosionDelay);
+            yield return new WaitForSeconds(explosionDelay);
+            TriggerExplosion();
+            explosiveDevice.SetActive(false);
         }
-    }
 
 
-    private IEnumerator DetonateDelay()
-    {
-        Debug.Log("delaying!");
-        CountDown countDown = UIManager.GetMenu<CountDown>();
-        countDown.SetText(explosionDelay);
-        yield return new WaitForSeconds(explosionDelay);
-        TriggerExplosion();
-    }
-
-
-    private IEnumerator DelayedClose()
-    {
-        yield return new WaitForSeconds(5f);
-        UIManager.Close<MessageMenu>();
-        interactible = true;
+        private IEnumerator DelayedClose()
+        {
+            yield return new WaitForSeconds(5f);
+            UIManager.Close<MessageMenu>();
+            interactible = true;
+        }
     }
 }

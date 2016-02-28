@@ -12,12 +12,12 @@ public class Menu : MonoBehaviour
     public GameObject root;
     public bool stopsMovement = true;
 
-    [HideInInspector]
-    public bool isActive = false;
+    protected bool isActive = false;
 
     public bool IsActive
     {
         get { return isActive; }
+        set { isActive = value; }
     }
 
     public virtual void Open()
@@ -26,7 +26,7 @@ public class Menu : MonoBehaviour
         {
             isActive = true;
             root.SetActive(true);
-            if (stopsMovement) OnMenuOpen();
+            if (stopsMovement && OnMenuClose != null) OnMenuOpen();
         }
     }
 

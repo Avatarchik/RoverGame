@@ -1,24 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LightMessage : MonoBehaviour
+namespace Sol
 {
-    public GameObject flashLight;
-
-
-    private void Update()
+    public class LightMessage : MonoBehaviour
     {
-        if(transform.localEulerAngles.x > 180 || transform.localEulerAngles.x < 0 && !UIManager.GetMenu<MessageMenu>().IsActive)
+        public GameObject flashLight;
+
+
+        private void Update()
         {
-            if(!flashLight.activeSelf)
+            if (transform.localEulerAngles.x > 180 || transform.localEulerAngles.x < 0 && !UIManager.GetMenu<MessageMenu>().IsActive)
             {
-                UIManager.GetMenu<MessageMenu>().Open("'F' to open flashlight");
+                if (!flashLight.activeSelf)
+                {
+                    UIManager.GetMenu<MessageMenu>().Open("'F' to open flashlight");
+                }
+                else
+                {
+                    UIManager.GetMenu<MessageMenu>().Close();
+                }
+
             }
-            else
-            {
-                UIManager.GetMenu<MessageMenu>().Close();
-            }
-            
         }
     }
 }

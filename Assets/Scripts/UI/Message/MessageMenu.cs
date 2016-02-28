@@ -6,27 +6,46 @@ public class MessageMenu : Menu
 {
     public Text messageText;
 
+    private int currentMessagePriority = -1;
+
+    public int CurrentMessagePriority
+    {
+        get { return currentMessagePriority; }
+    }
+
     public override void Open()
     {
         base.Open();
     }
 
 
-    public void Open(string message)
+    public void Open(string message, int priority = 0)
     {
-        messageText.text = message;
-        Open();
+        if (!isActive && priority >= CurrentMessagePriority)
+        {
+            currentMessagePriority = priority;
+            messageText.text = message;
+            Open();
+        }
     }
 
 
-    public void SetText(string message)
+    public void SetText(string message, int priority = 0)
     {
-        messageText.text = message;
+        if (priority >= CurrentMessagePriority)
+        {
+            currentMessagePriority = priority;
+            messageText.text = message;
+        }
     }
 
 
     public override void Close()
     {
-        base.Close();
+        if(isActive)
+        {
+            currentMessagePriority = -1;
+            base.Close();
+        }
     }
 }
