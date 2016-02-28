@@ -11,15 +11,15 @@ namespace Sol
         private const int VOICE_ID_3 = 2012;
         private const int MUSIC_ID_1 = 40;
 
-        delegate void CompleteObjective();
-        CompleteObjective onCompleteObjective;
-
         private PlayerStats playerStats = null;
 
         public AutoIntensity autoIntensity;
         public MouseLook mouseLook;
         public CameraDriver cameraDriver;
         public CharacterDriver characterDriver;
+        public InteractibleObject safe;
+
+        public Ingredient explosiveDevice;
 
         public Objective pressAnyKeyObjective;
         public Objective lookObjective;
@@ -27,6 +27,7 @@ namespace Sol
         public Objective escapePodObjective;
         public Objective constructExplosiveObjective;
         public Objective clearLandslideObjective;
+        public Objective enterTunnelsObjective;
 
         public float displaySpeed = 0.01f;
 
@@ -44,9 +45,9 @@ namespace Sol
             ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
             ObjectiveDisplay od;
             SoundManager soundManager = GameManager.Get<SoundManager>();
+            Inventory inventory = UIManager.GetMenu<Inventory>();
 
             CachedPlayerStats.DisableMovement();
-            
 
             fadeMenu.Fade(0f, Color.clear, Color.black);
             bool anyKeyPressed = false;
@@ -107,22 +108,30 @@ namespace Sol
             soundManager.Play(VOICE_ID_3);
             yield return new WaitForSeconds(12f);
             objectiveTracker.AddObjective(escapePodObjective, displaySpeed);
-
+            safe.interactible = true;
             autoIntensity.go = true;
+            
+
+            while(inventory.GetIngredientAmount(explosiveDevice) < 1)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            objectiveTracker.AddObjective(clearLandslideObjective, displaySpeed);
         }
 
 
-        public void NextObjective()
+        public void NextObjective(Objective objective, bool playMusic = false)
         {
             ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
-            ObjectiveDisplay od = objectiveTracker.AddObjective(constructExplosiveObjective, displaySpeed);
-            GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
+            ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
+            if(playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
         }
+
 
 
         private void Awake()
         {
-            onCompleteObjective += NextObjective;
             StartCoroutine(RunTutorial());
         }
     }

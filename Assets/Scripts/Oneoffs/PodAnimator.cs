@@ -25,7 +25,8 @@ namespace Sol
         {
             if (batterySlot.HasItem)
             {
-                GameObject.FindObjectOfType<Intro>().NextObjective();
+                Intro intro = GameObject.FindObjectOfType<Intro>();
+                intro.NextObjective(intro.constructExplosiveObjective, true);
                 animator.SetBool("Open", true);
             }
         }

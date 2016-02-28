@@ -139,6 +139,16 @@ namespace Sol
                 ingredientsInInventory.Add(ingredient);
             }
 
+            MessageMenu mm = UIManager.GetMenu<MessageMenu>();
+            if (count == 1)
+            {
+                mm.Open(string.Format("{0} added", ingredient.displayName), 3);
+            }
+            else
+            {
+                mm.Open(string.Format("{0} {1}s added", count, ingredient.displayName), 3);
+            }
+
             InitializeInventorySlots();
         }
 
@@ -164,6 +174,16 @@ namespace Sol
                     Debug.LogError("No item : " + ingredient.displayName + " : id : " + ingredient.id + " was found");
                     break;
                 }
+            }
+
+            MessageMenu mm = UIManager.GetMenu<MessageMenu>();
+            if (count == 1)
+            {
+                mm.Open(string.Format("{0} removed", ingredient.displayName), 3);
+            }
+            else
+            {
+                mm.Open(string.Format("{0} {1}s removed", count, ingredient.displayName), 3);
             }
 
             InitializeInventorySlots();

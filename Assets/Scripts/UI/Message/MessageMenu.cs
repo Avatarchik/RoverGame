@@ -21,8 +21,7 @@ public class MessageMenu : Menu
 
     public void Open(string message, int priority = 0)
     {
-        Debug.Log(priority +" > " + CurrentMessagePriority);
-        if (!isActive && priority > CurrentMessagePriority)
+        if (!isActive && priority >= CurrentMessagePriority)
         {
             currentMessagePriority = priority;
             messageText.text = message;
@@ -33,7 +32,7 @@ public class MessageMenu : Menu
 
     public void SetText(string message, int priority = 0)
     {
-        if (priority > CurrentMessagePriority)
+        if (priority >= CurrentMessagePriority)
         {
             currentMessagePriority = priority;
             messageText.text = message;

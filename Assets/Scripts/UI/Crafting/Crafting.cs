@@ -45,15 +45,11 @@ namespace Sol
             {
                 List<Recipe> recipesToOpen = new List<Recipe>();
 
-                recipes.Clear();
                 recipesToOpen.AddRange(r);
                 recipesToOpen.AddRange(PlayerStatsReference.knownRecipes);
+                
                 Debug.Log(recipesToOpen.Count);
-                //recipesToOpen = SanitizeRecipes(recipesToOpen);
-                recipes.Clear();
-                recipes.AddRange(recipesToOpen);
-
-                InitializeSlots(recipes);
+                InitializeSlots(recipesToOpen);
                 base.Open();
             }
         }

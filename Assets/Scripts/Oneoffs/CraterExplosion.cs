@@ -8,6 +8,7 @@ namespace Sol
     {
         private const int EXPLOSION_SOUND_ID = 30;
 
+        public GameObject explosiveDevice;
         public GameObject explosionPrefab1;
         public GameObject explosionPrefab2;
         public Transform explosionOrigin;
@@ -46,6 +47,7 @@ namespace Sol
 
         public void TriggerExplosion()
         {
+            Intro intro = GameObject.FindObjectOfType<Intro>();
             CameraShake cameraShakeInstance = GameObject.FindObjectOfType<CameraShake>();
             GameManager.Get<SoundManager>().Play(EXPLOSION_SOUND_ID);
 
@@ -60,16 +62,20 @@ namespace Sol
             {
                 go.SetActive(false);
             }
+
+            intro.NextObjective(intro.enterTunnelsObjective, true);
         }
 
 
         private IEnumerator DetonateDelay()
         {
             Debug.Log("delaying!");
+            explosiveDevice.SetActive(true);
             CountDown countDown = UIManager.GetMenu<CountDown>();
             countDown.SetText(explosionDelay);
             yield return new WaitForSeconds(explosionDelay);
             TriggerExplosion();
+            explosiveDevice.SetActive(false);
         }
 
 
