@@ -7,18 +7,18 @@ namespace Sol
 {
     public class ContainerSlot : InventorySlot
     {
-        private void OpenTransferToolTip()
+        private void OpenTransferToolTip(bool b)
         {
-            Debug.Log("opening tooltip from container");
+            //Debug.Log("opening tooltip from container");
 
-            TransferToolTip toolTip = UIManager.Open<TransferToolTip>();
-            toolTip.SetContent(ii, true);
+           // TransferToolTip toolTip = UIManager.Open<TransferToolTip>();
+           // toolTip.SetContent(ii, true);
         }
 
 
         private void Awake()
         {
-            moreInfo.onClick.AddListener(OpenTransferToolTip);
+            moreInfo.onValueChanged.AddListener(OpenTransferToolTip);
         }
     }
 

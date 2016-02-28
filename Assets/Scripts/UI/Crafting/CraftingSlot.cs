@@ -7,14 +7,11 @@ public class CraftingSlot : MonoBehaviour
     public delegate void SelectCraftingSlot(CraftingSlot craftingSlot);
     public static event SelectCraftingSlot OnSelectCraftingSlot;
 
-    public Button selectButton;
+    public Toggle selectToggle;
 
     public Image mainImage;
     public Image iconImage;
     public Text titleText;
-
-    public Color activeColor;
-    public Color inactiveColor;
 
     public Recipe recipe;
     public Ingredient ingredient;
@@ -24,27 +21,17 @@ public class CraftingSlot : MonoBehaviour
     public bool IsSelected
     {
         get { return isSelected; }
-        set
-        {
-            isSelected = value;
-            if(isSelected)
-            {
-                mainImage.color = activeColor;
-            }
-            else
-            {
-                mainImage.color = inactiveColor;
-            }
-        }
+        set { isSelected = value; }
     }
 
-    private void SelectMe()
+    private void SelectMe(bool b)
     {
-        OnSelectCraftingSlot(this);
+        if(b) OnSelectCraftingSlot(this);
+        IsSelected = b;
     }
 
     private void Awake()
     {
-        selectButton.onClick.AddListener(SelectMe);
+        selectToggle.onValueChanged.AddListener(SelectMe);
     }
 }

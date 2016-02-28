@@ -9,9 +9,14 @@ namespace Sol
     {
         public InventorySlot inventorySlotPrefab;
         public Transform InventorySlotContainer;
-        //public Text weightValue;
-        public Button transferButton;
-        public Button closeButton;
+
+        public InventoryInfoPanel infoPanel;
+
+        public ToggleGroup toggleGroup;
+
+        public Button dropButton;
+        public Button useButton;
+        //public Button closeButton;
 
         public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
@@ -48,14 +53,12 @@ namespace Sol
         {
             if (containerExchange)
             {
-                transferButton.gameObject.SetActive(true);
-                closeButton.onClick.AddListener(delegate () { UIManager.Close<Container>(); });
+                CloseInfoPanel();
                 base.Open();
             }
             else
             {
-                transferButton.gameObject.SetActive(false);
-                closeButton.onClick.RemoveListener(delegate () { UIManager.Close<Container>(); });
+                OpenInfoPanel();
                 base.Open();
             }
 
@@ -66,9 +69,24 @@ namespace Sol
         public override void Close()
         {
             Container container = UIManager.GetMenu<Container>();
-            transferButton.gameObject.SetActive(false);
             if (container.IsActive) container.Close();
             base.Close();
+        }
+
+
+        public virtual void OpenInfoPanel()
+        {
+            if (ingredientsInInventory.Count > 0)
+            {
+                infoPanel.Initialize(ingredientsInInventory[0], GetIngredientAmount(ingredientsInInventory[0]));
+                infoPanel.gameObject.SetActive(true);
+            }
+        }
+
+
+        public virtual void CloseInfoPanel()
+        {
+            infoPanel.gameObject.SetActive(false);
         }
 
 
@@ -119,8 +137,7 @@ namespace Sol
             InventorySlot newSlot = Instantiate(inventorySlotPrefab) as InventorySlot;
             newSlot.transform.SetParent(InventorySlotContainer);
             newSlot.transform.localScale = Vector3.one;
-
-            // if (!container.IsActive && newSlot.transferButton != null) newSlot.transferButton.gameObject.SetActive(false);
+            newSlot.moreInfo.group = toggleGroup;
 
             newSlot.image.sprite = ingredient.image;
             newSlot.Amount = count;
@@ -224,9 +241,8 @@ namespace Sol
 
         private void Awake()
         {
-            closeButton.onClick.AddListener(Close);
+            //closeButton.onClick.AddListener(Close);
             InitializeInventorySlots();
-            transferButton.onClick.AddListener(Transfer);
         }
     }
 }

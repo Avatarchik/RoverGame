@@ -5,165 +5,65 @@ using UnityEngine.UI;
 
 namespace Sol
 {
-<<<<<<< HEAD
-	public Button openMapButton;
-	public Button openCraftingButton;
-	public Button openInventoryButton;
-	public Button openLogFilesButton;
-	public Button openSystemButton;
-
-	public void OpenMapButton()
-	{
-		Debug.Log ("Open Map Button was pressed");
-		/* Wait for functionality */
-		//UIManager.Open<Map> ();
-	}
-
-	public void OpenCraftingButton()
-	{
-		Debug.Log ("Open Craft Button was pressed");
-		/* Wait for functionality */
-		UIManager.Open<Crafting> ();
-	}
-
-	public void OpenInventoryButton()
-	{
-		Debug.Log ("Inventory Button was pressed");
-		UIManager.Open<Inventory> ();
-	}
-
-	public void OpenLogFilesButton()
-	{
-		Debug.Log ("Open Log Files Button was pressed");
-		/* Wait for namespace to be created elsewhere */
-		//UIManager.Open<Log Files> ();
-	}
-
-	public void OpenSystemButton()
-	{
-		Debug.Log ("Open Log Files Button was pressed");
-		/* Wait for namespace to be created elsewhere */
-		//UIManager.Open<Log Files> ();
-	}
-
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		openBase ();
-	}
-
-	public void openBase()
-	{
-		// Logic is wrong, need to be fixed - and/or this isn't in the appropriate class?
-		if (Input.GetKeyDown (KeyCode.Escape) && !isActive) {
-			base.Open();
-		} else if (Input.GetKeyDown (KeyCode.Escape) && isActive) {
-			base.Close ();
-		}
-	}
-
-	private void Awake()
-	{
-		openMapButton.onClick.AddListener (OpenMapButton);
-		openCraftingButton.onClick.AddListener (OpenCraftingButton);
-		openInventoryButton.onClick.AddListener (OpenInventoryButton);
-		openLogFilesButton.onClick.AddListener (OpenLogFilesButton);
-		openSystemButton.onClick.AddListener (OpenSystemButton);
-=======
     public class InGameMainMenu : Menu
     {
-        public Button openInventoryButton;
-        public Button openLogFilesButton;
-        public Button openMapButton;
-        public Button openOptionsButton;
-        public Button openLoadSaveButton;
-        public Button openQuitGameButton;
-        public Button openCloseButton;
+        public Toggle openMapToggle;
+        public Toggle openCraftingToggle;
+        public Toggle openInventoryToggle;
+        public Toggle openLogFilesToggle;
+        public Toggle openSystemToggle;
 
 
-
-        public void OpenInventoryButton()
+        public void OpenMap(bool b)
         {
-            Debug.Log("Inventory Button was pressed");
-            UIManager.Open<Inventory>();
+            //TODO implement a map menu
+            if (b) { }
         }
 
-        public void OpenLogFilesButton()
+
+        public void OpenCrafting(bool b)
         {
-            Debug.Log("Open Log Files Button was pressed");
-            /* Wait for namespace to be created elsewhere */
-            //UIManager.Open<Log Files> ();
+            if(b) UIManager.Open<Crafting>();
         }
 
-        public void OpenMapButton()
+
+        public void OpenInventory(bool b)
         {
-            Debug.Log("Open Map Button was pressed");
-            /* Wait for functionality */
-            //UIManager.Open<Map> ();
+            if(b) UIManager.Open<Inventory>();
         }
 
-        public void OpenOptionsButton()
+
+        public void OpenLogs(bool b)
         {
-            Debug.Log("Open Options Button was pressed");
-            UIManager.Open<OptionsMenu>();
+            if(b) UIManager.Open<LogMenu>();
         }
 
-        public void OpenLoadSaveButton()
+
+        public void OpenSystem(bool b)
         {
-            Debug.Log("Open Load Save Button was pressed");
-            /* Wait for functionality */
-            //UIManager.Open<LoadSave> ();
+            if(b) { }
+            //TODO implement systems menu
+            //UIManager.Open<SystemM>();
         }
 
-        public void OpenQuitGameButton()
+
+        private void CloseAll()
         {
-            Debug.Log("Quit Game Button was pressed");
-            Application.Quit();
+            UIManager.Close<Crafting>();
+            UIManager.Close<Inventory>();
+            UIManager.Close<LogMenu> ();
         }
 
-        public void OpenCloseButton()
-        {
-            /* This isn't actually working, so I'm calling the wrong function apparently, also throws warnings when pressed! */
-            Debug.Log("Close Menu Button was pressed");
-            base.Close();
-        }
-
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-            /* Logic is wrong, need to be fixed - and/or this isn't in the appropriate class?
-            if (Input.GetKeyDown (KeyCode.Escape) && !isActive) {
-                base.Open ();
-            } else
-                base.Close ();
-            */
-
-        }
 
         private void Awake()
         {
-            openInventoryButton.onClick.AddListener(OpenInventoryButton);
-            openLogFilesButton.onClick.AddListener(OpenLogFilesButton);
-            openMapButton.onClick.AddListener(OpenMapButton);
-            openOptionsButton.onClick.AddListener(OpenOptionsButton);
-            openLoadSaveButton.onClick.AddListener(OpenLoadSaveButton);
-            openQuitGameButton.onClick.AddListener(OpenQuitGameButton);
-
+            openMapToggle.onValueChanged.AddListener(OpenMap);
+            openCraftingToggle.onValueChanged.AddListener(OpenCrafting);
+            openInventoryToggle.onValueChanged.AddListener(OpenInventory);
+            openLogFilesToggle.onValueChanged.AddListener(OpenLogs);
+            openSystemToggle.onValueChanged.AddListener(OpenSystem);
         }
+
     }
->>>>>>> 9d27097d2275ef87c566045446140dd83665babc
 }
 

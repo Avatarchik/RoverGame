@@ -7,10 +7,11 @@ namespace Sol
     public class InventorySlot : MonoBehaviour
     {
         public InventoryIngredient ii;
+        public InventoryInfoPanel infoPanel;
 
         public Image image;
         public Text amountText;
-        public Button moreInfo;
+        public Toggle moreInfo;
 
         private bool equippable = false;
         private bool stackable = true;
@@ -22,41 +23,21 @@ namespace Sol
             set
             {
                 amount = value;
-                amountText.text = amount + "";
+                if(amountText !=null) amountText.text = amount + "";
             }
         }
 
 
-        private void EquipCamera()
+        private void Initialize(bool b)
         {
-            Inventory inventory = UIManager.GetMenu<Inventory>();
-            inventory.RemoveInventoryItem(ii.ingredient, ii.amount);
-            CameraEquip.Equip(ii.ingredient.id);
-        }
-
-
-        private void OpenToolTip()
-        {
-            if (UIManager.GetMenu<Inventory>().ContainerExchange)
-            {
-                Debug.Log("opening tooltip from inventory");
-                TransferToolTip toolTip = UIManager.GetMenu<TransferToolTip>();
-                toolTip.SetContent(ii, false);
-                toolTip.Open();
-            }
-            else
-            {
-                ToolTip toolTip = UIManager.Open<ToolTip>();
-                toolTip.SetContent(ii.ingredient);
-            }
-
+            if(b) infoPanel.Initialize(ii);
         }
 
 
         private void Awake()
         {
-            moreInfo.onClick.AddListener(OpenToolTip);
+            if (image != null) image.sprite = ii.ingredient.image;
+            moreInfo.onValueChanged.AddListener(Initialize);
         }
     }
-
 }
