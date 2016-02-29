@@ -10,6 +10,7 @@ namespace Sol
         private const int VOICE_ID_2 = 2011;
         private const int VOICE_ID_3 = 2012;
         private const int MUSIC_ID_1 = 40;
+        private const int SFX_ID_1 = 60;
 
         private PlayerStats playerStats = null;
 
@@ -48,7 +49,6 @@ namespace Sol
             Inventory inventory = UIManager.GetMenu<Inventory>();
 
             CachedPlayerStats.DisableMovement();
-            playerStats.DisableMovement();
 
             //Press any key!!
             fadeMenu.Fade(0f, Color.clear, Color.black);
@@ -116,9 +116,7 @@ namespace Sol
             yield return new WaitForSeconds(12f);
             objectiveTracker.AddObjective(escapePodObjective, displaySpeed);
             safe.interactible = true;
-            autoIntensity.go = true;
             
-
             while(inventory.GetIngredientAmount(explosiveDevice) < 1)
             {
                 yield return new WaitForSeconds(0.5f);
@@ -130,9 +128,23 @@ namespace Sol
 
         public void NextObjective(Objective objective, bool playMusic = false)
         {
-            ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
-            ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
-            if(playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
+            if(objective == constructExplosiveObjective)
+            {
+                autoIntensity.go = true;
+
+                Debug.Log("this happens!!!!!!");
+
+                ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
+                ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
+                if (playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
+                GameManager.Get<SoundManager>().Play(SFX_ID_1);
+            }
+            else
+            {
+                ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
+                ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
+                if (playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
+            }            
         }
 
 

@@ -38,14 +38,12 @@ namespace Sol
 
         public void EnableMovement()
         {
-            Debug.Log("enabling movement!!");
             movementEnabled++;
         }
 
 
         public void DisableMovement()
         {
-            Debug.Log("disabling movement!!");
             movementEnabled--;
         }
 
@@ -190,11 +188,6 @@ namespace Sol
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-            }
-
-            if(Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
             }
         }
 
