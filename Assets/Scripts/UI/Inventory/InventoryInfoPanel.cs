@@ -17,6 +17,7 @@ namespace Sol
 
         public void Initialize(Ingredient i, int amount)
         {
+            Debug.Log("Initializing!!");
             title.text = i.displayName;
             image.sprite = i.image;
             description.text = i.description;

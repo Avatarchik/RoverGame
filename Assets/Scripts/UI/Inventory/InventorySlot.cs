@@ -48,9 +48,7 @@ namespace Sol
                 if(value != null)
                 {
                     slotIngredient = value;
-                    Debug.Log(displayText.text);
                     displayText.text = slotIngredient.displayName;
-                    Debug.Log(displayText.text);
                 }
             }
         }
@@ -81,7 +79,7 @@ namespace Sol
             else
             {
                 //just need to initialize the panel
-                if (b) infoPanel.Initialize(SlotIngredient, Amount);
+                //if (b) infoPanel.Initialize(SlotIngredient, Amount);
             }
         }
 

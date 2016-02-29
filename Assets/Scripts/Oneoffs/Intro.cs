@@ -10,6 +10,7 @@ namespace Sol
         private const int VOICE_ID_2 = 2011;
         private const int VOICE_ID_3 = 2012;
         private const int MUSIC_ID_1 = 40;
+        private const int SFX_ID_1 = 60;
 
         private PlayerStats playerStats = null;
 
@@ -127,10 +128,23 @@ namespace Sol
 
         public void NextObjective(Objective objective, bool playMusic = false)
         {
-            if(!autoIntensity.go) autoIntensity.go = true;
-            ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
-            ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
-            if(playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
+            if(objective == constructExplosiveObjective)
+            {
+                autoIntensity.go = true;
+
+                Debug.Log("this happens!!!!!!");
+
+                ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
+                ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
+                if (playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
+                GameManager.Get<SoundManager>().Play(SFX_ID_1);
+            }
+            else
+            {
+                ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
+                ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
+                if (playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
+            }            
         }
 
 

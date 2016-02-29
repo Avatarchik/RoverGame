@@ -38,14 +38,12 @@ namespace Sol
 
         public void EnableMovement()
         {
-            Debug.Log("enabling movement!!");
             movementEnabled++;
         }
 
 
         public void DisableMovement()
         {
-            Debug.Log("disabling movement!!");
             movementEnabled--;
         }
 
