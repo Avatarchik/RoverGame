@@ -7,19 +7,14 @@ namespace Sol
 {
     public class Container : Menu
     {
-        public GameObject background;
         public ContainerSlot containerSlotPrefab;
         public Transform InventorySlotContainer;
-        public Button closeButton;
-        public Button toggleButton;
+        public Text title;
 
         public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
         public List<ContainerSlot> containerSlots = new List<ContainerSlot>();
 
         private ContainerObject currentContainer;
-
-        private const string GIVE_TEXT = "Give";
-        private const string TAKE_TEXT = "Take";
 
 
         public override void Open()
@@ -28,20 +23,19 @@ namespace Sol
         }
 
 
-        public void Toggle()
-        {
-            Inventory playerInventory = UIManager.GetMenu<Inventory>();
-
-            Close();
-            playerInventory.Open(true);
-        }
-
-
         public void Open(List<Ingredient> ingredients, ContainerObject container)
         {
+            Inventory inventory = UIManager.GetMenu<Inventory>();
+            InGameMainMenu igmm = UIManager.GetMenu<InGameMainMenu>();
+            title.text = container.objectName;
+
+            inventory.Open(true);
+            if (!igmm.IsActive) igmm.OpenInventoryTransfer(true, false);
+
             currentContainer = container;
             ingredientsInInventory = ingredients;
             InitializeInventorySlots();
+            
             Open();
         }
 
@@ -87,26 +81,29 @@ namespace Sol
 
         public virtual void RemoveInventoryItem(Ingredient ingredient, int count)
         {
-            if (ingredientsInInventory.Count < count)
+            if(ingredient != null)
             {
-                Debug.LogError("unable to comply, insufficient inventory ingredients");
-                return;
-            }
-
-            while (count > 0)
-            {
-                for (int i = 0; i < ingredientsInInventory.Count; i++)
+                if (ingredientsInInventory.Count < count)
                 {
-                    if (ingredientsInInventory[i].id == ingredient.id)
+                    Debug.LogError("unable to comply, insufficient inventory ingredients");
+                    return;
+                }
+
+                while (count > 0)
+                {
+                    for (int i = 0; i < ingredientsInInventory.Count; i++)
                     {
-                        ingredientsInInventory.RemoveAt(i);
-                        count--;
-                        break;
+                        if (ingredientsInInventory[i].id == ingredient.id)
+                        {
+                            ingredientsInInventory.RemoveAt(i);
+                            count--;
+                            break;
+                        }
                     }
                 }
-            }
 
-            InitializeInventorySlots();
+                InitializeInventorySlots();
+            }
         }
 
 
@@ -132,16 +129,20 @@ namespace Sol
 
         public virtual void BuildInventorySlot(Ingredient ingredient, int count)
         {
-            ContainerSlot newSlot = Instantiate(containerSlotPrefab) as ContainerSlot;
-            newSlot.transform.SetParent(InventorySlotContainer);
-            newSlot.transform.localScale = Vector3.one;
+            if(ingredient!= null && count > 0)
+            {
+                if (!IsActive) Open();
+                ContainerSlot newSlot = Instantiate(containerSlotPrefab) as ContainerSlot;
+                newSlot.transform.SetParent(InventorySlotContainer);
+                newSlot.transform.localScale = Vector3.one;
 
-            newSlot.image.sprite = ingredient.image;
-            newSlot.Amount = count;
-            newSlot.ii.ingredient = ingredient;
-            newSlot.ii.amount = count;
+                if (newSlot.image != null) newSlot.image.sprite = ingredient.image;
+                Debug.Log(ingredient.displayName);
+                newSlot.SlotIngredient = ingredient;
+                newSlot.Amount = count;
 
-            containerSlots.Add(newSlot);
+                containerSlots.Add(newSlot);
+            }
         }
 
 
@@ -156,9 +157,7 @@ namespace Sol
 
         private void Awake()
         {
-            closeButton.onClick.AddListener(Close);
             InitializeInventorySlots();
-            toggleButton.onClick.AddListener(Toggle);
         }
     }
 }

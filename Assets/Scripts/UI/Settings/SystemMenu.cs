@@ -13,6 +13,9 @@ namespace Sol
         public Button audioButton;
         public Button exitGameButton;
 
+        public GraphicsPanel graphicsPanel;
+        public AudioPanel audioPanel;
+
 
         public void SaveGame()
         {
@@ -34,13 +37,24 @@ namespace Sol
 
         public void OpenGraphics()
         {
-            //TODO implement settings menu
+            if (!IsActive) Open();
+            CloseAll();
+            graphicsPanel.Activate();
         }
 
 
         public void OpenAudio()
         {
-            //TODO implement audio management
+            if (!IsActive) Open();
+            CloseAll();
+            audioPanel.Activate();
+        }
+
+
+        public void CloseAll()
+        {
+            graphicsPanel.Deactivate();
+            audioPanel.Deactivate();
         }
 
 

@@ -15,15 +15,6 @@ namespace Sol
         public Button useButton;
 
 
-        public void Initialize(InventoryIngredient ii)
-        {
-            title.text = ii.ingredient.displayName;
-            image.sprite = ii.ingredient.image;
-            description.text = ii.ingredient.description;
-            amountText.text = ii.amount.ToString();
-        }
-
-
         public void Initialize(Ingredient i, int amount)
         {
             title.text = i.displayName;
