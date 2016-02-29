@@ -48,7 +48,6 @@ namespace Sol
             Inventory inventory = UIManager.GetMenu<Inventory>();
 
             CachedPlayerStats.DisableMovement();
-            playerStats.DisableMovement();
 
             //Press any key!!
             fadeMenu.Fade(0f, Color.clear, Color.black);
@@ -116,9 +115,7 @@ namespace Sol
             yield return new WaitForSeconds(12f);
             objectiveTracker.AddObjective(escapePodObjective, displaySpeed);
             safe.interactible = true;
-            autoIntensity.go = true;
             
-
             while(inventory.GetIngredientAmount(explosiveDevice) < 1)
             {
                 yield return new WaitForSeconds(0.5f);
@@ -130,6 +127,7 @@ namespace Sol
 
         public void NextObjective(Objective objective, bool playMusic = false)
         {
+            if(!autoIntensity.go) autoIntensity.go = true;
             ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
             ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
             if(playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
