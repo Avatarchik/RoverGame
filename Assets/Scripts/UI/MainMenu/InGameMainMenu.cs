@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 namespace Sol
 {
     public class InGameMainMenu : Menu
