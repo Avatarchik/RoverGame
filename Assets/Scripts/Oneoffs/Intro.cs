@@ -85,7 +85,7 @@ namespace Sol
             {
                 yield return null;
             }
-            playerStats.EnableMovement();
+            //playerStats.EnableMovement();
 
             float prevMoveSpeedMultiplier = characterDriver.movementSpeedMultiplier;
             characterDriver.movementSpeedMultiplier = 0f;
