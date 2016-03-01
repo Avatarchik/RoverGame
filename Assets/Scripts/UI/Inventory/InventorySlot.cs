@@ -6,87 +6,57 @@ namespace Sol
 {
     public class InventorySlot : MonoBehaviour
     {
-        
-        public InventoryInfoPanel infoPanel;
+        public InventoryIngredient ii;
 
         public Image image;
-        public Text displayText;
         public Text amountText;
-        public Toggle moreInfo;
+        public Button moreInfo;
 
         private bool equippable = false;
         private bool stackable = true;
 
-        protected string amountString = "({0})";
-        protected int amount = 0;
-        protected Ingredient slotIngredient;
-
+        private int amount = 0;
 
         public int Amount
         {
-            get { return amount;  }
             set
-            {                
+            {
                 amount = value;
-                if (amountText != null && amount > 1)
-                {
-                    amountText.text = string.Format(amountString, amount);
-                }
-                else
-                {
-                    amountText.text = "";
-                }
+                amountText.text = amount + "";
             }
         }
 
 
-        public Ingredient SlotIngredient
+        private void EquipCamera()
         {
-            get { return slotIngredient; }
-            set
-            {
-                if(value != null)
-                {
-                    slotIngredient = value;
-                    displayText.text = slotIngredient.displayName;
-                }
-            }
+            Inventory inventory = UIManager.GetMenu<Inventory>();
+            inventory.RemoveInventoryItem(ii.ingredient, ii.amount);
+            CameraEquip.Equip(ii.ingredient.id);
         }
 
 
-        private void Initialize(bool b)
+        private void OpenToolTip()
         {
-            if(UIManager.GetMenu<Inventory>().ContainerExchange)
+            if (UIManager.GetMenu<Inventory>().ContainerExchange)
             {
-                if(b)
-                {
-                    Container container = UIManager.GetMenu<Container>();
-                    Inventory inventory = UIManager.GetMenu<Inventory>();
-
-                    //need to handle transfer
-                    if (amount > 5)
-                    {
-                        
-                    }
-                    else
-                    {
-                        //just throw one over
-                        container.AddInventoryItem(SlotIngredient, 1);
-                        inventory.RemoveInventoryItem(SlotIngredient, 1);
-                    }
-                }
+                Debug.Log("opening tooltip from inventory");
+                TransferToolTip toolTip = UIManager.GetMenu<TransferToolTip>();
+                toolTip.SetContent(ii, false);
+                toolTip.Open();
             }
             else
             {
-                //just need to initialize the panel
-                //if (b) infoPanel.Initialize(SlotIngredient, Amount);
+                ToolTip toolTip = UIManager.Open<ToolTip>();
+                toolTip.SetContent(ii.ingredient);
             }
+
         }
 
 
         private void Awake()
         {
-            moreInfo.onValueChanged.AddListener(Initialize);
+            moreInfo.onClick.AddListener(OpenToolTip);
         }
     }
+
 }

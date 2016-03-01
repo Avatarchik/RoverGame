@@ -10,16 +10,17 @@ namespace Sol
         public Material unpoweredButton;
         public Material poweredButton;
         public List<Door> doorsIControl = new List<Door>();
-        public ParticleSystem sparks;
 
 
         public override void Interact()
         {
+            Debug.Log("1");
             if (Interactible)
             {
+                Debug.Log("2");
                 foreach (Door door in doorsIControl)
                 {
-                    sparks.Play();
+                    Debug.Log("3");
                     door.IsOpen = !door.IsOpen;
                 }
             }
