@@ -6,6 +6,7 @@ namespace Sol
 {
     public class SystemMenu : Menu
     {
+
         public Button saveGamebutton;
         public Button loadGameButton;
         public Button controlsButton;
