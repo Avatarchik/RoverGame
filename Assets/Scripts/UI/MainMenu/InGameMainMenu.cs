@@ -147,6 +147,7 @@ namespace Sol
             openSystemToggle.onValueChanged.AddListener(OpenSystem);
         }
 
+
     }
 }
 
