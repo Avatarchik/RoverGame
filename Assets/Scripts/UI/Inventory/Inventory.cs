@@ -9,9 +9,14 @@ namespace Sol
     {
         public InventorySlot inventorySlotPrefab;
         public Transform InventorySlotContainer;
-        //public Text weightValue;
-        public Button transferButton;
-        public Button closeButton;
+
+        public InventoryInfoPanel infoPanel;
+
+        public ToggleGroup toggleGroup;
+
+        public Button dropButton;
+        public Button useButton;
+        //public Button closeButton;
 
         public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
@@ -46,29 +51,49 @@ namespace Sol
 
         public void Open(bool containerExchange = false)
         {
-            if (containerExchange)
+            if(!IsActive)
             {
-                transferButton.gameObject.SetActive(true);
-                closeButton.onClick.AddListener(delegate () { UIManager.Close<Container>(); });
-                base.Open();
-            }
-            else
-            {
-                transferButton.gameObject.SetActive(false);
-                closeButton.onClick.RemoveListener(delegate () { UIManager.Close<Container>(); });
-                base.Open();
-            }
+                if (containerExchange)
+                {
+                    Debug.Log("exchange desired");
+                    CloseInfoPanel();
+                    base.Open();
+                }
+                else
+                {
+                    Debug.Log("no exchange");
+                    OpenInfoPanel();
+                    base.Open();
+                }
 
-            ContainerExchange = containerExchange;
+                ContainerExchange = containerExchange;
+            }
         }
 
 
         public override void Close()
         {
             Container container = UIManager.GetMenu<Container>();
-            transferButton.gameObject.SetActive(false);
             if (container.IsActive) container.Close();
             base.Close();
+        }
+
+
+        public virtual void OpenInfoPanel()
+        {
+            Debug.Log("initializing info panel!");
+            if (ingredientsInInventory.Count > 0)
+            {
+                Debug.Log("more than one ingredient : opening info panel!");
+                infoPanel.Initialize(ingredientsInInventory[0], GetIngredientAmount(ingredientsInInventory[0]));
+                infoPanel.gameObject.SetActive(true);
+            }
+        }
+
+
+        public virtual void CloseInfoPanel()
+        {
+            infoPanel.gameObject.SetActive(false);
         }
 
 
@@ -119,12 +144,11 @@ namespace Sol
             InventorySlot newSlot = Instantiate(inventorySlotPrefab) as InventorySlot;
             newSlot.transform.SetParent(InventorySlotContainer);
             newSlot.transform.localScale = Vector3.one;
+            newSlot.moreInfo.group = toggleGroup;
 
-            // if (!container.IsActive && newSlot.transferButton != null) newSlot.transferButton.gameObject.SetActive(false);
-
-            newSlot.image.sprite = ingredient.image;
+            if(newSlot.image != null) newSlot.image.sprite = ingredient.image;
             newSlot.Amount = count;
-            newSlot.ii.ingredient = ingredient;
+            newSlot.SlotIngredient = ingredient;
             newSlot.Amount = count;
 
             inventorySlots.Add(newSlot);
@@ -134,22 +158,25 @@ namespace Sol
 
         public virtual void AddInventoryItem(Ingredient ingredient, int count)
         {
-            for (int i = count; i > 0; i--)
+            if(ingredient != null)
             {
-                ingredientsInInventory.Add(ingredient);
-            }
+                for (int i = count; i > 0; i--)
+                {
+                    ingredientsInInventory.Add(ingredient);
+                }
 
-            MessageMenu mm = UIManager.GetMenu<MessageMenu>();
-            if (count == 1)
-            {
-                mm.Open(string.Format("{0} added", ingredient.displayName), 3);
-            }
-            else
-            {
-                mm.Open(string.Format("{0} {1}s added", count, ingredient.displayName), 3);
-            }
+                MessageMenu mm = UIManager.GetMenu<MessageMenu>();
+                if (count == 1)
+                {
+                    mm.Open(string.Format("{0} added", ingredient.displayName), 3);
+                }
+                else
+                {
+                    mm.Open(string.Format("{0} {1}s added", count, ingredient.displayName), 3);
+                }
 
-            InitializeInventorySlots();
+                InitializeInventorySlots();
+            }
         }
 
 
@@ -197,24 +224,6 @@ namespace Sol
         }
 
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
-            {
-                if (!IsActive)
-                {
-                    Open();
-                }
-                else
-                {
-                    Close();
-                }
-            }
-
-            // weightValue.text = PlayerStatsInstance.Weight + " kg";
-        }
-
-
         private void Transfer()
         {
             Close();
@@ -224,9 +233,8 @@ namespace Sol
 
         private void Awake()
         {
-            closeButton.onClick.AddListener(Close);
+            //closeButton.onClick.AddListener(Close);
             InitializeInventorySlots();
-            transferButton.onClick.AddListener(Transfer);
         }
     }
 }

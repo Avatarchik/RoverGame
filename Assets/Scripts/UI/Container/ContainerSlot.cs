@@ -7,18 +7,28 @@ namespace Sol
 {
     public class ContainerSlot : InventorySlot
     {
+        public Button transferbutton;
         private void OpenTransferToolTip()
         {
-            Debug.Log("opening tooltip from container");
+            Inventory inventory = UIManager.GetMenu<Inventory>();
+            Container container = UIManager.GetMenu<Container>();
 
-            TransferToolTip toolTip = UIManager.Open<TransferToolTip>();
-            toolTip.SetContent(ii, true);
+            if(amount > 5)
+            {
+                //need to pull up a modal
+            }
+            else
+            {
+                //throw one over
+                inventory.AddInventoryItem(SlotIngredient, 1);
+                container.RemoveInventoryItem(SlotIngredient, 1);
+            }
         }
 
 
         private void Awake()
         {
-            moreInfo.onClick.AddListener(OpenTransferToolTip);
+            transferbutton.onClick.AddListener(OpenTransferToolTip);
         }
     }
 
