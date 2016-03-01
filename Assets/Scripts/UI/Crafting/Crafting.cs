@@ -9,8 +9,8 @@ namespace Sol
     {
         public CraftingInfoPanel craftingInfoPanel;
         public Transform craftingSlotContainer;
+        public Button closeButton;
         public CraftingSlot craftingSlotPrefab;
-        public ToggleGroup toggleGroup;
 
         public List<Recipe> recipes = new List<Recipe>();
         private List<CraftingSlot> craftingSlots = new List<CraftingSlot>();
@@ -132,9 +132,8 @@ namespace Sol
             UIManager.GetMenu<Inventory>().AddInventoryItem(newII.ingredient, newII.amount);
 
             canClose = true;
-            Close();
-            //SelectCraftingSlot(craftingSlots[0]);
-            //SelectSlot();
+            SelectCraftingSlot(craftingSlots[0]);
+            SelectSlot();
         }
 
 
@@ -149,15 +148,15 @@ namespace Sol
             }
             craftingSlots.Clear();
             int i = 0;
-
+            Debug.Log("recipe count! : " + recipes.Count);
             foreach (Recipe recipe in recipes)
             {
+                Debug.Log(" creating slot at :" + i);
                 CraftingSlot newCraftingSlot = Instantiate(craftingSlotPrefab) as CraftingSlot;
                 newCraftingSlot.transform.SetParent(craftingSlotContainer);
                 newCraftingSlot.titleText.text = recipe.displayName;
                 newCraftingSlot.ingredient = recipe.craftedItem;
                 newCraftingSlot.recipe = recipe;
-                newCraftingSlot.selectToggle.group = toggleGroup;
 
                 craftingSlots.Add(newCraftingSlot);
                 i++;
@@ -176,6 +175,7 @@ namespace Sol
         private void Awake()
         {
             CraftingSlot.OnSelectCraftingSlot += SelectCraftingSlot;
+            closeButton.onClick.AddListener(Close);
             craftingInfoPanel.craftButton.onClick.AddListener(CraftItem);
         }
     }
