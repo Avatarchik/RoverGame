@@ -8,8 +8,13 @@ public class LogSlot : MonoBehaviour
     public delegate void SelectLogSlot(LogSlot logSlot);
     public static event SelectLogSlot OnSelectLogSlot;
 
-    public Toggle selectToggle;
+    public Button selectButton;
+
+    public Image mainImage;
     public Text titleText;
+
+    public Color activeColor;
+    public Color inactiveColor;
 
     public Log log;
 
@@ -19,16 +24,26 @@ public class LogSlot : MonoBehaviour
     {
         get { return isSelected; }
         set
-        { isSelected = value; }
+        {
+            isSelected = value;
+            if (isSelected)
+            {
+                mainImage.color = activeColor;
+            }
+            else
+            {
+                mainImage.color = inactiveColor;
+            }
+        }
     }
 
-    private void SelectMe(bool b)
+    private void SelectMe()
     {
-        if(b) OnSelectLogSlot(this);
+        OnSelectLogSlot(this);
     }
 
     private void Awake()
     {
-        selectToggle.onValueChanged.AddListener(SelectMe);
+        selectButton.onClick.AddListener(SelectMe);
     }
 }

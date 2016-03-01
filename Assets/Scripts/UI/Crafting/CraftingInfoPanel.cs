@@ -8,7 +8,6 @@ namespace Sol
     public class CraftingInfoPanel : MonoBehaviour
     {
         public Image craftingFillBar;
-        public Image ingredientImage;
         public Text titleText;
         public Text descriptionText;
         public Button craftButton;
@@ -28,7 +27,6 @@ namespace Sol
             set
             {
                 selectedRecipe = value;
-                ingredientImage.sprite = selectedRecipe.craftedItem.image;
                 titleText.text = selectedRecipe.displayName;
                 descriptionText.text = selectedRecipe.description;
 

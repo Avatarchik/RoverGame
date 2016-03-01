@@ -31,7 +31,7 @@ namespace Sol
                 Close();
                 this.enabled = false;
 
-                Destroy(GameObject.FindObjectOfType<DrillPuzzleInitializer>().gameObject);//.enabled = false;
+                GameObject.FindObjectOfType<DrillPuzzleInitializer>().enabled = false;
             }
         }
 
