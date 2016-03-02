@@ -61,8 +61,10 @@ namespace Sol
             }
 
             //start playing sound and run through the console
-            soundManager.Play(VOICE_ID_1);
+            StartCoroutine(AudioFade(soundManager.Play(VOICE_ID_1, 1).GetComponent<AudioSource>()));
+            Debug.Log(1);
             yield return new WaitForSeconds(1f);
+            Debug.Log(2);
             for (int i = 0; i < introObjectives.Count; i++)
             {
                 yield return new WaitForSeconds(Random.Range(0.3f, 0.6f));
@@ -72,6 +74,7 @@ namespace Sol
                     yield return null;
                 }
             }
+            Debug.Log(3);
 
             fadeMenu.Fade(2f, Color.black, Color.clear);
             yield return new WaitForSeconds(4f);
@@ -112,7 +115,7 @@ namespace Sol
             yield return new WaitForSeconds(1f);
 
             //escape the pod
-            soundManager.Play(VOICE_ID_3);
+            soundManager.Play(VOICE_ID_3) ;
             yield return new WaitForSeconds(12f);
             objectiveTracker.AddObjective(escapePodObjective, displaySpeed);
             safe.interactible = true;
@@ -145,6 +148,22 @@ namespace Sol
                 ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
                 if (playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
             }            
+        }
+
+        //TODO dont relly on this
+        private IEnumerator AudioFade(AudioSource source)
+        {
+            float elapsedTime = 0f;
+            float desiredTime = 15f;
+
+            while(elapsedTime < desiredTime)
+            {
+                if (source == null) break;
+                source.volume = Mathf.Lerp(0, 1, elapsedTime / desiredTime);
+
+                elapsedTime += Time.fixedDeltaTime;
+                yield return null;
+            }
         }
 
 
