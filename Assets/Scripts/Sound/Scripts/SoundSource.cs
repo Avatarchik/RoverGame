@@ -74,7 +74,7 @@ public class SoundSource : MonoBehaviour
 	public void SetVolumeTo (float volume, float fadeTime, System.Action callback=null)
 	{
 		StopAllCoroutines ();
-		StartCoroutine (ChangeVolumeCoroutine (CachedAudioSource.volume, volume, fadeTime, callback));
+		StartCoroutine (ChangeVolumeCoroutine (0, volume, fadeTime, callback));
 	}
 
 

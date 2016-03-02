@@ -7,7 +7,6 @@ public class LogMenu : Menu
 {
     public LogInfoPanel logInfoPanel;
     public Transform logSlotContainer;
-    public Button closeButton;
     public LogSlot logSlotPrefab;
 
     public List<Log> logs = new List<Log>();
@@ -75,25 +74,8 @@ public class LogMenu : Menu
     }
 
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.J))
-        {
-            if(IsActive)
-            {
-                Close();
-            }
-            else
-            {
-                Open();
-            }
-        }
-    }
-
-
     private void Awake()
     {
         LogSlot.OnSelectLogSlot += SelectLogSlot;
-        closeButton.onClick.AddListener(Close);
     }
 }
