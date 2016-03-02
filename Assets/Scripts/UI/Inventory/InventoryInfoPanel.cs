@@ -9,7 +9,6 @@ namespace Sol
         public Text title;
         public Image image;
         public Text description;
-        public Text amountText;
 
         public Button dropButton;
         public Button useButton;
@@ -21,7 +20,6 @@ namespace Sol
             title.text = i.displayName;
             image.sprite = i.image;
             description.text = i.description;
-            amountText.text = amount.ToString();
         }
 
 

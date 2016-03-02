@@ -8,6 +8,7 @@ namespace Sol
     {
         public enum Effect { EquipCamera, EquipWheels }
 
+        public Texture2D cursorImage;
         public StatCollection statCollection;
 
         public const int MOVE_SPEED_ID = 0;
@@ -183,11 +184,13 @@ namespace Sol
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = true;
+                Cursor.SetCursor(cursorImage, new Vector2(cursorImage.width / 2, cursorImage.height / 2), CursorMode.Auto);
             }
             else
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                Cursor.SetCursor(cursorImage, new Vector2(cursorImage.width/2, cursorImage.height/2), CursorMode.Auto);
             }
         }
 
