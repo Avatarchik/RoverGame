@@ -136,19 +136,12 @@ public class SoundManager : MonoBehaviour
 		switch (sound.type)
 		{
 			case SoundType.Effect:
-			case SoundType.Speech:
+            case SoundType.Music:
+            case SoundType.Speech:
 				if (sources.FindAll (s => { return s.CurrentSoundId == sound.id; }).Count < sound.instanceLimit)
 				{
 					source = ObjectPool.Request<SoundSource> (soundSourcePrefab, parent, position, Quaternion.identity);
 					source.StopEvent += OnSoundSourceStop;
-				}
-				break;
-				
-			case SoundType.Music:
-				if (sources.FindAll (s => { return s.CurrentSoundId == sound.id; }).Count < sound.instanceLimit)
-				{
-					source = sources.FirstOrDefault (s => s.Type == sound.type && !s.IsPlaying);
-					if (!source) source = ObjectPool.Request<SoundSource> (soundSourcePrefab, parent, position, Quaternion.identity);
 				}
 				break;
 		}
