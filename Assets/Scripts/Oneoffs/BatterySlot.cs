@@ -11,6 +11,9 @@ namespace Sol
         public DoorSwitch doorSwitch;
         public GameObject batteryModel;
 
+        public List<MeshRenderer> panelButtons = new List<MeshRenderer>();
+        public Material litMaterial;
+
         private bool hasItem;
         private Inventory playerInventory;
 
@@ -39,6 +42,10 @@ namespace Sol
                     PlayerInventory.RemoveInventoryItem(desiredObject, 1);
                     batteryModel.SetActive(true);
                     doorSwitch.interactible = true;
+                    foreach(MeshRenderer panelButton in panelButtons)
+                    {
+                        panelButton.material = litMaterial;
+                    }
                     podAnimator.hazardLight.gameObject.SetActive(true);
                     hasItem = true;
                     interactible = false;

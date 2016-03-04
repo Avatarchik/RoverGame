@@ -80,6 +80,9 @@ namespace Sol
             yield return new WaitForSeconds(4f);
             fadeMenu.Close();
 
+            float prevMoveSpeedMultiplier = characterDriver.movementSpeedMultiplier;
+            characterDriver.movementSpeedMultiplier = 0f;
+
             //look around and move around
             soundManager.Play(VOICE_ID_2);
             yield return new WaitForSeconds(2f);
@@ -90,8 +93,7 @@ namespace Sol
             }
             //playerStats.EnableMovement();
 
-            float prevMoveSpeedMultiplier = characterDriver.movementSpeedMultiplier;
-            characterDriver.movementSpeedMultiplier = 0f;
+            
 
             while(Input.GetAxis("Mouse X") == 0 && Input.GetAxis("Mouse Y") == 0)
             {

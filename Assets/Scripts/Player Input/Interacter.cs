@@ -7,14 +7,16 @@ namespace Sol
     public class Interacter : MonoBehaviour
     {
         public float detectionDistance = 50f;
+        public float highlightDistance = 15f;
 
         private List<InteractibleObject> hoveredInteractibleObjects = new List<InteractibleObject>();
 
 
         public void Update()
         {
+            //figure out what we are close enough to highlight
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit[] hits = Physics.RaycastAll(ray, detectionDistance);
+            RaycastHit[] hits = Physics.RaycastAll(ray, highlightDistance);
 
             List<InteractibleObject> interactibles = new List<InteractibleObject>();
 
@@ -23,12 +25,21 @@ namespace Sol
                 InteractibleObject[] ios = hit.collider.gameObject.GetComponents<InteractibleObject>();
                 interactibles.AddRange(ios);
             }
+            SetSilhouettes(interactibles);
 
-            SetInteractibleObjects(interactibles);
+            //figure out what we are close enough to interact with
+            hits = Physics.RaycastAll(ray, detectionDistance);
+            interactibles.Clear();
+            foreach (RaycastHit hit in hits)
+            {
+                InteractibleObject[] ios = hit.collider.gameObject.GetComponents<InteractibleObject>();
+                interactibles.AddRange(ios);
+            }
+            SetInteractibles(interactibles);
         }
 
 
-        public void SetInteractibleObjects(List<InteractibleObject> currentLitObjects)
+        public void SetSilhouettes(List<InteractibleObject> currentLitObjects)
         {
             List<InteractibleObject> overlappingItems = new List<InteractibleObject>();
             List<InteractibleObject> uniqueOldItems = new List<InteractibleObject>();
@@ -58,7 +69,11 @@ namespace Sol
                     hoveredInteractibleObjects.Remove(hoveredInteractibleObjects[i]);
                 }
             }
+        }
 
+
+        public void SetInteractibles(List<InteractibleObject> currentLitObjects)
+        {
             foreach (InteractibleObject io in currentLitObjects)
             {
                 if (Input.GetMouseButtonDown(0)) io.Interact();

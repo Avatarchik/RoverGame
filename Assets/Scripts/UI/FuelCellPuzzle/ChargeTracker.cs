@@ -9,7 +9,7 @@ namespace Sol
         public FuelCellPuzzle fcp;
         public ChargeTracker other;
 
-        public Image chargeImage;
+        public GameObject chargeBar;
 
         public Button transferButton;
         public Button chargeButton;
@@ -18,6 +18,7 @@ namespace Sol
         public float chargeSpeed = 10f;
 
         public float cellMax;
+        private float cellScaleMax = 0.24f;
         private float cellcurrent;
 
 
@@ -27,7 +28,7 @@ namespace Sol
             set
             {
                 cellcurrent = value;
-                StartCoroutine(ChangeValue((float)(cellcurrent/cellMax)));
+                StartCoroutine(ChangeValue((float)((cellcurrent * cellScaleMax) / cellMax)));//cellcurrent/cellMax)));
             }
         }
 
@@ -63,10 +64,13 @@ namespace Sol
         private IEnumerator ChangeValue(float desiredAmount)
         {
             float elapsedTime = 0f;
-            float originalAmount = chargeImage.fillAmount;
+            float originalAmount = chargeBar.transform.localScale.y;
             while (elapsedTime < chargeSpeed)
             {
-                chargeImage.fillAmount = Mathf.Lerp(originalAmount, desiredAmount, elapsedTime / chargeSpeed);
+                chargeBar.transform.localScale = new Vector3(
+                    chargeBar.transform.localScale.x,
+                    Mathf.Lerp(originalAmount, desiredAmount, elapsedTime / chargeSpeed),
+                    chargeBar.transform.localScale.z);
 
                 elapsedTime += Time.fixedDeltaTime;
                 yield return null;

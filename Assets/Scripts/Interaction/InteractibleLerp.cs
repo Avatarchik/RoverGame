@@ -38,7 +38,8 @@ namespace Sol
                 elapsedTime += Time.fixedDeltaTime;
                 yield return null;
             }
-            interactible = true;
+
+            this.enabled = false;
         }
     }
 }

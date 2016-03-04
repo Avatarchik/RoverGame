@@ -5,10 +5,15 @@ namespace Sol
 {
     public class DrillPuzzleInitializer : InteractibleObject
     {
+        public Transform cameraPos;
+        public GameObject leftFuelCell;
+        public GameObject rightFuelCell;
+
         public override void Interact()
         {
             base.Interact();
-            UIManager.Open<FuelCellPuzzle>();
+            FuelCellPuzzle fcp = UIManager.GetMenu<FuelCellPuzzle>();
+            fcp.Open(leftFuelCell, rightFuelCell, cameraPos);
         }
     }
 }
