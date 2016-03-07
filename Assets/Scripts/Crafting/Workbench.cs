@@ -15,7 +15,7 @@ namespace Sol
             {
                 Crafting craftingMenu = UIManager.GetMenu<Crafting>();
 
-                silhouette.SetActive(false);
+                silhouetteInteractible.SetActive(false);
                 UIManager.Close<MessageMenu>();
                 craftingMenu.Open(recipes);
             }

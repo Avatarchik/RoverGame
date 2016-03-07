@@ -6,13 +6,14 @@ namespace Sol
 {
     public class FuelCellPuzzle : Menu
     {
+        public Transform roverParent;
         public Transform cameraInPos;
         public Transform cameraOutPos;
 
-        public Ingredient reward;
-
         public ChargeTracker rightCharger;
         public ChargeTracker leftCharger;
+
+        public ContainerObject fuelCellContainer;
 
         public Button exitButton;
 
@@ -24,10 +25,11 @@ namespace Sol
         private float maxScale = 0.24f;
 
 
-        public void Open(GameObject lfc, GameObject rfc, Transform camPos)
+        public void Open(GameObject lfc, GameObject rfc, Transform camPos, ContainerObject co)
         {
             cameraInPos = camPos;
 
+            fuelCellContainer = co;
             rightCharger.chargeBar = rfc;
             leftCharger.chargeBar = lfc;
 
@@ -40,56 +42,63 @@ namespace Sol
             if(!isComplete && rightCharger.CellCurrent == desiredCharge)
             {
                 isComplete = true;
-                UIManager.GetMenu<Inventory>().AddInventoryItem(reward, 1);
+                //UIManager.GetMenu<Inventory>().AddInventoryItem(reward, 1);
+                fuelCellContainer.ForceInteract();
 
                 StartCoroutine(CloseCoroutine());
-
-                Destroy(GameObject.FindObjectOfType<DrillPuzzleInitializer>().gameObject);
             }
         }
 
 
         private IEnumerator OpenCoroutine()
         {
-            Camera.main.GetComponent<CameraCollision>().enabled = false;
+            Camera controlledCamera = Camera.main;
+            GameObject.FindObjectOfType<PlayerStats>().DisableMovement();
+
+            controlledCamera.GetComponent<CameraCollision>().enabled = false;
 
             float desiredTime = 2f;
             float elapsedTime = 0f;
 
-            cameraOutPos = Camera.main.transform;
+            roverParent = controlledCamera.transform.parent;
+            cameraOutPos = controlledCamera.transform;
+
+            controlledCamera.transform.SetParent(cameraInPos);
 
             while (elapsedTime < desiredTime)
             {
-                Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, cameraInPos.position, elapsedTime / desiredTime);
-                Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, cameraInPos.rotation, elapsedTime / desiredTime);
+                controlledCamera.transform.localPosition = Vector3.Lerp(controlledCamera.transform.localPosition, Vector3.zero, elapsedTime / desiredTime);
+                controlledCamera.transform.localRotation = Quaternion.Lerp(controlledCamera.transform.localRotation, Quaternion.identity, elapsedTime / desiredTime);
 
                 elapsedTime += Time.fixedDeltaTime;
                 yield return null;
             }
 
-            Camera.main.transform.position = cameraInPos.position;
+            controlledCamera.transform.localPosition = Vector3.zero;
+            controlledCamera.transform.localRotation = Quaternion.identity;
+
             Open();
         }
 
 
         private IEnumerator CloseCoroutine()
         {
-            float desiredTime = 2f;
-            float elapsedTime = 0f;
+            rightCharger.Drain();
+            leftCharger.Drain();
 
-            while (elapsedTime < desiredTime)
-            {
-                Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, cameraOutPos.position, elapsedTime / desiredTime);
-                Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, cameraOutPos.rotation, elapsedTime / desiredTime);
+            yield return null;
+            Camera controlledCamera = Camera.main;
 
-                elapsedTime += Time.fixedDeltaTime;
-                yield return null;
-            }
+            controlledCamera.transform.SetParent(roverParent);
 
-            Camera.main.transform.position = cameraOutPos.position;
+            controlledCamera.transform.localPosition = cameraOutPos.localPosition;
+            controlledCamera.transform.localEulerAngles = Vector3.zero;
 
             Close();
-            Camera.main.GetComponent<CameraCollision>().enabled = true;
+
+            GameObject.FindObjectOfType<PlayerStats>().EnableMovement();
+            controlledCamera.GetComponent<CameraCollision>().enabled = true;
+            Destroy(GameObject.FindObjectOfType<DrillPuzzleInitializer>().gameObject);
         }
 
 

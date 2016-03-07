@@ -39,7 +39,7 @@ namespace Sol
                 yield return null;
             }
 
-            this.enabled = false;
+            Destroy(this);
         }
     }
 }
