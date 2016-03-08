@@ -12,6 +12,9 @@ public class ObjectiveTracker : Menu
 
     public override void Open()
     {
+        StopAllCoroutines();
+        StartCoroutine(DelayedClose());
+
         base.Open();
     }
 

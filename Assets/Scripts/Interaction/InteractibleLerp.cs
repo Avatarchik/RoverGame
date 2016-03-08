@@ -39,6 +39,9 @@ namespace Sol
                 yield return null;
             }
 
+            silhouetteSeen.SetActive(false);
+            silhouetteInteractible.SetActive(false);
+
             Destroy(this);
         }
     }

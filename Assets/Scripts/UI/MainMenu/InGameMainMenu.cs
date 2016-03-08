@@ -15,6 +15,13 @@ namespace Sol
         public Toggle openSystemToggle;
 
 
+        public override void Close()
+        {
+            UIManager.Open<ObjectiveTracker>();
+            base.Close();
+        }
+
+
         public void OpenMap(bool b = true)
         {
             //TODO implement a map menu

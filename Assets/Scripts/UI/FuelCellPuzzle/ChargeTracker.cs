@@ -28,8 +28,6 @@ namespace Sol
             set
             {
                 cellcurrent = value;
-                Debug.Log(gameObject.name + " : " + cellcurrent + " : "+ ((cellcurrent / cellMax) * cellScaleMax));
-
                 StartCoroutine(ChangeValue((float)((cellcurrent / cellMax) *cellScaleMax )));
             }
         }

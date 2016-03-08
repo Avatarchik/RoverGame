@@ -24,8 +24,10 @@ namespace Sol
         private float minScale = 0.001f;
         private float maxScale = 0.24f;
 
+        private GameObject cellObject;
 
-        public void Open(GameObject lfc, GameObject rfc, Transform camPos, ContainerObject co)
+
+        public void Open(GameObject lfc, GameObject rfc, Transform camPos, ContainerObject co, GameObject cell)
         {
             cameraInPos = camPos;
 
@@ -33,6 +35,8 @@ namespace Sol
             rightCharger.chargeBar = rfc;
             leftCharger.chargeBar = lfc;
 
+            cellObject = cell;
+            
             StartCoroutine(OpenCoroutine());
         }
         
@@ -44,6 +48,13 @@ namespace Sol
                 isComplete = true;
                 //UIManager.GetMenu<Inventory>().AddInventoryItem(reward, 1);
                 fuelCellContainer.ForceInteract();
+
+                rightCharger.Drain();
+                leftCharger.Drain();
+
+                cellObject.SetActive(false);
+
+                Destroy(GameObject.FindObjectOfType<DrillPuzzleInitializer>().gameObject);
 
                 StartCoroutine(CloseCoroutine());
             }
@@ -57,7 +68,7 @@ namespace Sol
 
             controlledCamera.GetComponent<CameraCollision>().enabled = false;
 
-            float desiredTime = 2f;
+            float desiredTime = 5f;
             float elapsedTime = 0f;
 
             roverParent = controlledCamera.transform.parent;
@@ -86,7 +97,7 @@ namespace Sol
             rightCharger.Drain();
             leftCharger.Drain();
 
-            yield return null;
+            yield return new WaitForSeconds(1f);
             Camera controlledCamera = Camera.main;
 
             controlledCamera.transform.SetParent(roverParent);
@@ -98,7 +109,6 @@ namespace Sol
 
             GameObject.FindObjectOfType<PlayerStats>().EnableMovement();
             controlledCamera.GetComponent<CameraCollision>().enabled = true;
-            Destroy(GameObject.FindObjectOfType<DrillPuzzleInitializer>().gameObject);
         }
 
 

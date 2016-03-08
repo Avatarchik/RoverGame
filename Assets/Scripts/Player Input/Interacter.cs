@@ -53,9 +53,9 @@ namespace Sol
                     //its currently lit, and it was previously lit. DO NOTHING
                     overlappingItems.Add(co);
                 }
-                else
+                else if (!interactibleInteractibleObjects.Contains(co))
                 {
-                    //its currently list, but it wasnt lit before. TURN IT ON
+                    //its currently list, but it wasnt lit before. Its also not in interaction distance. TURN IT ON
                     co.HoverEnterSeen();
                     seenInteractibleObjects.Add(co);
                 }
@@ -63,16 +63,18 @@ namespace Sol
 
             for (int i = seenInteractibleObjects.Count - 1; i >= 0; i--)
             {
-                if (!currentLitObjects.Contains(seenInteractibleObjects[i]))
+                if (!currentLitObjects.Contains(seenInteractibleObjects[i]) || interactibleInteractibleObjects.Contains(seenInteractibleObjects[i]))
                 {
-                    //its hovered, but not currently lit. TURN IT OFF
+                    //its hovered, but not currently lit OR its hovered but within detection distance. TURN IT OFF
                     if (seenInteractibleObjects[i] != null)
                     {
+                        //it still exists
                         seenInteractibleObjects[i].HoverExitSeen();
                         seenInteractibleObjects.Remove(seenInteractibleObjects[i]);
                     }
                     else
                     {
+                        //it got deleted somehow
                         seenInteractibleObjects.Remove(seenInteractibleObjects[i]);
                     }
                 }
@@ -97,7 +99,6 @@ namespace Sol
                 {
                     //its currently list, but it wasnt lit before. TURN IT ON
                     co.HoverEnterInteractible();
-
                     interactibleInteractibleObjects.Add(co);
                 }
             }
