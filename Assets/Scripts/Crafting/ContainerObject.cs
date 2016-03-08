@@ -36,7 +36,15 @@ namespace Sol
 
         public override void Interact()
         {
+            Debug.Log("interacting!!");
+            if (!Interactible) Debug.Log("but we have a problem with this component not being interactible.");
             if (Interactible) ContainerMenu.Open(ingredientsInInventory, this);
+        }
+
+
+        public void ForceInteract()
+        {
+            ContainerMenu.Open(ingredientsInInventory, this);
         }
     }
 }

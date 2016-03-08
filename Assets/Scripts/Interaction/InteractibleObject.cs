@@ -7,7 +7,8 @@ namespace Sol
     {
         public string objectName = "Container";
 
-        public GameObject silhouette;
+        public GameObject silhouetteInteractible;
+        public GameObject silhouetteSeen;
         public bool interactible = true;
 
         private PlayerStats playerStats;
@@ -29,11 +30,20 @@ namespace Sol
         }
 
 
-        public virtual void HoverEnter()
+        public virtual void HoverEnterSeen()
         {
-            if (Interactible)
+            if(Interactible)
             {
-                SetSilhouette(true);
+                silhouetteSeen.SetActive(true);
+            }
+        }
+
+
+        public void HoverEnterInteractible()
+        {
+            if(Interactible)
+            {
+                silhouetteInteractible.SetActive(true);
                 if (objectName != "")
                 {
                     MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
@@ -43,23 +53,34 @@ namespace Sol
         }
 
 
-        public virtual void HoverExit()
+        public virtual void HoverExitSeen()
         {
-            SetSilhouette(false);
-            UIManager.Close<MessageMenu>();
+            if(Interactible)
+            {
+                silhouetteSeen.SetActive(false);
+            }
+        }
+
+
+        public virtual void HoverExitInteractible()
+        {
+            if(Interactible)
+            {
+                if(silhouetteInteractible != null) silhouetteInteractible.SetActive(false);
+                UIManager.Close<MessageMenu>();
+            }
         }
 
 
         public virtual void Interact()
         {
-            Debug.Log("interacting");
-            SetSilhouette(false);
-        }
-
-
-        protected virtual void SetSilhouette(bool b)
-        {
-            if (silhouette != null) silhouette.SetActive(b);
+            if(Interactible)
+            {
+                Debug.Log("interacting");
+                UIManager.Close<MessageMenu>();
+                silhouetteSeen.SetActive(false);
+                silhouetteInteractible.SetActive(false);
+            }
         }
     }
 }
