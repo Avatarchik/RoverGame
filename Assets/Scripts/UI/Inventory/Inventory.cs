@@ -169,10 +169,12 @@ namespace Sol
                 if (count == 1)
                 {
                     mm.Open(string.Format("{0} added", ingredient.displayName), 3);
+                    CloseMessageMenu();
                 }
                 else
                 {
                     mm.Open(string.Format("{0} {1}s added", count, ingredient.displayName), 3);
+                    CloseMessageMenu();
                 }
 
                 InitializeInventorySlots();
@@ -207,10 +209,12 @@ namespace Sol
             if (count == 1)
             {
                 mm.Open(string.Format("{0} removed", ingredient.displayName), 3);
+                CloseMessageMenu();
             }
             else
             {
                 mm.Open(string.Format("{0} {1}s removed", count, ingredient.displayName), 3);
+                CloseMessageMenu();
             }
 
             InitializeInventorySlots();
@@ -221,6 +225,20 @@ namespace Sol
         {
             ingredientsInInventory.Clear();
             InitializeInventorySlots();
+        }
+
+
+        private void CloseMessageMenu()
+        {
+            StopAllCoroutines();
+            StartCoroutine(CloseMessageMenuCoroutine());
+        }
+
+
+        private IEnumerator CloseMessageMenuCoroutine()
+        {
+            yield return new WaitForSeconds(5f);
+            UIManager.Close<MessageMenu>();
         }
 
 

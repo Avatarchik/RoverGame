@@ -47,6 +47,10 @@ namespace Sol
                         panelButton.material = litMaterial;
                     }
                     podAnimator.hazardLight.gameObject.SetActive(true);
+
+                    silhouetteSeen.SetActive(false);
+                    silhouetteInteractible.SetActive(false);
+
                     hasItem = true;
                     interactible = false;
                 }
