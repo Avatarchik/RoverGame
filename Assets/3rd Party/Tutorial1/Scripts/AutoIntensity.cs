@@ -65,7 +65,7 @@ public class AutoIntensity : MonoBehaviour
 
             RenderSettings.fogColor = nightDayFogColor.Evaluate(dot);
             RenderSettings.fogDensity = fogDensityCurve.Evaluate(dot) * fogScale;
-            scion.minMaxExposure = new Vector2(minExposure.Evaluate(dot), maxExposure.Evaluate(dot));
+           // scion.minMaxExposure = new Vector2(minExposure.Evaluate(dot), maxExposure.Evaluate(dot));
 
             i = ((dayAtmosphereThickness - nightAtmosphereThickness) * dot) + nightAtmosphereThickness;
             skyMat.SetFloat("_AtmosphereThickness", i);

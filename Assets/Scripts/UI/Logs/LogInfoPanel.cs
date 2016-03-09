@@ -18,7 +18,7 @@ public class LogInfoPanel : MonoBehaviour
         {
             selectedLog = value;
             titleText.text = selectedLog.header;
-            descriptionText.text = selectedLog.content;
+            descriptionText.text = selectedLog.content.Replace("\\n", "\n");
         }
     }
 }

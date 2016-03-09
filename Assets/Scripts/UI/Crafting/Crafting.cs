@@ -70,6 +70,7 @@ namespace Sol
 
         public override void Close()
         {
+            Debug.Log("closing!!");
             if (isActive && canClose)
             {
                 base.Close();

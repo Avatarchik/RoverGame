@@ -88,6 +88,8 @@ namespace Sol
             controlledCamera.transform.localPosition = Vector3.zero;
             controlledCamera.transform.localRotation = Quaternion.identity;
 
+            controlledCamera.transform.SetParent(roverParent);
+
             Open();
         }
 
@@ -99,8 +101,6 @@ namespace Sol
 
             yield return new WaitForSeconds(1f);
             Camera controlledCamera = Camera.main;
-
-            controlledCamera.transform.SetParent(roverParent);
 
             controlledCamera.transform.localPosition = cameraOutPos.localPosition;
             controlledCamera.transform.localEulerAngles = Vector3.zero;

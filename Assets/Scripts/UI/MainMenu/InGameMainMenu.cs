@@ -100,7 +100,7 @@ namespace Sol
         {
             if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
             {
-                if(IsActive)
+                if(IsActive || UIManager.GetMenu<Crafting>().IsActive)
                 {
                     CloseAll();
                     Close();
