@@ -28,6 +28,7 @@ namespace Sol
             set
             {
                 cellcurrent = value;
+                StopAllCoroutines();
                 StartCoroutine(ChangeValue((float)((cellcurrent / cellMax) *cellScaleMax )));
             }
         }

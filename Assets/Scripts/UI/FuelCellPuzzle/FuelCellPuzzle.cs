@@ -47,6 +47,7 @@ namespace Sol
             {
                 isComplete = true;
                 //UIManager.GetMenu<Inventory>().AddInventoryItem(reward, 1);
+                fuelCellContainer.gameObject.SetActive(true);
                 fuelCellContainer.ForceInteract();
 
                 rightCharger.Drain();
