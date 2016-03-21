@@ -21,10 +21,18 @@ namespace Sol
             DrawDefaultInspector();
             showHelp = EditorGUILayout.Toggle("Show Help", showHelp);
             SoundCollection mycollection = (SoundCollection)target;
-            if (GUILayout.Button("Add Sound"))
+            if (GUILayout.Button("Add New Sound"))
             {
                 mycollection.Add();
             }
+
+            GUI.color = Color.red;
+            if (GUILayout.Button("Clear Sounds"))
+            {
+                mycollection.sounds.Clear();
+            }
+            GUI.color = Color.white;
+
             EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.Space();
@@ -48,20 +56,44 @@ namespace Sol
 
                 if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_INSTANCE_LIMIT, MessageType.None);
                 sound.instanceLimit = EditorGUILayout.IntField("Instance Limit ", sound.instanceLimit);
-
+                
+                
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
                 EditorGUILayout.Space();
 
-                if(showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_PITCH, MessageType.None);
-                sound.minPitch = EditorGUILayout.FloatField("Minimum Pitch ", sound.minPitch);
+                if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_PITCH, MessageType.None);
+                EditorGUILayout.LabelField("Pitch");
+                float minVal = sound.minPitch;
+                float maxVal = sound.maxPitch;
+                EditorGUILayout.MinMaxSlider(ref minVal, ref maxVal, 0f, 3f);
+                sound.minPitch = minVal;
+                sound.maxPitch = maxVal;
+
+
+                EditorGUILayout.BeginHorizontal();
+                float width = EditorGUIUtility.currentViewWidth - 50;
+
+                EditorGUILayout.BeginVertical();
+                EditorGUILayout.LabelField("min", GUILayout.Width( width/2));
+                sound.minPitch = EditorGUILayout.FloatField(sound.minPitch, GUILayout.Width(width / 2));
+                EditorGUILayout.EndVertical();
+
+                EditorGUILayout.BeginVertical();
+                EditorGUILayout.LabelField("max", GUILayout.Width(width / 2));
+                sound.maxPitch = EditorGUILayout.FloatField(sound.maxPitch, GUILayout.Width(width / 2));
+                EditorGUILayout.EndVertical();
+
+                EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.Space();
-
-                sound.maxPitch = EditorGUILayout.FloatField("Max Pitch ", sound.maxPitch);
-
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
                 EditorGUILayout.Space();
 
                 if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_SPATIAL_BLEND, MessageType.None);
-                sound.spatialBlend = EditorGUILayout.FloatField("Spatial Blend ", sound.spatialBlend);
+                sound.spatialBlend = EditorGUILayout.Slider("Spatial Blend ", sound.spatialBlend, 0f, 1f);
 
                 EditorGUILayout.Space();
 
@@ -72,11 +104,18 @@ namespace Sol
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
 
+                if (GUILayout.Button("Reset"))
+                {
+                    mycollection.Reset(sound);
+                    break;
+                }
+
                 if (GUILayout.Button("Remove"))
                 {
                     mycollection.Remove(sound);
                     break;
                 }
+
                 EditorGUILayout.EndVertical();
 
                 EditorGUILayout.Space();

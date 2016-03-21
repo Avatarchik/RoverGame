@@ -46,6 +46,19 @@ public class SoundCollection : ScriptableObject
 	}
 
 
+    public void Reset(Sound sound)
+    {
+        for(int i = 0; i < sounds.Count; i++)
+        {
+            if(sounds[i] == sound)
+            {
+                sounds[i] = new Sound();
+                break;
+            }
+        }
+    }
+
+
 	public void Sort ()
 	{
 		sounds.Sort ((a, b) => { return (a.type + a.Name).CompareTo ((b.type + b.Name)); });
