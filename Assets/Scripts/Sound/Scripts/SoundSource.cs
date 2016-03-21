@@ -31,7 +31,7 @@ public class SoundSource : MonoBehaviour
 		CurrentSound = sound;
 		Volume = fadeTime == 0f ? VolumeFromSettings : 0f;
 
-		CachedAudioSource.clip = sound.clip;
+		CachedAudioSource.clip = sound.audioClip;
 		CachedAudioSource.loop = sound.loop;
 		CachedAudioSource.pitch = Random.Range (sound.minPitch, sound.maxPitch);
 		CachedAudioSource.spatialBlend = sound.spatialBlend;

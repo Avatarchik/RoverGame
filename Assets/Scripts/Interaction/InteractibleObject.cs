@@ -5,6 +5,8 @@ namespace Sol
 {
     public class InteractibleObject : MonoBehaviour
     {
+        public AudioClip interactEffect;
+
         public string objectName = "Container";
 
         public GameObject silhouetteInteractible;
@@ -76,6 +78,8 @@ namespace Sol
         {
             if(Interactible)
             {
+                if (interactEffect != null) GameManager.Get<SoundManager>().Play(interactEffect);
+
                 Debug.Log("interacting");
                 UIManager.Close<MessageMenu>();
                 silhouetteSeen.SetActive(false);

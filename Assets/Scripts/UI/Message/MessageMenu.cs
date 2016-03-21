@@ -2,50 +2,53 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class MessageMenu : Menu
+namespace Sol
 {
-    public Text messageText;
-
-    private int currentMessagePriority = -1;
-
-    public int CurrentMessagePriority
+    public class MessageMenu : Menu
     {
-        get { return currentMessagePriority; }
-    }
+        public Text messageText;
 
-    public override void Open()
-    {
-        base.Open();
-    }
+        private int currentMessagePriority = -1;
 
-
-    public void Open(string message, int priority = 0)
-    {
-        if (!isActive && priority >= CurrentMessagePriority)
+        public int CurrentMessagePriority
         {
-            currentMessagePriority = priority;
-            messageText.text = message;
-            Open();
+            get { return currentMessagePriority; }
         }
-    }
 
-
-    public void SetText(string message, int priority = 0)
-    {
-        if (priority >= CurrentMessagePriority)
+        public override void Open()
         {
-            currentMessagePriority = priority;
-            messageText.text = message;
+            base.Open();
         }
-    }
 
 
-    public override void Close()
-    {
-        if(isActive)
+        public void Open(string message, int priority = 0)
         {
-            currentMessagePriority = -1;
-            base.Close();
+            if (!isActive && priority >= CurrentMessagePriority)
+            {
+                currentMessagePriority = priority;
+                messageText.text = message;
+                Open();
+            }
+        }
+
+
+        public void SetText(string message, int priority = 0)
+        {
+            if (priority >= CurrentMessagePriority)
+            {
+                currentMessagePriority = priority;
+                messageText.text = message;
+            }
+        }
+
+
+        public override void Close()
+        {
+            if (isActive)
+            {
+                currentMessagePriority = -1;
+                base.Close();
+            }
         }
     }
 }

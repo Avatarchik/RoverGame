@@ -2,25 +2,28 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class OptionsMenu : Menu
+namespace Sol
 {
-    public Button backButton;
-
-
-    public override void Open()
+    public class OptionsMenu : Menu
     {
-        base.Open();
-    }
+        public Button backButton;
 
 
-    public override void Close()
-    {
-        base.Close();
-    }
+        public override void Open()
+        {
+            base.Open();
+        }
 
 
-    private void Awake()
-    {
-        backButton.onClick.AddListener(Close);
+        public override void Close()
+        {
+            base.Close();
+        }
+
+
+        private void Awake()
+        {
+            backButton.onClick.AddListener(Close);
+        }
     }
 }
