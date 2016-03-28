@@ -21,9 +21,15 @@ public class SoundManager : MonoBehaviour
 	{
 		return Play (Find (soundName), fadeTime, parent, position);
 	}
-		
-		
-	public SoundSource Play (Sound sound, float fadeTime=0f, Transform parent=null, Vector3 position=default(Vector3))
+
+
+    public SoundSource Play(AudioClip audioClip, float fadeTime = 0f, Transform parent = null, Vector3 position = default(Vector3))
+    {
+        return Play(Find(audioClip), fadeTime, parent, position);
+    }
+
+
+    public SoundSource Play (Sound sound, float fadeTime=0f, Transform parent=null, Vector3 position=default(Vector3))
 	{
 		if (sound == null) return null;
 
@@ -71,6 +77,21 @@ public class SoundManager : MonoBehaviour
 
 		return sound;
 	}
+
+
+    public Sound Find(AudioClip audioClip)
+    {
+        Sound sound = null;
+        foreach (SoundCollection c in collections)
+        {
+            sound = c.Find(audioClip);
+            if (sound != null) break;
+        }
+
+        if (sound == null) Debug.LogError(string.Format("Could not find sound with name {0}.", audioClip.name));
+
+        return sound;
+    }
 
 
     public void Stop(Sound sound)

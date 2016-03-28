@@ -3,48 +3,52 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
-public class MainMenu : Menu
+namespace Sol
 {
-    public Button startGameButton;
-    public Button loadGameButton;
-    public Button optionsButton;
-    public Button exitGameButton;
-
-
-    public override void Open()
+    public class MainMenu : Menu
     {
-        base.Open();
-    }
+        public Button startGameButton;
+        public Button loadGameButton;
+        public Button optionsButton;
+        public Button exitGameButton;
 
 
-    public override void Close()
-    {
-        base.Close();
-    }
+        public override void Open()
+        {
+            base.Open();
+        }
 
 
-    public void StartGame()
-    {
-        SceneManager.LoadScene(1);
-    }
+        public override void Close()
+        {
+            base.Close();
+        }
 
 
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
+        public void StartGame()
+        {
+            SceneManager.LoadScene(1);
+        }
 
 
-    public void OpenOptions()
-    {
-        //nothing for now
-    }
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
 
 
-    private void Awake()
-    {
-        startGameButton.onClick.AddListener(StartGame);
-        exitGameButton.onClick.AddListener(QuitGame);
-        optionsButton.onClick.AddListener(OpenOptions);
+        public void OpenOptions()
+        {
+            //nothing for now
+        }
+
+
+        private void Awake()
+        {
+            startGameButton.onClick.AddListener(StartGame);
+            exitGameButton.onClick.AddListener(QuitGame);
+            optionsButton.onClick.AddListener(OpenOptions);
+        }
     }
 }
+

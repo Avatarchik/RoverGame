@@ -6,6 +6,7 @@ using System.Linq;
 
 public class SoundCollection : ScriptableObject
 {
+    [HideInInspector]
 	public List<Sound> sounds = new List<Sound> ();
 
 	public Sound Find (int id)
@@ -20,16 +21,42 @@ public class SoundCollection : ScriptableObject
 	}
 
 
-	public void Add (Sound sound)
+    public Sound Find(AudioClip audioClip)
+    {
+        return sounds.FirstOrDefault(s => s.audioClip == audioClip);
+    }
+
+
+    public void Add (Sound sound)
 	{
 		if (!sounds.Contains (sound)) sounds.Add (sound);
 	}
+
+
+    public void Add()
+    {
+        Sound newSound = new Sound();
+        sounds.Add(newSound);
+    }
 
 
 	public void Remove (Sound sound)
 	{
 		sounds.Remove (sound);
 	}
+
+
+    public void Reset(Sound sound)
+    {
+        for(int i = 0; i < sounds.Count; i++)
+        {
+            if(sounds[i] == sound)
+            {
+                sounds[i] = new Sound();
+                break;
+            }
+        }
+    }
 
 
 	public void Sort ()

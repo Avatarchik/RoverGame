@@ -2,58 +2,61 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class CountDown : Menu
+namespace Sol
 {
-    public Text countDownText;
-
-    public override void Open()
+    public class CountDown : Menu
     {
-        base.Open();
-    }
+        public Text countDownText;
 
-
-    public void Open(int desiredTime)
-    {
-        Open();
-        StopAllCoroutines();
-        StartCoroutine(CountDownCoroutine(desiredTime));
-    }
-
-
-    public void SetText(int desiredTime)
-    {
-        if(!IsActive)
+        public override void Open()
         {
-            Open(desiredTime);
-            return;
+            base.Open();
         }
-        else
+
+
+        public void Open(int desiredTime)
         {
+            Open();
             StopAllCoroutines();
             StartCoroutine(CountDownCoroutine(desiredTime));
         }
-    }
 
 
-    public override void Close()
-    {
-        base.Close();
-    }
-
-
-    private IEnumerator CountDownCoroutine(int desiredtime)
-    {
-        int elapsedSeconds = 0;
-
-        while(elapsedSeconds <= desiredtime)
+        public void SetText(int desiredTime)
         {
-            countDownText.text = (desiredtime - elapsedSeconds).ToString();
-
-            elapsedSeconds++;
-            yield return new WaitForSeconds(1);
+            if (!IsActive)
+            {
+                Open(desiredTime);
+                return;
+            }
+            else
+            {
+                StopAllCoroutines();
+                StartCoroutine(CountDownCoroutine(desiredTime));
+            }
         }
 
-        yield return new WaitForSeconds(0.5f);
-        Close();
+
+        public override void Close()
+        {
+            base.Close();
+        }
+
+
+        private IEnumerator CountDownCoroutine(int desiredtime)
+        {
+            int elapsedSeconds = 0;
+
+            while (elapsedSeconds <= desiredtime)
+            {
+                countDownText.text = (desiredtime - elapsedSeconds).ToString();
+
+                elapsedSeconds++;
+                yield return new WaitForSeconds(1);
+            }
+
+            yield return new WaitForSeconds(0.5f);
+            Close();
+        }
     }
 }

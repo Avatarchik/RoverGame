@@ -22,7 +22,7 @@ namespace Sol
         }
 
 
-        private IEnumerator Lerp()
+        protected IEnumerator Lerp()
         {
             interactible = false;
             float elapsedTime = 0f;
