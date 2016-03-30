@@ -3,80 +3,83 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-
-public class GameManager : MonoBehaviour
+namespace Sol
 {
-    protected Dictionary<System.Type, object> singletons = new Dictionary<System.Type, object>();
-
-    protected static GameManager instance;
-
-    public static T As<T> () where T: GameManager
+    public class GameManager : MonoBehaviour
     {
-        return Exists ? Instance as T : null;
-    }
+        protected Dictionary<System.Type, object> singletons = new Dictionary<System.Type, object>();
 
-    public static bool Exists
-    {
-        get { return Instance != null;  }
-    }
+        protected static GameManager instance;
 
-    public static GameManager Instance
-    {
-        get
+        public static T As<T>() where T : GameManager
         {
-            if (instance == null) instance = GameObject.FindObjectOfType<GameManager>();
-            if (instance == null) instance = GameObject.Find("_GameManager").GetComponent<GameManager>();
-
-            return instance;
+            return Exists ? Instance as T : null;
         }
-    }
 
-
-    public static T Get<T> () where T : class
-    {
-        T singleton = default(T);
-
-        if(Exists)
+        public static bool Exists
         {
-            System.Type type = typeof(T);
-            singleton = Instance.singletons.ContainsKey(type) ? (T)Instance.singletons[type] : null;
+            get { return Instance != null; }
+        }
 
-            if(singleton == null)
+        public static GameManager Instance
+        {
+            get
             {
-                singleton = Instance.singletons.Values.FirstOrDefault(i => i is T) as T;
+                if (instance == null) instance = GameObject.FindObjectOfType<GameManager>();
+                if (instance == null) instance = GameObject.Find("_GameManager").GetComponent<GameManager>();
 
-                if(singleton == null)
-                {
-                    Component[] components = Instance.gameObject.GetComponentsInChildren(type, true);
-
-                    if (components.Length > 0) singleton = components[0] as T;
-                }
-
-                if (singleton != null) Set<T>(singleton);
+                return instance;
             }
         }
 
-        return singleton;
-    }
 
-
-    public static void Set<T> (T singleton) where T : class
-    {
-        if (Exists) Instance.singletons[typeof(T)] = singleton;
-    }
-
-
-    public static void Remove<T>(T singleton) where T : class
-    {
-        if(Exists && Instance.singletons.ContainsKey (typeof (T)) && Instance.singletons[typeof (T)] == singleton)
+        public static T Get<T>() where T : class
         {
-            Instance.singletons.Remove(typeof(T));
+            T singleton = default(T);
+
+            if (Exists)
+            {
+                System.Type type = typeof(T);
+                singleton = Instance.singletons.ContainsKey(type) ? (T)Instance.singletons[type] : null;
+
+                if (singleton == null)
+                {
+                    singleton = Instance.singletons.Values.FirstOrDefault(i => i is T) as T;
+
+                    if (singleton == null)
+                    {
+                        Component[] components = Instance.gameObject.GetComponentsInChildren(type, true);
+
+                        if (components.Length > 0) singleton = components[0] as T;
+                    }
+
+                    if (singleton != null) Set<T>(singleton);
+                }
+            }
+
+            return singleton;
+        }
+
+
+        public static void Set<T>(T singleton) where T : class
+        {
+            if (Exists) Instance.singletons[typeof(T)] = singleton;
+        }
+
+
+        public static void Remove<T>(T singleton) where T : class
+        {
+            if (Exists && Instance.singletons.ContainsKey(typeof(T)) && Instance.singletons[typeof(T)] == singleton)
+            {
+                Instance.singletons.Remove(typeof(T));
+            }
+        }
+
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
         }
     }
 
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
 }

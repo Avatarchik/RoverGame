@@ -43,12 +43,12 @@ namespace Sol
 
         private void Update()
         {
-            if (Input.GetAxis("RoverMove") != 0 || Input.GetAxis("RoverTurn") != 0 || Input.GetAxis("RoverStrafe") != 0)
+            if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
             {
                 CachedSoundManager.Play(ROVER_MOVEMENT_SOUND_ID);
             }
 
-            if (Input.GetAxis("RoverTurn") == 0 && Input.GetAxis("RoverMove") == 0 && Input.GetAxis("RoverStrafe") == 0)
+            if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
             {
                 CachedSoundManager.Stop(ROVER_MOVEMENT_SOUND_ID);
             }
@@ -66,22 +66,22 @@ namespace Sol
 
         private void FixedUpdate()
         {
-            if (Input.GetAxis("RoverMove") != 0)
+            if (Input.GetAxis("Vertical") != 0)
             {
-                transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverMove") * movementSpeedMultiplier);
+                transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier);
             }
             if(strafing)
             {
-                if (Input.GetAxis("RoverTurn") != 0)
+                if (Input.GetAxis("Horizontal") != 0)
                 {
-                    transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * movementSpeedMultiplier);
+                    transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("Horizontal") * movementSpeedMultiplier);
                 }
             }
             else
             {
-                if (Input.GetAxis("RoverTurn") != 0)
+                if (Input.GetAxis("Horizontal") != 0)
                 {
-                    transform.Rotate(Vector3.up, playerStats.TurnSpeed *Time.fixedDeltaTime * Input.GetAxis("RoverTurn") * movementSpeedMultiplier * 18f);
+                    transform.Rotate(Vector3.up, playerStats.TurnSpeed *Time.fixedDeltaTime * Input.GetAxis("Horizontal") * movementSpeedMultiplier * 18f);
                 }
             }
             
