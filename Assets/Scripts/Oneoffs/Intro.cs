@@ -114,7 +114,7 @@ namespace Sol
               }
               characterDriver.movementSpeedMultiplier = prevMoveSpeedMultiplier;
 
-              while (Input.GetAxis("RoverMove") == 0 && Input.GetAxis("RoverTurn") == 0)
+              while (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
               {
                   yield return null;
               }

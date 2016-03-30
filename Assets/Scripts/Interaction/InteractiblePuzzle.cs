@@ -6,13 +6,15 @@ namespace Sol
 {
     public class InteractiblePuzzle : InteractibleObject
     {
-        public Object tableLevel;
+        public Object missionObject;
+        public Object levelObject;
         public UIEvents uiEvents;
 
         public override void Interact()
         {
             base.Interact();
-            uiEvents.LevelButtonEvent(tableLevel);
+            uiEvents.MissionButtonEvent(missionObject);
+            uiEvents.LevelButtonEvent(levelObject);
         }
     }
 }
