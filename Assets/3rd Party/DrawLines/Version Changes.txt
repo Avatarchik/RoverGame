@@ -1,0 +1,63 @@
+1.0.0
+- Initial version
+
+1.0.1
+- [New] Package manual
+
+1.0.2
+- [Fix] Fxing IOS file path
+
+1.0.3
+- [New] Update the manual
+
+1.0.4
+- [New] Level grid viewer using inspector
+
+1.0.5
+- [Fix] GUI Scale
+- [New] Logo Scene added
+
+1.0.6
+- [Fix] Grid window bug
+
+1.0.7
+- [New] Locked levels feature
+
+1.0.8
+- [New] UI System using 4.6
+- [New] Portrait & Landscape support
+- [New] Scrollable lists
+- [New] Options Secne
+- [New] Music
+- [New] Extra features added to the Levels Manager
+
+1.0.9
+- [New] Relative Scrolling for the Grid Window
+- [New] UI Background
+- [New] MONO_REFLECTION_SERIALIZER for IOS 
+
+1.1.1
+- [Fix] Pairs Number bug in Levels Manager
+
+1.1.2
+- [Fix] Line Color bug in Levels Manager
+- [New] OnConnect Sprite feature in Levels Manager
+
+1.1.3
+- [New] Manual update v1.1.3
+
+1.1.4
+- [New] Binary and XML Serialization
+- [Fix] IOS file path bug
+
+1.1.5
+- [New] DataManager Optimization
+
+1.1.6
+- [New] GameManager Optimization
+
+1.1.7
+- [New] Missions Lock Feature
+
+1.1.8
+- [Fix] Missed references bug in GameManger
