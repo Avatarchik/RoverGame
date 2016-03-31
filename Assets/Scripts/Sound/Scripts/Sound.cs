@@ -15,6 +15,7 @@ public class Sound
 	public float minPitch = 1f;
 	public float maxPitch = 1f;
 	public float spatialBlend = 1f;
+    public float volume = 1f;
 		
 		
 	public Sound()

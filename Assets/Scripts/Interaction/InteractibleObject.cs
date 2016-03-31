@@ -3,9 +3,23 @@ using System.Collections;
 
 namespace Sol
 {
+    [System.Serializable]
+    public class SoundControls
+    {
+        public enum PlayType
+        {
+            PlayAll,
+            PlayRandom
+        }
+
+        public PlayType soundPlayType = PlayType.PlayRandom;
+
+        public AudioClip[] interactEffects;
+    }
+
     public class InteractibleObject : MonoBehaviour
     {
-        public AudioClip interactEffect;
+        public SoundControls soundControls;
 
         public string objectName = "Container";
 
@@ -78,7 +92,33 @@ namespace Sol
         {
             if(Interactible)
             {
-                if (interactEffect != null) GameManager.Get<SoundManager>().Play(interactEffect);
+                if (soundControls.interactEffects.Length > 0)
+                {
+                    SoundManager sm = GameManager.Get<SoundManager>();
+                    switch (soundControls.soundPlayType)
+                    {
+                        case SoundControls.PlayType.PlayAll:
+                            foreach(AudioClip ac in soundControls.interactEffects)
+                            {
+                                sm.Play(ac);
+                            }
+                            break;
+
+                        case SoundControls.PlayType.PlayRandom:
+                            int clipIndex = Mathf.RoundToInt(Random.Range(0, soundControls.interactEffects.Length));
+                            sm.Play(soundControls.interactEffects[clipIndex]);
+                            break;
+                    }
+
+                    if(soundControls.soundPlayType == SoundControls.PlayType.PlayAll)
+                    {
+
+                    }
+                    else if(soundControls.soundPlayType == SoundControls.PlayType.PlayRandom)
+                    {
+                        
+                    }
+                }
 
                 Debug.Log("interacting");
                 UIManager.Close<MessageMenu>();

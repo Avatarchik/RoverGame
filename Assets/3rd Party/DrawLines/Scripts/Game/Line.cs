@@ -27,7 +27,7 @@ public class Line : MonoBehaviour
 		/// <summary>
 		/// The Points of the Line .
 		/// </summary>
-		private List<Vector3>points;
+		private List<Vector3>points = new List<Vector3>();
 
 		/// <summary>
 		/// The line pieces.
@@ -100,8 +100,11 @@ public class Line : MonoBehaviour
 		/// <param name="point">Vector3 Point.</param>
 		public void AddPoint (Vector3 point)
 		{
+        if (point == null) Debug.LogError("passed point is null!");
+
 				///If the given point already exists ,then skip it
 				if (points.Contains (point)) {
+            Debug.Log("point already exists??");
 						return;
 				}
 
@@ -109,12 +112,12 @@ public class Line : MonoBehaviour
 				numberOfPoints++;
 				///Add the point to the points list
 				points.Add (point);
-
-				///Create new line piece
-				if (numberOfPoints > 1) {
-
-						tempFirstPoint = points [numberOfPoints - 2];
-						tempSecondPoint = points [numberOfPoints - 1];
+        Debug.Log("number of Points! : " + numberOfPoints + " | points count : " + points.Count);
+        ///Create new line piece
+        if (points.Count > 1) {
+            
+						tempFirstPoint = points [points.Count - 2];
+						tempSecondPoint = points [points.Count - 1];
 						//Create Line Piece
 						tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, Quaternion.identity) as GameObject;
 						tempLinePieceGameObject.transform.parent = transform;
@@ -228,8 +231,6 @@ public class Line : MonoBehaviour
 
 				completedLine = false;
 				path.Clear ();
-
-
 		}
 
 		//Remove the line from an index to the end of the list

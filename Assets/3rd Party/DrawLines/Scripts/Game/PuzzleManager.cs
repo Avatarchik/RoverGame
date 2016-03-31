@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
+using Sol;
 
 ///Developed by Indie Games Studio
 ///https://www.assetstore.unity3d.com/en/#!/publisher/9268
@@ -655,8 +656,8 @@ public class PuzzleManager : MonoBehaviour
 				tempPoint = currentGridCell.transform.position;
 				tempPoint.z = gridLineZPosition;
 
-				///Add the position of the New Line Point to the current line
-				gridLines [currentGridCell.gridLineIndex].AddPoint (tempPoint);
+        ///Add the position of the New Line Point to the current line
+        gridLines[currentGridCell.gridLineIndex].AddPoint (tempPoint);
 
 				bool playBubble = true;
 				if (!currentGridCell.isEmpty) {
@@ -1071,6 +1072,8 @@ public class PuzzleManager : MonoBehaviour
 						timer.Stop ();
 						isRunning = false;
 
+            UIManager.Close<PuzzleMenu>();
+                /*
 						try {
 								///Save the stars level
 								DataManager.MissionData currentMissionData = DataManager.FindMissionDataById (Mission.wantedMission.ID, DataManager.instance.filterdMissionsData);
@@ -1100,6 +1103,7 @@ public class PuzzleManager : MonoBehaviour
 						///Show the awesome dialog
 						GameObject.FindObjectOfType<AwesomeDialog> ().Show ();
 						Debug.Log ("You completed level " + TableLevel.wantedLevel.ID);
+                        */
 				}
 		}
 

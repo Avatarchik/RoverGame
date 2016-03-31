@@ -37,6 +37,7 @@ namespace Sol
 
             Initialize(sound, fadeTime);
             SoundSource source = GetSoundSource(sound, parent, position);
+            source.SetVolumeTo(sound.volume, 0);
 
             if (source) source.Play(sound, fadeTime);
 
