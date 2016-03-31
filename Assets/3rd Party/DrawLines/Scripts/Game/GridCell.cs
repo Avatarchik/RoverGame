@@ -72,8 +72,8 @@ public class GridCell : MonoBehaviour
 		/// <param name="adjacent">Adjacent vector (i,j).</param>
 		private void AddAdjacent (Vector2 adjacent)
 		{
-				if ((adjacent.x >= 0 && adjacent.x < GameManager.numberOfRows) && (adjacent.y >= 0 && adjacent.y < GameManager.numberOfColumns)) {
-						adjacents.Add ((int)(adjacent.x * GameManager.numberOfColumns + adjacent.y));//Convert from (i,j) to Array index
+				if ((adjacent.x >= 0 && adjacent.x < PuzzleManager.numberOfRows) && (adjacent.y >= 0 && adjacent.y < PuzzleManager.numberOfColumns)) {
+						adjacents.Add ((int)(adjacent.x * PuzzleManager.numberOfColumns + adjacent.y));//Convert from (i,j) to Array index
 				}
 		}
 

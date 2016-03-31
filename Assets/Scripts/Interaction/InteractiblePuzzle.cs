@@ -10,11 +10,21 @@ namespace Sol
         public Object levelObject;
         public UIEvents uiEvents;
 
+        public PuzzleManager puzzleManager;
+
+        public UIEvents UiEvents
+        {
+            get { return (uiEvents != null) ? uiEvents : uiEvents = GameObject.FindObjectOfType<UIEvents>(); }
+        }
+
         public override void Interact()
         {
             base.Interact();
             uiEvents.MissionButtonEvent(missionObject);
             uiEvents.LevelButtonEvent(levelObject);
+
+            UIManager.Open<PuzzleMenu>();
+            puzzleManager.ForceLoad();
         }
     }
 }

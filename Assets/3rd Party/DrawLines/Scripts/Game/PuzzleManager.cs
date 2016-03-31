@@ -10,8 +10,9 @@ using UnityEngine.UI;
 #pragma warning disable 0168 // variable declared but not used.
 
 [DisallowMultipleComponent]
-public class GameManager : MonoBehaviour
+public class PuzzleManager : MonoBehaviour
 {
+    public Camera mainCamera;
 		/// <summary>
 		/// The grid cell prefab.
 		/// </summary>
@@ -204,65 +205,65 @@ public class GameManager : MonoBehaviour
 		/// </summary>
 		public static Level currentLevel;
 
-		/// <summary>
-		/// The size of the grid.
-		/// </summary>
-		private Vector2 gridSize;
+    /// <summary>
+    /// The size of the grid.
+    /// </summary>
+    public Vector2 gridSize;
 
-		/// <summary>
-		/// Temp point.
-		/// </summary>
-		private Vector3 tempPoint;
+    /// <summary>
+    /// Temp point.
+    /// </summary>
+    public Vector3 tempPoint;
 
-		/// <summary>
-		/// Temp scale.
-		/// </summary>
-		private Vector3 tempScale;
+    /// <summary>
+    /// Temp scale.
+    /// </summary>
+    public Vector3 tempScale;
 
-		/// <summary>
-		/// Temp color.
-		/// </summary>
-		private Color tempColor;
+    /// <summary>
+    /// Temp color.
+    /// </summary>
+    public Color tempColor;
 
-		/// <summary>
-		/// Temp collider 2d.
-		/// </summary>
-		private Collider2D tempCollider2D;
+    /// <summary>
+    /// Temp collider 2d.
+    /// </summary>
+    public Collider2D tempCollider2D;
 
-		/// <summary>
-		/// Temporary sprite renderer.
-		/// </summary>
-		private SpriteRenderer tempSpriteRendererd;
+    /// <summary>
+    /// Temporary sprite renderer.
+    /// </summary>
+    public SpriteRenderer tempSpriteRendererd;
 
-		/// <summary>
-		/// Whether the dragging element is rendering(dragging)
-		/// </summary>
-		private bool drawDraggingElement;
+    /// <summary>
+    /// Whether the dragging element is rendering(dragging)
+    /// </summary>
+    public bool drawDraggingElement;
 
-		/// <summary>
-		///Whether the current click is moving 
-		/// </summary>
-		private bool clickMoving;
+    /// <summary>
+    ///Whether the current click is moving 
+    /// </summary>
+    public bool clickMoving;
 
-		/// <summary>
-		/// Whether the GameManager is running.
-		/// </summary>
-		private bool isRunning;
+    /// <summary>
+    /// Whether the GameManager is running.
+    /// </summary>
+    public bool isRunning;
 
 		/// <summary>
 		/// The dragging element reference.
 		/// </summary>
-		private GameObject draggingElement;
+		public GameObject draggingElement;
 
 		/// <summary>
 		/// The dragging element sprite renderer.
 		/// </summary>
-		private SpriteRenderer draggingElementSpriteRenderer;
+		public SpriteRenderer draggingElementSpriteRenderer;
 
 		/// <summary>
 		/// The timer reference.
 		/// </summary>
-		private Timer timer;
+		public Timer timer;
 
 		/// <summary>
 		/// The effects audio source.
@@ -286,7 +287,7 @@ public class GameManager : MonoBehaviour
 				}
 
 				if (effectsAudioSource == null) {
-						effectsAudioSource = GameObject.Find ("AudioSources").GetComponents<AudioSource> () [1];
+						//effectsAudioSource = GameObject.Find ("AudioSources").GetComponents<AudioSource> () [1];
 				}
 		}
 	
@@ -349,10 +350,81 @@ public class GameManager : MonoBehaviour
 				CreateNewLevel ();
 		}
 
-		/// <summary>
-		/// When the GameObject becomes invisible.
-		/// </summary>
-		void OnDisable ()
+
+    /// <summary>
+    /// When the GameObject becomes visible
+    /// </summary>
+    public void ForceLoad()
+    {
+        if (movementsText == null)
+        {
+            movementsText = GameObject.Find("Movements").GetComponent<Text>();
+        }
+
+        if (levelText == null)
+        {
+            levelText = GameObject.Find("GameLevel").GetComponent<Text>();
+        }
+
+        if (missionText == null)
+        {
+            missionText = GameObject.Find("MissionTitle").GetComponent<Text>();
+        }
+
+        if (grid == null)
+        {
+            grid = GameObject.Find("Grid");
+        }
+
+        if (gridContentsTransform == null)
+        {
+            gridContentsTransform = grid.transform.Find("Contents").transform;
+        }
+
+        if (gridTopPivotTransform == null)
+        {
+            gridTopPivotTransform = GameObject.Find("GridTopPivot").transform;
+        }
+
+        if (gridBottomPivotTransform == null)
+        {
+            gridBottomPivotTransform = GameObject.Find("GridBottomPivot").transform;
+        }
+        if (gridLinesTransfrom == null)
+        {
+            gridLinesTransfrom = GameObject.Find("GridLines").transform;
+        }
+
+        try
+        {
+            ///Setting up Attributes
+            numberOfRows = Mission.wantedMission.rowsNumber;
+            numberOfColumns = Mission.wantedMission.colsNumber;
+            //levelText.color = Mission.wantedMission.missionColor;
+            missionText.text = Mission.wantedMission.missionTitle;
+            grid.name = numberOfRows + "x" + numberOfRows + "-Grid";
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex.Message);
+        }
+
+
+        ///Determine the size of the Grid
+        Vector3 gridTopPivotPostion = gridTopPivotTransform.transform.position;
+        Vector3 gridBottomPiviotPosition = gridBottomPivotTransform.transform.position;
+
+        gridSize = gridBottomPiviotPosition - gridTopPivotPostion;
+        gridSize = new Vector2(Mathf.Abs(gridSize.x), Mathf.Abs(gridSize.y));
+
+        ///Create New level (the selected level)
+        CreateNewLevel();
+    }
+
+    /// <summary>
+    /// When the GameObject becomes invisible.
+    /// </summary>
+    void OnDisable ()
 		{
 				///stop the timer
 				if (timer != null)
@@ -422,11 +494,13 @@ public class GameManager : MonoBehaviour
 		/// <param name="clickType">The type of the click(touch).</param>
 		private void RayCast (Vector3 clickPosition, ClickType clickType)
 		{
-				tempClickPosition = Camera.main.ScreenToWorldPoint (clickPosition);
+           // Debug.Log("casting!!!");
+				tempClickPosition = mainCamera.ScreenToWorldPoint (clickPosition);
 				tempRayCastHit2D = Physics2D.Raycast (tempClickPosition, Vector2.zero);
 				tempCollider2D = tempRayCastHit2D.collider;
 
 				if (tempCollider2D != null) {
+             //   Debug.Log("temp collider is not null!");
 						///When a ray hit a grid cell
 						if (tempCollider2D.tag == "GridCell") {
 								currentGridCell = tempCollider2D.GetComponent<GridCell> ();
@@ -1010,7 +1084,7 @@ public class GameManager : MonoBehaviour
 									}
 								}
 
-								currentLevelData.starsNumber = StarsRating.GetLevelStarsRating (Timer.timeInSeconds, GameManager.movements, gridCells.Length);
+								currentLevelData.starsNumber = StarsRating.GetLevelStarsRating (Timer.timeInSeconds, PuzzleManager.movements, gridCells.Length);
 								if (currentLevelData .ID + 1 <= currentMissionData.levelsData.Count) {
 										///Unlock the next level
 										DataManager.LevelData nextLevelData = currentMissionData.FindLevelDataById (TableLevel.wantedLevel.ID + 1);

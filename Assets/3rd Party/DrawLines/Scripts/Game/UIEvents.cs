@@ -70,7 +70,7 @@ public class UIEvents : MonoBehaviour
 				GameObject missionGameObject = (GameObject)value;
 				Mission.wantedMission = missionGameObject.GetComponent<Mission> ();
 
-				LoadLevelsScene ();
+				//LoadLevelsScene ();
 		}
 
 		public void LevelButtonEvent (Object value)
@@ -83,22 +83,23 @@ public class UIEvents : MonoBehaviour
 				GameObject levelGameObject = (GameObject)value;
 				TableLevel.wantedLevel = levelGameObject.GetComponent<TableLevel> ();
 				LevelsTable.currentLevelID = TableLevel.wantedLevel.ID;
-				LoadGameScene ();
+
+                //LoadGameScene ();
 		}
 
 		public	void GameNextButtonEvent ()
 		{
-				GameObject.Find ("GameScene").GetComponent<GameManager> ().NextLevel ();
+				GameObject.Find ("GameScene").GetComponent<PuzzleManager> ().NextLevel ();
 		}
 
 		public void GameBackButtonEvent ()
 		{
-				GameObject.Find ("GameScene").GetComponent<GameManager> ().PreviousLevel ();
+				GameObject.Find ("GameScene").GetComponent<PuzzleManager> ().PreviousLevel ();
 		}
 
 		public void GameRefreshButtonEvent ()
 		{
-				GameObject.Find ("GameScene").GetComponent<GameManager> ().RefreshGrid ();
+				GameObject.Find ("GameScene").GetComponent<PuzzleManager> ().RefreshGrid ();
 		}
 
 		public void AwesomeDialogNextButtonEvent ()
@@ -109,7 +110,7 @@ public class UIEvents : MonoBehaviour
 				}
 				BlackArea.Hide ();
 				GameObject.FindObjectOfType<AwesomeDialog> ().Hide ();
-				GameObject.Find ("GameScene").GetComponent<GameManager> ().NextLevel ();
+				GameObject.Find ("GameScene").GetComponent<PuzzleManager> ().NextLevel ();
 		}
 
 		public void LoadMainScene ()

@@ -96,7 +96,7 @@ public class AwesomeDialog : MonoBehaviour
 		/// <returns>The stars.</returns>
 		public IEnumerator FadeStars ()
 		{
-				starsNumber = StarsRating.GetAwesomeDialogStarsRating (Timer.timeInSeconds, GameManager.movements, Mission.wantedMission.rowsNumber * Mission.wantedMission.colsNumber);
+				starsNumber = StarsRating.GetAwesomeDialogStarsRating (Timer.timeInSeconds, PuzzleManager.movements, Mission.wantedMission.rowsNumber * Mission.wantedMission.colsNumber);
 
 				float delayBetweenStars = 0.5f;
 				if (starsNumber == StarsNumber.ONE) {//Fade with One Star

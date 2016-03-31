@@ -215,12 +215,12 @@ public class Line : MonoBehaviour
 				Transform gridCellContent = null;
 
 				for (int i = 0; i < path.Count; i++) {
-						gridCell = GameManager.gridCells [path [i]];
+						gridCell = PuzzleManager.gridCells [path [i]];
 						if (i == 0 || i == path.Count - 1) {
 								//Reset elements(dots) pair sprites
 								gridCellContent = GameObjectUtil.FindChildByTag (gridCell.transform, "GridCellContent");
 								if (gridCellContent != null) {
-										gridCellContent.GetComponent<SpriteRenderer> ().sprite = GameManager.currentLevel.dotsPairs [gridCell.elementPairIndex].sprite;
+										gridCellContent.GetComponent<SpriteRenderer> ().sprite = PuzzleManager.currentLevel.dotsPairs [gridCell.elementPairIndex].sprite;
 								}
 						}
 						ResetGridCell (gridCell);
@@ -247,7 +247,7 @@ public class Line : MonoBehaviour
 				int linePieceIndex;
 				for (int i = toIndex; i>fromIndex; i--) {//from last to the first
 						linePieceIndex = i - 1;//setting up line piece index
-						ResetGridCell (GameManager.gridCells [path [i]]);//reset the grid cell
+						ResetGridCell (PuzzleManager.gridCells [path [i]]);//reset the grid cell
 						points.RemoveAt (i);//remove point from points list
 						if (linePieceIndex >= 0 && linePieceIndex < linePieces.Count) {
 								GameObject.Destroy (linePieces [linePieceIndex].gameObject);//destroy line piece

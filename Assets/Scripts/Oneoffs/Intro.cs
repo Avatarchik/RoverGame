@@ -203,7 +203,7 @@ namespace Sol
 
         private void Awake()
         {
-            StartCoroutine(RunTutorial());
+           // StartCoroutine(RunTutorial());
         }
     }
 }
