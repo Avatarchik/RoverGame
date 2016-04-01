@@ -352,6 +352,12 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 
+    public void Close()
+    {
+        Cleanup();
+    }
+
+
     /// <summary>
     /// When the GameObject becomes visible
     /// </summary>
@@ -420,6 +426,8 @@ public class PuzzleManager : MonoBehaviour
 
         ///Create New level (the selected level)
         CreateNewLevel();
+
+        StartCoroutine(Delay());
     }
 
     /// <summary>
@@ -431,6 +439,14 @@ public class PuzzleManager : MonoBehaviour
 				if (timer != null)
 						timer.Stop ();
 		}
+
+
+    private IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        foreach(GridCell gc in gridCells) gc.currentlyUsed = false;
+    }
 	
 		// Update is called once per frame
 		void Update ()
@@ -669,9 +685,14 @@ public class PuzzleManager : MonoBehaviour
 								for (int i = 0; i < currentLine.path.Count; i++) {
 										gridCell = gridCells [currentLine.path [i]];
 
-										if (i == 0 || i == currentLine.path.Count - 1) {
-												//Setting up the connect pairs
-												GameObjectUtil.FindChildByTag (gridCell.transform, "GridCellContent").GetComponent<SpriteRenderer> ().sprite = currentLevel.dotsPairs [gridCell.elementPairIndex].connectSprite;
+                    if (i == 0 || i == currentLine.path.Count - 1) {
+                        //Setting up the connect pairs
+                        if (gridCell == null) Debug.LogError("gridcell is null!");
+                        Transform transform = GameObjectUtil.FindChildByTag(gridCell.transform, "GridCellContent");
+                        if (transform == null) transform = gridCell.GetComponentInChildren<SpriteRenderer>().transform;
+
+                        Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
+                        transform.GetComponent<SpriteRenderer> ().sprite = currentLevel.dotsPairs [gridCell.elementPairIndex].connectSprite;
 										}
 										///Setting up the color of the top background of the grid cell
 										tempColor = previousGridCell.topBackgroundColor;
@@ -823,12 +844,12 @@ public class PuzzleManager : MonoBehaviour
 				gridLines = new Line[currentLevel.dotsPairs.Count];
 		
 				for (int i = 0; i <currentLevel.dotsPairs.Count; i++) {
-			
 						elementsPair = currentLevel.dotsPairs [i];
 						numberColor = new Color (1 - elementsPair.color.r, 1 - elementsPair.color.g, 1 - elementsPair.color.b, 1);//opposite color
 			
 						//Setting up the First Dot(Element)
 						gridCell = gridCells [elementsPair.firstDot.index];
+                        
 						gridCell.gridLineIndex = i;
 						gridCell.elementPairIndex = i;
 						gridCell.topBackgroundColor = elementsPair.lineColor;
@@ -1072,7 +1093,7 @@ public class PuzzleManager : MonoBehaviour
 						timer.Stop ();
 						isRunning = false;
 
-            UIManager.Close<PuzzleMenu>();
+            Cleanup();
                 /*
 						try {
 								///Save the stars level
@@ -1106,6 +1127,24 @@ public class PuzzleManager : MonoBehaviour
                         */
 				}
 		}
+
+
+    private void Cleanup()
+    {
+        Debug.Log("cleaning up");
+
+        UIManager.Close<PuzzleMenu>();
+
+        foreach (Transform child in gridContentsTransform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Line line in GameObject.FindObjectsOfType<Line>())
+        {
+            Destroy(line.gameObject);
+        }
+    }
 
 		/// <summary>
 		/// Increase the movements counter.

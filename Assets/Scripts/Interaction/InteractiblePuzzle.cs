@@ -6,6 +6,7 @@ namespace Sol
 {
     public class InteractiblePuzzle : InteractibleObject
     {
+        public Collider col;
         public Object missionObject;
         public Object levelObject;
         public UIEvents uiEvents;
@@ -19,12 +20,20 @@ namespace Sol
 
         public override void Interact()
         {
-            base.Interact();
-            uiEvents.MissionButtonEvent(missionObject);
-            uiEvents.LevelButtonEvent(levelObject);
+            if(interactible)
+            {
+                base.Interact();
+                uiEvents.MissionButtonEvent(missionObject);
+                uiEvents.LevelButtonEvent(levelObject);
 
-            UIManager.Open<PuzzleMenu>();
-            puzzleManager.ForceLoad();
+                PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu>();
+                pu.Open(this);
+                puzzleManager.ForceLoad();
+
+                interactible = false;
+               // col.enabled = false;
+                //gameObject.SetActive(false);
+            }
         }
     }
 }
