@@ -6,7 +6,6 @@ namespace Sol
 {
     public class InteractiblePuzzle : InteractibleObject
     {
-        public Collider col;
         public Object missionObject;
         public Object levelObject;
         public UIEvents uiEvents;
@@ -31,8 +30,6 @@ namespace Sol
                 puzzleManager.ForceLoad();
 
                 interactible = false;
-               // col.enabled = false;
-                //gameObject.SetActive(false);
             }
         }
     }
