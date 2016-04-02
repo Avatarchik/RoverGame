@@ -15,12 +15,11 @@ namespace Sol
         private const string HELP_MESSAGE_SPATIAL_BLEND = "Sets how much this clip's audiosource is affected by 3D spatialisation calculations (attenuation, doppler etc). 0.0 makes the sound full 2D and distance from the sound won't matter, 1.0 makes it full 3D and distance will matter.";
         private const string HELP_MESSAGE_LOOP = "If looping is disabled, the sound will play only once. if it is enabled, the sound will play continually until stop is explicitly called.";
 
-        private bool showHelp = false;
 
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-            showHelp = EditorGUILayout.Toggle("Show Help", showHelp);
+
             SoundCollection mycollection = (SoundCollection)target;
             if (GUILayout.Button("Add New Sound"))
             {
@@ -49,31 +48,31 @@ namespace Sol
                 EditorGUILayout.BeginVertical("Box");
                 EditorGUILayout.Space();
 
-                if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_NAME, MessageType.None);
-                sound.name = EditorGUILayout.TextField("Name ", sound.name);
+                GUIContent content = new GUIContent("Name ", HELP_MESSAGE_NAME);
+                sound.name = EditorGUILayout.TextField(content, sound.name);
 
                 EditorGUILayout.Space();
 
-                if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_AUDIO_CLIP, MessageType.None);
-                sound.audioClip = (AudioClip)EditorGUILayout.ObjectField("Audio Clip ", sound.audioClip, typeof(AudioClip), true);
+                content = new GUIContent("Audio Clip ", HELP_MESSAGE_AUDIO_CLIP);
+                sound.audioClip = (AudioClip)EditorGUILayout.ObjectField(content, sound.audioClip, typeof(AudioClip), true);
 
                 EditorGUILayout.Space();
 
-                if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_VOLUME, MessageType.None);
-                sound.volume = EditorGUILayout.Slider("Volume ", sound.volume, 0f, 1f);
+                content = new GUIContent("Volume ", HELP_MESSAGE_VOLUME);
+                sound.volume = EditorGUILayout.Slider(content, sound.volume, 0f, 1f);
 
                 EditorGUILayout.Space();
 
-                if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_INSTANCE_LIMIT, MessageType.None);
-                sound.instanceLimit = EditorGUILayout.IntField("Instance Limit ", sound.instanceLimit);
+                content = new GUIContent("Instance Limit ", HELP_MESSAGE_INSTANCE_LIMIT);
+                sound.instanceLimit = EditorGUILayout.IntField(content, sound.instanceLimit);
                 
                 
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
 
-                if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_PITCH, MessageType.None);
-                EditorGUILayout.LabelField("Pitch");
+                content = new GUIContent("Pitch ", HELP_MESSAGE_PITCH);
+                EditorGUILayout.LabelField(content);
                 float minVal = sound.minPitch;
                 float maxVal = sound.maxPitch;
                 EditorGUILayout.MinMaxSlider(ref minVal, ref maxVal, 0f, 3f);
@@ -102,13 +101,13 @@ namespace Sol
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
 
-                if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_SPATIAL_BLEND, MessageType.None);
-                sound.spatialBlend = EditorGUILayout.Slider("Spatial Blend ", sound.spatialBlend, 0f, 1f);
+                content = new GUIContent("Spatial Blend ", HELP_MESSAGE_SPATIAL_BLEND);
+                sound.spatialBlend = EditorGUILayout.Slider(content, sound.spatialBlend, 0f, 1f);
 
                 EditorGUILayout.Space();
 
-                if (showHelp) EditorGUILayout.HelpBox(HELP_MESSAGE_LOOP, MessageType.None);
-                sound.loop = EditorGUILayout.Toggle("Loop ", sound.loop);
+                content = new GUIContent("Loop ", HELP_MESSAGE_LOOP);
+                sound.loop = EditorGUILayout.Toggle(content, sound.loop);
 
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();

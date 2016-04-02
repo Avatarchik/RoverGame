@@ -10,7 +10,7 @@ namespace Sol
         public InventorySlot inventorySlotPrefab;
         public Transform InventorySlotContainer;
 
-        public InventoryInfoPanel infoPanel;
+        public EquipmentPanel equipmentPanel;
 
         public ToggleGroup toggleGroup;
 
@@ -81,19 +81,17 @@ namespace Sol
 
         public virtual void OpenInfoPanel()
         {
-            Debug.Log("initializing info panel!");
             if (ingredientsInInventory.Count > 0)
             {
-                Debug.Log("more than one ingredient : opening info panel!");
-                infoPanel.Initialize(ingredientsInInventory[0], GetIngredientAmount(ingredientsInInventory[0]));
-                infoPanel.gameObject.SetActive(true);
+                equipmentPanel.Initialize();
+                equipmentPanel.gameObject.SetActive(true);
             }
         }
 
 
         public virtual void CloseInfoPanel()
         {
-            infoPanel.gameObject.SetActive(false);
+            equipmentPanel.gameObject.SetActive(false);
         }
 
 

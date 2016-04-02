@@ -4,6 +4,17 @@ using System.Collections;
 
 public class RoverComponent : ScriptableObject
 {
+    public enum ComponentType
+    {
+        Camera,
+        Panels,
+        Wheels,
+        Antenna,
+        Chassi,
+        Battery
+    }
+
+    public ComponentType currentComponentType;
     public Item equippedItem;
 
     public float health = 100f;
