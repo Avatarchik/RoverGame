@@ -8,7 +8,6 @@ public class Ingredient : ScriptableObject
     public string description;
     public Sprite image;
 
-    public bool equippable = false;
     public bool stackable = true;
 
     public float weight = 0.1f;

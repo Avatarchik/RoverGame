@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Sol;
 
 public class CameraEquip : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class CameraEquip : MonoBehaviour
         switch(componentId)
         {
             case 10:
-                foreach(Item item in EquippableItems)
+                foreach(EquipableItem item in EquippableItems)
                 {
                     if(item.id == componentId)
                         WheelComponent.equippedItem = item;
@@ -34,7 +35,7 @@ public class CameraEquip : MonoBehaviour
             case 40:
             case 41:
             case 42:
-                foreach (Item item in EquippableItems)
+                foreach (EquipableItem item in EquippableItems)
                 {
                     if (item.id == componentId)
                         CameraComponent.equippedItem = item;

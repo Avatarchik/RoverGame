@@ -71,6 +71,7 @@ namespace Sol
                 if (!IsActive) Open();
                 CloseAll();
                 UIManager.Open<LogMenu>();
+                Open();
             }
         }
 
@@ -82,6 +83,7 @@ namespace Sol
                 if (!IsActive) Open();
                 CloseAll();
                 UIManager.GetMenu<SystemMenu>().OpenGraphics() ;
+                Open();
             }
         }
 
@@ -107,7 +109,6 @@ namespace Sol
                 }
                 else
                 {
-                    Open();
                     OpenSystem();
                     openSystemToggle.Select();
                 }
@@ -137,7 +138,6 @@ namespace Sol
                 }
                 else
                 {
-                    Open();
                     OpenLogs();
                     openLogFilesToggle.Select();
                 }

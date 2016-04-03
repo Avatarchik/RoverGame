@@ -45,6 +45,7 @@ namespace Sol
 
         public override void Open()
         {
+            equipmentPanel.Initialize();
             base.Open();
         }
 
@@ -65,7 +66,7 @@ namespace Sol
                     OpenInfoPanel();
                     base.Open();
                 }
-
+                equipmentPanel.Initialize();
                 ContainerExchange = containerExchange;
             }
         }
@@ -73,8 +74,6 @@ namespace Sol
 
         public override void Close()
         {
-            Container container = UIManager.GetMenu<Container>();
-            if (container.IsActive) container.Close();
             base.Close();
         }
 

@@ -49,19 +49,39 @@ namespace Sol
                 {
                     slotIngredient = value;
                     displayText.text = slotIngredient.displayName;
+                    if(slotIngredient as EquipableItem)
+                    {
+                        EquipableItem ei = (EquipableItem)slotIngredient;
+                        image.color = ei.equipmentColor;
+                    }
                 }
             }
         }
 
 
+        public virtual void OpenHoverTooltip()
+        {
+            HoverTip hoverTooltip = UIManager.GetMenu<HoverTip>();
+            hoverTooltip.Open(slotIngredient.displayName, slotIngredient.description, Input.mousePosition);
+        }
+
+
+        public virtual void CloseHoverTooltip()
+        {
+            UIManager.Close<HoverTip>();
+        }
+
+
         private void Initialize(bool b)
         {
-            if(UIManager.GetMenu<Inventory>().ContainerExchange)
+            Inventory inventory = UIManager.GetMenu<Inventory>();
+
+            if (UIManager.GetMenu<Inventory>().ContainerExchange)
             {
                 if(b)
                 {
                     Container container = UIManager.GetMenu<Container>();
-                    Inventory inventory = UIManager.GetMenu<Inventory>();
+                    
 
                     //need to handle transfer
                     if (amount > 5)
@@ -78,9 +98,25 @@ namespace Sol
             }
             else
             {
-                //just need to initialize the panel
-                //if (b) infoPanel.Initialize(SlotIngredient, Amount);
+                //not exchanging!!
+                if(slotIngredient as EquipableItem)
+                {
+                    EquipableItem ei = (EquipableItem)slotIngredient;
+                    inventory.RemoveInventoryItem(slotIngredient, 1);
+
+                    inventory.equipmentPanel.EquipItem(ei);
+
+                    inventory.InitializeInventorySlots();
+
+                    inventory.equipmentPanel.Initialize();
+                }
+                else
+                {
+                    //????
+                }
             }
+
+            CloseHoverTooltip();
         }
 
 
