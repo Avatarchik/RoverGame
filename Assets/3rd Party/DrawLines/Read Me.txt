@@ -1,0 +1,21 @@
+******************************
+		Draw Lines kit
+		Version 1.1.8
+******************************
+
+Thank you for buying/downloading DrawLines.
+
+If you have any questions, suggestions, comments or feature requests, 
+you can send email to "freelance.art2014@gmail.com".
+
+
+Notes
+- Use the first AudioSource component in AudioSources GameObject for the music.
+- Use the second AudioSource component in AudioSources GameObject for the Sound Effects.
+- Download Music From https://soundcloud.com/monstercat/laszlo-supernova
+
+Website
+http://www.indiegstudio.com/
+
+Facebook Page
+https://www.facebook.com/IndieGamesStudio

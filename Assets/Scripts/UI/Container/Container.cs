@@ -11,6 +11,9 @@ namespace Sol
         public Transform InventorySlotContainer;
         public Text title;
 
+        public Button inventoryButton;
+        public Button closeButton;
+
         public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
         public List<ContainerSlot> containerSlots = new List<ContainerSlot>();
 
@@ -25,12 +28,7 @@ namespace Sol
 
         public void Open(List<Ingredient> ingredients, ContainerObject container)
         {
-            Inventory inventory = UIManager.GetMenu<Inventory>();
-            InGameMainMenu igmm = UIManager.GetMenu<InGameMainMenu>();
             title.text = container.objectName;
-
-            inventory.Open(true);
-            if (!igmm.IsActive) igmm.OpenInventoryTransfer(true, false);
 
             currentContainer = container;
             ingredientsInInventory = ingredients;
@@ -42,6 +40,8 @@ namespace Sol
 
         public override void Close()
         {
+            UIManager.Close<Inventory>();
+            UIManager.Close<InGameMainMenu>();
             base.Close();
         }
 
@@ -146,11 +146,21 @@ namespace Sol
         }
 
 
+        private void OpenInventory()
+        {
+            Inventory inventory = UIManager.GetMenu<Inventory>();
+            InGameMainMenu igmm = UIManager.GetMenu<InGameMainMenu>();
+
+            inventory.Open(true);
+            igmm.OpenInventoryTransfer(true, false);
+        }
+
+
         private void Update()
         {
             if (IsActive)
             {
-                if (Input.GetKeyDown(KeyCode.E)) Close();
+                if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape)) Close();
             }
         }
 
@@ -158,6 +168,9 @@ namespace Sol
         private void Awake()
         {
             InitializeInventorySlots();
+
+            closeButton.onClick.AddListener(Close);
+            inventoryButton.onClick.AddListener(OpenInventory);
         }
     }
 }

@@ -2,36 +2,55 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class RoverComponent : ScriptableObject
+namespace Sol
 {
-    public Item equippedItem;
-
-    public float health = 100f;
-    public float maxHealth = 100f;
-
-    private float statValue;
-
- 
-    public float Health
+    [System.Serializable]
+    public class RoverComponent
     {
-        get { return health; }
-        set
+        public enum ComponentType
         {
-            health = value;
-
-            if (equippedItem == null)
-            {
-                health = 0;
-                return;
-            }                
+            Engine,
+            Camera,
+            Panels,
+            Wheels,
+            Antenna,
+            Chassi,
+            Battery,
+            Drill,
+            Scanner
         }
+
+        public ComponentType currentComponentType;
+        public EquipableItem equippedItem;
+
+        public float health = 100f;
+        public float maxHealth = 100f;
+
+        private float statValue;
+
+
+        public float Health
+        {
+            get { return health; }
+            set
+            {
+                health = value;
+
+                if (equippedItem == null)
+                {
+                    health = 0;
+                    return;
+                }
+            }
+        }
+
+
+        private void Awake()
+        {
+            Health = health;
+        }
+
+
     }
-
-
-    private void Awake()
-    {
-        Health = health;
-    }
-
-  
 }
+

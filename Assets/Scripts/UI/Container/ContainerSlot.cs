@@ -23,6 +23,15 @@ namespace Sol
                 inventory.AddInventoryItem(SlotIngredient, 1);
                 container.RemoveInventoryItem(SlotIngredient, 1);
             }
+
+            CloseHoverTooltip();
+        }
+
+
+        public override void OpenHoverTooltip()
+        {
+            HoverTip hoverTooltip = UIManager.GetMenu<HoverTip>();
+            hoverTooltip.Open(slotIngredient.displayName, slotIngredient.description, Input.mousePosition, false);
         }
 
 

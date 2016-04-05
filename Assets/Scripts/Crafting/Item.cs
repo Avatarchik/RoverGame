@@ -10,6 +10,5 @@ public class Item : Ingredient
     private void Awake()
     {
         stackable = false;
-        equippable = true;
     }
 }
