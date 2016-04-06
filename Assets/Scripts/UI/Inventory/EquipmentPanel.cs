@@ -28,6 +28,9 @@ namespace Sol
         public Text rechargeText;
         public Text weightText;
 
+        public GameObject cameraPivot;
+        public float rotateFactor = 10f;
+
         private Inventory cachedPlayerInventory;
         private PlayerStats cachedPlayerStats;
 
@@ -134,6 +137,12 @@ namespace Sol
                         break;
                 }
             }
+        }
+
+
+        public void RotateRoverPreview()
+        {
+            cameraPivot.transform.Rotate(Vector3.up, Input.GetAxis("Mouse X") * Time.fixedDeltaTime * rotateFactor);
         }
 
 
