@@ -8,31 +8,31 @@ SketchUpImporter:
   selectedNodes: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f000000
   assetHash:
     serializedVersion: 2
-    Hash: 3419c67434eea106ebfcd2427f93218f
-  longitude: -.16700000000000001
+    Hash: f78f54e86776a91640f6e61f5071d681
+  longitude: -0.167
   latitude: 51.5
   northCorrection: -0
   fileUnit: 0
   sketchUpImportData:
     defaultCamera:
-      position: {x: 5.13647032, y: 6.40788364, z: -6.63028336}
-      lookAt: {x: -3.74952531, y: -.335850567, z: 1.1277343}
-      up: {x: -.373871505, y: .868144572, z: .326412678}
+      position: {x: 5.1364703, y: 6.4078836, z: -6.6302834}
+      lookAt: {x: -3.7495253, y: -0.33585057, z: 1.1277343}
+      up: {x: -0.3738715, y: 0.8681446, z: 0.32641268}
       fov: 30
       aspectRatio: 0
       orthoSize: 1
       isPerspective: 1
     scenes:
     - camera:
-        position: {x: 5.09007311, y: 4.85900545, z: -4.59065008}
-        lookAt: {x: -5.49900675, y: -.568974078, z: 1.96939099}
-        up: {x: -.339591324, y: .9167431, z: .210380226}
+        position: {x: 5.090073, y: 4.8590055, z: -4.59065}
+        lookAt: {x: -5.4990067, y: -0.5689741, z: 1.969391}
+        up: {x: -0.33959132, y: 0.9167431, z: 0.21038023}
         fov: 30
         aspectRatio: 0
         orthoSize: 1
         isPerspective: 1
       name: Page 1
-  serializedVersion: 18
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: Body
     100002: Group 1
@@ -198,6 +198,7 @@ SketchUpImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleRotations: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -205,21 +206,21 @@ SketchUpImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .0253999997
+    globalScale: 0.0254
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -231,20 +232,19 @@ SketchUpImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
   importAnimation: 0
   copyAvatar: 0
   humanDescription:
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
     hasTranslationDoF: 0

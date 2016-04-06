@@ -68,13 +68,13 @@ namespace Sol
         {
             if (Input.GetAxis("Vertical") != 0)
             {
-                transform.Translate(Vector3.forward * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier);
+                transform.Translate(Vector3.forward * playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier);
             }
             if(strafing)
             {
                 if (Input.GetAxis("Horizontal") != 0)
                 {
-                    transform.Translate(Vector3.right * playerStats.MoveSpeed * Time.fixedDeltaTime * Input.GetAxis("Horizontal") * movementSpeedMultiplier);
+                    transform.Translate(Vector3.right * playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Horizontal") * movementSpeedMultiplier);
                 }
             }
             else

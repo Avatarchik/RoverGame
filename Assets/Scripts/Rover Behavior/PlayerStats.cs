@@ -21,6 +21,7 @@ namespace Sol
         public const int WEIGHT_ID = 7;
 
         public float OverallHealth;
+        public float OverallCharge = 50;
         public float minSpeed;
 
         public List<RoverComponent> roverComponents = new List<RoverComponent>();
@@ -30,10 +31,17 @@ namespace Sol
         private CursorLockMode desiredCursorLocking = CursorLockMode.Locked;
 
         private Inventory playerInventory = null;
+        private TimeOfDay cachedTimeOfDay = null;
 
         private Inventory PlayerInventory
         {
             get { return (playerInventory != null) ? playerInventory : playerInventory = UIManager.GetMenu<Inventory>(); }
+        }
+
+        private TimeOfDay CachedTimeOfDay
+        {
+            //TODO remove gameobject.find
+            get { return (cachedTimeOfDay != null) ? cachedTimeOfDay : cachedTimeOfDay = GameObject.FindObjectOfType<TimeOfDay>(); }
         }
 
 
@@ -98,7 +106,13 @@ namespace Sol
         }
 
 
-        public float MoveSpeed
+        public float MovementSpeed
+        {
+            get { return ModifyStat(MOVE_SPEED_ID) + minSpeed; }
+        }
+
+
+        public float CurrentMovementSpeed
         {
             //TODO need to get this to be modified by weight.
             // - cant go below 0
@@ -195,7 +209,33 @@ namespace Sol
         }
 
 
-        private void Awake()
+        public void FixedUpdate()
+        {
+            if (CachedTimeOfDay != null && CachedTimeOfDay.timeInSeconds > 0 && CachedTimeOfDay.timeInSeconds < CachedTimeOfDay.dayLength * 0.5f)
+            {
+                //its light outside, charge the battery!
+                if (OverallCharge < MaxCharge)
+                {
+                    OverallCharge += Time.fixedDeltaTime * RechargeRate * 0.001f;
+                }
+            }
+            else
+            {
+                //its dark outside, dont charge!
+                if (OverallCharge > 0)
+                {
+                    OverallCharge -= Time.fixedDeltaTime * 0.0001f;
+                }
+                else
+                {
+                    Debug.Log("player is dead");
+                }
+            }
+        }
+    
+
+
+    private void Awake()
         {
             Menu.OnMenuOpen += DisableMovement;
             Menu.OnMenuClose += EnableMovement;
