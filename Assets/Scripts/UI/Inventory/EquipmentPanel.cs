@@ -6,6 +6,8 @@ namespace Sol
 {
     public class EquipmentPanel : MonoBehaviour
     {
+        private const string STAT_FORMAT = "{0}/{1}";
+
         public Image cameraIcon;
         public Image panelsIcon;
         public Image wheelsIcon;
@@ -20,11 +22,23 @@ namespace Sol
         public Image chassiHud;
         public Image batteryHud;
 
+        public Text healthText;
+        public Text chargeText;
+        public Text speedText;
+        public Text rechargeText;
+        public Text weightText;
+
+        private Inventory cachedPlayerInventory;
         private PlayerStats cachedPlayerStats;
 
         public PlayerStats CachedPlayerStats
         {
             get { return (cachedPlayerStats != null) ? cachedPlayerStats : cachedPlayerStats = GameObject.FindObjectOfType<PlayerStats>(); }
+        }
+
+        private Inventory CachedPlayerInventory
+        {
+            get { return (cachedPlayerInventory != null) ? cachedPlayerInventory : cachedPlayerInventory = UIManager.GetMenu<Inventory>(); }
         }
 
 
@@ -41,7 +55,7 @@ namespace Sol
                 }
             }
 
-            //we dont already have this item. add it i guess?
+            //we dont already have this item. add it.
             RoverComponent roverComponent = new RoverComponent();
             roverComponent.currentComponentType = equippableItem.componentType;
             roverComponent.equippedItem = equippableItem;
@@ -50,11 +64,24 @@ namespace Sol
         }
 
 
+        public void ShowToolTip(Ingredient ingredient)
+        {
+            HoverTip hoverTip = UIManager.GetMenu<HoverTip>();
+            hoverTip.Open(ingredient.displayName, ingredient.description, Input.mousePosition, false);
+        }
+
+
+        public void CloseToolTip()
+        {
+            UIManager.Close<HoverTip>();
+        }
+
+
         public void Initialize()
         {
             Debug.Log(CachedPlayerStats.roverComponents.Count);
 
-            foreach(RoverComponent rc in CachedPlayerStats.roverComponents)
+            foreach (RoverComponent rc in CachedPlayerStats.roverComponents)
             {
                 switch(rc.currentComponentType)
                 {
@@ -106,6 +133,19 @@ namespace Sol
                         wheelsHud.color = rc.equippedItem.equipmentColor;
                         break;
                 }
+            }
+        }
+
+
+        private void Update()
+        {
+            if(CachedPlayerInventory.IsActive)
+            {
+                healthText.text = string.Format(STAT_FORMAT, CachedPlayerStats.OverallHealth, CachedPlayerStats.MaxHealth);
+                chargeText.text = string.Format(STAT_FORMAT, CachedPlayerStats.OverallCharge.ToString("F2"), CachedPlayerStats.MaxCharge);
+                speedText.text = CachedPlayerStats.MovementSpeed.ToString();
+                rechargeText.text = CachedPlayerStats.RechargeRate.ToString();
+                weightText.text = CachedPlayerStats.Weight.ToString();
             }
         }
     }
