@@ -15,5 +15,5 @@ public class LevelsManager : MonoBehaviour
 		public readonly static int colsLimit = 12;
 		public int numberOfCols = 5;
 		public int numberOfRows = 5;
-		public List<Level> levels = new List<Level> ();
+    public List<Level> levels = new List<Level>();
 }

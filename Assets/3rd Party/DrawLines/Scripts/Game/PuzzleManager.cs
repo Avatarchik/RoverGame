@@ -771,6 +771,7 @@ public class PuzzleManager : MonoBehaviour
 						ResetGameContents ();
 						BuildTheGrid ();
 						SettingUpPairs ();
+                        SettingUpObstacles();
 						SettingUpNextBackAlpha ();
 						timer.Stop ();
 						timer.Start ();
@@ -786,9 +787,10 @@ public class PuzzleManager : MonoBehaviour
 		private void BuildTheGrid ()
 		{
 				Debug.Log ("Building the Grid " + numberOfRows + "x" + numberOfColumns);
-			
-				Vector3 gridCellScale = new Vector3 (gridSize.x / numberOfColumns, gridSize.y / numberOfRows, 1);
-				Vector3 gridCellPosition = Vector2.zero;
+
+        //Vector3 gridCellScale = new Vector3 (gridSize.x / numberOfColumns, gridSize.y / numberOfRows, 1);
+        Vector3 gridCellScale = Vector3.one;
+        Vector3 gridCellPosition = Vector2.zero;
 				Vector3 gridPosition = gridTopPivotTransform.position;
 				gridCells = new GridCell[numberOfRows * numberOfColumns];
 				GridCell gridCellComponent;
@@ -876,8 +878,8 @@ public class PuzzleManager : MonoBehaviour
 						numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
 						if (currentLevel.showPairsNumber) {
 								numberTextmesh.text = (i + 1).ToString ();
-								numberTextmesh.color = numberColor; 
-						} else {
+								numberTextmesh.color = Color.white;//numberColor; 
+            } else {
 								numberTextmesh.text = "";//empty value
 						}
 
@@ -909,7 +911,7 @@ public class PuzzleManager : MonoBehaviour
 						numberTextmesh = secondElement.transform.Find ("Number").GetComponent<TextMesh> ();
 						if (currentLevel.showPairsNumber) {
 								numberTextmesh.text = (i + 1).ToString ();
-								numberTextmesh.color = numberColor; 
+                                numberTextmesh.color = Color.white;//numberColor; 
 						} else {
 								numberTextmesh.text = "";//empty value
 						}
@@ -924,14 +926,55 @@ public class PuzzleManager : MonoBehaviour
 				CreateDraggingElement (tempColor, new Vector3 (cellContentScale * draggingElementScaleFactor, cellContentScale * draggingElementScaleFactor, cellContentScale));
 		}
 
-		/// <summary>
-		/// Setting up Grid Lines
-		/// </summary>
-		/// <param name="lineWidth">Line width.</param>
-		/// <param name="lineColor">Line color.</param>
-		/// <param name="name">Name of grid line.</param>
-		/// <param name="index">Index.</param>
-		private void CreateGridLine (float lineWidth, Color lineColor, string name, int index)
+    private void SettingUpObstacles()
+    {
+        Level.Barrier barrier = null;
+        Transform gridCellTransform;
+        GridCell gridCell;
+        Vector3 cellContentPosition = new Vector3(0, 0, cellContentZPosition);
+        Vector3 gridCellScale = Vector3.zero;
+        GameObject firstElement = null;
+        TextMesh numberTextmesh;
+        float cellContentScale = 0;
+
+        for (int i = 0; i < currentLevel.barriers.Count; i++)
+        {
+            barrier = currentLevel.barriers[i];
+
+            //Setting up the First Dot(Element)
+            gridCell = gridCells[barrier.index];
+
+            gridCell.gridLineIndex = i;
+            gridCell.elementPairIndex = i;
+            gridCell.isEmpty = false;
+            gridCell.tragetIndex = barrier.index;
+
+            gridCellTransform = gridCell.gameObject.transform;
+            gridCellScale = gridCellTransform.localScale;
+            cellContentScale = (Mathf.Max(gridCellScale.x, gridCellScale.y) / Mathf.Min(gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+
+            firstElement = Instantiate(cellContentPrefab) as GameObject;
+            firstElement.transform.SetParent(gridCellTransform);
+            firstElement.transform.localPosition = cellContentPosition;
+            firstElement.transform.localScale = new Vector3(cellContentScale, cellContentScale, cellContentScale);
+            firstElement.name = "barrier" + (i + 1) + "-FirstElement";
+            firstElement.GetComponent<SpriteRenderer>().sprite = barrier.sprite;
+
+            numberTextmesh = firstElement.transform.Find("Number").GetComponent<TextMesh>();
+            numberTextmesh.text = "";//empty value
+
+            firstElement.GetComponent<SpriteRenderer>().color = barrier.color;
+        }
+    }
+
+    /// <summary>
+    /// Setting up Grid Lines
+    /// </summary>
+    /// <param name="lineWidth">Line width.</param>
+    /// <param name="lineColor">Line color.</param>
+    /// <param name="name">Name of grid line.</param>
+    /// <param name="index">Index.</param>
+    private void CreateGridLine (float lineWidth, Color lineColor, string name, int index)
 		{
 				GameObject gridLine = Instantiate (gridLinePrefab, grid.transform.position, Quaternion.identity) as GameObject;
 				gridLine.transform.parent = gridLinesTransfrom;
