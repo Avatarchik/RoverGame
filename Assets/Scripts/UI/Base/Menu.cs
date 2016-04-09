@@ -16,6 +16,7 @@ namespace Sol
         public AudioClip closeEffect;
 
         public GameObject root;
+        private float menuFadeTime = 0.2f;
         public bool stopsMovement = true;
 
         protected bool isActive = false;
@@ -40,6 +41,13 @@ namespace Sol
             {
                 if (openEffect != null) CachedSoundManager.Play(openEffect);
 
+                CanvasGroup cg = root.GetComponent<CanvasGroup>();
+                if (cg != null)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(FadeMenu(cg, 0f, 1f));
+                }
+
                 isActive = true;
                 root.SetActive(true);
                 if (stopsMovement && OnMenuClose != null) OnMenuOpen();
@@ -53,9 +61,18 @@ namespace Sol
             {
                 if (closeEffect != null) CachedSoundManager.Play(closeEffect);
 
-                isActive = false;
-                root.SetActive(false);
-                if (stopsMovement) OnMenuClose();
+                CanvasGroup cg = root.GetComponent<CanvasGroup>();
+                if (cg != null)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(FadeMenu(cg, 1f, 0f, true));
+                }
+                else
+                {
+                    isActive = false;
+                    root.SetActive(false);
+                    if (stopsMovement) OnMenuClose();
+                }
             }
         }
 
@@ -69,6 +86,47 @@ namespace Sol
             }
 
             return false;
+        }
+
+
+        protected virtual IEnumerator FadeMenu(CanvasGroup cg, float from, float to, bool close = false)
+        {
+            cg.alpha = from;
+            float elapsedTime = 0f;
+            Vector3 travelTo = Vector3.zero;
+            Vector3 travelFrom = Vector3.zero;
+
+            RectTransform rt = cg.GetComponent<RectTransform>();
+
+            if(close)
+            {
+                travelTo = new Vector3(rt.localPosition.x, rt.localPosition.y - 15, rt.localPosition.z);
+                travelFrom = new Vector3(rt.localPosition.x, rt.localPosition.y, rt.localPosition.z);
+            }
+            else
+            {
+                travelFrom = new Vector3(rt.localPosition.x, rt.localPosition.y - 15, rt.localPosition.z);
+                travelTo = new Vector3(rt.localPosition.x, rt.localPosition.y, rt.localPosition.z);
+            }
+
+            while(elapsedTime < menuFadeTime)
+            {
+                rt.localPosition = Vector3.Lerp(travelFrom, travelTo, elapsedTime / menuFadeTime);
+                cg.alpha = Mathf.Lerp(from, to, elapsedTime / menuFadeTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            cg.alpha = to;
+
+            if(close)
+            {
+                rt.localPosition = Vector3.zero;
+                isActive = false;
+                root.SetActive(false);
+                if (stopsMovement) OnMenuClose();
+            }
         }
     }
 }

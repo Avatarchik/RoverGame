@@ -45,7 +45,6 @@ namespace Sol
             if (b)
             {
                 if (!IsActive) Open();
-                CloseAll();
                 OpenInventoryTransfer(b, false);
             }
         }
@@ -55,11 +54,14 @@ namespace Sol
         {
             if (b)
             {
+                UIManager.Close<SystemMenu>();
+                UIManager.Close<LogMenu>();
                 if (!IsActive) Open();
                 Inventory inventory= UIManager.GetMenu<Inventory>();
                 
                 inventory.Open(transfer);
                 openInventoryToggle.Select();
+                Open();
             }
         }
 
@@ -68,8 +70,10 @@ namespace Sol
         {
             if (b)
             {
+                UIManager.Close<SystemMenu>();
+                UIManager.Close<Inventory>();
                 if (!IsActive) Open();
-                CloseAll();
+
                 UIManager.Open<LogMenu>();
                 Open();
             }
@@ -80,8 +84,10 @@ namespace Sol
         {
             if(b)
             {
+                UIManager.Close<LogMenu>();
+                UIManager.Close<Inventory>();
                 if (!IsActive) Open();
-                CloseAll();
+
                 UIManager.GetMenu<SystemMenu>().OpenGraphics() ;
                 Open();
             }
@@ -91,10 +97,11 @@ namespace Sol
         private void CloseAll()
         {
             UIManager.Close<Crafting>();
-            UIManager.Close<Inventory>();
-            UIManager.Close<LogMenu> ();
             UIManager.Close<Container>();
+
             UIManager.Close<SystemMenu>();
+            UIManager.Close<LogMenu>();
+            UIManager.Close<Inventory>();
         }
 
 
@@ -109,6 +116,7 @@ namespace Sol
                 }
                 else
                 {
+                    CloseAll();
                     OpenSystem();
                     openSystemToggle.Select();
                 }
@@ -123,7 +131,7 @@ namespace Sol
                 }
                 else
                 {
-                    Open();
+                    CloseAll();
                     OpenInventoryTransfer(true, false);
                     openInventoryToggle.Select();
                 }
@@ -138,6 +146,8 @@ namespace Sol
                 }
                 else
                 {
+                    CloseAll();
+                    UIManager.GetMenu<Inventory>().Close();
                     OpenLogs();
                     openLogFilesToggle.Select();
                 }

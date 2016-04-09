@@ -111,6 +111,18 @@ namespace DrawLinesEditors
 												texture = dotPair.sprite.texture;
 								}
 						}
-				}
+
+            foreach (Level.Barrier barrier in level.barriers)
+            {
+
+                if (barrier.index == gridCellndex)
+                {
+                    GUI.contentColor = barrier.color;
+
+                    if (barrier.sprite != null)
+                        texture = barrier.sprite.texture;
+                }
+            }
+        }
 		}
 }

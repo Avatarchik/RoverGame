@@ -28,6 +28,9 @@ namespace Sol
         public Text rechargeText;
         public Text weightText;
 
+        public GameObject cameraPivot;
+        public float rotateFactor = 10f;
+
         private Inventory cachedPlayerInventory;
         private PlayerStats cachedPlayerStats;
 
@@ -79,14 +82,11 @@ namespace Sol
 
         public void Initialize()
         {
-            Debug.Log(CachedPlayerStats.roverComponents.Count);
-
             foreach (RoverComponent rc in CachedPlayerStats.roverComponents)
             {
                 switch(rc.currentComponentType)
                 {
                     case RoverComponent.ComponentType.Antenna:
-                        Debug.Log("antenna");
                         antennaIcon.sprite = rc.equippedItem.image;
                         antennaIcon.color = rc.equippedItem.equipmentColor;
 
@@ -94,7 +94,6 @@ namespace Sol
                         break;
 
                     case RoverComponent.ComponentType.Battery:
-                        Debug.Log("battery");
                         batteryIcon.sprite = rc.equippedItem.image;
                         batteryIcon.color = rc.equippedItem.equipmentColor;
 
@@ -102,7 +101,6 @@ namespace Sol
                         break;
 
                     case RoverComponent.ComponentType.Camera:
-                        Debug.Log("camera");
                         cameraIcon.sprite = rc.equippedItem.image;
                         cameraIcon.color = rc.equippedItem.equipmentColor;
 
@@ -110,7 +108,6 @@ namespace Sol
                         break;
 
                     case RoverComponent.ComponentType.Chassi:
-                        Debug.Log("chassi");
                         chassiIcon.sprite = rc.equippedItem.image;
                         chassiIcon.color = rc.equippedItem.equipmentColor;
 
@@ -118,7 +115,6 @@ namespace Sol
                         break;
 
                     case RoverComponent.ComponentType.Panels:
-                        Debug.Log("panels");
                         panelsIcon.sprite = rc.equippedItem.image;
                         panelsIcon.color = rc.equippedItem.equipmentColor;
 
@@ -126,7 +122,6 @@ namespace Sol
                         break;
 
                     case RoverComponent.ComponentType.Wheels:
-                        Debug.Log("wheels");
                         wheelsIcon.sprite = rc.equippedItem.image;
                         wheelsIcon.color = rc.equippedItem.equipmentColor;
 
@@ -134,6 +129,12 @@ namespace Sol
                         break;
                 }
             }
+        }
+
+
+        public void RotateRoverPreview()
+        {
+            cameraPivot.transform.Rotate(Vector3.up, Input.GetAxis("Mouse X") * Time.fixedDeltaTime * rotateFactor);
         }
 
 

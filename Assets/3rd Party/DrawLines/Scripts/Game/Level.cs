@@ -28,6 +28,8 @@ public class Level
 		/// </summary>
 		public List<DotsPair> dotsPairs = new List<DotsPair> ();
 
+    public List<Barrier> barriers = new List<Barrier>();
+
 		/// <summary>
 		/// DotsPair Class.
 	    /// Note : Dots Pair is an Elements Pair , we did not rename this class and its instances to 
@@ -88,4 +90,15 @@ public class Level
 				/// </summary>
 				public int index;
 		}
+
+
+    [System.Serializable]
+    public class Barrier
+    {
+        public bool showPair = true;
+
+        public Sprite sprite;
+        public Color color;
+        public int index;
+    }
 }
