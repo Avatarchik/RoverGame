@@ -14,7 +14,7 @@ ModelImporter:
     11100000: //RootNode
   materials:
     importMaterials: 1
-    materialName: 3
+    materialName: 1
     materialSearch: 1
   animations:
     legacyGenerateAnimations: 0
@@ -38,9 +38,8 @@ ModelImporter:
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
-    useFileUnits: 1
+    useFileUnits: 0
     optimizeMeshForGPU: 1
-    keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15
