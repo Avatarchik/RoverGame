@@ -13,6 +13,11 @@ namespace Sol
 
         private PuzzleManager cachedPuzzleManager;
 
+        public PuzzleManager CachedPuzzleManager
+        {
+            get { return (cachedPuzzleManager != null) ? cachedPuzzleManager : cachedPuzzleManager = GameObject.FindObjectOfType<PuzzleManager>(); }
+        }
+
 
         public void Open(InteractiblePuzzle ip)
         {
@@ -23,19 +28,29 @@ namespace Sol
 
         public override void Close()
         {
+            Debug.Log("close");
             currentPuzzleObject.interactible = true;
             base.Close();
         }
 
 
-        public PuzzleManager CachedPuzzleManager
+        public void Close(bool completed)
         {
-            get { return (cachedPuzzleManager != null) ? cachedPuzzleManager : cachedPuzzleManager = GameObject.FindObjectOfType<PuzzleManager>(); }
+            if(completed)
+            {
+                currentPuzzleObject.Complete = true;
+                base.Close();
+            }
+            else
+            {
+                base.Close();
+            }
         }
 
 
         public void Exit()
         {
+            Debug.Log("exit");
             currentPuzzleObject.interactible = true;
             CachedPuzzleManager.Close();
             Close();

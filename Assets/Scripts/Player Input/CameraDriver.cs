@@ -61,7 +61,7 @@ namespace Sol
         private void Awake()
         {
             playerStats = GameObject.FindObjectOfType<PlayerStats>() as PlayerStats;
-           // GetComponent<Rigidbody>().centerOfMass = centerOfMass.position;
+            //GetComponent<Rigidbody>().centerOfMass = centerOfMass.position;
         }
     }
 

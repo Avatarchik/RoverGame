@@ -182,6 +182,19 @@ namespace Sol
         public virtual void RemoveInventoryItem(Ingredient ingredient, int count)
         {
             bool foundNothing = true;
+
+            MessageMenu mm = UIManager.GetMenu<MessageMenu>();
+            if (count == 1)
+            {
+                mm.Open(string.Format("{0} removed", ingredient.displayName), 3);
+                CloseMessageMenu();
+            }
+            else
+            {
+                mm.Open(string.Format("{0} {1}s removed", count, ingredient.displayName), 3);
+                CloseMessageMenu();
+            }
+
             while (count > 0)
             {
                 for (int i = 0; i < ingredientsInInventory.Count; i++)
@@ -200,18 +213,6 @@ namespace Sol
                     Debug.LogError("No item : " + ingredient.displayName + " : id : " + ingredient.id + " was found");
                     break;
                 }
-            }
-
-            MessageMenu mm = UIManager.GetMenu<MessageMenu>();
-            if (count == 1)
-            {
-                mm.Open(string.Format("{0} removed", ingredient.displayName), 3);
-                CloseMessageMenu();
-            }
-            else
-            {
-                mm.Open(string.Format("{0} {1}s removed", count, ingredient.displayName), 3);
-                CloseMessageMenu();
             }
 
             InitializeInventorySlots();

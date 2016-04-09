@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Sol
 {
@@ -11,6 +12,31 @@ namespace Sol
         public UIEvents uiEvents;
 
         public PuzzleManager puzzleManager;
+        public List<GameObject> objectsToActivate = new List<GameObject>();
+        public List<GameObject> objectsToDeactivate = new List<GameObject>();
+
+        private bool complete = false;
+
+        public bool Complete
+        {
+            get { return complete; }
+            set
+            {
+                complete = value;
+                if(complete)
+                {
+                    foreach(GameObject go in objectsToActivate)
+                    {
+                        go.SetActive(true);
+                    }
+
+                    foreach (GameObject go in objectsToDeactivate)
+                    {
+                        go.SetActive(false);
+                    }
+                }
+            }
+        }
 
         public UIEvents UiEvents
         {

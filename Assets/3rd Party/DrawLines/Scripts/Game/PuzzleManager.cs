@@ -354,7 +354,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void Close()
     {
-        Cleanup();
+        Cleanup(false);
     }
 
 
@@ -1136,7 +1136,7 @@ public class PuzzleManager : MonoBehaviour
 						timer.Stop ();
 						isRunning = false;
 
-            Cleanup();
+            Cleanup(true);
                 /*
 						try {
 								///Save the stars level
@@ -1172,11 +1172,12 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 
-    private void Cleanup()
+    private void Cleanup(bool completed)
     {
         Debug.Log("cleaning up");
 
-        UIManager.Close<PuzzleMenu>();
+        PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
+        pm.Close(completed);
 
         foreach (Transform child in gridContentsTransform)
         {

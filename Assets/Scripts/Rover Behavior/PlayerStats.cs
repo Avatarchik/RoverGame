@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -189,6 +190,24 @@ namespace Sol
         public void ModifyHealth(float addedModifier)
         {
             OverallHealth += addedModifier;
+
+            if(OverallHealth <= 0)
+            {
+                StartCoroutine(KillPlayer());
+            }
+        }
+
+
+        private IEnumerator KillPlayer()
+        {
+            Debug.Log("Killing Player!!");
+            FadeMenu fm = UIManager.GetMenu<FadeMenu>();
+            MessageMenu mm = UIManager.GetMenu<MessageMenu>();
+            fm.Fade(0f, Color.clear, Color.black);
+            mm.Open("Signal Lost", 3);
+
+            yield return new WaitForSeconds(2f);
+            SceneManager.LoadScene(0);
         }
 
 

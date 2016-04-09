@@ -29,7 +29,7 @@ namespace Sol
         {
             float velocity = Mathf.Abs(playerBody.velocity.y);
             if (velocity > -0.1f && velocity < 0.1f) velocity = 0;
-            Debug.Log(velocity);
+
             if (!takeFallingDamage)
             {
                 if (velocity > fallDamageThreshhold) takeFallingDamage = true;
