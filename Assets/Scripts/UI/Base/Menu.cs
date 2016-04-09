@@ -93,8 +93,25 @@ namespace Sol
         {
             cg.alpha = from;
             float elapsedTime = 0f;
+            Vector3 travelTo = Vector3.zero;
+            Vector3 travelFrom = Vector3.zero;
+
+            RectTransform rt = cg.GetComponent<RectTransform>();
+
+            if(close)
+            {
+                travelTo = new Vector3(rt.localPosition.x, rt.localPosition.y - 15, rt.localPosition.z);
+                travelFrom = new Vector3(rt.localPosition.x, rt.localPosition.y, rt.localPosition.z);
+            }
+            else
+            {
+                travelFrom = new Vector3(rt.localPosition.x, rt.localPosition.y - 15, rt.localPosition.z);
+                travelTo = new Vector3(rt.localPosition.x, rt.localPosition.y, rt.localPosition.z);
+            }
+
             while(elapsedTime < menuFadeTime)
             {
+                rt.localPosition = Vector3.Lerp(travelFrom, travelTo, elapsedTime / menuFadeTime);
                 cg.alpha = Mathf.Lerp(from, to, elapsedTime / menuFadeTime);
 
                 elapsedTime += Time.deltaTime;
@@ -105,6 +122,7 @@ namespace Sol
 
             if(close)
             {
+                rt.localPosition = Vector3.zero;
                 isActive = false;
                 root.SetActive(false);
                 if (stopsMovement) OnMenuClose();
