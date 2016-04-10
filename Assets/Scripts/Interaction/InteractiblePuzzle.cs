@@ -14,6 +14,7 @@ namespace Sol
         public PuzzleManager puzzleManager;
         public List<GameObject> objectsToActivate = new List<GameObject>();
         public List<GameObject> objectsToDeactivate = new List<GameObject>();
+        public List<InteractibleObject> objectsToTrigger = new List<InteractibleObject>();
 
         private bool complete = false;
 
@@ -33,6 +34,11 @@ namespace Sol
                     foreach (GameObject go in objectsToDeactivate)
                     {
                         go.SetActive(false);
+                    }
+
+                    foreach(InteractibleObject io in objectsToTrigger)
+                    {
+                        io.Interact();
                     }
                 }
             }
