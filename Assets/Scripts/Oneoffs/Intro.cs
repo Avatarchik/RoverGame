@@ -6,185 +6,182 @@ namespace Sol
 {
     public class Intro : MonoBehaviour
     {
-        private const int VOICE_ID_1 = 2010;
-        private const int VOICE_ID_2 = 2011;
-        private const int VOICE_ID_3 = 2012;
-        private const int MUSIC_ID_1 = 40;
-        private const int SFX_ID_1 = 60;
-
         private PlayerStats playerStats = null;
 
         public AutoIntensity autoIntensity;
         public MouseLook mouseLook;
         public CameraDriver cameraDriver;
         public CharacterDriver characterDriver;
-        public InteractibleObject safe;
 
-        public Ingredient explosiveDevice;
-
-        public Ingredient cannister;
-        public Ingredient unstableFuelCell;
-        public Ingredient bundleOfWires;
-
-        public Objective pressAnyKeyObjective;
-        public Objective lookObjective;
-        public Objective moveObjective;
-        public Objective escapePodObjective;
-        public Objective constructExplosiveObjective;
-        public Objective constructExplosiveSub1;
-        public Objective constructExplosiveSub2;
-        public Objective constructExplosiveSub3;
-        public Objective craftExplosive;
-        public Objective clearLandslideObjective;
-        public Objective enterTunnelsObjective;
+        public Ingredient wheels;
 
         public float displaySpeed = 0.01f;
 
         public List<Objective> introObjectives = new List<Objective>();
-        
+
+        private bool proceed = false;
 
         public PlayerStats CachedPlayerStats
         {
             get { return (playerStats != null) ? playerStats : playerStats = GameObject.FindObjectOfType<PlayerStats>(); }
         }
 
+
+        public void Next()
+        {
+            proceed = true;
+        }
+
         private IEnumerator RunTutorial()
         {
-              FadeMenu fadeMenu = UIManager.GetMenu<FadeMenu>();
-              ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
-              ObjectiveDisplay od;
-              SoundManager soundManager = GameManager.Get<SoundManager>();
-              Inventory inventory = UIManager.GetMenu<Inventory>();
+            ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
+            Inventory inventory = UIManager.GetMenu<Inventory>();
+            FadeMenu fm = UIManager.GetMenu<FadeMenu>();
 
-              CachedPlayerStats.DisableMovement();
+            fm.Fade(5f, Color.black, Color.clear, true);
+            yield return new WaitForSeconds(3f);
+            //look around
+            ShowObjective(ot, "Look around");
 
-              //Press any key!!
-              fadeMenu.Fade(0f, Color.clear, Color.black);
-              bool anyKeyPressed = false;
-              od = objectiveTracker.AddObjective(pressAnyKeyObjective, displaySpeed);
-              while (!anyKeyPressed || od.Isfilling)
-              {
-                  anyKeyPressed = Input.anyKey;
-                  yield return null;
-              }
-
-              //start playing sound and run through the console
-              StartCoroutine(AudioFade(soundManager.Play(VOICE_ID_1, 1).GetComponent<AudioSource>()));
-
-              yield return new WaitForSeconds(1f);
-
-              for (int i = 0; i < introObjectives.Count; i++)
-              {
-                  yield return new WaitForSeconds(Random.Range(0.3f, 0.6f));
-                  od = objectiveTracker.AddObjective(introObjectives[i], displaySpeed);
-                  while(od.Isfilling)
-                  {
-                      yield return null;
-                  }
-              }
-
-              fadeMenu.Fade(2f, Color.black, Color.clear);
-              yield return new WaitForSeconds(4f);
-              fadeMenu.Close();
-
-              float prevMoveSpeedMultiplier = characterDriver.movementSpeedMultiplier;
-              characterDriver.movementSpeedMultiplier = 0f;
-
-              //look around and move around
-              soundManager.Play(VOICE_ID_2);
-              yield return new WaitForSeconds(2f);
-              od = objectiveTracker.AddObjective(lookObjective, displaySpeed);
-              while(od.Isfilling)
-              {
-                  yield return null;
-              }
-              //playerStats.EnableMovement();
-
-              while(Input.GetAxis("Mouse X") == 0 && Input.GetAxis("Mouse Y") == 0)
-              {
-                  yield return null;
-              }
-
-              yield return new WaitForSeconds(3f);
-
-              od = objectiveTracker.AddObjective(moveObjective, displaySpeed);
-              while (od.Isfilling)
-              {
-                  yield return null;
-              }
-              characterDriver.movementSpeedMultiplier = prevMoveSpeedMultiplier;
-
-              while (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
-              {
-                  yield return null;
-              }
-
-              yield return new WaitForSeconds(1f);
-
-              //escape the pod
-              soundManager.Play(VOICE_ID_3) ;
-              yield return new WaitForSeconds(12f);
-              objectiveTracker.AddObjective(escapePodObjective, displaySpeed);
-              safe.interactible = true;
-
-            while(inventory.GetIngredientAmount(cannister) < 1 ||
-                inventory.GetIngredientAmount(bundleOfWires) < 1 ||
-                inventory.GetIngredientAmount(unstableFuelCell) < 1)
+            while (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0 || proceed)
             {
-                yield return new WaitForSeconds(0.5f);
+                yield return null;
             }
+            yield return new WaitForSeconds(6f);
+            if (fm.IsActive) fm.Close();
+            //
+            //move around
+            ShowObjective(ot, "Explore the area");
 
-            objectiveTracker.AddObjective(craftExplosive, displaySpeed);
+            while (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0 || proceed)
+            {
+                yield return null;
+            }
+            
+            yield return new WaitForSeconds(6f);
+            //
+            //See that rover
+            Debug.Log(1);
+            ShowObjective(ot, "See that rover");
+            yield return new WaitForSeconds(6f);
+            //
+            //Take its wheels
+            Debug.Log(1);
+            ShowObjective(ot, "Take its wheels");
 
-              while(inventory.GetIngredientAmount(explosiveDevice) < 1)
-              {
-                  yield return new WaitForSeconds(0.5f);
-              }
+            while (inventory.GetIngredientAmount(wheels) == 0)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(6f);
+            //
+            //Equip them
+            Debug.Log(2);
+            ShowObjective(ot, "Equip them");
+            yield return new WaitForSeconds(6f);
+            //
+            //Find the lift
+            Debug.Log(1);
+            ShowObjective(ot, "Find the lift");
 
-              objectiveTracker.AddObjective(clearLandslideObjective, displaySpeed);
+            while (!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+            yield return new WaitForSeconds(6f);
+            //
+            //Fix it
+            Debug.Log(2);
+            ShowObjective(ot, "Fix it");
+
+            while (!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+            yield return new WaitForSeconds(6f);
+            //
+            //Ascend
+            Debug.Log(3);
+            ShowObjective(ot, "Ascend");
+            while(!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+            yield return new WaitForSeconds(6f);
+            //
+            //Compliment
+            Debug.Log(4);
+            ShowObjective(ot, "That's a good rover");
+            while (!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+            yield return new WaitForSeconds(6f);
+            //
+            //go to the dome
+            Debug.Log(5);
+            ShowObjective(ot, "Go to the dome");
+            while (!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+            yield return new WaitForSeconds(6f);
+            //
+            //get in
+            Debug.Log(6);
+            ShowObjective(ot, "Get in");
+            while (!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+            yield return new WaitForSeconds(6f);
+            //
+            //find the teleporter
+            Debug.Log(7);
+            ShowObjective(ot, "Find the teleporter");
+            while (!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+            yield return new WaitForSeconds(6f);
+            //
+            //fix teleporter
+            Debug.Log(8);
+            ShowObjective(ot, "Fix this too");
+            while (!proceed)
+            {
+                yield return null;
+            }
+        }
+
+
+        private void ShowObjective(ObjectiveTracker ot, string message)
+        {
+            ot.Open(message);
+            StartCoroutine(DelayedClose(ot));
+        }
+
+
+        private IEnumerator DelayedClose(ObjectiveTracker ot)
+        {
+            yield return new WaitForSeconds(5f);
+            ot.Close();
         }
 
 
         private IEnumerator DisplaySubObjectives()
         {
-            ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
-
-            yield return new WaitForSeconds(0.5f);
-            objectiveTracker.AddObjective(constructExplosiveSub1, displaySpeed);
-
-            yield return new WaitForSeconds(0.5f);
-            objectiveTracker.AddObjective(constructExplosiveSub2, displaySpeed);
-
-            yield return new WaitForSeconds(0.5f);
-            objectiveTracker.AddObjective(constructExplosiveSub3, displaySpeed);
-
-            yield return new WaitForSeconds(0.2f);
-            objectiveTracker.AddObjective(introObjectives[5], displaySpeed);
+            yield return null;
         }
 
-
-        public void NextObjective(Objective objective, bool playMusic = false)
-        {
-            if(objective == constructExplosiveObjective)
-            {
-                autoIntensity.go = true;
-
-                ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
-                ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
-                if (playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
-                GameManager.Get<SoundManager>().Play(SFX_ID_1);
-
-                StartCoroutine(DisplaySubObjectives());
-            }
-            else
-            {
-                ObjectiveTracker objectiveTracker = UIManager.GetMenu<ObjectiveTracker>();
-                ObjectiveDisplay od = objectiveTracker.AddObjective(objective, displaySpeed);
-                if (playMusic) GameManager.Get<SoundManager>().Play(MUSIC_ID_1);
-            }            
-        }
-
-        //TODO dont relly on this
+        //TODO dont rely on this
         private IEnumerator AudioFade(AudioSource source)
         {
             float elapsedTime = 0f;
@@ -203,7 +200,7 @@ namespace Sol
 
         private void Awake()
         {
-           // StartCoroutine(RunTutorial());
+           StartCoroutine(RunTutorial());
         }
     }
 }

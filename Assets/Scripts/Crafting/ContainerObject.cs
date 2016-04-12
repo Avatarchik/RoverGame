@@ -7,6 +7,10 @@ namespace Sol
     public class ContainerObject : InteractibleObject
     {
         public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
+        public List<GameObject> objectsToDeactivate = new List<GameObject>();
+
+        public bool isQuestTrigger = false;
+
         private Container containerMenu;
 
         private Container ContainerMenu

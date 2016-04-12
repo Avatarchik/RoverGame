@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,19 +10,27 @@ namespace Sol
         public ObjectiveDisplay objectivePrefab;
         public Transform objectiveContainer;
 
+        public Text objectiveText;
+
         public List<ObjectiveDisplay> displayedObjectives = new List<ObjectiveDisplay>();
 
 
         public override void Open()
         {
-            StopAllCoroutines();
-            StartCoroutine(DelayedClose());
-
             base.Open();
         }
 
 
-        public ObjectiveDisplay AddObjective(Objective objective, float displaySpeed = 0f)
+        public void Open(string objective)
+        {
+            objectiveText.text = objective;
+
+            Debug.Log("opening 1!");
+            Open();
+        }
+
+
+        /*public ObjectiveDisplay AddObjective(Objective objective, float displaySpeed = 0f)
         {
             if (!IsActive) Open();
 
@@ -35,14 +44,7 @@ namespace Sol
             displayedObjectives.Add(od);
 
             return od;
-        }
-
-
-        private IEnumerator DelayedClose()
-        {
-            yield return new WaitForSeconds(10f);
-            Close();
-        }
+        }*/
     }
 
 }

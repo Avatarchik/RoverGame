@@ -62,8 +62,6 @@ namespace Sol
             {
                 go.SetActive(false);
             }
-
-            intro.NextObjective(intro.enterTunnelsObjective, true);
         }
 
 

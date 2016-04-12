@@ -13,7 +13,6 @@ namespace Sol
         public virtual void Initialize()
         {
             ObjectiveTracker od = UIManager.GetMenu<ObjectiveTracker>();
-            od.AddObjective(objective);
 
             foreach(QuestTrigger qt in questTriggers)
             {

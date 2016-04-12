@@ -17,7 +17,6 @@ namespace Sol
 
         public override void Close()
         {
-            UIManager.Open<ObjectiveTracker>();
             base.Close();
         }
 

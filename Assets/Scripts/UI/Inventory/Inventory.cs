@@ -110,6 +110,8 @@ namespace Sol
             int count = 0;
             foreach (Ingredient i in ingredientsInInventory)
             {
+                if (i == null) Debug.Log("first is null");
+                if (ingredient == null) Debug.Log("second is null");
                 if (i.id == ingredient.id) count++;
             }
             return count;

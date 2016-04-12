@@ -20,7 +20,7 @@ namespace Sol
 
         private void TakeFallingDamage(float velocity)
         {
-            Debug.Log("taking damage!");
+            Debug.Log("taking damage! : " + -1 * velocity * fallDamageMultiplier);
             player.ModifyHealth(-1 * velocity * fallDamageMultiplier);
         }
 
@@ -44,7 +44,7 @@ namespace Sol
                 }
                 else
                 {
-                    if (velocity <= fallDamageThreshhold) takeFallingDamage = false; //we slowed down in midair somehow?
+                    //if (velocity <= fallDamageThreshhold) takeFallingDamage = false; //we slowed down in midair somehow?
                                                                                      //still falling, moar damage 
                     if (velocity > maxFallSpeed) maxFallSpeed = velocity;
                 }

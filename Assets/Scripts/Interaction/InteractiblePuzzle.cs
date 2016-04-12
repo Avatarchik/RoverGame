@@ -14,6 +14,9 @@ namespace Sol
         public PuzzleManager puzzleManager;
         public List<GameObject> objectsToActivate = new List<GameObject>();
         public List<GameObject> objectsToDeactivate = new List<GameObject>();
+        public List<InteractibleObject> objectsToTrigger = new List<InteractibleObject>();
+
+        public bool questTrigger = false;
 
         private bool complete = false;
 
@@ -25,6 +28,8 @@ namespace Sol
                 complete = value;
                 if(complete)
                 {
+                    if (questTrigger) GameObject.FindObjectOfType<Intro>().Next();
+
                     foreach(GameObject go in objectsToActivate)
                     {
                         go.SetActive(true);
@@ -33,6 +38,11 @@ namespace Sol
                     foreach (GameObject go in objectsToDeactivate)
                     {
                         go.SetActive(false);
+                    }
+
+                    foreach(InteractibleObject io in objectsToTrigger)
+                    {
+                        io.Interact();
                     }
                 }
             }
