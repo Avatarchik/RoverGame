@@ -16,6 +16,8 @@ namespace Sol
         public List<GameObject> objectsToDeactivate = new List<GameObject>();
         public List<InteractibleObject> objectsToTrigger = new List<InteractibleObject>();
 
+        public bool questTrigger = false;
+
         private bool complete = false;
 
         public bool Complete
@@ -26,6 +28,8 @@ namespace Sol
                 complete = value;
                 if(complete)
                 {
+                    if (questTrigger) GameObject.FindObjectOfType<Intro>().Next();
+
                     foreach(GameObject go in objectsToActivate)
                     {
                         go.SetActive(true);

@@ -16,10 +16,10 @@ namespace Sol
         public AudioClip closeEffect;
 
         public GameObject root;
-        private float menuFadeTime = 0.2f;
         public bool stopsMovement = true;
 
         protected bool isActive = false;
+        protected float menuFadeTime = 0.2f;
         protected SoundManager cachedSoundManager;
 
 

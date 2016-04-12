@@ -20,14 +20,14 @@ namespace Sol
         }
 
 
-        public void Fade(float fadeTime, Color from, Color to)
+        public void Fade(float fadeTime, Color from, Color to, bool close = false)
         {
             if (!IsActive) Open();
             StartCoroutine(FadeCoroutine(fadeTime, from, to));
         }
 
 
-        private IEnumerator FadeCoroutine(float fadeTime, Color from, Color to)
+        private IEnumerator FadeCoroutine(float fadeTime, Color from, Color to, bool close = false)
         {
             float elapsedTime = 0f;
             while (elapsedTime < fadeTime)
@@ -39,6 +39,8 @@ namespace Sol
             }
 
             background.color = to;
+
+            if(close) Close();
         }
 
     }
