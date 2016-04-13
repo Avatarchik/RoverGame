@@ -12,6 +12,9 @@ namespace Sol
         public UIEvents uiEvents;
 
         public PuzzleManager puzzleManager;
+
+        public string message;
+
         public List<GameObject> objectsToActivate = new List<GameObject>();
         public List<GameObject> objectsToDeactivate = new List<GameObject>();
         public List<InteractibleObject> objectsToTrigger = new List<InteractibleObject>();

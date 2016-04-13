@@ -7,6 +7,7 @@ namespace Sol
     public class PuzzleMenu : Menu
     {
         public Button exitButton;
+        public Text messageText;
 
         [HideInInspector]
         public InteractiblePuzzle currentPuzzleObject = null;
@@ -21,6 +22,7 @@ namespace Sol
 
         public void Open(InteractiblePuzzle ip)
         {
+            messageText.text = ip.message;
             currentPuzzleObject = ip;
             base.Open();
         }
