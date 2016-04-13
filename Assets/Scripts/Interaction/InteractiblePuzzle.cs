@@ -58,12 +58,12 @@ namespace Sol
             if(interactible)
             {
                 base.Interact();
-                uiEvents.MissionButtonEvent(missionObject);
-                uiEvents.LevelButtonEvent(levelObject);
+                UiEvents.MissionButtonEvent(missionObject);
+                UiEvents.LevelButtonEvent(levelObject);
 
                 PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu>();
                 pu.Open(this);
-                puzzleManager.ForceLoad();
+                puzzleManager.InitializePuzzle();
 
                 interactible = false;
             }

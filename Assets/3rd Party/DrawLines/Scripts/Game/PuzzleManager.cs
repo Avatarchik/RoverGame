@@ -291,65 +291,6 @@ public class PuzzleManager : MonoBehaviour
 						//effectsAudioSource = GameObject.Find ("AudioSources").GetComponents<AudioSource> () [1];
 				}
 		}
-	
-		/// <summary>
-		/// When the GameObject becomes visible
-		/// </summary>
-		void OnEnable ()
-		{
-				if (movementsText == null) {
-						movementsText = GameObject.Find ("Movements").GetComponent<Text> ();
-				}
-
-				if (levelText == null) {
-						levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
-				}
-
-				if (missionText == null) {
-						missionText = GameObject.Find ("MissionTitle").GetComponent<Text> ();
-				}
-
-				if (grid == null) {
-						grid = GameObject.Find ("Grid");
-				}
-
-				if (gridContentsTransform == null) {
-						gridContentsTransform = grid.transform.Find ("Contents").transform;
-				}
-
-				if (gridTopPivotTransform == null) {
-						gridTopPivotTransform = GameObject.Find ("GridTopPivot").transform;
-				}
-		
-				if (gridBottomPivotTransform == null) {
-						gridBottomPivotTransform = GameObject.Find ("GridBottomPivot").transform;
-				}
-				if (gridLinesTransfrom == null) {
-						gridLinesTransfrom = GameObject.Find ("GridLines").transform;
-				}
-
-				try {
-						///Setting up Attributes
-						numberOfRows = Mission.wantedMission.rowsNumber;
-						numberOfColumns = Mission.wantedMission.colsNumber;
-						//levelText.color = Mission.wantedMission.missionColor;
-						missionText.text = Mission.wantedMission.missionTitle;
-						grid.name = numberOfRows + "x" + numberOfRows + "-Grid";
-				} catch (Exception ex) {
-						Debug.Log (ex.Message);
-				}
-
-
-				///Determine the size of the Grid
-				Vector3 gridTopPivotPostion = gridTopPivotTransform.transform.position;
-				Vector3 gridBottomPiviotPosition = gridBottomPivotTransform.transform.position;
-		
-				gridSize = gridBottomPiviotPosition - gridTopPivotPostion;
-				gridSize = new Vector2 (Mathf.Abs (gridSize.x), Mathf.Abs (gridSize.y));
-
-				///Create New level (the selected level)
-				CreateNewLevel ();
-		}
 
 
     public void Close()
@@ -361,7 +302,7 @@ public class PuzzleManager : MonoBehaviour
     /// <summary>
     /// When the GameObject becomes visible
     /// </summary>
-    public void ForceLoad()
+    public void InitializePuzzle()
     {
         if (movementsText == null)
         {

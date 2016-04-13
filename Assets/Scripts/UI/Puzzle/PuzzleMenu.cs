@@ -29,6 +29,10 @@ namespace Sol
         public override void Close()
         {
             Debug.Log("close");
+
+            currentPuzzleObject.UiEvents.MissionButtonEvent(null);
+            currentPuzzleObject.UiEvents.LevelButtonEvent(null);
+
             currentPuzzleObject.interactible = true;
             base.Close();
         }
