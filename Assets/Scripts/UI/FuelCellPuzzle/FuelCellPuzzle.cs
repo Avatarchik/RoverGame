@@ -69,7 +69,7 @@ namespace Sol
 
             controlledCamera.GetComponent<CameraCollision>().enabled = false;
 
-            float desiredTime = 5f;
+            float desiredTime = 2f;
             float elapsedTime = 0f;
 
             roverParent = controlledCamera.transform.parent;
@@ -77,10 +77,13 @@ namespace Sol
 
             controlledCamera.transform.SetParent(cameraInPos);
 
+            Vector3 startPos = controlledCamera.transform.localPosition;
+            Quaternion startRot = controlledCamera.transform.localRotation;
+
             while (elapsedTime < desiredTime)
             {
-                controlledCamera.transform.localPosition = Vector3.Lerp(controlledCamera.transform.localPosition, Vector3.zero, elapsedTime / desiredTime);
-                controlledCamera.transform.localRotation = Quaternion.Lerp(controlledCamera.transform.localRotation, Quaternion.identity, elapsedTime / desiredTime);
+                controlledCamera.transform.localPosition = Vector3.Lerp(startPos, Vector3.zero, elapsedTime / desiredTime);
+                controlledCamera.transform.localRotation = Quaternion.Lerp(startRot, Quaternion.identity, elapsedTime / desiredTime);
 
                 elapsedTime += Time.fixedDeltaTime;
                 yield return null;
