@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -50,16 +51,6 @@ namespace Sol
             yield return new WaitForSeconds(6f);
             if (fm.IsActive) fm.Close();
             //
-            //move around
-            ShowObjective(ot, "Explore the area");
-
-            while (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0 || proceed)
-            {
-                yield return null;
-            }
-            
-            yield return new WaitForSeconds(6f);
-            //
             //See that rover
             Debug.Log(1);
             ShowObjective(ot, "See that rover");
@@ -67,22 +58,21 @@ namespace Sol
             //
             //Take its wheels
             Debug.Log(1);
-            ShowObjective(ot, "Take its wheels");
+            ShowObjective(ot, "Take and equip its wheels");
 
             while (inventory.GetIngredientAmount(wheels) == 0)
             {
                 yield return null;
             }
-            yield return new WaitForSeconds(6f);
-            //
-            //Equip them
-            Debug.Log(2);
-            ShowObjective(ot, "Equip them");
+            while (inventory.GetIngredientAmount(wheels) != 0)
+            {
+                yield return null;
+            }
             yield return new WaitForSeconds(6f);
             //
             //Find the lift
             Debug.Log(1);
-            ShowObjective(ot, "Find the lift");
+            ShowObjective(ot, "Good, now find the lift");
 
             while (!proceed)
             {
@@ -93,19 +83,9 @@ namespace Sol
             //
             //Fix it
             Debug.Log(2);
-            ShowObjective(ot, "Fix it");
+            ShowObjective(ot, "Fix it and ascend");
 
             while (!proceed)
-            {
-                yield return null;
-            }
-            proceed = false;
-            yield return new WaitForSeconds(6f);
-            //
-            //Ascend
-            Debug.Log(3);
-            ShowObjective(ot, "Ascend");
-            while(!proceed)
             {
                 yield return null;
             }
@@ -134,13 +114,13 @@ namespace Sol
             //
             //get in
             Debug.Log(6);
-            ShowObjective(ot, "Get in");
+            ShowObjective(ot, "Get inside");
             while (!proceed)
             {
                 yield return null;
             }
             proceed = false;
-            yield return new WaitForSeconds(6f);
+           /* yield return new WaitForSeconds(6f);
             //
             //find the teleporter
             Debug.Log(7);
@@ -158,7 +138,7 @@ namespace Sol
             while (!proceed)
             {
                 yield return null;
-            }
+            }*/
         }
 
 
@@ -200,6 +180,7 @@ namespace Sol
 
         private void Awake()
         {
+            SceneManager.LoadScene(1, LoadSceneMode.Additive);
            StartCoroutine(RunTutorial());
         }
     }
