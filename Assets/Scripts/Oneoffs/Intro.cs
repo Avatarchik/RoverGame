@@ -41,7 +41,7 @@ namespace Sol
             ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
             Inventory inventory = UIManager.GetMenu<Inventory>();
             FadeMenu fm = UIManager.GetMenu<FadeMenu>();
-            const float delayTime = 5f;
+            const float delayTime = 4f;
             fm.Fade(5f, Color.black, Color.clear, true);
             yield return new WaitForSeconds(3f);
             //look around
@@ -151,7 +151,7 @@ namespace Sol
         {
             ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
             Inventory inventory = UIManager.GetMenu<Inventory>();
-            const float delayTime = 5f;
+            const float delayTime = 4f;
             
             //
             //ive been waiting
@@ -232,7 +232,7 @@ namespace Sol
 
         private IEnumerator DelayedClose(ObjectiveTracker ot)
         {
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3.5f);
             ot.Close();
         }
 

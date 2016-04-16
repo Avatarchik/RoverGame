@@ -5,11 +5,11 @@ namespace Sol
 {
     public class MiningMachinePanel : InteractibleLerp
     {
-        public GameObject puzzleInitializer;
+      //  public GameObject puzzleInitializer;
 
         public override void Interact()
         {
-            puzzleInitializer.SetActive(true);
+           // puzzleInitializer.SetActive(true);
             base.Interact();
         }
     }
