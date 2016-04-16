@@ -1,62 +1,17 @@
 fileFormatVersion: 2
-guid: ab7f800588e72054dab320d4035ba139
-timeCreated: 1460835266
+guid: ed309cd6d6943d44e9e0d5553836075d
+timeCreated: 1459831034
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: pCube133
-    100004: pCube134
-    100006: pCube135
-    100008: pCube136
-    100010: pCube137
-    100012: pCube138
-    100014: pCube139
-    100016: pCube160
-    100018: pCube179
-    100020: pPlane6
+    100002: PlasticTube01
     400000: //RootNode
-    400002: pCube133
-    400004: pCube134
-    400006: pCube135
-    400008: pCube136
-    400010: pCube137
-    400012: pCube138
-    400014: pCube139
-    400016: pCube160
-    400018: pCube179
-    400020: pPlane6
-    2300000: pCube133
-    2300002: pCube134
-    2300004: pCube135
-    2300006: pCube136
-    2300008: pCube137
-    2300010: pCube138
-    2300012: pCube139
-    2300014: pCube160
-    2300016: pCube179
-    2300018: pPlane6
-    3300000: pCube133
-    3300002: pCube134
-    3300004: pCube135
-    3300006: pCube136
-    3300008: pCube137
-    3300010: pCube138
-    3300012: pCube139
-    3300014: pCube160
-    3300016: pCube179
-    3300018: pPlane6
-    4300000: pCube133
-    4300002: pCube139
-    4300004: pCube137
-    4300006: pCube138
-    4300008: pCube135
-    4300010: pCube134
-    4300012: pCube136
-    4300014: pPlane6
-    4300016: pCube160
-    4300018: pCube179
+    400002: PlasticTube01
+    2300000: PlasticTube01
+    3300000: PlasticTube01
+    4300000: PlasticTube01
   materials:
     importMaterials: 1
     materialName: 0
