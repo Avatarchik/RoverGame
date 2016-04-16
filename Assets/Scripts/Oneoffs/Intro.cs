@@ -248,6 +248,14 @@ namespace Sol
             //
             //plug it into the teleporter
             ShowObjective(ot, "Plug it into the teleporter and lets get you out of that crater.");
+            while (!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+            //
+            //plug it into the teleporter
+            ShowObjective(ot, "You're going to be the one to find the missing colonists");
         }
 
 

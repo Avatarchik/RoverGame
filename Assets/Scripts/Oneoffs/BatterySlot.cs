@@ -7,12 +7,9 @@ namespace Sol
     public class BatterySlot : InteractibleObject
     {
         public Ingredient desiredObject;
-        public PodAnimator podAnimator;
-        public DoorSwitch doorSwitch;
-        public GameObject batteryModel;
 
-        public List<MeshRenderer> panelButtons = new List<MeshRenderer>();
-        public Material litMaterial;
+        public List<GameObject> objectsToActivate = new List<GameObject>();
+        public List<GameObject> objectsToDeactivate = new List<GameObject>();
 
         private bool hasItem;
         private Inventory playerInventory;
@@ -40,13 +37,16 @@ namespace Sol
                 if (PlayerInventory.GetIngredientAmount(desiredObject) > 0)
                 {
                     PlayerInventory.RemoveInventoryItem(desiredObject, 1);
-                    batteryModel.SetActive(true);
-                    doorSwitch.interactible = true;
-                    foreach(MeshRenderer panelButton in panelButtons)
+
+                    foreach(GameObject go in objectsToDeactivate)
                     {
-                        panelButton.material = litMaterial;
+                        go.SetActive(false);
                     }
-                    podAnimator.hazardLight.gameObject.SetActive(true);
+
+                    foreach (GameObject go in objectsToActivate)
+                    {
+                        go.SetActive(true);
+                    }
 
                     silhouetteSeen.SetActive(false);
                     silhouetteInteractible.SetActive(false);

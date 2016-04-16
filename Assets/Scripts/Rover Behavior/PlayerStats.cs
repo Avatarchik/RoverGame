@@ -235,7 +235,7 @@ namespace Sol
 
         public void FixedUpdate()
         {
-            if (CachedTimeOfDay != null && sun.intensity > 0.25f)
+            if (CachedTimeOfDay != null && sun.intensity > 0.6f)
             {
                 //its light outside, charge the battery!
                 if (OverallCharge < MaxCharge)
