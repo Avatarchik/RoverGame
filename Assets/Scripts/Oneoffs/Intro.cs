@@ -142,6 +142,8 @@ namespace Sol
             //i need to go
             ShowObjective(ot, "I need to go for now, so you're on your own");
             yield return new WaitForSeconds(delayTime);
+
+            StartCoroutine(RunTunnels());
         }
 
 
@@ -196,6 +198,7 @@ namespace Sol
             //they are back
             ShowObjective(ot, "They can't hear us in here", false);
             yield return new WaitForSeconds(delayTime);
+            proceed = false;
             //
             //they are back
             ShowObjective(ot, "Now go back, I'll be watching", false);

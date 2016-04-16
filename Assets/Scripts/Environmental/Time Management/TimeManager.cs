@@ -18,15 +18,15 @@ namespace Sol
         public Vector3 dayRotateSpeed;
         public Vector3 nightRotateSpeed;
 
-        public float fastForwardFactor = 5;
+        public float fastForwardFactor = 20;
 
         //need way to fast forward by number of hours?
         //while key is pressed?
         public IEnumerator FastForwardTime()
         {
             Debug.Log("fasting forward");
-            sunManager.dayRotateSpeed *= fastForwardFactor;
-            sunManager.nightRotateSpeed *= fastForwardFactor;
+            sunManager.dayRotateSpeed *= fastForwardFactor * 2;
+            sunManager.nightRotateSpeed *= fastForwardFactor * 2;
 
             while (Input.GetKey(KeyCode.P))
             {

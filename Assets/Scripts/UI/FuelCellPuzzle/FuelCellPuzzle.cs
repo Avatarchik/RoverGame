@@ -69,7 +69,7 @@ namespace Sol
 
             controlledCamera.GetComponent<CameraCollision>().enabled = false;
 
-            float desiredTime = 2f;
+            float desiredTime = 1.5f;
             float elapsedTime = 0f;
 
             roverParent = controlledCamera.transform.parent;
