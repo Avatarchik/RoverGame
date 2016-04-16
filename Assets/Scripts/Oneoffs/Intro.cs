@@ -15,6 +15,7 @@ namespace Sol
         public CharacterDriver characterDriver;
 
         public GameObject tunnelExitObjective;
+        public GameObject tunnelEnterObjective;
 
         public Ingredient powerCrystal;
         public Ingredient wheels;
@@ -44,8 +45,13 @@ namespace Sol
             const float delayTime = 4f;
             fm.Fade(5f, Color.black, Color.clear, true);
             yield return new WaitForSeconds(3f);
+            //
             //look around
-            ShowObjective(ot, "Look around");
+            ShowObjective(ot, "Yes! I got it activated!");
+            yield return new WaitForSeconds(delayTime);
+            //
+            //look around
+            ShowObjective(ot, "Can you look around?");
 
             while (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0 || proceed)
             {
@@ -55,7 +61,9 @@ namespace Sol
             if (fm.IsActive) fm.Close();
             //
             //See that rover
-            ShowObjective(ot, "See that rover");
+            ShowObjective(ot, "Your wheels seem a bit damaged");
+            yield return new WaitForSeconds(delayTime);
+            ShowObjective(ot, "See that rover?");
             yield return new WaitForSeconds(delayTime);
             //
             //Take its wheels
@@ -82,7 +90,7 @@ namespace Sol
             yield return new WaitForSeconds(delayTime);
             //
             //Fix it
-            ShowObjective(ot, "Fix it and ascend");
+            ShowObjective(ot, "Console looks damaged. Fix it and ascend");
 
             while (!proceed)
             {
@@ -100,8 +108,14 @@ namespace Sol
             proceed = false;
             yield return new WaitForSeconds(delayTime);
             //
+            //exposition
+            ShowObjective(ot, "My boss told me not to power you on");
+            yield return new WaitForSeconds(delayTime);
+            ShowObjective(ot, "But I need to find out what happened to my friends on the planet.");
+            yield return new WaitForSeconds(delayTime);
+            //
             //go to the dome
-            ShowObjective(ot, "Go to the base");
+            ShowObjective(ot, "Looks like there was a landslide. I wonder if the base is ok.");
             while (!proceed)
             {
                 yield return null;
@@ -119,11 +133,21 @@ namespace Sol
             proceed = false;
             //
             //get in
+            ShowObjective(ot, "Well Done!");
+            while (!proceed)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(delayTime);
+            proceed = false;
+            //
+            //get in
             ShowObjective(ot, "Damn, the teleporter is busted...");
+            tunnelEnterObjective.SetActive(true);
             yield return new WaitForSeconds(delayTime);
             //
             //get into the caves
-            ShowObjective(ot, "Go back outside and get to the tunnels");
+            ShowObjective(ot, "Go back outside and look for a way into tunnels");
             while (!proceed)
             {
                 yield return null;
@@ -136,11 +160,15 @@ namespace Sol
             yield return new WaitForSeconds(delayTime);
             //
             //search
-            ShowObjective(ot, "Look around for a bundle of wires, a canister, and an active fuel cell");
+            ShowObjective(ot, "Look around for a bundle of wires, a canister, and an active fuel cell to make a bomb");
             yield return new WaitForSeconds(delayTime);
             //
             //i need to go
-            ShowObjective(ot, "I need to go for now, so you're on your own");
+            ShowObjective(ot, "My boss is calling so I need to go. You're on your own for now");
+            yield return new WaitForSeconds(delayTime);
+            //
+            //good luck
+            ShowObjective(ot, "Good luck little rover!");
             yield return new WaitForSeconds(delayTime);
 
             StartCoroutine(RunTunnels());
@@ -192,11 +220,11 @@ namespace Sol
             yield return new WaitForSeconds(delayTime);
             //
             //they are back
-            ShowObjective(ot, "Looks like your human is back, but don't worry", false);
+            ShowObjective(ot, "Looks like your human is back", false);
             yield return new WaitForSeconds(delayTime);
             //
             //they are back
-            ShowObjective(ot, "They can't hear us in here", false);
+            ShowObjective(ot, "Its been lonely since I lost contact with them", false);
             yield return new WaitForSeconds(delayTime);
             proceed = false;
             //
