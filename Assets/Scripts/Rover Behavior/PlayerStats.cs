@@ -25,6 +25,10 @@ namespace Sol
         public float OverallCharge = 50;
         public float minSpeed;
 
+        public Light sun;
+        public float sunUp;
+        public float sunDown;
+
         public List<RoverComponent> roverComponents = new List<RoverComponent>();
         public List<Recipe> knownRecipes = new List<Recipe>();
 
@@ -33,6 +37,7 @@ namespace Sol
 
         private Inventory playerInventory = null;
         private TimeOfDay cachedTimeOfDay = null;
+        
 
         private Inventory PlayerInventory
         {
@@ -230,12 +235,12 @@ namespace Sol
 
         public void FixedUpdate()
         {
-            if (CachedTimeOfDay != null && CachedTimeOfDay.timeInSeconds > 0 && CachedTimeOfDay.timeInSeconds < CachedTimeOfDay.dayLength * 0.5f)
+            if (CachedTimeOfDay != null && sun.intensity > 0.25f)
             {
                 //its light outside, charge the battery!
                 if (OverallCharge < MaxCharge)
                 {
-                    OverallCharge += Time.fixedDeltaTime * RechargeRate * 0.001f;
+                    OverallCharge += Time.fixedDeltaTime * RechargeRate * 0.1f;
                 }
             }
             else
@@ -243,7 +248,7 @@ namespace Sol
                 //its dark outside, dont charge!
                 if (OverallCharge > 0)
                 {
-                    OverallCharge -= Time.fixedDeltaTime * 0.0001f;
+                    OverallCharge -= Time.fixedDeltaTime * 0.1f;
                 }
                 else
                 {
