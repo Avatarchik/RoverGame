@@ -10,7 +10,8 @@ namespace Sol
         public ObjectiveDisplay objectivePrefab;
         public Transform objectiveContainer;
 
-        public Text objectiveText;
+        public Text objectiveTextAdmin;
+        public Text objectiveTextAI;
 
         public List<ObjectiveDisplay> displayedObjectives = new List<ObjectiveDisplay>();
 
@@ -21,11 +22,19 @@ namespace Sol
         }
 
 
-        public void Open(string objective)
+        public void Open(string objective, bool admin = true)
         {
-            objectiveText.text = objective;
+            if (admin)
+            {
+                objectiveTextAdmin.text = objective;
+                objectiveTextAI.text = "";
+            }
+            else
+            {
+                objectiveTextAdmin.text = "";
+                objectiveTextAI.text = objective;
+            }
 
-            Debug.Log("opening 1!");
             Open();
         }
 

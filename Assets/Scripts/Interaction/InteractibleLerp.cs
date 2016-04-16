@@ -19,6 +19,7 @@ namespace Sol
         {
             StopAllCoroutines();
             StartCoroutine(Lerp());
+            UIManager.Close<MessageMenu>();
         }
 
 

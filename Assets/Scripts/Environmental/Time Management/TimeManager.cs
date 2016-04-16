@@ -24,6 +24,7 @@ namespace Sol
         //while key is pressed?
         public IEnumerator FastForwardTime()
         {
+            Debug.Log("fasting forward");
             sunManager.dayRotateSpeed *= fastForwardFactor;
             sunManager.nightRotateSpeed *= fastForwardFactor;
 

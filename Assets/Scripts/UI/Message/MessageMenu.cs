@@ -21,13 +21,19 @@ namespace Sol
         }
 
 
-        public void Open(string message, int priority = 0)
+        public void Open(string message, int priority = 0, float delayedClose = 0f)
         {
             if (!isActive && priority >= CurrentMessagePriority)
             {
                 currentMessagePriority = priority;
                 messageText.text = message;
                 Open();
+
+                if (delayedClose != 0f)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(DelayedClose(delayedClose));
+                }
             }
         }
 
@@ -49,6 +55,13 @@ namespace Sol
                 currentMessagePriority = -1;
                 base.Close();
             }
+        }
+
+
+        private IEnumerator DelayedClose(float delayTime)
+        {
+            yield return new WaitForSeconds(delayTime);
+            Close();
         }
     }
 }

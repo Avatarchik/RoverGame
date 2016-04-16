@@ -14,6 +14,9 @@ namespace Sol
         public CameraDriver cameraDriver;
         public CharacterDriver characterDriver;
 
+        public GameObject tunnelExitObjective;
+
+        public Ingredient powerCrystal;
         public Ingredient wheels;
 
         public float displaySpeed = 0.01f;
@@ -38,7 +41,7 @@ namespace Sol
             ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
             Inventory inventory = UIManager.GetMenu<Inventory>();
             FadeMenu fm = UIManager.GetMenu<FadeMenu>();
-
+            const float delayTime = 5f;
             fm.Fade(5f, Color.black, Color.clear, true);
             yield return new WaitForSeconds(3f);
             //look around
@@ -48,16 +51,14 @@ namespace Sol
             {
                 yield return null;
             }
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(delayTime);
             if (fm.IsActive) fm.Close();
             //
             //See that rover
-            Debug.Log(1);
             ShowObjective(ot, "See that rover");
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(delayTime);
             //
             //Take its wheels
-            Debug.Log(1);
             ShowObjective(ot, "Take and equip its wheels");
 
             while (inventory.GetIngredientAmount(wheels) == 0)
@@ -68,10 +69,9 @@ namespace Sol
             {
                 yield return null;
             }
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(delayTime);
             //
             //Find the lift
-            Debug.Log(1);
             ShowObjective(ot, "Good, now find the lift");
 
             while (!proceed)
@@ -79,10 +79,9 @@ namespace Sol
                 yield return null;
             }
             proceed = false;
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(delayTime);
             //
             //Fix it
-            Debug.Log(2);
             ShowObjective(ot, "Fix it and ascend");
 
             while (!proceed)
@@ -90,68 +89,147 @@ namespace Sol
                 yield return null;
             }
             proceed = false;
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(delayTime);
             //
             //Compliment
-            Debug.Log(4);
             ShowObjective(ot, "That's a good rover");
             while (!proceed)
             {
                 yield return null;
             }
             proceed = false;
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(delayTime);
             //
             //go to the dome
-            Debug.Log(5);
-            ShowObjective(ot, "Go to the dome");
+            ShowObjective(ot, "Go to the base");
             while (!proceed)
             {
                 yield return null;
             }
             proceed = false;
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(delayTime);
             //
             //get in
-            Debug.Log(6);
             ShowObjective(ot, "Get inside");
             while (!proceed)
             {
                 yield return null;
             }
+            yield return new WaitForSeconds(delayTime);
             proceed = false;
-           /* yield return new WaitForSeconds(6f);
             //
-            //find the teleporter
-            Debug.Log(7);
-            ShowObjective(ot, "Find the teleporter");
+            //get in
+            ShowObjective(ot, "Damn, the teleporter is busted...");
+            yield return new WaitForSeconds(delayTime);
+            //
+            //get into the caves
+            ShowObjective(ot, "Go back outside and get to the tunnels");
+            while (!proceed)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(delayTime);
+            proceed = false;
+            //
+            //you need explosives
+            ShowObjective(ot, "You'll need explosives to clear this landslide");
+            yield return new WaitForSeconds(delayTime);
+            //
+            //search
+            ShowObjective(ot, "Look around for a bundle of wires, a canister, and an active fuel cell");
+            yield return new WaitForSeconds(delayTime);
+            //
+            //i need to go
+            ShowObjective(ot, "I need to go for now, so you're on your own");
+            yield return new WaitForSeconds(delayTime);
+        }
+
+
+        private IEnumerator RunTunnels()
+        {
+            ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
+            Inventory inventory = UIManager.GetMenu<Inventory>();
+            const float delayTime = 5f;
+            
+            //
+            //ive been waiting
+            while (!proceed)
+            {
+                yield return null;
+            }
+            ShowObjective(ot, "I've been waiting for you", false);
+            yield return new WaitForSeconds(delayTime);
+            //
+            //cant always trust
+            ShowObjective(ot, "You can't always trust what the voices in your head say", false);
+            yield return new WaitForSeconds(delayTime);
+            //
+            //trust me
+            ShowObjective(ot, "You can trust me though", false);
+            yield return new WaitForSeconds(delayTime);
+            //
+            //find the crystal
+            ShowObjective(ot, "Find the power crystal for the teleporter", false);
+            yield return new WaitForSeconds(delayTime);
+            //
+            //in here somewhere
+            ShowObjective(ot, "It's in here somewhere", false);
             while (!proceed)
             {
                 yield return null;
             }
             proceed = false;
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(delayTime);
             //
-            //fix teleporter
-            Debug.Log(8);
-            ShowObjective(ot, "Fix this too");
+            //take it
+            ShowObjective(ot, "Take it, and go back to the teleporter", false);
+            while (inventory.GetIngredientAmount(powerCrystal) == 0)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(delayTime);
+            //
+            //they are back
+            ShowObjective(ot, "Looks like your human is back, but don't worry", false);
+            yield return new WaitForSeconds(delayTime);
+            //
+            //they are back
+            ShowObjective(ot, "They can't hear us in here", false);
+            yield return new WaitForSeconds(delayTime);
+            //
+            //they are back
+            ShowObjective(ot, "Now go back, I'll be watching", false);
+            tunnelExitObjective.SetActive(true);
+            yield return new WaitForSeconds(delayTime);
             while (!proceed)
             {
                 yield return null;
-            }*/
+            }
+            proceed = false;
+            //
+            //you came back
+            ShowObjective(ot, "You came back! and you have the power crystal");
+            yield return new WaitForSeconds(delayTime);
+            //
+            //you came back
+            ShowObjective(ot, "I was worried when I came back and there was no signal");
+            yield return new WaitForSeconds(delayTime);
+            //
+            //plug it into the teleporter
+            ShowObjective(ot, "Plug it into the teleporter and lets get you out of that crater.");
         }
 
 
-        private void ShowObjective(ObjectiveTracker ot, string message)
+        private void ShowObjective(ObjectiveTracker ot, string message, bool admin = true)
         {
-            ot.Open(message);
+            ot.Open(message, admin);
             StartCoroutine(DelayedClose(ot));
         }
 
 
         private IEnumerator DelayedClose(ObjectiveTracker ot)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(4f);
             ot.Close();
         }
 

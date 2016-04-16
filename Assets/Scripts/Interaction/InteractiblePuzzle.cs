@@ -69,6 +69,8 @@ namespace Sol
                 puzzleManager.InitializePuzzle();
 
                 interactible = false;
+
+                UIManager.Close<MessageMenu>();
             }
         }
     }

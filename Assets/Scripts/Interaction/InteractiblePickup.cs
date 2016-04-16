@@ -9,6 +9,7 @@ namespace Sol
         public override void Interact()
         {
             UIManager.GetMenu<Inventory>().AddInventoryItem(myIngredient, 1);
+            UIManager.Close<MessageMenu>();
             Destroy(gameObject);
         }
     }
