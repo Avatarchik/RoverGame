@@ -21,6 +21,7 @@ namespace Sol
 
         public SoundSource Play(string soundName, float fadeTime = 0f, Transform parent = null, Vector3 position = default(Vector3))
         {
+            Debug.Log("playing sound by name");
             return Play(Find(soundName), fadeTime, parent, position);
         }
 
@@ -37,9 +38,16 @@ namespace Sol
 
             Initialize(sound, fadeTime);
             SoundSource source = GetSoundSource(sound, parent, position);
-            source.SetVolumeTo(sound.volume, 0);
-
-            if (source) source.Play(sound, fadeTime);
+            //source.SetVolumeTo(sound.volume, 0);
+            Debug.Log("Playing!");
+            if (source)
+            {
+                source.Play(sound, fadeTime);
+            }
+            else
+            {
+                Debug.LogError("source is null!");
+            }
 
             return source;
         }
@@ -77,6 +85,8 @@ namespace Sol
             }
 
             if (sound == null) Debug.LogError(string.Format("Could not find sound with name {0}.", soundName));
+
+            Debug.Log("finding sound by name");
 
             return sound;
         }
@@ -173,12 +183,6 @@ namespace Sol
             if (source) sources.Add(source);
 
             return source;
-        }
-
-
-        private void Start()
-        {
-            Play(1010);
         }
     }
 }

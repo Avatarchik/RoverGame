@@ -6,7 +6,6 @@ using System.Linq;
 
 public class SoundCollection : ScriptableObject
 {
-    [HideInInspector]
 	public List<Sound> sounds = new List<Sound> ();
 
 	public Sound Find (int id)

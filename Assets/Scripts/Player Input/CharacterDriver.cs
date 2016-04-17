@@ -5,8 +5,6 @@ namespace Sol
 {
     public class CharacterDriver : MonoBehaviour
     {
-        private const int ROVER_MOVEMENT_SOUND_ID = 10;
-
         public PlayerStats playerStats;
 
         public CameraDriver cameraDriver;
@@ -45,12 +43,12 @@ namespace Sol
         {
             if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
             {
-                CachedSoundManager.Play(ROVER_MOVEMENT_SOUND_ID);
+                //CachedSoundManager.Play(ROVER_MOVEMENT_SOUND_ID);
             }
 
             if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
             {
-                CachedSoundManager.Stop(ROVER_MOVEMENT_SOUND_ID);
+                //CachedSoundManager.Stop(ROVER_MOVEMENT_SOUND_ID);
             }
 
             if (Input.GetKeyDown(KeyCode.F))

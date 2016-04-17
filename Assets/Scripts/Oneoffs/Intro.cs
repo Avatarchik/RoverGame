@@ -7,6 +7,11 @@ namespace Sol
 {
     public class Intro : MonoBehaviour
     {
+        public AudioClip START_MUSIC;
+        public AudioClip BASE_MUSIC;
+        public AudioClip TUNNEL_MUSIC;
+        public AudioClip WIND_EFFECT;
+
         private PlayerStats playerStats = null;
 
         public AutoIntensity autoIntensity;
@@ -42,11 +47,15 @@ namespace Sol
             ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
             Inventory inventory = UIManager.GetMenu<Inventory>();
             FadeMenu fm = UIManager.GetMenu<FadeMenu>();
+            SoundManager sm = GameManager.Get<SoundManager>();
+
             const float delayTime = 4f;
             fm.Fade(5f, Color.black, Color.clear, true);
             yield return new WaitForSeconds(3f);
             //
             //look around
+            sm.Play(START_MUSIC);
+            sm.Play(WIND_EFFECT);
             ShowObjective(ot, "Yes! I got it activated!");
             yield return new WaitForSeconds(delayTime);
             //
@@ -133,6 +142,7 @@ namespace Sol
             proceed = false;
             //
             //get in
+            sm.Play(BASE_MUSIC);
             ShowObjective(ot, "Well Done!");
             while (!proceed)
             {
@@ -179,6 +189,8 @@ namespace Sol
         {
             ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
             Inventory inventory = UIManager.GetMenu<Inventory>();
+            SoundManager sm = GameManager.Get<SoundManager>();
+
             const float delayTime = 4f;
             
             //
@@ -187,6 +199,7 @@ namespace Sol
             {
                 yield return null;
             }
+            sm.Play(TUNNEL_MUSIC);
             ShowObjective(ot, "I've been waiting for you", false);
             yield return new WaitForSeconds(delayTime);
             //

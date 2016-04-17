@@ -6,7 +6,7 @@ namespace Sol
 {
     public class CraterExplosion : InteractibleObject
     {
-        private const int EXPLOSION_SOUND_ID = 30;
+        private const int EXPLOSION_SOUND_ID = 2091111392;
 
         public GameObject explosiveDevice;
         public GameObject explosionPrefab1;

@@ -7,6 +7,7 @@ namespace Sol
     {
         protected override IEnumerator Lerp()
         {
+            SoundManager sm = GameManager.Get<SoundManager>();
             Transform player = GameObject.FindObjectOfType<PlayerStats>().transform;
             Transform cachedParent = player.parent;
             player.SetParent(controlledObject.transform);
@@ -20,6 +21,8 @@ namespace Sol
             Transform desiredPos = (triggered) ? pos1 : pos2;
             triggered = !triggered;
 
+            SoundSource ss = sm.Play(soundControls.interactEffects[0]);
+
             while (elapsedTime < lerpTime)
             {
                 controlledObject.position = Vector3.Lerp(startPos, desiredPos.position, elapsedTime / lerpTime);
@@ -28,6 +31,8 @@ namespace Sol
                 elapsedTime += Time.fixedDeltaTime;
                 yield return null;
             }
+
+            Destroy(ss.gameObject);
 
             silhouetteSeen.SetActive(false);
             silhouetteInteractible.SetActive(false);
