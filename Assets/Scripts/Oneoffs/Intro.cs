@@ -308,10 +308,27 @@ namespace Sol
         }
 
 
+        private IEnumerator Load()
+        {
+            AsyncOperation async1 = SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
+
+            while(async1.progress < 0.9f)
+            {
+                yield return null;
+            }
+
+            AsyncOperation async2 = SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
+            while (async2.progress < 0.9f)
+            {
+                yield return null;
+            }
+        }
+
+
         private void Awake()
         {
-            SceneManager.LoadScene(1, LoadSceneMode.Additive);
-           StartCoroutine(RunTutorial());
+            StartCoroutine(Load());
+            StartCoroutine(RunTutorial());
         }
     }
 }
