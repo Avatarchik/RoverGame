@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,6 +7,15 @@ namespace Sol
 {
     public class Lift : InteractibleLerp
     {
+        private IEnumerator Load()
+        {
+            AsyncOperation async = SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
+            while (async.progress < 0.9f)
+            {
+                yield return null;
+            }
+        }
+
         protected override IEnumerator Lerp()
         {
             SoundManager sm = GameManager.Get<SoundManager>();
@@ -30,6 +40,8 @@ namespace Sol
             {
                 sources.Add(sm.Play(soundControls.interactEffects[i]));
             }
+
+            StartCoroutine(Load());
 
             while (elapsedTime < lerpTime)
             {
