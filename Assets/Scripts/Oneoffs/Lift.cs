@@ -1,10 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Sol
 {
     public class Lift : InteractibleLerp
     {
+        private IEnumerator Load()
+        {
+            AsyncOperation async = SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
+            while (async.progress < 0.9f)
+            {
+                yield return null;
+            }
+        }
+
         protected override IEnumerator Lerp()
         {
             SoundManager sm = GameManager.Get<SoundManager>();
@@ -21,7 +32,16 @@ namespace Sol
             Transform desiredPos = (triggered) ? pos1 : pos2;
             triggered = !triggered;
 
+            List<SoundSource> sources = new List<SoundSource>();
             SoundSource ss = sm.Play(soundControls.interactEffects[0]);
+            sources.Add(ss);
+
+            for(int i = 1; i < soundControls.interactEffects.Length; i++)
+            {
+                sources.Add(sm.Play(soundControls.interactEffects[i]));
+            }
+
+            StartCoroutine(Load());
 
             while (elapsedTime < lerpTime)
             {
@@ -32,7 +52,10 @@ namespace Sol
                 yield return null;
             }
 
-            Destroy(ss.gameObject);
+            foreach(SoundSource source in sources)
+            {
+                if(source != null) Destroy(source.gameObject);
+            }
 
             silhouetteSeen.SetActive(false);
             silhouetteInteractible.SetActive(false);

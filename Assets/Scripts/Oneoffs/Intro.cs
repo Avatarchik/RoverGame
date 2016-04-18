@@ -2,6 +2,8 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using Colorful;
+using ParticlePlayground;
 
 namespace Sol
 {
@@ -26,6 +28,10 @@ namespace Sol
         public Ingredient wheels;
 
         public float displaySpeed = 0.01f;
+
+        public Glitch glitchEffect;
+
+        public PlaygroundParticlesC particles;
 
         public List<Objective> introObjectives = new List<Objective>();
 
@@ -57,6 +63,7 @@ namespace Sol
             sm.Play(START_MUSIC);
             sm.Play(WIND_EFFECT);
             ShowObjective(ot, "Yes! I got it activated!");
+            StartCoroutine(GlitchOut());
             yield return new WaitForSeconds(delayTime);
             //
             //look around
@@ -200,6 +207,7 @@ namespace Sol
                 yield return null;
             }
             sm.Play(TUNNEL_MUSIC);
+            StartCoroutine(GlitchOut());
             ShowObjective(ot, "I've been waiting for you", false);
             yield return new WaitForSeconds(delayTime);
             //
@@ -308,10 +316,31 @@ namespace Sol
         }
 
 
+        private IEnumerator GlitchOut(float waitTime = 1f)
+        {
+            glitchEffect.enabled = true;
+
+            yield return new WaitForSeconds(waitTime);
+
+            glitchEffect.enabled = false;
+        }
+
+
+        private IEnumerator Load()
+        {
+            AsyncOperation async = SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
+
+            while(async.progress < 0.9f)
+            {
+                yield return null;
+            }
+        }
+
+
         private void Awake()
         {
-            SceneManager.LoadScene(1, LoadSceneMode.Additive);
-           StartCoroutine(RunTutorial());
+            StartCoroutine(Load());
+            StartCoroutine(RunTutorial());
         }
     }
 }
