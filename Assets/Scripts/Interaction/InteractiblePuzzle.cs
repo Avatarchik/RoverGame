@@ -7,6 +7,7 @@ namespace Sol
 {
     public class InteractiblePuzzle : InteractibleObject
     {
+        public AudioClip puzzleCompleteEffect;
         public Object missionObject;
         public Object levelObject;
         public UIEvents uiEvents;
@@ -47,6 +48,7 @@ namespace Sol
                     {
                         io.Interact();
                     }
+                    if(puzzleCompleteEffect != null) GameManager.Get<SoundManager>().Play(puzzleCompleteEffect);
                 }
             }
         }

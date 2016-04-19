@@ -7,6 +7,8 @@ namespace Sol
 {
     public class Lift : InteractibleLerp
     {
+        public AudioClip liftStop;
+
         private IEnumerator Load()
         {
             AsyncOperation async = SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
@@ -56,6 +58,8 @@ namespace Sol
             {
                 if(source != null) Destroy(source.gameObject);
             }
+
+            sm.Play(liftStop);
 
             silhouetteSeen.SetActive(false);
             silhouetteInteractible.SetActive(false);
