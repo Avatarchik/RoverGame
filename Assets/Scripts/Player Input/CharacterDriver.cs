@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Sol
 {
@@ -15,6 +16,9 @@ namespace Sol
         public float movementSpeedMultiplier = 1.75f;
 
         //public AudioSource servoMotorSound;
+
+        public List<WheelCollider> frontWheels = new List<WheelCollider>();
+        public List<WheelCollider> backWheels = new List<WheelCollider>();
 
         private bool flashLightActive = false;
         private SoundManager cachedSoundManager;
@@ -41,14 +45,43 @@ namespace Sol
 
         private void Update()
         {
-            if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+            if (Input.GetAxis("Vertical") != 0)
             {
-                //CachedSoundManager.Play(ROVER_MOVEMENT_SOUND_ID);
+                //transform.Translate(Vector3.forward * playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier);
+                List<WheelCollider> wcs = new List<WheelCollider>();
+                wcs.AddRange(frontWheels);
+                wcs.AddRange(backWheels);
+                foreach (WheelCollider wc in wcs)
+                {
+                    wc.brakeTorque = 0;
+                    wc.motorTorque = playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier;
+                }
+            }
+            else
+            {
+                List<WheelCollider> wcs = new List<WheelCollider>();
+                wcs.AddRange(frontWheels);
+                wcs.AddRange(backWheels);
+                foreach (WheelCollider wc in wcs)
+                {
+                    wc.brakeTorque = 15;
+                    wc.motorTorque = wc.motorTorque *0.1f;
+                }
             }
 
-            if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+            if (Input.GetAxis("Horizontal") != 0)
             {
-                //CachedSoundManager.Stop(ROVER_MOVEMENT_SOUND_ID);
+                foreach (WheelCollider wc in frontWheels)
+                {
+                    wc.steerAngle = Input.GetAxis("Horizontal") * 45f;
+                }
+            }
+            else
+            {
+                foreach (WheelCollider wc in frontWheels)
+                {
+                    wc.steerAngle = 0;
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.F))
@@ -57,31 +90,13 @@ namespace Sol
                 flashLight.gameObject.SetActive(flashLightActive);
             }
 
-            if (Input.GetKeyDown(KeyCode.B)) strafing = !strafing;
             if (Input.GetKeyDown(KeyCode.R))Reset();
         }
 
 
         private void FixedUpdate()
         {
-            if (Input.GetAxis("Vertical") != 0)
-            {
-                transform.Translate(Vector3.forward * playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier);
-            }
-            if(strafing)
-            {
-                if (Input.GetAxis("Horizontal") != 0)
-                {
-                    transform.Translate(Vector3.right * playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Horizontal") * movementSpeedMultiplier);
-                }
-            }
-            else
-            {
-                if (Input.GetAxis("Horizontal") != 0)
-                {
-                    transform.Rotate(Vector3.up, playerStats.TurnSpeed *Time.fixedDeltaTime * Input.GetAxis("Horizontal") * movementSpeedMultiplier * 18f);
-                }
-            }
+            
             
         }
 

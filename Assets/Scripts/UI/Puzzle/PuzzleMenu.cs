@@ -6,13 +6,26 @@ namespace Sol
 {
     public class PuzzleMenu : Menu
     {
+        public const string WIRES_IN_INVENTORY_FORMAT = "Wires in Inventory : {0}";
+        public const string WIRES_USED_FORMAT = "Wires Used : {0}";
+
         public Button exitButton;
         public Text messageText;
+        public Text wiresInInventory;
+        public Text wiresUsed;
+
+        //TODO we need to support more than one kind of wire eventually
+        public Ingredient wireItem;
 
         [HideInInspector]
         public InteractiblePuzzle currentPuzzleObject = null;
 
         private PuzzleManager cachedPuzzleManager;
+
+        public void SetWiresUsed(int wires)
+        {
+            wiresUsed.text = string.Format(WIRES_USED_FORMAT, wires);
+        }
 
         public PuzzleManager CachedPuzzleManager
         {
@@ -23,6 +36,8 @@ namespace Sol
         public void Open(InteractiblePuzzle ip)
         {
             messageText.text = ip.message;
+            //TODO make this down here less gross
+            wiresInInventory.text = string.Format(WIRES_IN_INVENTORY_FORMAT, UIManager.GetMenu<Inventory>().GetIngredientAmount(wireItem));
             currentPuzzleObject = ip;
             base.Open();
         }

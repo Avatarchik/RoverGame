@@ -27,7 +27,6 @@ namespace Sol
         public void Play(Sound sound, float fadeTime = 0f)
         {
             StopAllCoroutines();
-            Debug.Log("fade time? : " + fadeTime);
             CachedAudioSource.Stop();
 
             CurrentSound = sound;
@@ -38,14 +37,12 @@ namespace Sol
             CachedAudioSource.pitch = Random.Range(sound.minPitch, sound.maxPitch);
             CachedAudioSource.spatialBlend = sound.spatialBlend;
             CachedAudioSource.volume = sound.volume;
-            Debug.Log("playing? : "+CachedAudioSource.volume);
             CachedAudioSource.loop = sound.loop;
 
             CachedAudioSource.Play();
 
             //TODO dont relly on this
             CachedAudioSource.spatialBlend = 0;
-            if(CachedAudioSource.isPlaying) Debug.Log("is it actually playing??");
 
             if (fadeTime > 0f) SetVolumeTo(VolumeFromSettings, fadeTime);
 

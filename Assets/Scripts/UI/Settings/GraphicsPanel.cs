@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.ImageEffects;
 using UnityEngine.UI;
 using System.Collections;
 using ScionEngine;
@@ -11,12 +12,20 @@ namespace Sol
         public Dropdown fullScreenDropdown;
         public Dropdown vsyncDropdown;
         public Dropdown bloomDropdown;
+        public Dropdown antiAliasingDropdown;
 
+        private Antialiasing cachedAntiAliasing;
         private ScionPostProcess scion;
 
         public ScionPostProcess Scion
         {
             get { return (scion != null) ? scion : scion = GameObject.FindObjectOfType<ScionPostProcess>(); }
+        }
+
+
+        public Antialiasing CachedAntialiasing
+        {
+            get { return (cachedAntiAliasing != null) ? cachedAntiAliasing : cachedAntiAliasing = GameObject.FindObjectOfType<Antialiasing>(); }
         }
 
 
@@ -81,11 +90,33 @@ namespace Sol
         }
 
 
+        private void SetAntialiasing(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    if (!CachedAntialiasing.enabled) CachedAntialiasing.enabled = true;
+                    CachedAntialiasing.mode = AAMode.FXAA1PresetB;
+                    break;
+
+                case 1:
+                    if(!CachedAntialiasing.enabled) CachedAntialiasing.enabled = true;
+                    CachedAntialiasing.mode = AAMode.FXAA1PresetA;
+                    break;
+
+                case 2:
+                    if (CachedAntialiasing.enabled) CachedAntialiasing.enabled = false;
+                    break;
+            }
+        }
+
+
         private void Awake()
         {
             fullScreenDropdown.onValueChanged.AddListener(SetFullScreen);
             vsyncDropdown.onValueChanged.AddListener(SetVSync);
             bloomDropdown.onValueChanged.AddListener(SetBloom);
+            antiAliasingDropdown.onValueChanged.AddListener(SetAntialiasing);
         }
     }
 }
