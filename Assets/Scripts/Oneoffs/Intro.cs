@@ -31,8 +31,6 @@ namespace Sol
 
         public Glitch glitchEffect;
 
-        public PlaygroundParticlesC particles;
-
         public List<Objective> introObjectives = new List<Objective>();
 
         private bool proceed = false;

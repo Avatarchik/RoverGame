@@ -6,14 +6,9 @@ namespace Sol
     [System.Serializable]
     public class SoundControls
     {
-        public enum PlayType
-        {
-            PlayAll,
-            PlayRandom
-        }
+        public enum PlayType { PlayAll, PlayRandom }
 
         public PlayType soundPlayType = PlayType.PlayRandom;
-
         public AudioClip[] interactEffects;
     }
 
@@ -27,62 +22,50 @@ namespace Sol
         public GameObject silhouetteSeen;
         public bool interactible = true;
 
-        private PlayerStats playerStats;
+        protected PlayerStats playerStats;
 
-        private PlayerStats PlayerStats
+        protected PlayerStats PlayerStats
         {
             get
             {
                 if (playerStats == null) playerStats = GameManager.Get<PlayerStats>();
-                if (playerStats == null) playerStats = GameObject.FindObjectOfType<PlayerStats>();
-                return playerStats;
+                return (playerStats != null) ? playerStats : playerStats = GameObject.FindObjectOfType<PlayerStats>();
             }
         }
 
         public bool Interactible
         {
-            //TODO we need a clearer reference to the players stats!
             get { return interactible && PlayerStats.movementEnabled == 0; }
         }
 
 
         public virtual void HoverEnterSeen()
         {
-            if(Interactible)
-            {
-                silhouetteSeen.SetActive(true);
-            }
+            if (Interactible)if (silhouetteSeen != null) silhouetteSeen.SetActive(true);
         }
 
 
-        public void HoverEnterInteractible()
+        public virtual void HoverEnterInteractible()
         {
-            if(Interactible)
+            if (Interactible)
             {
-                silhouetteInteractible.SetActive(true);
-                if (objectName != "")
-                {
-                    MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
-                    messageMenu.Open(objectName);
-                }
+                if (silhouetteInteractible != null) silhouetteInteractible.SetActive(true);
+                if (objectName != "") UIManager.GetMenu<MessageMenu>().Open(objectName);
             }
         }
 
 
         public virtual void HoverExitSeen()
         {
-            if(Interactible)
-            {
-                silhouetteSeen.SetActive(false);
-            }
+            if (Interactible) if (silhouetteSeen != null) silhouetteSeen.SetActive(false);
         }
 
 
         public virtual void HoverExitInteractible()
         {
-            if(Interactible)
+            if (Interactible)
             {
-                if(silhouetteInteractible != null) silhouetteInteractible.SetActive(false);
+                if (silhouetteInteractible != null) silhouetteInteractible.SetActive(false);
                 UIManager.Close<MessageMenu>();
             }
         }
@@ -90,7 +73,7 @@ namespace Sol
 
         public virtual void Interact()
         {
-            if(Interactible)
+            if (Interactible)
             {
                 if (soundControls.interactEffects.Length > 0)
                 {
@@ -98,10 +81,7 @@ namespace Sol
                     switch (soundControls.soundPlayType)
                     {
                         case SoundControls.PlayType.PlayAll:
-                            foreach(AudioClip ac in soundControls.interactEffects)
-                            {
-                                sm.Play(ac);
-                            }
+                            foreach (AudioClip ac in soundControls.interactEffects) { sm.Play(ac); }
                             break;
 
                         case SoundControls.PlayType.PlayRandom:
@@ -109,22 +89,26 @@ namespace Sol
                             sm.Play(soundControls.interactEffects[clipIndex]);
                             break;
                     }
-
-                    if(soundControls.soundPlayType == SoundControls.PlayType.PlayAll)
-                    {
-
-                    }
-                    else if(soundControls.soundPlayType == SoundControls.PlayType.PlayRandom)
-                    {
-                        
-                    }
                 }
 
-                Debug.Log("interacting");
                 UIManager.Close<MessageMenu>();
                 silhouetteSeen.SetActive(false);
                 silhouetteInteractible.SetActive(false);
             }
+        }
+
+
+        protected virtual IEnumerator DelayedInteract(float delay = 1f)
+        {
+            float elapsedTime = 0f;
+
+            while(elapsedTime < delay)
+            {
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            Interact();
         }
     }
 }

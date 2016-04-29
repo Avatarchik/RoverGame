@@ -15,8 +15,6 @@ namespace Sol
         public bool strafing = true;
         public float movementSpeedMultiplier = 1.75f;
 
-        //public AudioSource servoMotorSound;
-
         public List<WheelCollider> frontWheels = new List<WheelCollider>();
         public List<WheelCollider> backWheels = new List<WheelCollider>();
 
@@ -45,13 +43,21 @@ namespace Sol
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                flashLightActive = !flashLightActive;
+                flashLight.gameObject.SetActive(flashLightActive);
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))Reset();
+        }
+
+
+        private void FixedUpdate()
+        {
             if (Input.GetAxis("Vertical") != 0)
             {
-                //transform.Translate(Vector3.forward * playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier);
-                List<WheelCollider> wcs = new List<WheelCollider>();
-                wcs.AddRange(frontWheels);
-                wcs.AddRange(backWheels);
-                foreach (WheelCollider wc in wcs)
+                foreach (WheelCollider wc in frontWheels)
                 {
                     wc.brakeTorque = 0;
                     wc.motorTorque = playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier;
@@ -59,13 +65,13 @@ namespace Sol
             }
             else
             {
-                List<WheelCollider> wcs = new List<WheelCollider>();
-                wcs.AddRange(frontWheels);
-                wcs.AddRange(backWheels);
-                foreach (WheelCollider wc in wcs)
+                if (frontWheels[0].rpm > 0)
                 {
-                    wc.brakeTorque = 15;
-                    wc.motorTorque = wc.motorTorque *0.1f;
+                    foreach (WheelCollider wc in frontWheels)
+                    {
+                        wc.brakeTorque = 15;
+                        wc.motorTorque = wc.motorTorque * 0.1f;
+                    }
                 }
             }
 
@@ -84,20 +90,6 @@ namespace Sol
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                flashLightActive = !flashLightActive;
-                flashLight.gameObject.SetActive(flashLightActive);
-            }
-
-            if (Input.GetKeyDown(KeyCode.R))Reset();
-        }
-
-
-        private void FixedUpdate()
-        {
-            
-            
         }
 
 

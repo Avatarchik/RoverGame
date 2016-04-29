@@ -18,6 +18,8 @@ namespace Sol
         public Button useButton;
         //public Button closeButton;
 
+        public Camera previewCamera;
+
         public List<Ingredient> ingredientsInInventory = new List<Ingredient>();
 
         public bool ContainerExchange = false;
@@ -45,6 +47,7 @@ namespace Sol
 
         public override void Open()
         {
+            previewCamera.gameObject.SetActive(true);
             equipmentPanel.Initialize();
             base.Open();
         }
@@ -74,6 +77,7 @@ namespace Sol
 
         public override void Close()
         {
+            previewCamera.gameObject.SetActive(false);
             base.Close();
         }
 
