@@ -32,9 +32,23 @@ namespace Sol
         public bool IsActive
         {
             get { return isActive; }
-            set { isActive = value; }
+            set
+            {
+                if(isActive != value)
+                {
+                    isActive = value;
+
+                    if(isActive)
+                        Open();
+                    else
+                        Close();
+                }
+            }
         }
 
+        ///<summary>
+        ///Open the menu
+        ///</summary>
         public virtual void Open()
         {
             if (!IsActive)
@@ -54,7 +68,9 @@ namespace Sol
             }
         }
 
-
+        ///<summary>
+        ///Close the menu
+        ///</summary>
         public virtual void Close()
         {
             if (IsActive)
@@ -76,7 +92,9 @@ namespace Sol
             }
         }
 
-
+        ///<summary>
+        ///Process clicked button
+        ///</summary>
         public virtual bool ClickButton()
         {
             if (clickButtonEffect != null)
@@ -88,7 +106,14 @@ namespace Sol
             return false;
         }
 
-
+        /// <summary>
+        /// Fade menu in and out
+        /// </summary>
+        /// <param name="cg"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="close"></param>
+        /// <returns></returns>
         protected virtual IEnumerator FadeMenu(CanvasGroup cg, float from, float to, bool close = false)
         {
             cg.alpha = from;

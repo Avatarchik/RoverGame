@@ -16,6 +16,9 @@ public class Sound
 	public float maxPitch = 1f;
 	public float spatialBlend = 1f;
     public float volume = 1f;
+
+    [HideInInspector]
+    public bool show = false;
 		
 		
 	public Sound()

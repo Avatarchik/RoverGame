@@ -21,6 +21,9 @@ namespace Sol
             get { return Instance != null; }
         }
 
+        ///<summary>
+        ///Retrieve Game Manager singleton
+        ///</summary>
         public static GameManager Instance
         {
             get
@@ -32,7 +35,9 @@ namespace Sol
             }
         }
 
-
+        ///<summary>
+        ///Gt existing object of type <T>
+        ///</summary>
         public static T Get<T>() where T : class
         {
             T singleton = default(T);
@@ -60,13 +65,17 @@ namespace Sol
             return singleton;
         }
 
-
+        ///<summary>
+        ///Set existing singleton of type <T> to new singleton instance.
+        ///</summary>
         public static void Set<T>(T singleton) where T : class
         {
             if (Exists) Instance.singletons[typeof(T)] = singleton;
         }
 
-
+        ///<summary>
+        ///Remove cached singleton of type <T>
+        ///</summary>
         public static void Remove<T>(T singleton) where T : class
         {
             if (Exists && Instance.singletons.ContainsKey(typeof(T)) && Instance.singletons[typeof(T)] == singleton)

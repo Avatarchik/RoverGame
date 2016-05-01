@@ -14,6 +14,7 @@ namespace Sol
         private const string HELP_MESSAGE_NAME = "This field is mostly for our edification and to help keep sounds organized. Sounds may also be called by name if absolutely necessary so its good to keep the name unique. If two sounds are called EXPLOSION, the sound manager will not know which to play.";
         private const string HELP_MESSAGE_SPATIAL_BLEND = "Sets how much this clip's audiosource is affected by 3D spatialisation calculations (attenuation, doppler etc). 0.0 makes the sound full 2D and distance from the sound won't matter, 1.0 makes it full 3D and distance will matter.";
         private const string HELP_MESSAGE_LOOP = "If looping is disabled, the sound will play only once. if it is enabled, the sound will play continually until stop is explicitly called.";
+        private const string HELP_MESSAGE_SOUND_TYPE = "Sound type classifies which type of sound this collection contains. This is used to help the sound manager spawn sounds and control audio volumes.";
 
 
         public override void OnInspectorGUI()
@@ -39,6 +40,12 @@ namespace Sol
 
             EditorGUILayout.Space();
             EditorGUILayout.Space();
+
+            GUIContent content = new GUIContent("Sound Type ", HELP_MESSAGE_SOUND_TYPE);
+            mycollection.soundType = (SoundType)EditorGUILayout.EnumPopup(mycollection.soundType);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.Space();
@@ -46,92 +53,98 @@ namespace Sol
             foreach (Sound sound in mycollection.sounds)
             {
                 EditorGUILayout.BeginVertical("Box");
-                EditorGUILayout.Space();
+                sound.show = EditorGUILayout.Foldout(sound.show, sound.name);
+                
+                if (sound.show)
+                {
+                    EditorGUILayout.Space();
 
-                GUIContent content = new GUIContent("Name ", HELP_MESSAGE_NAME);
-                sound.name = EditorGUILayout.TextField(content, sound.name);
+                    content = new GUIContent("Name ", HELP_MESSAGE_NAME);
+                    sound.name = EditorGUILayout.TextField(content, sound.name);
 
-                EditorGUILayout.Space();
+                    EditorGUILayout.Space();
 
-                content = new GUIContent("Audio Clip ", HELP_MESSAGE_AUDIO_CLIP);
-                sound.audioClip = (AudioClip)EditorGUILayout.ObjectField(content, sound.audioClip, typeof(AudioClip), true);
+                    content = new GUIContent("Audio Clip ", HELP_MESSAGE_AUDIO_CLIP);
+                    sound.audioClip = (AudioClip)EditorGUILayout.ObjectField(content, sound.audioClip, typeof(AudioClip), true);
 
-                EditorGUILayout.Space();
+                    EditorGUILayout.Space();
 
-                content = new GUIContent("Volume ", HELP_MESSAGE_VOLUME);
-                sound.volume = EditorGUILayout.Slider(content, sound.volume, 0f, 1f);
+                    content = new GUIContent("Volume ", HELP_MESSAGE_VOLUME);
+                    sound.volume = EditorGUILayout.Slider(content, sound.volume, 0f, 1f);
 
-                EditorGUILayout.Space();
+                    EditorGUILayout.Space();
 
-                content = new GUIContent("Instance Limit ", HELP_MESSAGE_INSTANCE_LIMIT);
-                sound.instanceLimit = EditorGUILayout.IntField(content, sound.instanceLimit);
+                    content = new GUIContent("Instance Limit ", HELP_MESSAGE_INSTANCE_LIMIT);
+                    sound.instanceLimit = EditorGUILayout.IntField(content, sound.instanceLimit);
                 
                 
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
 
-                content = new GUIContent("Pitch ", HELP_MESSAGE_PITCH);
-                EditorGUILayout.LabelField(content);
-                float minVal = sound.minPitch;
-                float maxVal = sound.maxPitch;
-                EditorGUILayout.MinMaxSlider(ref minVal, ref maxVal, 0f, 3f);
-                sound.minPitch = minVal;
-                sound.maxPitch = maxVal;
+                    content = new GUIContent("Pitch ", HELP_MESSAGE_PITCH);
+                    EditorGUILayout.LabelField(content);
+                    float minVal = sound.minPitch;
+                    float maxVal = sound.maxPitch;
+                    EditorGUILayout.MinMaxSlider(ref minVal, ref maxVal, 0f, 3f);
+                    sound.minPitch = minVal;
+                    sound.maxPitch = maxVal;
 
 
-                EditorGUILayout.BeginHorizontal();
-                float width = EditorGUIUtility.currentViewWidth - 50;
+                    EditorGUILayout.BeginHorizontal();
+                    float width = EditorGUIUtility.currentViewWidth - 50;
 
-                EditorGUILayout.BeginVertical();
-                EditorGUILayout.LabelField("min", GUILayout.Width( width/2));
-                sound.minPitch = EditorGUILayout.FloatField(sound.minPitch, GUILayout.Width(width / 2));
-                EditorGUILayout.EndVertical();
+                    EditorGUILayout.BeginVertical();
+                    EditorGUILayout.LabelField("min", GUILayout.Width( width/2));
+                    sound.minPitch = EditorGUILayout.FloatField(sound.minPitch, GUILayout.Width(width / 2));
+                    EditorGUILayout.EndVertical();
 
-                EditorGUILayout.BeginVertical();
-                EditorGUILayout.LabelField("max", GUILayout.Width(width / 2));
-                sound.maxPitch = EditorGUILayout.FloatField(sound.maxPitch, GUILayout.Width(width / 2));
-                EditorGUILayout.EndVertical();
+                    EditorGUILayout.BeginVertical();
+                    EditorGUILayout.LabelField("max", GUILayout.Width(width / 2));
+                    sound.maxPitch = EditorGUILayout.FloatField(sound.maxPitch, GUILayout.Width(width / 2));
+                    EditorGUILayout.EndVertical();
 
-                EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndHorizontal();
 
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
 
-                content = new GUIContent("Spatial Blend ", HELP_MESSAGE_SPATIAL_BLEND);
-                sound.spatialBlend = EditorGUILayout.Slider(content, sound.spatialBlend, 0f, 1f);
+                    content = new GUIContent("Spatial Blend ", HELP_MESSAGE_SPATIAL_BLEND);
+                    sound.spatialBlend = EditorGUILayout.Slider(content, sound.spatialBlend, 0f, 1f);
 
-                EditorGUILayout.Space();
+                    EditorGUILayout.Space();
 
-                content = new GUIContent("Loop ", HELP_MESSAGE_LOOP);
-                sound.loop = EditorGUILayout.Toggle(content, sound.loop);
+                    content = new GUIContent("Loop ", HELP_MESSAGE_LOOP);
+                    sound.loop = EditorGUILayout.Toggle(content, sound.loop);
 
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
 
-                if (GUILayout.Button("Reset"))
-                {
-                    mycollection.Reset(sound);
-                    break;
+                    if (GUILayout.Button("Reset"))
+                    {
+                        mycollection.Reset(sound);
+                        break;
+                    }
+
+                    if (GUILayout.Button("Remove"))
+                    {
+                        mycollection.Remove(sound);
+                        break;
+                    }
+
+                    
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
                 }
-
-                if (GUILayout.Button("Remove"))
-                {
-                    mycollection.Remove(sound);
-                    break;
-                }
-
                 EditorGUILayout.EndVertical();
-
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
             }
         }
     }

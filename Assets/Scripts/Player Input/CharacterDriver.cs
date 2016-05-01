@@ -22,18 +22,9 @@ namespace Sol
         private SoundManager cachedSoundManager;
 
 
-        public SoundManager CachedSoundManager
-        {
-            get
-            {
-                if (cachedSoundManager == null) cachedSoundManager = GameManager.Get<SoundManager>();
-                if (cachedSoundManager == null) cachedSoundManager = GameObject.FindObjectOfType<SoundManager>();
-
-                return cachedSoundManager;
-            }
-        }
-
-
+        /// <summary>
+        /// Reset player position to upright rotation one meter up
+        /// </summary>
         private void Reset()
         {
             transform.rotation = Quaternion.identity;
@@ -55,6 +46,7 @@ namespace Sol
 
         private void FixedUpdate()
         {
+            //handle forward/backward movement
             if (Input.GetAxis("Vertical") != 0)
             {
                 foreach (WheelCollider wc in frontWheels)
@@ -75,6 +67,7 @@ namespace Sol
                 }
             }
 
+            //handle horizontal (turning) movement
             if (Input.GetAxis("Horizontal") != 0)
             {
                 foreach (WheelCollider wc in frontWheels)
@@ -98,5 +91,4 @@ namespace Sol
             gameObject.GetComponent<Animator>().enabled = false;
         }
     }
-
 }
