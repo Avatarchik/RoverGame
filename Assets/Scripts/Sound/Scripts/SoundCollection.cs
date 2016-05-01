@@ -48,7 +48,11 @@ public class SoundCollection : ScriptableObject
     /// <param name="sound"></param>
     public void Add (Sound sound)
 	{
-		if (!sounds.Contains (sound)) sounds.Add (sound);
+        if (!sounds.Contains(sound))
+        {
+            sound.type = soundType;
+            sounds.Add(sound);
+        }
 	}
 
     /// <summary>
@@ -58,6 +62,7 @@ public class SoundCollection : ScriptableObject
     {
         Sound newSound = new Sound();
         newSound.type = soundType;
+        newSound.show = true;
         sounds.Add(newSound);
     }
 
@@ -82,6 +87,7 @@ public class SoundCollection : ScriptableObject
             {
                 Sound newSound = new Sound();
                 newSound.type = soundType;
+                newSound.show = true;
                 sounds[i] = newSound;
                 break;
             }

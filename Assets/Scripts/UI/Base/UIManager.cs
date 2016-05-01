@@ -48,9 +48,12 @@ namespace Sol
             Instance.cachedMenus.Clear();
         }
 
-        ///<summary>
-        ///Open menu of type T and close all others as  desired
-        ///</summary>
+        /// <summary>
+        /// Open menu of type T and close all others as  desired
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="closeOthers"></param>
+        /// <returns></returns>
         public static T Open<T>(bool closeOthers = false) where T : Menu
         {
             if (!Exists) return null;
@@ -64,9 +67,11 @@ namespace Sol
             return menu;
         }
 
-        ///<summary>
-        ///Close menu of type T
-        ///</summary>
+        /// <summary>
+        /// Close menu of type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static T Close<T>() where T : Menu
         {
             if (!Exists) return null;
@@ -78,9 +83,9 @@ namespace Sol
             return menu;
         }
 
-        ///<summary>
-        //Close all menus
-        ///</summary>
+        /// <summary>
+        /// Close all menus (not recommended for use)
+        /// </summary>
         public static void CloseAll()
         {
             foreach (Menu menu in Instance.cachedMenus)
@@ -89,9 +94,11 @@ namespace Sol
             }
         }
 
-        ///<summary>
-        ///Retrieve menu without opening it, create it if it doesnt exist.
-        ///</summary>
+        /// <summary>
+        /// Retrieve menu without opening it, create it if it doesnt exist.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static T GetMenu<T>() where T : Menu
         {
             if (!Exists) return null;
@@ -126,9 +133,12 @@ namespace Sol
             return menu;
         }
 
-        ///<summary>
-        ///Create a new menu of type T
-        ///</summary>
+        /// <summary>
+        /// Create a new menu of type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="menuPrefab"></param>
+        /// <returns></returns>
         protected static T Create<T>(T menuPrefab) where T : Menu
         {
             T menu = null;
