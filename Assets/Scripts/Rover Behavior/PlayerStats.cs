@@ -62,13 +62,19 @@ namespace Sol
             movementEnabled--;
         }
 
-
+        /// <summary>
+        /// Add recipe to list of player's craftables
+        /// </summary>
+        /// <param name="r"></param>
         public void AddRecipe(Recipe r)
         {
             if (!knownRecipes.Contains(r)) knownRecipes.Add(r);
         }
 
-
+        /// <summary>
+        /// Remove recipe from list of player's craftables
+        /// </summary>
+        /// <param name="r"></param>
         public void RemoveRecipe(Recipe r)
         {
             for (int i = 0; i < knownRecipes.Count; i++)
@@ -81,7 +87,11 @@ namespace Sol
             }
         }
 
-
+        /// <summary>
+        /// Process stat, applying all stat modifications
+        /// </summary>
+        /// <param name="statId"></param>
+        /// <returns></returns>
         public float ModifyStat(int statId)
         {
             float val = statCollection.playerStats[statId].statValue;
@@ -141,6 +151,7 @@ namespace Sol
             }
         }
 
+
         public float TurnSpeed
         {
             get
@@ -156,40 +167,14 @@ namespace Sol
             }
         }
 
-        public float MaxCharge
-        {
-            get { return ModifyStat(MAX_Charge_ID); }
-        }
 
-        public float RechargeRate
-        {
-            get { return ModifyStat(RECHARGE_RATE_ID); }
-        }
-
-        public float HarvestSpeed
-        {
-            get { return ModifyStat(HARVEST_SPEED_ID); }
-        }
-
-        public float ScanningSpeed
-        {
-            get { return ModifyStat(SCANNING_SPEED_ID); }
-        }
-
-        public float MaxHealth
-        {
-            get { return ModifyStat(HEALTH_ID); }
-        }
-
-        public float Health
-        {
-            get { return OverallHealth; }
-        }
-
-        public float Weight
-        {
-            get { return ModifyStat(WEIGHT_ID) + PlayerInventory.Weight; }
-        }
+        public float MaxCharge { get { return ModifyStat(MAX_Charge_ID); } }
+        public float RechargeRate { get { return ModifyStat(RECHARGE_RATE_ID); } }
+        public float HarvestSpeed { get { return ModifyStat(HARVEST_SPEED_ID); } }
+        public float ScanningSpeed { get { return ModifyStat(SCANNING_SPEED_ID); } }
+        public float MaxHealth { get { return ModifyStat(HEALTH_ID); } }
+        public float Health { get { return OverallHealth; } }
+        public float Weight { get { return ModifyStat(WEIGHT_ID) + PlayerInventory.Weight; } }
 
 
         public void ModifyHealth(float addedModifier)
@@ -202,7 +187,10 @@ namespace Sol
             }
         }
 
-
+        /// <summary>
+        /// Kill the player and begin the reset process
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator KillPlayer()
         {
             Debug.Log("Killing Player!!");
@@ -258,8 +246,7 @@ namespace Sol
         }
     
 
-
-    private void Awake()
+        private void Awake()
         {
             Menu.OnMenuOpen += DisableMovement;
             Menu.OnMenuClose += EnableMovement;

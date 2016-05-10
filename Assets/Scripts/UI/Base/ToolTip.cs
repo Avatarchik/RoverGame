@@ -23,7 +23,10 @@ namespace Sol
             base.Open();
         }
 
-
+        /// <summary>
+        /// Open tooltip and initialize to ingredient values
+        /// </summary>
+        /// <param name="ingredient"></param>
         public virtual void Open(Ingredient ingredient)
         {
             titleText.text = ingredient.displayName;
@@ -33,7 +36,10 @@ namespace Sol
             Open();
         }
 
-
+        /// <summary>
+        /// initialize to ingredient details
+        /// </summary>
+        /// <param name="ingredient"></param>
         public void SetContent(Ingredient ingredient)
         {
             titleText.text = ingredient.displayName;
@@ -48,5 +54,4 @@ namespace Sol
             closeButton.onClick.AddListener(Close);
         }
     }
-
 }
