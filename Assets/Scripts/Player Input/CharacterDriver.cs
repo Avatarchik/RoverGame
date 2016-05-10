@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.CrossPlatformInput;
+using UnityStandardAssets.Vehicles.Car;
 
 namespace Sol
 {
@@ -17,9 +19,12 @@ namespace Sol
 
         public List<WheelCollider> frontWheels = new List<WheelCollider>();
         public List<WheelCollider> backWheels = new List<WheelCollider>();
+        public CarController carController;
 
         private bool flashLightActive = false;
         private SoundManager cachedSoundManager;
+
+        private bool canFlipSpeed = false;
 
 
         public SoundManager CachedSoundManager
@@ -55,41 +60,15 @@ namespace Sol
 
         private void FixedUpdate()
         {
-            if (Input.GetAxis("Vertical") != 0)
-            {
-                foreach (WheelCollider wc in frontWheels)
-                {
-                    wc.brakeTorque = 0;
-                    wc.motorTorque = playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Vertical") * movementSpeedMultiplier;
-                }
-            }
-            else
-            {
-                if (frontWheels[0].rpm > 0)
-                {
-                    foreach (WheelCollider wc in frontWheels)
-                    {
-                        wc.brakeTorque = 15;
-                        wc.motorTorque = wc.motorTorque * 0.1f;
-                    }
-                }
-            }
+            if (carController.MaxSpeed != playerStats.CurrentMovementSpeed) carController.MaxSpeed = playerStats.CurrentMovementSpeed;
 
-            if (Input.GetAxis("Horizontal") != 0)
-            {
-                foreach (WheelCollider wc in frontWheels)
-                {
-                    wc.steerAngle = Input.GetAxis("Horizontal") * 45f;
-                }
-            }
-            else
-            {
-                foreach (WheelCollider wc in frontWheels)
-                {
-                    wc.steerAngle = 0;
-                }
-            }
+            float h = CrossPlatformInputManager.GetAxis("Horizontal");
+            float v = CrossPlatformInputManager.GetAxis("Vertical");
+            float handbrake = CrossPlatformInputManager.GetAxis("Jump");
 
+            handbrake = (v == 0 && handbrake == 0) ? 1 : 0;
+            
+            carController.Move(h, v, v, handbrake);
         }
 
 
