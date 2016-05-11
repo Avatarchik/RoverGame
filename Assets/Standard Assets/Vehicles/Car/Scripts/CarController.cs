@@ -51,7 +51,7 @@ namespace UnityStandardAssets.Vehicles.Car
         public float BrakeInput { get; private set; }
         public float CurrentSteerAngle{ get { return m_SteerAngle; }}
         public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
-        public float MaxSpeed{get { return m_Topspeed; }}
+        public float MaxSpeed{get { return m_Topspeed; } set { m_Topspeed = value; } }
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
 
@@ -203,6 +203,7 @@ namespace UnityStandardAssets.Vehicles.Car
                     thrustTorque = accel * (m_CurrentTorque / 4f);
                     for (int i = 0; i < 4; i++)
                     {
+                        m_WheelColliders[i].brakeTorque = 0;
                         m_WheelColliders[i].motorTorque = thrustTorque;
                     }
                     break;
@@ -269,7 +270,7 @@ namespace UnityStandardAssets.Vehicles.Car
         // 3) leaves skidmarks on the ground
         // these effects are controlled through the WheelEffects class
         private void CheckForWheelSpin()
-        {
+        {/*
             // loop through all wheels
             for (int i = 0; i < 4; i++)
             {
@@ -297,7 +298,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 }
                 // end the trail generation
                 m_WheelEffects[i].EndSkidTrail();
-            }
+           }*/
         }
 
         // crude traction control that reduces the power to wheel if the car is wheel spinning too much

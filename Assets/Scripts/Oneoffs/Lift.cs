@@ -43,7 +43,7 @@ namespace Sol
                 sources.Add(sm.Play(soundControls.interactEffects[i]));
             }
 
-            StartCoroutine(Load());
+            //StartCoroutine(Load());
 
             while (elapsedTime < lerpTime)
             {

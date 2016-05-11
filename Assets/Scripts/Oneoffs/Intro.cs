@@ -326,7 +326,7 @@ namespace Sol
 
         private IEnumerator Load()
         {
-            AsyncOperation async = SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
+            AsyncOperation async = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
 
             while(async.progress < 0.9f)
             {
@@ -337,7 +337,7 @@ namespace Sol
 
         private void Awake()
         {
-            StartCoroutine(Load());
+            //StartCoroutine(Load());
             StartCoroutine(RunTutorial());
         }
     }
