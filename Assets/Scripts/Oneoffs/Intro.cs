@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using Colorful;
-using ParticlePlayground;
+//using ParticlePlayground;
 
 namespace Sol
 {
@@ -326,12 +326,12 @@ namespace Sol
 
         private IEnumerator Load()
         {
-            AsyncOperation async = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+          //  AsyncOperation async = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
 
-            while(async.progress < 0.9f)
-            {
+          //  while(async.progress < 0.9f)
+          //  {
                 yield return null;
-            }
+         //   }
         }
 
 

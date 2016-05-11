@@ -6,6 +6,7 @@ public class Recipe : ScriptableObject
 {
     public int id;
     public string displayName;
+    [TextArea]
     public string description;
     public Sprite image;
     public Ingredient craftedItem;
