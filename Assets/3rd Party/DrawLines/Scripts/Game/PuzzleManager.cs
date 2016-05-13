@@ -438,6 +438,8 @@ public class PuzzleManager : MonoBehaviour
 				previousGridCell = null;
 				currentGridCell = null;
 				currentLine = null;
+		movements = 0;
+		UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(0);
 		}
 
 		/// <summary>
