@@ -171,6 +171,8 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		public static int movements;
 
+	public int Moves;
+
 		/// <summary>
 		/// current line in the grid.
 		/// </summary>
@@ -358,7 +360,7 @@ public class PuzzleManager : MonoBehaviour
         ///Create New level (the selected level)
         CreateNewLevel();
 
-        StartCoroutine(Delay());
+        //StartCoroutine(Delay());
     }
 
     /// <summary>
@@ -376,12 +378,15 @@ public class PuzzleManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        foreach(GridCell gc in gridCells) gc.currentlyUsed = false;
+		foreach (GridCell gc in gridCells) {
+			gc.currentlyUsed = false;
+		}
     }
 	
 		// Update is called once per frame
 		void Update ()
 		{
+		Moves = movements;
 				if (!isRunning) {
 						return;
 				}
@@ -573,9 +578,9 @@ public class PuzzleManager : MonoBehaviour
                         gridLines[currentGridCell.gridLineIndex].RemoveElements(currentGridCell.index);
                         previousGridCell = currentGridCell;
                         Debug.Log("Remove some Elements from the Line Path of index " + currentGridCell.gridLineIndex);
-                        ///Increase the movements counter
+                        ///Decrease the movements counter
 
-                        IncreaseMovements();
+                        DecreaseMovements();
 
 
                         return;//skip next
@@ -899,6 +904,7 @@ public class PuzzleManager : MonoBehaviour
 
             gridCell.gridLineIndex = i;
             gridCell.elementPairIndex = i;
+			gridCell.currentlyUsed = true;
             gridCell.isEmpty = false;
             gridCell.tragetIndex = barrier.index;
 
@@ -1120,6 +1126,15 @@ public class PuzzleManager : MonoBehaviour
 				movements++;
         UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
     }
+
+	/// <summary>
+	/// Decrease the movements counter.
+	/// </summary>
+	private void DecreaseMovements ()
+	{
+		movements--;
+		UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+	}
 
 		public enum ClickType
 		{
