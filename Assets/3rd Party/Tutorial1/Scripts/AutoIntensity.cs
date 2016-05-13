@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using ScionEngine;
 
 public class AutoIntensity : MonoBehaviour
@@ -32,6 +33,8 @@ public class AutoIntensity : MonoBehaviour
     public bool go = false;
 
     public bool colorOnly = false;
+
+    public List<ParticleSystem> affectedParticles = new List<ParticleSystem>();
 
 	float skySpeed = 1;
 
@@ -75,8 +78,16 @@ public class AutoIntensity : MonoBehaviour
                 mainLight.color = nightDayColor.Evaluate(dot);
                 RenderSettings.ambientLight = mainLight.color;
 
-                RenderSettings.fogColor = nightDayFogColor.Evaluate(dot);
+                Color fogColor = nightDayFogColor.Evaluate(dot);
+                RenderSettings.fogColor = fogColor;
                 RenderSettings.fogDensity = fogDensityCurve.Evaluate(dot) * fogScale;
+
+                foreach(ParticleSystem particles in affectedParticles)
+                {
+                    Color particleColor = new Color(fogColor.r, fogColor.g, fogColor.b, particles.startColor.a);
+                    particles.startColor = particleColor;
+                }
+
                 // scion.minMaxExposure = new Vector2(minExposure.Evaluate(dot), maxExposure.Evaluate(dot));
 
                 i = ((dayAtmosphereThickness - nightAtmosphereThickness) * dot) + nightAtmosphereThickness;
