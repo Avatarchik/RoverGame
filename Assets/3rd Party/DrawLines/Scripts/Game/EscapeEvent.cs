@@ -47,13 +47,15 @@ public class EscapeEvent : MonoBehaviour
 		IEnumerator LoadSceneAsync ()
 		{
 			if (!string.IsNullOrEmpty (sceneName)) {
-				#if UNITY_PRO_LICENSE
-					AsyncOperation async = Application.LoadLevelAsync (sceneName);
-					while (!async.isDone) {
-						yield return 0;
-					}
-				#else
-					Application.LoadLevel (sceneName);
+#if UNITY_PRO_LICENSE
+					//AsyncOperation async = Application.LoadLevelAsync (sceneName);
+					//while (!async.isDone) {
+					//	yield return 0;
+					//}
+            Application.LoadLevel (sceneName);
+					yield return 0;
+#else
+            Application.LoadLevel (sceneName);
 					yield return 0;
 				#endif
 			}

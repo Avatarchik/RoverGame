@@ -6,6 +6,8 @@ public class Ingredient : ScriptableObject
 {
     public int id;
     public string displayName;
+
+    [TextArea]
     public string description;
     public Sprite image;
 

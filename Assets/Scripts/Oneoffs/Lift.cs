@@ -11,11 +11,11 @@ namespace Sol
 
         private IEnumerator Load()
         {
-            AsyncOperation async = SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
-            while (async.progress < 0.9f)
-            {
+           // AsyncOperation async = SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
+          //  while (async.progress < 0.9f)
+          //  {
                 yield return null;
-            }
+          //  }
         }
 
         protected override IEnumerator Lerp()
