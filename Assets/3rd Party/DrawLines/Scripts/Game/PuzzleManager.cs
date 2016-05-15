@@ -904,7 +904,7 @@ public class PuzzleManager : MonoBehaviour
             //Setting up the First Dot(Element)
             gridCell = gridCells[barrier.index];
 
-            gridCell.gridLineIndex = i;
+            gridCell.gridLineIndex = -1;
             gridCell.elementPairIndex = i;
 			gridCell.currentlyUsed = true;
             gridCell.isEmpty = false;
