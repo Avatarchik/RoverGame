@@ -13,6 +13,17 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Level
 {
+	[SerializeField]
+	public enum WireTypes
+	{
+		Aluminum,
+		Copper,
+		Gold,
+		Silver
+	};
+
+	public WireTypes wireType;
+
 		/// <summary>
 		/// Whether the level is visible
 		/// </summary>
