@@ -438,8 +438,10 @@ public class PuzzleManager : MonoBehaviour
 				previousGridCell = null;
 				currentGridCell = null;
 				currentLine = null;
-		movements = 0;
-		UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(0);
+		if (line != null) {
+			movements = 0;
+			UIManager.GetMenu<PuzzleMenu> ().SetWiresUsed (0);
+		}
 		}
 
 		/// <summary>
@@ -1093,12 +1095,13 @@ public class PuzzleManager : MonoBehaviour
 						}
 				}
 
-				if (isLevelComplete) {
-						timer.Stop ();
-						isRunning = false;
-            UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().wireItem, movements);
-            Cleanup(true);
-				}
+			if (isLevelComplete) {
+				timer.Stop ();
+				isRunning = false;
+			print (movements);
+				UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().wireItem, movements);
+				Cleanup(true);
+			}
 		}
 
 
