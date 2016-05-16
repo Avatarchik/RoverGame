@@ -16,7 +16,7 @@ public class AudioSources : MonoBehaviour {
 	{
 		if (audioSourcesInstance == null) {
 			audioSourcesInstance = this;
-			DontDestroyOnLoad(gameObject);
+			DontDestroyOnLoad(transform.root.gameObject);
 		} else {
 			Destroy (gameObject);
 		}
