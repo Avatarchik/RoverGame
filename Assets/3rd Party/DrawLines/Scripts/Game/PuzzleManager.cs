@@ -442,7 +442,7 @@ public class PuzzleManager : MonoBehaviour
 				currentLine = null;
 		if (line != null) {
 			movements = 0;
-			UIManager.GetMenu<PuzzleMenu> ().SetWiresUsed (0);
+			//UIManager.GetMenu<PuzzleMenu> ().SetWiresUsed (0);
 		}
 		}
 
@@ -709,7 +709,7 @@ public class PuzzleManager : MonoBehaviour
 		public void RefreshGrid ()
 		{
 				movements = 0;
-        UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+       // UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
 				timer.Stop ();
 
 				if (gridLines != null) {
@@ -745,7 +745,7 @@ public class PuzzleManager : MonoBehaviour
 		{
 				try {
 						movements = 0;
-            UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+            //UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
 
             levelText.text = "Level " + TableLevel.wantedLevel.ID;
 						ResetGameContents ();
@@ -1152,7 +1152,7 @@ public class PuzzleManager : MonoBehaviour
 		private void IncreaseMovements ()
 		{
 				movements++;
-        UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+       // UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
     }
 
 	/// <summary>

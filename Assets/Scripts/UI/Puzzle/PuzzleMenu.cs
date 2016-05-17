@@ -40,7 +40,7 @@ namespace Sol
         {
             messageText.text = ip.message;
             //TODO make this down here less gross
-			wiresInInventory.text = string.Format(WIRES_IN_INVENTORY_FORMAT, UIManager.GetMenu<Inventory>().GetIngredientAmount(AluminumWire));
+			//wiresInInventory.text = string.Format(WIRES_IN_INVENTORY_FORMAT, UIManager.GetMenu<Inventory>().GetIngredientAmount(AluminumWire));
             currentPuzzleObject = ip;
             base.Open();
         }
