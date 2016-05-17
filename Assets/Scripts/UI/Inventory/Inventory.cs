@@ -203,6 +203,7 @@ namespace Sol
 
             while (count > 0)
             {
+				print ("ASDS");
                 for (int i = 0; i < ingredientsInInventory.Count; i++)
                 {
                     if (ingredientsInInventory[i].id == ingredient.id)

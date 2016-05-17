@@ -188,6 +188,8 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		private Vector3 tempClickPosition;
 
+		private GridCell beginGridCell;
+
 		/// <summary>
 		/// The current(selected) grid cell.
 		/// </summary>
@@ -438,8 +440,10 @@ public class PuzzleManager : MonoBehaviour
 				previousGridCell = null;
 				currentGridCell = null;
 				currentLine = null;
-		movements = 0;
-		UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(0);
+		if (line != null) {
+			movements = 0;
+			UIManager.GetMenu<PuzzleMenu> ().SetWiresUsed (0);
+		}
 		}
 
 		/// <summary>
@@ -510,6 +514,7 @@ public class PuzzleManager : MonoBehaviour
 
 						///Setting up the attributes for the current grid cell
 						clickMoving = true;
+				beginGridCell = currentGridCell;
 						currentGridCell.currentlyUsed = true;
 						if (currentLine == null) {
 								currentLine = gridLines [currentGridCell.gridLineIndex];
@@ -534,7 +539,8 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		private void GridCellClickMoved ()
 		{
-        if (UIManager.GetMenu<Inventory>().GetIngredientAmount(UIManager.GetMenu<PuzzleMenu>().wireItem) > movements)
+
+		if (EnoughWiresOfType())
         {
             if (currentLine == null)
             {
@@ -683,6 +689,19 @@ public class PuzzleManager : MonoBehaviour
         }
 		}
 
+	public bool EnoughWiresOfType(){
+		if (beginGridCell.gridType == Level.WireTypes.Aluminum && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().AluminumWire) > movements) {
+			return true;
+		} else if (beginGridCell.gridType == Level.WireTypes.Copper && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().CopperWire) > movements) {
+			return true;
+		} else if (beginGridCell.gridType == Level.WireTypes.Gold && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().GoldWire) > movements) {
+			return true;
+		} else if (beginGridCell.gridType == Level.WireTypes.Silver && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().SilverWire) > movements) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 		/// <summary>
 		/// Refreshs(Reset) the grid.
 		/// </summary>
@@ -801,11 +820,12 @@ public class PuzzleManager : MonoBehaviour
 				Vector3 gridCellScale = Vector3.zero;
 				GameObject firstElement = null;
 				GameObject secondElement = null;
+				Level.WireTypes gridType;
 				float cellContentScale = 0;
 		
 				gridLines = new Line[currentLevel.dotsPairs.Count];
 		
-				for (int i = 0; i <currentLevel.dotsPairs.Count; i++) {
+				for (int i = 0; i < currentLevel.dotsPairs.Count; i++) {
 						elementsPair = currentLevel.dotsPairs [i];
 						numberColor = new Color (1 - elementsPair.color.r, 1 - elementsPair.color.g, 1 - elementsPair.color.b, 1);//opposite color
 			
@@ -817,6 +837,8 @@ public class PuzzleManager : MonoBehaviour
 						gridCell.topBackgroundColor = elementsPair.lineColor;
 						gridCell.isEmpty = false;
 						gridCell.tragetIndex = elementsPair.secondDot.index;
+
+						gridCell.gridType = elementsPair.wireType;
 			
 						gridCellTransform = gridCell.gameObject.transform;
 						gridCellScale = gridCellTransform.localScale;
@@ -850,6 +872,8 @@ public class PuzzleManager : MonoBehaviour
 						gridCell.topBackgroundColor = elementsPair.lineColor;
 						gridCell.isEmpty = false;
 						gridCell.tragetIndex = elementsPair.firstDot.index;
+
+						gridCell.gridType = elementsPair.wireType;
 			
 						gridCellTransform = gridCell.gameObject.transform;
 						gridCellScale = gridCellTransform.localScale;
@@ -904,7 +928,7 @@ public class PuzzleManager : MonoBehaviour
             //Setting up the First Dot(Element)
             gridCell = gridCells[barrier.index];
 
-            gridCell.gridLineIndex = i;
+            gridCell.gridLineIndex = -1;
             gridCell.elementPairIndex = i;
 			gridCell.currentlyUsed = true;
             gridCell.isEmpty = false;
@@ -1093,12 +1117,13 @@ public class PuzzleManager : MonoBehaviour
 						}
 				}
 
-				if (isLevelComplete) {
-						timer.Stop ();
-						isRunning = false;
-            UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().wireItem, movements);
-            Cleanup(true);
-				}
+			if (isLevelComplete) {
+				timer.Stop ();
+				isRunning = false;
+			print (movements);
+			UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().AluminumWire, movements);
+				Cleanup(true);
+			}
 		}
 
 
