@@ -13,6 +13,13 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Level
 {
+	public enum WireTypes
+	{
+		Aluminum,
+		Copper,
+		Gold,
+		Silver
+	}
 		/// <summary>
 		/// Whether the level is visible
 		/// </summary>
@@ -38,6 +45,9 @@ public class Level
 		[System.Serializable]
 		public class DotsPair
 		{
+		public int wireIndex;		
+		public WireTypes wireType;
+
 				/// <summary>
 				/// Whether the pair is visible(used with inspector only).
 				/// </summary>

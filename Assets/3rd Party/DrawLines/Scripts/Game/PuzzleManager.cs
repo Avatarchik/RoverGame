@@ -536,7 +536,7 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		private void GridCellClickMoved ()
 		{
-        if (UIManager.GetMenu<Inventory>().GetIngredientAmount(UIManager.GetMenu<PuzzleMenu>().wireItem) > movements)
+		if (UIManager.GetMenu<Inventory>().GetIngredientAmount(UIManager.GetMenu<PuzzleMenu>().AluminumWire) > movements)
         {
             if (currentLine == null)
             {
@@ -803,6 +803,7 @@ public class PuzzleManager : MonoBehaviour
 				Vector3 gridCellScale = Vector3.zero;
 				GameObject firstElement = null;
 				GameObject secondElement = null;
+				Level.WireTypes gridType;
 				float cellContentScale = 0;
 		
 				gridLines = new Line[currentLevel.dotsPairs.Count];
@@ -819,6 +820,8 @@ public class PuzzleManager : MonoBehaviour
 						gridCell.topBackgroundColor = elementsPair.lineColor;
 						gridCell.isEmpty = false;
 						gridCell.tragetIndex = elementsPair.secondDot.index;
+
+			gridType = elementsPair.wireType;
 			
 						gridCellTransform = gridCell.gameObject.transform;
 						gridCellScale = gridCellTransform.localScale;
@@ -1099,7 +1102,7 @@ public class PuzzleManager : MonoBehaviour
 				timer.Stop ();
 				isRunning = false;
 			print (movements);
-				UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().wireItem, movements);
+			UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().AluminumWire, movements);
 				Cleanup(true);
 			}
 		}

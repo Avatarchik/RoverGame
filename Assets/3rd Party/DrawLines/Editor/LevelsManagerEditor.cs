@@ -20,6 +20,9 @@ namespace DrawLinesEditors
 				private Color yellowColor = Color.yellow;
 				private Color redColor = new Color (255, 0, 0, 255) / 255.0f;
 				private Color cyanColor = new Color (0, 255, 255, 255) / 255.0f;
+		public int wireIndex;
+		public Color wireColor;
+		public Level.WireTypes myWireType;
 
         public override void OnInspectorGUI()
         {
@@ -84,6 +87,7 @@ namespace DrawLinesEditors
             GUI.backgroundColor = greenColor;
             if (GUILayout.Button("Create New Level", GUILayout.Width(150), GUILayout.Height(30)))
             {
+				
                 CreateNewLevel(attrib);
             }
             GUI.backgroundColor = whiteColor;
@@ -227,6 +231,33 @@ namespace DrawLinesEditors
                             attrib.levels[i].dotsPairs[j].connectSprite = EditorGUILayout.ObjectField("OnConnect Sprite", attrib.levels[i].dotsPairs[j].connectSprite, typeof(Sprite), true) as Sprite;
                             EditorGUILayout.Separator();
 
+							attrib.levels [i].dotsPairs [j].wireIndex = EditorGUILayout.Popup(attrib.levels [i].dotsPairs [j].wireIndex, new string[] {"Aluminum", "Copper", "Gold", "Silver"});
+
+							switch (attrib.levels [i].dotsPairs [j].wireIndex) {
+							case 0:
+								myWireType = Level.WireTypes.Aluminum;
+								wireColor = Color.cyan;
+								break;
+							case 1:
+								myWireType = Level.WireTypes.Copper;
+								wireColor = Color.magenta;
+								break;
+							case 2:
+								myWireType = Level.WireTypes.Gold;
+								wireColor = Color.yellow;
+								break;
+							case 3:
+								myWireType = Level.WireTypes.Silver;
+								wireColor = Color.gray;
+								break;
+							default:
+								break;
+							}
+							EditorGUILayout.Separator();
+							attrib.levels [i].dotsPairs [j].wireType = myWireType;
+							attrib.levels [i].dotsPairs [j].color = wireColor;
+							attrib.levels [i].dotsPairs [j].lineColor = wireColor;
+
                             attrib.levels[i].dotsPairs[j].color = EditorGUILayout.ColorField("Sprite Color", attrib.levels[i].dotsPairs[j].color);
                             EditorGUILayout.Separator();
 
@@ -239,7 +270,8 @@ namespace DrawLinesEditors
                             attrib.levels[i].dotsPairs[j].firstDot.index = EditorGUILayout.IntSlider("First Element Index", attrib.levels[i].dotsPairs[j].firstDot.index, 0, attrib.numberOfRows * attrib.numberOfCols - 1);
                             EditorGUILayout.Separator();
                             attrib.levels[i].dotsPairs[j].secondDot.index = EditorGUILayout.IntSlider("Second Element Index", attrib.levels[i].dotsPairs[j].secondDot.index, 0, attrib.numberOfRows * attrib.numberOfCols - 1);
-                        }
+							EditorGUILayout.Separator();
+						}
                     }
 
 
