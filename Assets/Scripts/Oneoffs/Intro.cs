@@ -31,7 +31,10 @@ namespace Sol
 
         public Glitch glitchEffect;
 
+        public bl_HudManager waypointManager;
+
         public List<Objective> introObjectives = new List<Objective>();
+        public List<Transform> questWaypoints = new List<Transform>();
 
         private bool proceed = false;
 
@@ -52,6 +55,7 @@ namespace Sol
             Inventory inventory = UIManager.GetMenu<Inventory>();
             FadeMenu fm = UIManager.GetMenu<FadeMenu>();
             SoundManager sm = GameManager.Get<SoundManager>();
+            waypointManager.Huds[0].m_Target = null;
 
             const float delayTime = 4f;
             fm.Fade(5f, Color.black, Color.clear, true);
@@ -78,6 +82,7 @@ namespace Sol
             ShowObjective(ot, "Your wheels seem a bit damaged");
             yield return new WaitForSeconds(delayTime);
             ShowObjective(ot, "See that rover?");
+            waypointManager.Huds[0].m_Target = questWaypoints[0];
             yield return new WaitForSeconds(delayTime);
             //
             //Take its wheels
@@ -95,7 +100,7 @@ namespace Sol
             //
             //Find the lift
             ShowObjective(ot, "Good, now find the lift");
-
+            waypointManager.Huds[0].m_Target = questWaypoints[1];
             while (!proceed)
             {
                 yield return null;

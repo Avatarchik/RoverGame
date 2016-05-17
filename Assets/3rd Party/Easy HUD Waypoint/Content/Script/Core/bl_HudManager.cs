@@ -330,8 +330,14 @@ public class bl_HudManager : MonoBehaviour
     private float GetHudDistance(int i)
     {
         //Calculate Position of target
-        Vector3 RelativePosition = Huds[i].m_Target.position + Huds[i].Offset;
-        float Distance = Vector3.Distance(this.LocalPlayer.position, RelativePosition);
+        float Distance = 0f;
+
+        if (Huds[i] != null && Huds[i].m_Target != null)
+        {
+            Vector3 RelativePosition = Huds[i].m_Target.position + Huds[i].Offset;
+            Distance = Vector3.Distance(this.LocalPlayer.position, RelativePosition);
+        }
+        
         return Distance;
     }
 
