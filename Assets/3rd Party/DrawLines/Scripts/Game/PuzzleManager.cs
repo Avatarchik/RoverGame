@@ -690,7 +690,6 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 	public bool EnoughWiresOfType(){
-		print (beginGridCell.gridType);
 		if (beginGridCell.gridType == Level.WireTypes.Aluminum && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().AluminumWire) > movements) {
 			return true;
 		} else if (beginGridCell.gridType == Level.WireTypes.Copper && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().CopperWire) > movements) {
