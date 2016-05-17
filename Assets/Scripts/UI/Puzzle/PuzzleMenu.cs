@@ -25,10 +25,6 @@ namespace Sol
 
         private PuzzleManager cachedPuzzleManager;
 
-        public void SetWiresUsed(int wires)
-        {
-            wiresUsed.text = string.Format(WIRES_USED_FORMAT, wires);
-        }
 
         public PuzzleManager CachedPuzzleManager
         {

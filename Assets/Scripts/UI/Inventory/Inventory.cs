@@ -43,8 +43,6 @@ namespace Sol
             }
         }
 
-
-
         public override void Open()
         {
             previewCamera.gameObject.SetActive(true);

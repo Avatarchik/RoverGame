@@ -189,6 +189,7 @@ public class PuzzleManager : MonoBehaviour
 		private Vector3 tempClickPosition;
 
 		private GridCell beginGridCell;
+		private int beginGridWireCount;
 
 		/// <summary>
 		/// The current(selected) grid cell.
@@ -690,13 +691,19 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 	public bool EnoughWiresOfType(){
-		if (beginGridCell.gridType == Level.WireTypes.Aluminum && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().AluminumWire) > movements) {
-			return true;
-		} else if (beginGridCell.gridType == Level.WireTypes.Copper && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().CopperWire) > movements) {
-			return true;
-		} else if (beginGridCell.gridType == Level.WireTypes.Gold && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().GoldWire) > movements) {
-			return true;
-		} else if (beginGridCell.gridType == Level.WireTypes.Silver && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().SilverWire) > movements) {
+		if (beginGridCell.gridType == Level.WireTypes.Aluminum) {
+			beginGridWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().AluminumWire);
+		} else if (beginGridCell.gridType == Level.WireTypes.Copper) {
+			beginGridWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().CopperWire);
+		} else if (beginGridCell.gridType == Level.WireTypes.Gold) {
+			beginGridWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().GoldWire);
+		} else if (beginGridCell.gridType == Level.WireTypes.Silver) {
+			beginGridWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().SilverWire);
+		} else {
+			beginGridWireCount = 0;
+		}
+
+		if (beginGridWireCount > movements) {
 			return true;
 		} else {
 			return false;
@@ -744,7 +751,7 @@ public class PuzzleManager : MonoBehaviour
 		{
 				try {
 						movements = 0;
-            //UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+			//UIManager.GetMenu<PuzzleMenu>().SetWireCounts();
 
             levelText.text = "Level " + TableLevel.wantedLevel.ID;
 						ResetGameContents ();
@@ -1160,7 +1167,7 @@ public class PuzzleManager : MonoBehaviour
 	private void DecreaseMovements ()
 	{
 		movements--;
-		UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+		//UIManager.GetMenu<PuzzleMenu> ().SetWireCounts ();
 	}
 
 		public enum ClickType
