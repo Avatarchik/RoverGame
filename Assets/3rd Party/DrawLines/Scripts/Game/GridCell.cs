@@ -43,6 +43,11 @@ public class GridCell : MonoBehaviour
 		/// </summary>
 		public int elementPairIndex = -1;
 
+	/// <summary>
+	/// The index of the element(dots) pair.
+	/// </summary>
+	public Level.WireTypes gridType;
+
 		/// <summary>
 		/// The surrounded adjacents of the GridCell.
 		/// (Contains the indexes of the adjacents (neighbours))

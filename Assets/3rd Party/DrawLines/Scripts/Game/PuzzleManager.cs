@@ -188,6 +188,8 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		private Vector3 tempClickPosition;
 
+		private GridCell beginGridCell;
+
 		/// <summary>
 		/// The current(selected) grid cell.
 		/// </summary>
@@ -512,6 +514,7 @@ public class PuzzleManager : MonoBehaviour
 
 						///Setting up the attributes for the current grid cell
 						clickMoving = true;
+				beginGridCell = currentGridCell;
 						currentGridCell.currentlyUsed = true;
 						if (currentLine == null) {
 								currentLine = gridLines [currentGridCell.gridLineIndex];
@@ -536,7 +539,8 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		private void GridCellClickMoved ()
 		{
-		if (UIManager.GetMenu<Inventory>().GetIngredientAmount(UIManager.GetMenu<PuzzleMenu>().AluminumWire) > movements)
+
+		if (EnoughWiresOfType())
         {
             if (currentLine == null)
             {
@@ -685,6 +689,20 @@ public class PuzzleManager : MonoBehaviour
         }
 		}
 
+	public bool EnoughWiresOfType(){
+		print (beginGridCell.gridType);
+		if (beginGridCell.gridType == Level.WireTypes.Aluminum && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().AluminumWire) > movements) {
+			return true;
+		} else if (beginGridCell.gridType == Level.WireTypes.Copper && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().CopperWire) > movements) {
+			return true;
+		} else if (beginGridCell.gridType == Level.WireTypes.Gold && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().GoldWire) > movements) {
+			return true;
+		} else if (beginGridCell.gridType == Level.WireTypes.Silver && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().SilverWire) > movements) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 		/// <summary>
 		/// Refreshs(Reset) the grid.
 		/// </summary>
@@ -808,7 +826,7 @@ public class PuzzleManager : MonoBehaviour
 		
 				gridLines = new Line[currentLevel.dotsPairs.Count];
 		
-				for (int i = 0; i <currentLevel.dotsPairs.Count; i++) {
+				for (int i = 0; i < currentLevel.dotsPairs.Count; i++) {
 						elementsPair = currentLevel.dotsPairs [i];
 						numberColor = new Color (1 - elementsPair.color.r, 1 - elementsPair.color.g, 1 - elementsPair.color.b, 1);//opposite color
 			
@@ -821,7 +839,7 @@ public class PuzzleManager : MonoBehaviour
 						gridCell.isEmpty = false;
 						gridCell.tragetIndex = elementsPair.secondDot.index;
 
-			gridType = elementsPair.wireType;
+						gridCell.gridType = elementsPair.wireType;
 			
 						gridCellTransform = gridCell.gameObject.transform;
 						gridCellScale = gridCellTransform.localScale;
@@ -855,6 +873,8 @@ public class PuzzleManager : MonoBehaviour
 						gridCell.topBackgroundColor = elementsPair.lineColor;
 						gridCell.isEmpty = false;
 						gridCell.tragetIndex = elementsPair.firstDot.index;
+
+						gridCell.gridType = elementsPair.wireType;
 			
 						gridCellTransform = gridCell.gameObject.transform;
 						gridCellScale = gridCellTransform.localScale;
