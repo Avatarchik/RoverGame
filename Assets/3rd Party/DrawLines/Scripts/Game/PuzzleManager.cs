@@ -789,9 +789,9 @@ public class PuzzleManager : MonoBehaviour
 		{
 				Debug.Log ("Building the Grid " + numberOfRows + "x" + numberOfColumns);
 		if (WorldSpacePuzzle) {
-			Vector3 worldCellScale = Vector3.one * 0.25f;
-			worldCellPosition = world.transform.position;
-			worldPlacer.transform.position = worldTopPivotTransform.position;
+			//Vector3 worldCellScale = Vector3.one * 0.25f;
+			//worldCellPosition = world.transform.position;
+			//worldPlacer.transform.position = worldTopPivotTransform.position;
 			Vector3 worldPosition = worldTopPivotTransform.position;
 			worldCells = new GridCell[numberOfRows * numberOfColumns];
 			GridCell worldCellComponent;
@@ -805,12 +805,9 @@ public class PuzzleManager : MonoBehaviour
 					worldCellComponent = worldCell.GetComponent<GridCell> ();
 					worldCellComponent.index = worldCellindex;
 					worldCellComponent.DefineAdjacents (i, j);
-					worldCell.transform.localScale = worldCellScale;
+					//worldCell.transform.localScale = worldCellScale;
 					worldCell.transform.SetParent (worldContentsTransform, true);
-					worldCell.transform.localPosition = new Vector3
-						(world.transform.localPosition.x + worldCellScale.x * j + worldCellScale.x / 2,
-							worldCell.transform.localPosition.y,
-						0.0f);
+					//worldCell.transform.localPosition = new Vector3
 					//worldCell.transform.position = worldPosition;
 					//worldCellPosition.y = worldPosition.y - worldCellScale.y * i - worldCellScale.x / 2;
 					//worldCellPosition.z = gridCellZPosition;
@@ -872,111 +869,218 @@ public class PuzzleManager : MonoBehaviour
 		private void SettingUpPairs ()
 		{
 				Debug.Log ("Setting up the Cells Pairs");
-	
-				currentLevel = Mission.wantedMission.levelsManagerComponent.levels [TableLevel.wantedLevel.ID - 1];
 
-				if (currentLevel == null) {
-						Debug.Log ("level is undefined");
-						return;
+		if (WorldSpacePuzzle) {
+			currentLevel = Mission.wantedMission.levelsManagerComponent.levels [TableLevel.wantedLevel.ID - 1];
+
+			if (currentLevel == null) {
+				Debug.Log ("level is undefined");
+				return;
+			}
+
+			TextMesh numberTextmesh;
+			Color numberColor = Color.white;
+			Level.DotsPair elementsPair = null;
+			Transform worldCellTransform;
+			GridCell gridCell;
+			Vector3 cellContentPosition = new Vector3 (0, 0, cellContentZPosition);
+			Vector3 gridCellScale = Vector3.zero;
+			GameObject firstElement = null;
+			GameObject secondElement = null;
+			Level.WireTypes gridType;
+			float cellContentScale = 0;
+
+			gridLines = new Line[currentLevel.dotsPairs.Count];
+
+			for (int i = 0; i < currentLevel.dotsPairs.Count; i++) {
+				elementsPair = currentLevel.dotsPairs [i];
+				numberColor = new Color (1 - elementsPair.color.r, 1 - elementsPair.color.g, 1 - elementsPair.color.b, 1);//opposite color
+
+				//Setting up the First Dot(Element)
+				gridCell = worldCells [elementsPair.firstDot.index];
+
+				gridCell.gridLineIndex = i;
+				gridCell.elementPairIndex = i;
+				gridCell.topBackgroundColor = elementsPair.lineColor;
+				gridCell.isEmpty = false;
+				gridCell.tragetIndex = elementsPair.secondDot.index;
+
+				SetGridPairIngredient (gridCell, elementsPair.wireType);
+
+				worldCellTransform = gridCell.gameObject.transform;
+				//gridCellScale = gridCellTransform.localScale;
+				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+
+				firstElement = Instantiate (worldContentsPrefab) as GameObject;
+				firstElement.transform.SetParent (worldCellTransform, true);
+				//firstElement.transform.localPosition = cellContentPosition;
+				//firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
+				firstElement.name = "Pair" + (i + 1) + "-FirstElement";
+				firstElement.GetComponent<Image> ().sprite = elementsPair.sprite;
+
+				if (elementsPair.applyColorOnSprite) {
+					firstElement.GetComponent<SpriteRenderer> ().color = elementsPair.color;//apply the sprite color
+				} else {
+					firstElement.GetComponent<SpriteRenderer> ().color = Color.white;//apply the white color
 				}
 
-				TextMesh numberTextmesh;
-				Color numberColor = Color.white;
-				Level.DotsPair elementsPair = null;
-				Transform gridCellTransform;
-				GridCell gridCell;
-				Vector3 cellContentPosition = new Vector3 (0, 0, cellContentZPosition);
-				Vector3 gridCellScale = Vector3.zero;
-				GameObject firstElement = null;
-				GameObject secondElement = null;
-				Level.WireTypes gridType;
-				float cellContentScale = 0;
+				numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
+				if (currentLevel.showPairsNumber) {
+					numberTextmesh.text = (i + 1).ToString ();
+					numberTextmesh.color = Color.white;//numberColor; 
+				} else {
+					numberTextmesh.text = "";//empty value
+				}
+
+				//Setting up the Second Dot(Element)
+				gridCell = worldCells [elementsPair.secondDot.index];
+				gridCell.gridLineIndex = i;
+				gridCell.elementPairIndex = i;
+				gridCell.topBackgroundColor = elementsPair.lineColor;
+				gridCell.isEmpty = false;
+				gridCell.tragetIndex = elementsPair.firstDot.index;
+
+				SetGridPairIngredient (gridCell, elementsPair.wireType);
+
+				worldCellTransform = gridCell.gameObject.transform;
+				//gridCellScale = gridCellTransform.localScale;
+				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+
+				secondElement = Instantiate (worldContentsPrefab) as GameObject;
+				secondElement.transform.SetParent (worldCellTransform, true);
+				//secondElement.transform.localPosition = cellContentPosition;
+				//secondElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
+				secondElement.name = "Pair" + (i + 1) + "-SecondElement";
+				secondElement.GetComponent<Image> ().sprite = elementsPair.sprite;
+
+				if (elementsPair.applyColorOnSprite) {
+					secondElement.GetComponent<SpriteRenderer> ().color = elementsPair.color;//apply the sprite color
+				} else {
+					secondElement.GetComponent<SpriteRenderer> ().color = Color.white;//apply the white color
+				}
+
+				numberTextmesh = secondElement.transform.Find ("Number").GetComponent<TextMesh> ();
+				if (currentLevel.showPairsNumber) {
+					numberTextmesh.text = (i + 1).ToString ();
+					numberTextmesh.color = Color.white;//numberColor; 
+				} else {
+					numberTextmesh.text = "";//empty value
+				}
+
+				///Create Grid Line
+				CreateGridLine (cellContentScale * gridLineWidthFactor, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+			}
+
+			Color tempColor = Mission.wantedMission.missionColor;
+			tempColor.a = draggingElementAlpha;
+
+			CreateDraggingElement (tempColor, new Vector3 (cellContentScale * draggingElementScaleFactor, cellContentScale * draggingElementScaleFactor, cellContentScale));
+		} else {
 		
-				gridLines = new Line[currentLevel.dotsPairs.Count];
+			currentLevel = Mission.wantedMission.levelsManagerComponent.levels [TableLevel.wantedLevel.ID - 1];
+
+			if (currentLevel == null) {
+				Debug.Log ("level is undefined");
+				return;
+			}
+
+			TextMesh numberTextmesh;
+			Color numberColor = Color.white;
+			Level.DotsPair elementsPair = null;
+			Transform gridCellTransform;
+			GridCell gridCell;
+			Vector3 cellContentPosition = new Vector3 (0, 0, cellContentZPosition);
+			Vector3 gridCellScale = Vector3.zero;
+			GameObject firstElement = null;
+			GameObject secondElement = null;
+			Level.WireTypes gridType;
+			float cellContentScale = 0;
+			gridLines = new Line[currentLevel.dotsPairs.Count];
 		
-				for (int i = 0; i < currentLevel.dotsPairs.Count; i++) {
-						elementsPair = currentLevel.dotsPairs [i];
-						numberColor = new Color (1 - elementsPair.color.r, 1 - elementsPair.color.g, 1 - elementsPair.color.b, 1);//opposite color
+			for (int i = 0; i < currentLevel.dotsPairs.Count; i++) {
+				elementsPair = currentLevel.dotsPairs [i];
+				numberColor = new Color (1 - elementsPair.color.r, 1 - elementsPair.color.g, 1 - elementsPair.color.b, 1);//opposite color
 			
-						//Setting up the First Dot(Element)
-						gridCell = gridCells [elementsPair.firstDot.index];
+				//Setting up the First Dot(Element)
+				gridCell = gridCells [elementsPair.firstDot.index];
                         
-						gridCell.gridLineIndex = i;
-						gridCell.elementPairIndex = i;
-						gridCell.topBackgroundColor = elementsPair.lineColor;
-						gridCell.isEmpty = false;
-						gridCell.tragetIndex = elementsPair.secondDot.index;
+				gridCell.gridLineIndex = i;
+				gridCell.elementPairIndex = i;
+				gridCell.topBackgroundColor = elementsPair.lineColor;
+				gridCell.isEmpty = false;
+				gridCell.tragetIndex = elementsPair.secondDot.index;
 
-						SetGridPairIngredient (gridCell, elementsPair.wireType);
+				SetGridPairIngredient (gridCell, elementsPair.wireType);
 			
-						gridCellTransform = gridCell.gameObject.transform;
-						gridCellScale = gridCellTransform.localScale;
-						cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+				gridCellTransform = gridCell.gameObject.transform;
+				gridCellScale = gridCellTransform.localScale;
+				cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 			
-						firstElement = Instantiate (cellContentPrefab) as GameObject;
-						firstElement.transform.SetParent (gridCellTransform);
-						firstElement.transform.localPosition = cellContentPosition;
-						firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
-						firstElement.name = "Pair" + (i + 1) + "-FirstElement";
-						firstElement.GetComponent<SpriteRenderer> ().sprite = elementsPair.sprite;
+				firstElement = Instantiate (cellContentPrefab) as GameObject;
+				firstElement.transform.SetParent (gridCellTransform);
+				firstElement.transform.localPosition = cellContentPosition;
+				firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
+				firstElement.name = "Pair" + (i + 1) + "-FirstElement";
+				firstElement.GetComponent<SpriteRenderer> ().sprite = elementsPair.sprite;
 			
-						if (elementsPair.applyColorOnSprite) {
-								firstElement.GetComponent<SpriteRenderer> ().color = elementsPair.color;//apply the sprite color
-						} else {
-								firstElement.GetComponent<SpriteRenderer> ().color = Color.white;//apply the white color
-						}
-
-						numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
-						if (currentLevel.showPairsNumber) {
-								numberTextmesh.text = (i + 1).ToString ();
-								numberTextmesh.color = Color.white;//numberColor; 
-            } else {
-								numberTextmesh.text = "";//empty value
-						}
-
-						//Setting up the Second Dot(Element)
-						gridCell = gridCells [elementsPair.secondDot.index];
-						gridCell.gridLineIndex = i;
-						gridCell.elementPairIndex = i;
-						gridCell.topBackgroundColor = elementsPair.lineColor;
-						gridCell.isEmpty = false;
-						gridCell.tragetIndex = elementsPair.firstDot.index;
-
-						SetGridPairIngredient (gridCell, elementsPair.wireType);
-			
-						gridCellTransform = gridCell.gameObject.transform;
-						gridCellScale = gridCellTransform.localScale;
-						cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
-			
-						secondElement = Instantiate (cellContentPrefab) as GameObject;
-						secondElement.transform.parent = gridCellTransform;
-						secondElement.transform.localPosition = cellContentPosition;
-						secondElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
-						secondElement.name = "Pair" + (i + 1) + "-SecondElement";
-						secondElement.GetComponent<SpriteRenderer> ().sprite = elementsPair.sprite;
-
-						if (elementsPair.applyColorOnSprite) {
-								secondElement.GetComponent<SpriteRenderer> ().color = elementsPair.color;//apply the sprite color
-						} else {
-								secondElement.GetComponent<SpriteRenderer> ().color = Color.white;//apply the white color
-						}
-
-						numberTextmesh = secondElement.transform.Find ("Number").GetComponent<TextMesh> ();
-						if (currentLevel.showPairsNumber) {
-								numberTextmesh.text = (i + 1).ToString ();
-                                numberTextmesh.color = Color.white;//numberColor; 
-						} else {
-								numberTextmesh.text = "";//empty value
-						}
-
-						///Create Grid Line
-						CreateGridLine (cellContentScale * gridLineWidthFactor, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+				if (elementsPair.applyColorOnSprite) {
+					firstElement.GetComponent<SpriteRenderer> ().color = elementsPair.color;//apply the sprite color
+				} else {
+					firstElement.GetComponent<SpriteRenderer> ().color = Color.white;//apply the white color
 				}
+
+				numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
+				if (currentLevel.showPairsNumber) {
+					numberTextmesh.text = (i + 1).ToString ();
+					numberTextmesh.color = Color.white;//numberColor; 
+				} else {
+					numberTextmesh.text = "";//empty value
+				}
+
+				//Setting up the Second Dot(Element)
+				gridCell = gridCells [elementsPair.secondDot.index];
+				gridCell.gridLineIndex = i;
+				gridCell.elementPairIndex = i;
+				gridCell.topBackgroundColor = elementsPair.lineColor;
+				gridCell.isEmpty = false;
+				gridCell.tragetIndex = elementsPair.firstDot.index;
+
+				SetGridPairIngredient (gridCell, elementsPair.wireType);
+			
+				gridCellTransform = gridCell.gameObject.transform;
+				gridCellScale = gridCellTransform.localScale;
+				cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+			
+				secondElement = Instantiate (cellContentPrefab) as GameObject;
+				secondElement.transform.parent = gridCellTransform;
+				secondElement.transform.localPosition = cellContentPosition;
+				secondElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
+				secondElement.name = "Pair" + (i + 1) + "-SecondElement";
+				secondElement.GetComponent<SpriteRenderer> ().sprite = elementsPair.sprite;
+
+				if (elementsPair.applyColorOnSprite) {
+					secondElement.GetComponent<SpriteRenderer> ().color = elementsPair.color;//apply the sprite color
+				} else {
+					secondElement.GetComponent<SpriteRenderer> ().color = Color.white;//apply the white color
+				}
+
+				numberTextmesh = secondElement.transform.Find ("Number").GetComponent<TextMesh> ();
+				if (currentLevel.showPairsNumber) {
+					numberTextmesh.text = (i + 1).ToString ();
+					numberTextmesh.color = Color.white;//numberColor; 
+				} else {
+					numberTextmesh.text = "";//empty value
+				}
+
+				///Create Grid Line
+				CreateGridLine (0.1f * gridLineWidthFactor, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+			}
 		
-				Color tempColor = Mission.wantedMission.missionColor;
-				tempColor.a = draggingElementAlpha;
+			Color tempColor = Mission.wantedMission.missionColor;
+			tempColor.a = draggingElementAlpha;
 		
-				CreateDraggingElement (tempColor, new Vector3 (cellContentScale * draggingElementScaleFactor, cellContentScale * draggingElementScaleFactor, cellContentScale));
+			CreateDraggingElement (tempColor, new Vector3 (cellContentScale * draggingElementScaleFactor, cellContentScale * draggingElementScaleFactor, cellContentScale));
+		}
 		}
 
     private void SettingUpObstacles()
