@@ -13,6 +13,21 @@ using Sol;
 [DisallowMultipleComponent]
 public class PuzzleManager : MonoBehaviour
 {
+	public bool WorldSpacePuzzle;
+	public GameObject worldCellPrefab;
+	public GameObject worldContentsPrefab;
+	public static GridCell[] worldCells;
+	public GameObject world;
+	public RectTransform worldPlacer;
+	public RectTransform worldContentsTransform;
+	public RectTransform worldTopPivotTransform;
+	public RectTransform worldBottomPivotTransform;
+	public RectTransform worldLinesTransform;
+	public Vector3 worldCellPosition;
+
+	/// <summary>
+	/// 
+	/// </summary>
     public Camera mainCamera;
 		/// <summary>
 		/// The grid cell prefab.
@@ -773,36 +788,71 @@ public class PuzzleManager : MonoBehaviour
 		private void BuildTheGrid ()
 		{
 				Debug.Log ("Building the Grid " + numberOfRows + "x" + numberOfColumns);
+		if (WorldSpacePuzzle) {
+			Vector3 worldCellScale = Vector3.one * 0.25f;
+			worldCellPosition = world.transform.position;
+			worldPlacer.transform.position = worldTopPivotTransform.position;
+			Vector3 worldPosition = worldTopPivotTransform.position;
+			worldCells = new GridCell[numberOfRows * numberOfColumns];
+			GridCell worldCellComponent;
+			GameObject worldCell = null;
+			int worldCellindex;
 
-        //Vector3 gridCellScale = new Vector3 (gridSize.x / numberOfColumns, gridSize.y / numberOfRows, 1);
-        Vector3 gridCellScale = Vector3.one;
-        Vector3 gridCellPosition = Vector2.zero;
-				Vector3 gridPosition = gridTopPivotTransform.position;
-				gridCells = new GridCell[numberOfRows * numberOfColumns];
-				GridCell gridCellComponent;
-				GameObject gridCell = null;
-				int gridCellIndex;
-		
-				for (int i = 0; i < numberOfRows; i++) {
-						for (int j = 0; j < numberOfColumns; j++) {
-								gridCellIndex = i * numberOfColumns + j;
-								gridCellPosition.x = gridPosition.x + gridCellScale.x * j + gridCellScale.x / 2;
-								gridCellPosition.y = gridPosition.y - gridCellScale.y * i - gridCellScale.x / 2;
-								gridCellPosition.z = gridCellZPosition;
-								gridCell = Instantiate (gridCellPrefab, gridCellPosition, Quaternion.identity) as GameObject;
-								//Set the color for each grid cell
-								//gridCell.GetComponent<SpriteRenderer> ().color = Mission.wantedMission.missionColor;
-								gridCellComponent = gridCell.GetComponent<GridCell> ();
-								gridCellComponent.index = gridCellIndex;
-								///Define the adjacents of the grid cell
-								gridCellComponent.DefineAdjacents (i, j);
-								gridCell.transform.localScale = gridCellScale;
-								gridCell.transform.parent = gridContentsTransform;
-								gridCell.name = "GridCell-" + (gridCellIndex + 1);
-								gridCells [gridCellIndex] = gridCell.GetComponent<GridCell> ();
-						}
+			for (int i = 0; i < numberOfRows; i++) {
+				for (int j = 0; j < numberOfColumns; j++) {
+					worldCellindex = i * numberOfColumns + j;
+					worldCell = Instantiate (worldCellPrefab, worldPosition, world.transform.rotation) as GameObject;
+					worldCellComponent = worldCell.GetComponent<GridCell> ();
+					worldCellComponent.index = worldCellindex;
+					worldCellComponent.DefineAdjacents (i, j);
+					worldCell.transform.localScale = worldCellScale;
+					worldCell.transform.SetParent (worldContentsTransform, true);
+					worldCell.transform.localPosition = new Vector3
+						(world.transform.localPosition.x + worldCellScale.x * j + worldCellScale.x / 2,
+							worldCell.transform.localPosition.y,
+						0.0f);
+					//worldCell.transform.position = worldPosition;
+					//worldCellPosition.y = worldPosition.y - worldCellScale.y * i - worldCellScale.x / 2;
+					//worldCellPosition.z = gridCellZPosition;
+					worldCellPosition = worldPlacer.transform.position;
+					//Set the color for each grid cell
+					//gridCell.GetComponent<SpriteRenderer> ().color = Mission.wantedMission.missionColor;
+
+					worldCell.name = "GridCell-" + (worldCellindex + 1);
+					worldCells [worldCellindex] = worldCell.GetComponent<GridCell> ();
 				}
+			}
+
+		} else{
+			Vector3 gridCellScale = Vector3.one;
+			Vector3 gridCellPosition = Vector2.zero;
+			Vector3 gridPosition = gridTopPivotTransform.position;
+			gridCells = new GridCell[numberOfRows * numberOfColumns];
+			GridCell gridCellComponent;
+			GameObject gridCell = null;
+			int gridCellIndex;
+
+			for (int i = 0; i < numberOfRows; i++) {
+				for (int j = 0; j < numberOfColumns; j++) {
+					gridCellIndex = i * numberOfColumns + j;
+					gridCellPosition.x = gridPosition.x + gridCellScale.x * j + gridCellScale.x / 2;
+					gridCellPosition.y = gridPosition.y - gridCellScale.y * i - gridCellScale.x / 2;
+					gridCellPosition.z = gridCellZPosition;
+					gridCell = Instantiate (gridCellPrefab, gridCellPosition, Quaternion.identity) as GameObject;
+					//Set the color for each grid cell
+					//gridCell.GetComponent<SpriteRenderer> ().color = Mission.wantedMission.missionColor;
+					gridCellComponent = gridCell.GetComponent<GridCell> ();
+					gridCellComponent.index = gridCellIndex;
+					///Define the adjacents of the grid cell
+					gridCellComponent.DefineAdjacents (i, j);
+					//gridCell.transform.localScale = gridCellScale;
+					gridCell.transform.parent = gridContentsTransform;
+					gridCell.name = "GridCell-" + (gridCellIndex + 1);
+					gridCells [gridCellIndex] = gridCell.GetComponent<GridCell> ();
+				}
+			}
 		}
+	}
 
 	private void SetGridPairIngredient(GridCell cell, Level.WireTypes wireType){
 		if (wireType == Level.WireTypes.Aluminum) {
