@@ -14,6 +14,9 @@ namespace Sol
         public Toggle openLogFilesToggle;
         public Toggle openSystemToggle;
 
+        public Button externalLink;
+
+        public string targetUrl = "";
 
         public override void Close()
         {
@@ -154,6 +157,13 @@ namespace Sol
         }
 
 
+        private void OpenExternalLink()
+        {
+            Debug.Log("Opening URL : "+targetUrl);
+            Application.OpenURL(targetUrl);
+        }
+
+
         private void Awake()
         {
             openMapToggle.onValueChanged.AddListener(OpenMap);
@@ -161,6 +171,8 @@ namespace Sol
             openInventoryToggle.onValueChanged.AddListener(OpenInventory);
             openLogFilesToggle.onValueChanged.AddListener(OpenLogs);
             openSystemToggle.onValueChanged.AddListener(OpenSystem);
+
+            externalLink.onClick.AddListener(OpenExternalLink);
         }
 
 
