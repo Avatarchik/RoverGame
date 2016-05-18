@@ -85,6 +85,7 @@ public class Line : MonoBehaviour
 		/// The line piece prefab.
 		/// </summary>
 		public GameObject linePiecePrefab;
+	public GridCell gridCell;
 
 		void Start ()
 		{
@@ -214,7 +215,6 @@ public class Line : MonoBehaviour
 
 				linePieces.Clear ();
 				points.Clear ();
-				GridCell gridCell = null;
 				Transform gridCellContent = null;
 
 				for (int i = 0; i < path.Count; i++) {

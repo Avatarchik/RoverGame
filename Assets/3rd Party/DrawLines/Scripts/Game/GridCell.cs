@@ -44,9 +44,9 @@ public class GridCell : MonoBehaviour
 		public int elementPairIndex = -1;
 
 	/// <summary>
-	/// The index of the element(dots) pair.
+	/// The correlated Ingredient for this grid's type.
 	/// </summary>
-	public Level.WireTypes gridType;
+	public Ingredient gridIngredient;
 
 		/// <summary>
 		/// The surrounded adjacents of the GridCell.

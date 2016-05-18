@@ -189,6 +189,12 @@ public class PuzzleManager : MonoBehaviour
 		private Vector3 tempClickPosition;
 
 		private GridCell beginGridCell;
+	public Ingredient beginWireIngredient;
+	public int beginWireCount;
+	private int AlumEndMoves;
+	private int CopperEndMoves;
+	private int GoldEndMoves;
+	private int SilverEndMoves;
 
 		/// <summary>
 		/// The current(selected) grid cell.
@@ -432,18 +438,18 @@ public class PuzzleManager : MonoBehaviour
 				draggingElementSpriteRenderer.enabled = false;
 
 				if (line != null) {
-						if (!line.completedLine) {
-								line.ClearPath ();
-						}
+			if (!line.completedLine) {
+				line.ClearPath ();
+			}
+			UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount);
+			movements = 0;
+						
+
 				}
 
 				previousGridCell = null;
 				currentGridCell = null;
 				currentLine = null;
-		if (line != null) {
-			movements = 0;
-			UIManager.GetMenu<PuzzleMenu> ().SetWiresUsed (0);
-		}
 		}
 
 		/// <summary>
@@ -595,7 +601,11 @@ public class PuzzleManager : MonoBehaviour
                 }
                 else {
                     Debug.Log("Clear the Line Path of index " + currentGridCell.gridLineIndex);
-                    gridLines[currentGridCell.gridLineIndex].ClearPath();
+					Line pathLine = gridLines [currentGridCell.gridLineIndex];
+					pathLine.ClearPath();
+					Ingredient gridIng = pathLine.gridCell.gridIngredient;
+					int count = UIManager.GetMenu<Inventory> ().GetIngredientAmount (gridIng);
+					UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (gridIng, count);
                 }
             }
 
@@ -690,13 +700,9 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 	public bool EnoughWiresOfType(){
-		if (beginGridCell.gridType == Level.WireTypes.Aluminum && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().AluminumWire) > movements) {
-			return true;
-		} else if (beginGridCell.gridType == Level.WireTypes.Copper && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().CopperWire) > movements) {
-			return true;
-		} else if (beginGridCell.gridType == Level.WireTypes.Gold && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().GoldWire) > movements) {
-			return true;
-		} else if (beginGridCell.gridType == Level.WireTypes.Silver && UIManager.GetMenu<Inventory> ().GetIngredientAmount (UIManager.GetMenu<PuzzleMenu> ().SilverWire) > movements) {
+		beginWireIngredient = beginGridCell.gridIngredient;
+		beginWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (beginWireIngredient);
+		if (beginWireCount > movements) {
 			return true;
 		} else {
 			return false;
@@ -708,7 +714,7 @@ public class PuzzleManager : MonoBehaviour
 		public void RefreshGrid ()
 		{
 				movements = 0;
-        UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+       // UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
 				timer.Stop ();
 
 				if (gridLines != null) {
@@ -744,7 +750,7 @@ public class PuzzleManager : MonoBehaviour
 		{
 				try {
 						movements = 0;
-            UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+			UIManager.GetMenu<PuzzleMenu>().SetInitialWireCounts();
 
             levelText.text = "Level " + TableLevel.wantedLevel.ID;
 						ResetGameContents ();
@@ -797,6 +803,18 @@ public class PuzzleManager : MonoBehaviour
 				}
 		}
 
+	private void SetGridPairIngredient(GridCell cell, Level.WireTypes wireType){
+		if (wireType == Level.WireTypes.Aluminum) {
+			cell.gridIngredient = UIManager.GetMenu<PuzzleMenu> ().AluminumWire;
+		} else if (wireType == Level.WireTypes.Copper) {
+			cell.gridIngredient = UIManager.GetMenu<PuzzleMenu> ().CopperWire;
+		} else if (wireType == Level.WireTypes.Gold) {
+			cell.gridIngredient = UIManager.GetMenu<PuzzleMenu> ().GoldWire;
+		} else if (wireType == Level.WireTypes.Silver) {
+			cell.gridIngredient = UIManager.GetMenu<PuzzleMenu> ().SilverWire;
+		}
+	}
+
 		/// <summary>
 		/// Setting up the cells pairs.
 		/// </summary>
@@ -838,7 +856,7 @@ public class PuzzleManager : MonoBehaviour
 						gridCell.isEmpty = false;
 						gridCell.tragetIndex = elementsPair.secondDot.index;
 
-						gridCell.gridType = elementsPair.wireType;
+						SetGridPairIngredient (gridCell, elementsPair.wireType);
 			
 						gridCellTransform = gridCell.gameObject.transform;
 						gridCellScale = gridCellTransform.localScale;
@@ -873,7 +891,7 @@ public class PuzzleManager : MonoBehaviour
 						gridCell.isEmpty = false;
 						gridCell.tragetIndex = elementsPair.firstDot.index;
 
-						gridCell.gridType = elementsPair.wireType;
+						SetGridPairIngredient (gridCell, elementsPair.wireType);
 			
 						gridCellTransform = gridCell.gameObject.transform;
 						gridCellScale = gridCellTransform.localScale;
@@ -1104,6 +1122,8 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		private void CheckLevelComplete ()
 		{
+		SetEndMoves ();
+		movements = 0;
 				if (gridLines == null) {
 						return;
 				}
@@ -1120,11 +1140,29 @@ public class PuzzleManager : MonoBehaviour
 			if (isLevelComplete) {
 				timer.Stop ();
 				isRunning = false;
-			print (movements);
-			UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().AluminumWire, movements);
+			RemoveInventoryWires ();
 				Cleanup(true);
 			}
 		}
+
+	private void SetEndMoves(){
+		if (beginGridCell.gridIngredient == UIManager.GetMenu<PuzzleMenu> ().AluminumWire) {
+			AlumEndMoves = movements;
+		} else if (beginGridCell.gridIngredient == UIManager.GetMenu<PuzzleMenu> ().CopperWire) {
+			CopperEndMoves = movements;
+		} else if (beginGridCell.gridIngredient == UIManager.GetMenu<PuzzleMenu> ().GoldWire) {
+			GoldEndMoves = movements;
+		} else if (beginGridCell.gridIngredient == UIManager.GetMenu<PuzzleMenu> ().SilverWire) {
+			SilverEndMoves = movements;
+		}
+	}
+
+	private void RemoveInventoryWires(){
+		UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().AluminumWire, AlumEndMoves);
+		UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().CopperWire, CopperEndMoves);
+		UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().GoldWire, GoldEndMoves);
+		UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().SilverWire, SilverEndMoves);
+	}
 
 
     private void Cleanup(bool completed)
@@ -1148,11 +1186,10 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// Increase the movements counter.
 		/// </summary>
-		private void IncreaseMovements ()
-		{
-				movements++;
-        UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
-    }
+	private void IncreaseMovements (){
+		movements++;
+		UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount - movements);
+	}
 
 	/// <summary>
 	/// Decrease the movements counter.
@@ -1160,7 +1197,7 @@ public class PuzzleManager : MonoBehaviour
 	private void DecreaseMovements ()
 	{
 		movements--;
-		UIManager.GetMenu<PuzzleMenu>().SetWiresUsed(movements);
+		UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount - movements);
 	}
 
 		public enum ClickType
