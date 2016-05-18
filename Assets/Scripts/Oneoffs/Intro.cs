@@ -116,11 +116,11 @@ namespace Sol
             //get wires
             ShowObjective(ot, "You'll need wires to proceed. Try to scavenge them from that scrapped pod you passed.");
             waypointManager.Huds[0].m_Target = questWaypoints[2];
+            yield return new WaitForSeconds(delayTime);
             while (inventory.GetIngredientAmount(wires) <= 6)
             {
                 yield return null;
             }
-            yield return new WaitForSeconds(6f);
             proceed = false;
             ///
             //fix it
