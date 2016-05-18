@@ -25,6 +25,7 @@ namespace Sol
         public GameObject tunnelEnterObjective;
 
         public Ingredient powerCrystal;
+        public Ingredient wires;
         public Ingredient wheels;
 
         public float displaySpeed = 0.01f;
@@ -109,14 +110,28 @@ namespace Sol
             yield return new WaitForSeconds(delayTime);
             //
             //Fix it
-            ShowObjective(ot, "Console looks damaged. Fix it and ascend");
-
+            ShowObjective(ot, "Console looks damaged.");
+            yield return new WaitForSeconds(delayTime);
+            //
+            //get wires
+            ShowObjective(ot, "You'll need wires to proceed. Try to scavenge them from that scrapped pod you passed.");
+            waypointManager.Huds[0].m_Target = questWaypoints[2];
+            while (inventory.GetIngredientAmount(wires) <= 6)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(6f);
+            proceed = false;
+            ///
+            //fix it
+            ShowObjective(ot, "Excellent, now fix the lift and ascend");
+            waypointManager.Huds[0].m_Target = questWaypoints[1];
             while (!proceed)
             {
                 yield return null;
             }
-            proceed = false;
             yield return new WaitForSeconds(delayTime);
+            proceed = false;
             //
             //Compliment
             ShowObjective(ot, "That's a good rover");
@@ -135,6 +150,7 @@ namespace Sol
             //
             //go to the dome
             ShowObjective(ot, "Looks like there was a landslide. I wonder if the base is ok.");
+            waypointManager.Huds[0].m_Target = questWaypoints[3];
             while (!proceed)
             {
                 yield return null;
