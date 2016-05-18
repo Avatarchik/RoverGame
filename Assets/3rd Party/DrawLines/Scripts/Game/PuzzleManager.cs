@@ -507,6 +507,7 @@ public class PuzzleManager : MonoBehaviour
 						if (gridLines [currentGridCell.gridLineIndex].completedLine) {
 								Debug.Log ("Reset Grid cells of the Line Path of the index " + currentGridCell.gridLineIndex);
 								gridLines [currentGridCell.gridLineIndex].completedLine = false;
+				//TODO - Bug on asana, UI count does not reset after this event happens
 								Release (gridLines [currentGridCell.gridLineIndex]);
 								return;
 						} 
