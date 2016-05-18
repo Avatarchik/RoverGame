@@ -13,6 +13,16 @@ namespace Sol
         public AudioClip BASE_MUSIC;
         public AudioClip TUNNEL_MUSIC;
         public AudioClip WIND_EFFECT;
+		public AudioClip JENN_ACTIVATED;
+		public AudioClip JENN_LOOKAROUND;
+		public AudioClip JENN_DAMAGEWHEELS;
+		public AudioClip JENN_SEEROVER;
+		public AudioClip JENN_EQUIPWHEELS;
+		public AudioClip JENN_FINDLIFT;
+		public AudioClip JENN_CONSOLEDAMAGED;
+		public AudioClip JENN_SCAVENGEWIRES;
+		public AudioClip JENN_FIXLIFT;
+		public AudioClip JENN_GOODROVER;
 
         private PlayerStats playerStats = null;
 
@@ -66,11 +76,13 @@ namespace Sol
             sm.Play(START_MUSIC);
             sm.Play(WIND_EFFECT);
             ShowObjective(ot, "Yes! I got it activated!");
+			sm.Play (JENN_ACTIVATED);
             StartCoroutine(GlitchOut());
             yield return new WaitForSeconds(delayTime);
             //
             //look around
             ShowObjective(ot, "Can you look around?");
+			sm.Play (JENN_LOOKAROUND);
 
             while (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0 || proceed)
             {
@@ -81,13 +93,16 @@ namespace Sol
             //
             //See that rover
             ShowObjective(ot, "Your wheels seem a bit damaged");
+			sm.Play (JENN_DAMAGEWHEELS);
             yield return new WaitForSeconds(delayTime);
             ShowObjective(ot, "See that rover?");
+			sm.Play (JENN_SEEROVER);
             waypointManager.Huds[0].m_Target = questWaypoints[0];
             yield return new WaitForSeconds(delayTime);
             //
             //Take its wheels
             ShowObjective(ot, "Take and equip its wheels");
+			sm.Play (JENN_EQUIPWHEELS);
 
             while (inventory.GetIngredientAmount(wheels) == 0)
             {
@@ -101,6 +116,7 @@ namespace Sol
             //
             //Find the lift
             ShowObjective(ot, "Good, now find the lift");
+			sm.Play (JENN_FINDLIFT);
             waypointManager.Huds[0].m_Target = questWaypoints[1];
             while (!proceed)
             {
@@ -111,10 +127,12 @@ namespace Sol
             //
             //Fix it
             ShowObjective(ot, "Console looks damaged.");
+			sm.Play (JENN_CONSOLEDAMAGED);
             yield return new WaitForSeconds(delayTime);
             //
             //get wires
             ShowObjective(ot, "You'll need wires to proceed. Try to scavenge them from that scrapped pod you passed.");
+			sm.Play (JENN_SCAVENGEWIRES);
             waypointManager.Huds[0].m_Target = questWaypoints[2];
             yield return new WaitForSeconds(delayTime);
             while (inventory.GetIngredientAmount(wires) <= 6)
@@ -125,6 +143,7 @@ namespace Sol
             ///
             //fix it
             ShowObjective(ot, "Excellent, now fix the lift and ascend");
+			sm.Play (JENN_FIXLIFT);
             waypointManager.Huds[0].m_Target = questWaypoints[1];
             while (!proceed)
             {
@@ -135,6 +154,7 @@ namespace Sol
             //
             //Compliment
             ShowObjective(ot, "That's a good rover");
+			sm.Play (JENN_GOODROVER);
             while (!proceed)
             {
                 yield return null;
