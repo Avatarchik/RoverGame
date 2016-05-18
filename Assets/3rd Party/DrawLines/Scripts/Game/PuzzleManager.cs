@@ -281,15 +281,15 @@ public class PuzzleManager : MonoBehaviour
 		{
 				///Setting up the references
 				if (timer == null) {
-						timer = GameObject.Find ("Time").GetComponent<Timer> ();
+						//timer = GameObject.Find ("Time").GetComponent<Timer> ();
 				}
 
 				if (nextButtonImage == null) {
-						nextButtonImage = GameObject.Find ("NextButton").GetComponent<Image> ();
+						//nextButtonImage = GameObject.Find ("NextButton").GetComponent<Image> ();
 				}
 
 				if (backButtonImage == null) {
-						backButtonImage = GameObject.Find ("BackButton").GetComponent<Image> ();
+						//backButtonImage = GameObject.Find ("BackButton").GetComponent<Image> ();
 				}
 
 				if (effectsAudioSource == null) {

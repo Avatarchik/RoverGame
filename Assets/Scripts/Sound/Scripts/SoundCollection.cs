@@ -6,10 +6,8 @@ using System.Linq;
 
 public class SoundCollection : ScriptableObject
 {
-    [HideInInspector]
     public SoundType soundType = SoundType.None;
 
-    [HideInInspector]
 	public List<Sound> sounds = new List<Sound> ();
 
     /// <summary>
