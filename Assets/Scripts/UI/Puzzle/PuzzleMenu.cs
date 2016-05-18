@@ -13,8 +13,9 @@ namespace Sol
         public Text messageText;
         public Text wiresInInventory;
         public Text wiresUsed;
+		public WireCountFill[] wireCounts;
 
-        //TODO we need to support more than one kind of wire eventually
+        //Different Wire Types
         public Ingredient AluminumWire;
 		public Ingredient CopperWire;
 		public Ingredient GoldWire;
@@ -30,6 +31,25 @@ namespace Sol
         {
             get { return (cachedPuzzleManager != null) ? cachedPuzzleManager : cachedPuzzleManager = GameObject.FindObjectOfType<PuzzleManager>(); }
         }
+
+		void Start(){
+			wireCounts = transform.GetComponentsInChildren<WireCountFill> (true);
+		}
+
+		public void SetInitialWireCounts(){
+			foreach (WireCountFill filler in wireCounts) {
+				int initialCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (filler.wireIngredient);
+				filler.SetWireCount (initialCount);
+			}
+		}
+
+		public void SetCurrentWireCounts(Ingredient beginIngrdient, int currentCount){
+			foreach (WireCountFill filler in wireCounts) {
+				if (filler.wireIngredient == beginIngrdient) {
+					filler.UpdateWireCount (currentCount);
+				}
+			}
+		}
 
 
         public void Open(InteractiblePuzzle ip)

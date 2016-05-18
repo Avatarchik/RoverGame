@@ -3,15 +3,6 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class WireCountFill : MonoBehaviour {
-
-	public enum WireType
-	{
-		Aluminum,
-		Copper,
-		Gold,
-		Silver
-	}
-	public WireType myWireType;
 	/// <summary>
 	/// This wire's count text component.
 	/// </summary>
@@ -27,15 +18,16 @@ public class WireCountFill : MonoBehaviour {
 	/// <summary>
 	/// When the puzzle starts, what is this wire's inventory count?
 	/// </summary>
-	public int initialWireCount;
+	public float initialWireCount;
 	/// <summary>
 	/// What is this wire's current inventory count?
 	/// </summary>
-	public int currentWireCount;
+	public float currentWireCount;
+	public float fillRatio;
 
 	// Use this for initialization
 	void Start () {
-		
+		fillImage = gameObject.GetComponent<Image> ();
 	}
 	
 	// Update is called once per frame
@@ -43,8 +35,18 @@ public class WireCountFill : MonoBehaviour {
 		
 	}
 
-	public void UpdateWireCount(int invCount){
-		fillImage.fillAmount = invCount / initialWireCount;
+	public void SetWireCount(int initialCount){
+		initialWireCount = initialCount;
+		currentWireCount = initialCount;
+		wireCountText.text = initialCount.ToString ();
+	}
 
+	public void UpdateWireCount(int invCount){
+		currentWireCount = invCount;
+		if (initialWireCount > 0) {
+			fillRatio = currentWireCount / initialWireCount;
+			fillImage.fillAmount = fillRatio;
+			wireCountText.text = invCount.ToString ();
+		}
 	}
 }
