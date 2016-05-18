@@ -9,7 +9,9 @@ namespace Sol
         public EllipsoidParticleEmitter effect;
         public ParticleAnimator particleAnimator;
         public Vector3 Offset = Vector3.zero;
+
         public bool fogDriven = false;
+        public bool outdoorsOnly = false;
     }
 
 
@@ -20,13 +22,31 @@ namespace Sol
 
         public void StartEffect(EllipsoidParticleEmitter effect)
         {
+            Debug.Log("starting effect");
             effect.emit = true;
         }
 
 
         public void StopEffect(EllipsoidParticleEmitter effect)
         {
+            Debug.Log("stopping effect");
             effect.emit = false;
+        }
+
+
+        private void HandleWeatherEvent(bool indoors)
+        {
+            if(sandStorm.outdoorsOnly)
+            {
+                if(indoors)
+                {
+                    StopEffect(sandStorm.effect);
+                }
+                else
+                {
+                    StartEffect(sandStorm.effect);
+                }
+            }
         }
 
 
@@ -44,6 +64,12 @@ namespace Sol
                 }
                 sandStorm.particleAnimator.colorAnimation = colors;
             }
+        }
+
+
+        private void Awake()
+        {
+            IndoorTrigger.OnWeatherEvent += HandleWeatherEvent;
         }
     }
 }
