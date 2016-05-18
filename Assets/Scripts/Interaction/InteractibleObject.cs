@@ -92,8 +92,8 @@ namespace Sol
                 }
 
                 UIManager.Close<MessageMenu>();
-                silhouetteSeen.SetActive(false);
-                silhouetteInteractible.SetActive(false);
+                if(silhouetteSeen != null) silhouetteSeen.SetActive(false);
+                if (silhouetteInteractible != null) silhouetteInteractible.SetActive(false);
             }
         }
 

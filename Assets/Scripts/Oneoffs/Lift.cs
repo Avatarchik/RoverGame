@@ -5,68 +5,81 @@ using System.Collections.Generic;
 
 namespace Sol
 {
-    public class Lift : InteractibleLerp
+    public class Lift : MonoBehaviour
     {
-        public AudioClip liftStop;
+        public delegate void LiftEvent();
+        public static event LiftEvent OnLiftStop;
 
-        private IEnumerator Load()
+        public SoundControls soundControls;
+
+        public AudioClip liftStop;
+        public Animator liftAnimator;
+
+        public bool atTop = false;
+
+        private Transform cachedParent;
+        private Transform player;
+        private List<SoundSource> sources = new List<SoundSource>();
+
+        private Transform Player
         {
-           // AsyncOperation async = SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
-          //  while (async.progress < 0.9f)
-          //  {
-                yield return null;
-          //  }
+            get { return (player != null) ? player : GameObject.FindObjectOfType<PlayerStats>().transform; }
         }
 
-        protected override IEnumerator Lerp()
+        public void MoveLift()
+        {
+            InitializeMovement();
+            PlayLiftNoises();
+
+            liftAnimator.SetBool("Activated", true);
+            StartCoroutine(HandleAnimation());
+        }
+
+
+        private void InitializeMovement()
+        {
+            cachedParent = Player.parent;
+            Player.SetParent(this.transform);
+        }
+
+
+        private void PlayLiftNoises()
         {
             SoundManager sm = GameManager.Get<SoundManager>();
-            Transform player = GameObject.FindObjectOfType<PlayerStats>().transform;
-            Transform cachedParent = player.parent;
-            player.SetParent(controlledObject.transform);
-
-            interactible = false;
-            float elapsedTime = 0f;
-
-            Vector3 startPos = controlledObject.position;
-            Quaternion startRotation = controlledObject.rotation;
-
-            Transform desiredPos = (triggered) ? pos1 : pos2;
-            triggered = !triggered;
-
-            List<SoundSource> sources = new List<SoundSource>();
             SoundSource ss = sm.Play(soundControls.interactEffects[0]);
+
             sources.Add(ss);
 
-            for(int i = 1; i < soundControls.interactEffects.Length; i++)
+            for (int i = 1; i < soundControls.interactEffects.Length; i++)
             {
                 sources.Add(sm.Play(soundControls.interactEffects[i]));
             }
+        }
 
-            //StartCoroutine(Load());
 
-            while (elapsedTime < lerpTime)
+        private void StopLiftNoises()
+        {
+            SoundManager sm = GameManager.Get<SoundManager>();
+
+            foreach (SoundSource source in sources)
             {
-                controlledObject.position = Vector3.Lerp(startPos, desiredPos.position, elapsedTime / lerpTime);
-                controlledObject.rotation = Quaternion.Lerp(startRotation, desiredPos.rotation, elapsedTime / lerpTime);
-
-                elapsedTime += Time.fixedDeltaTime;
-                yield return null;
-            }
-
-            foreach(SoundSource source in sources)
-            {
-                if(source != null) Destroy(source.gameObject);
+                if (source != null) source.Stop();
             }
 
             sm.Play(liftStop);
+        }
 
-            silhouetteSeen.SetActive(false);
-            silhouetteInteractible.SetActive(false);
-           
-            player.SetParent(cachedParent);
 
-            Destroy(this);
+        private IEnumerator HandleAnimation()
+        {
+            yield return null;
+            liftAnimator.SetBool("Activated", false);
+
+            yield return new WaitForSeconds(12f);
+
+            StopLiftNoises();
+            Player.SetParent(cachedParent);
+            OnLiftStop();
         }
     }
 }
