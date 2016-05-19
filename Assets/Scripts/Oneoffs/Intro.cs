@@ -75,6 +75,8 @@ namespace Sol
             FadeMenu fm = UIManager.GetMenu<FadeMenu>();
             SoundManager sm = GameManager.Get<SoundManager>();
             waypointManager.Huds[0].m_Target = null;
+            waypointManager.Huds[1].m_Target = null;
+            waypointManager.Huds[2].m_Target = null;
 
             const float delayTime = 4f;
             fm.Fade(5f, Color.black, Color.clear, true);
@@ -283,7 +285,7 @@ namespace Sol
             //AI
             //Don't listen
             ShowObjective(ot, "It would be much faster and easier to blow open the doors directly.", false);
-            waypointManager.Huds[1].m_Target = questWaypoints[8];
+            waypointManager.Huds[1].m_Target = questWaypoints[3];
             yield return new WaitForSeconds(delayTime);
 
             StartCoroutine(Choice());
