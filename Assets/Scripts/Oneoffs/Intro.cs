@@ -68,6 +68,12 @@ namespace Sol
             proceed = true;
         }
 
+
+        public void SetExplosive(bool landslide)
+        {
+            blowingLandslide = landslide;
+        }
+
         private IEnumerator RunTutorial()
         {
             ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
@@ -273,6 +279,9 @@ namespace Sol
                 if (inventory.GetIngredientAmount(bundleOfWires) > 0) waypointManager.Huds[2].m_Target = null; //wires
                 yield return null;
             }
+            waypointManager.Huds[0].m_Target = null;
+            waypointManager.Huds[1].m_Target = null;
+            waypointManager.Huds[2].m_Target = null;
 
             //
             //HUMAN
@@ -313,15 +322,18 @@ namespace Sol
             Inventory inventory = UIManager.GetMenu<Inventory>();
             FadeMenu fm = UIManager.GetMenu<FadeMenu>();
             SoundManager sm = GameManager.Get<SoundManager>();
-            waypointManager.Huds[0].m_Target = null;
+            
 
-            const float delayTime = 4f;
-            while(!proceed)
+            while (inventory.GetIngredientAmount(explosive) > 0)
             {
                 yield return null;
             }
-            
-            if(blowingLandslide)
+
+            waypointManager.Huds[0].m_Target = null;
+            waypointManager.Huds[1].m_Target = null;
+            waypointManager.Huds[2].m_Target = null;
+
+            if (blowingLandslide)
             {
                 ShowObjective(ot, "I see how it is. Well lets just see how far trusting the human gets you", false);
             }
@@ -329,7 +341,12 @@ namespace Sol
             {
                 ShowObjective(ot, "What are you doing?! You're going to damage the base!");
             }
-            yield return new WaitForSeconds(delayTime);
+            yield return new WaitForSeconds(6f);
+            UIManager.GetMenu<FadeMenu>().Fade(0f, Color.clear, Color.black);
+            GameObject.FindObjectOfType<PlayerStats>().DisableMovement();
+            yield return new WaitForSeconds(0.5f);
+            UIManager.GetMenu<MessageMenu>().Open("To Be Continued...");
+            yield return new WaitForSeconds(3f);
         }
 
 
@@ -482,6 +499,8 @@ namespace Sol
         {
             //StartCoroutine(Load());
             StartCoroutine(RunTutorial());
+
+            CraterExplosion.OnExplosivePlaced += SetExplosive;
         }
     }
 }

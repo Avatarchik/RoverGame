@@ -6,6 +6,9 @@ namespace Sol
 {
     public class CraterExplosion : InteractibleObject
     {
+        public delegate void ExplosiveEvent(bool landslide);
+        public static event ExplosiveEvent OnExplosivePlaced;
+
         private const int EXPLOSION_SOUND_ID = 2091111392;
 
         public GameObject explosiveDevice;
@@ -18,6 +21,8 @@ namespace Sol
         public int explosionDelay = 10;
         public float shakeIntensity = 1f;
         public float shakeDecay = 0.05f;
+
+        public bool isLandslide = true;
 
         public List<GameObject> rockWall = new List<GameObject>();
 
@@ -67,6 +72,7 @@ namespace Sol
 
         private IEnumerator DetonateDelay()
         {
+            OnExplosivePlaced(isLandslide);
             explosiveDevice.SetActive(true);
             CountDown countDown = UIManager.GetMenu<CountDown>();
             countDown.SetText(explosionDelay);
