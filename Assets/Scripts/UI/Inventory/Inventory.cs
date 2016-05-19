@@ -57,13 +57,11 @@ namespace Sol
             {
                 if (containerExchange)
                 {
-                    Debug.Log("exchange desired");
                     CloseInfoPanel();
                     base.Open();
                 }
                 else
                 {
-                    Debug.Log("no exchange");
                     OpenInfoPanel();
                     base.Open();
                 }
@@ -76,6 +74,9 @@ namespace Sol
         public override void Close()
         {
             previewCamera.gameObject.SetActive(false);
+
+            UIManager.Close<HoverTip>();
+
             base.Close();
         }
 
