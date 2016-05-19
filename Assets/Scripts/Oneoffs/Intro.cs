@@ -111,21 +111,25 @@ namespace Sol
             yield return new WaitForSeconds(delayTime);
             //
             //Take its wheels
-            ShowObjective(ot, "Take and equip its wheels");
+            ShowObjective(ot, "Take its wheels");
             sm.Play(JENN_EQUIPWHEELS);
-
+            yield return new WaitForSeconds(delayTime);
             while (inventory.GetIngredientAmount(wheels) == 0)
             {
                 yield return null;
             }
+            //
+            //inventory
+            ShowObjective(ot, "Good, now equip them from the (i)nventory");
+            yield return new WaitForSeconds(delayTime);
             while (inventory.GetIngredientAmount(wheels) != 0)
             {
                 yield return null;
             }
-            yield return new WaitForSeconds(delayTime);
+            
             //
             //Find the lift
-            ShowObjective(ot, "Good, now find the lift");
+            ShowObjective(ot, "Ok, now find the lift");
             sm.Play(JENN_FINDLIFT);
             waypointManager.Huds[0].m_Target = questWaypoints[1];
             while (!proceed)
@@ -164,12 +168,8 @@ namespace Sol
             //
             //Compliment
             ShowObjective(ot, "That's a good rover");
+            waypointManager.Huds[0].m_Target = null;
             sm.Play(JENN_GOODROVER);
-            while (!proceed)
-            {
-                yield return null;
-            }
-            proceed = false;
             yield return new WaitForSeconds(delayTime);
             //
             //exposition
@@ -191,18 +191,24 @@ namespace Sol
             waypointManager.Huds[0].m_Target = null;
 
             const float delayTime = 4f;
-
+            while (!proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
             ShowObjective(ot, "Looks like there was a landslide. I wonder if the base is ok.");
+            yield return new WaitForSeconds(delayTime);
             waypointManager.Huds[0].m_Target = questWaypoints[3];
             while (!proceed)
             {
                 yield return null;
             }
             proceed = false;
-            yield return new WaitForSeconds(delayTime);
+            
             //
             //get in
             ShowObjective(ot, "It doesn't look like there's any damage");
+            waypointManager.Huds[0].m_Target = null;
             yield return new WaitForSeconds(delayTime);
             //
             //strange
@@ -230,6 +236,14 @@ namespace Sol
             //dont worry
             ShowObjective(ot, "Don't worry, she can't hear us", false);
             yield return new WaitForSeconds(delayTime);
+            //
+            //hinting
+            ShowObjective(ot, "There's more going on here than she's letting you know", false);
+            yield return new WaitForSeconds(delayTime);
+            //
+            //hinting
+            ShowObjective(ot, "You'll know the truth soon enough", false);
+            yield return new WaitForSeconds(delayTime * 2);
 
             //
             //HUMAN
@@ -251,12 +265,12 @@ namespace Sol
 
             yield return new WaitForSeconds(delayTime);
             while(inventory.GetIngredientAmount(canister) == 0 ||
-                inventory.GetIngredientAmount(canister) == 0 ||
-                inventory.GetIngredientAmount(canister) == 0)
+                inventory.GetIngredientAmount(fuelCell) == 0 ||
+                inventory.GetIngredientAmount(bundleOfWires) == 0)
             {
                 if (inventory.GetIngredientAmount(canister) > 0) waypointManager.Huds[0].m_Target = null; //canister
                 if (inventory.GetIngredientAmount(fuelCell) > 0) waypointManager.Huds[1].m_Target = null; //fuel cell
-                if (inventory.GetIngredientAmount(wires) > 0) waypointManager.Huds[2].m_Target = null; //wires
+                if (inventory.GetIngredientAmount(bundleOfWires) > 0) waypointManager.Huds[2].m_Target = null; //wires
                 yield return null;
             }
 
@@ -264,6 +278,7 @@ namespace Sol
             //HUMAN
             //make a bomb
             ShowObjective(ot, "Good! You should be able to use those to craft a bomb at the nearby crafting station");
+            waypointManager.Huds[0].m_Target = questWaypoints[8];
             yield return new WaitForSeconds(delayTime);
             while (inventory.GetIngredientAmount(explosive) == 0)
             {
@@ -315,8 +330,6 @@ namespace Sol
                 ShowObjective(ot, "What are you doing?! You're going to damage the base!");
             }
             yield return new WaitForSeconds(delayTime);
-
-
         }
 
 
