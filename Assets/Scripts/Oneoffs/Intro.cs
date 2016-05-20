@@ -9,6 +9,9 @@ namespace Sol
 {
     public class Intro : MonoBehaviour
     {
+        public delegate void QuestEvent();
+        public static event QuestEvent OnQuestEvent;
+
         public AudioClip START_MUSIC;
         public AudioClip BASE_MUSIC;
         public AudioClip TUNNEL_MUSIC;
@@ -501,6 +504,7 @@ namespace Sol
             StartCoroutine(RunTutorial());
 
             CraterExplosion.OnExplosivePlaced += SetExplosive;
+            OnQuestEvent += Next;
         }
     }
 }
