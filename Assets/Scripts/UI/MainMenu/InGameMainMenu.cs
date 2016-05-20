@@ -172,7 +172,7 @@ namespace Sol
             openLogFilesToggle.onValueChanged.AddListener(OpenLogs);
             openSystemToggle.onValueChanged.AddListener(OpenSystem);
 
-            externalLink.onClick.AddListener(OpenExternalLink);
+            //externalLink.onClick.AddListener(OpenExternalLink);
         }
 
 
