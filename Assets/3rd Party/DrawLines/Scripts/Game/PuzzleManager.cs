@@ -17,7 +17,7 @@ public class PuzzleManager : MonoBehaviour
 	public bool WorldSpacePuzzle;
 	public GameObject worldCellPrefab;
 	public GameObject worldContentsPrefab;
-	public static GridCell[] worldCells;
+	//public static GridCell[] worldCells;
 	public GameObject world;
 	public RectTransform worldContentsTransform;
 	public RectTransform worldLinesTransform;
@@ -256,7 +256,7 @@ public class PuzzleManager : MonoBehaviour
     /// <summary>
     /// Temporary sprite renderer.
     /// </summary>
-    public SpriteRenderer tempSpriteRendererd;
+	public Image tempSpriteRendererd;
 
     /// <summary>
     /// Whether the dragging element is rendering(dragging)
@@ -409,47 +409,37 @@ public class PuzzleManager : MonoBehaviour
     }
 	
 		// Update is called once per frame
-		void Update ()
-		{
-		RaycastHit hit;
-		Ray playerRay = playerCam.ScreenPointToRay(Input.mousePosition);
-		Debug.DrawRay (playerRay.origin, playerRay.direction * 50.0f, Color.red, 1.0f, false);
-
-		if (Physics.Raycast (playerRay, out hit)) {
-			tempCollider3D = hit.collider;
-			print ("FASDSAD");
-		}
+	void Update (){
 		Moves = movements;
-				if (!isRunning) {
-						return;
+		if (!isRunning) {
+				return;
+		}
+
+//		if (gridLines == null || gridCells == null) {
+//				return;
+//		}
+		if (Input.GetMouseButtonDown (0)) {
+				RayCast (Input.mousePosition, ClickType.Began);
+		} else if (Input.GetMouseButtonUp (0)) {
+				Release (currentLine);
+		}
+
+		if (clickMoving) {
+				RayCast (Input.mousePosition, ClickType.Moved);
+		}
+
+		if (drawDraggingElement) {
+				if (!draggingElementSpriteRenderer.enabled) {
+						draggingElementSpriteRenderer.enabled = true;
 				}
 
-				if (gridLines == null || gridCells == null) {
-						return;
-				}
-
-				if (Input.GetMouseButtonDown (0)) {
-						RayCast (Input.mousePosition, ClickType.Began);
-				} else if (Input.GetMouseButtonUp (0)) {
-						Release (currentLine);
-				}
-
-				if (clickMoving) {
-						RayCast (Input.mousePosition, ClickType.Moved);
-				}
-
-				if (drawDraggingElement) {
-						if (!draggingElementSpriteRenderer.enabled) {
-								draggingElementSpriteRenderer.enabled = true;
-						}
-
-						DrawDraggingElement (Input.mousePosition);
-				} else {
-						if (draggingElementSpriteRenderer.enabled) {
-								draggingElementSpriteRenderer.enabled = false;
-						}
+				DrawDraggingElement (Input.mousePosition);
+		} else {
+				if (draggingElementSpriteRenderer.enabled) {
+						draggingElementSpriteRenderer.enabled = false;
 				}
 		}
+	}
 
 		/// <summary>
 		/// On Click Release event.
@@ -484,16 +474,23 @@ public class PuzzleManager : MonoBehaviour
 		/// <param name="clickType">The type of the click(touch).</param>
 		private void RayCast (Vector3 clickPosition, ClickType clickType)
 		{
-           // Debug.Log("casting!!!");
+            Debug.Log("casting!!!");
 				tempClickPosition = mainCamera.ScreenToWorldPoint (clickPosition);
 				//tempRayCastHit2D = Physics2D.Raycast (tempClickPosition, Vector2.zero);
 				//tempCollider2D = tempRayCastHit2D.collider;
+		RaycastHit hit;
+		Ray playerRay = playerCam.ScreenPointToRay(Input.mousePosition);
+		Debug.DrawRay (playerRay.origin, playerRay.direction * 50.0f, Color.red, 1.0f, false);
 
-				if (tempCollider2D != null) {
+		if (Physics.Raycast (playerRay, out hit)) {
+			tempCollider3D = hit.collider;
+		}
+
+				if (tempCollider3D != null) {
              //   Debug.Log("temp collider is not null!");
 						///When a ray hit a grid cell
-						if (tempCollider2D.tag == "GridCell") {
-								currentGridCell = tempCollider2D.GetComponent<GridCell> ();
+						if (tempCollider3D.tag == "GridCell") {
+								currentGridCell = tempCollider3D.GetComponent<GridCell> ();
 								if (clickType == ClickType.Began) {
 										previousGridCell = currentGridCell;
 										drawDraggingElement = true;
@@ -688,15 +685,15 @@ public class PuzzleManager : MonoBehaviour
                             //Setting up the connect pairs
                             if (gridCell == null) Debug.LogError("gridcell is null!");
                             Transform transform = GameObjectUtil.FindChildByTag(gridCell.transform, "GridCellContent");
-                            if (transform == null) transform = gridCell.GetComponentInChildren<SpriteRenderer>().transform;
+							if (transform == null) transform = gridCell.GetComponentInChildren<Image>().transform;
 
                             Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
-                            transform.GetComponent<SpriteRenderer>().sprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
+							transform.GetComponent<Image>().sprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
                         }
                         ///Setting up the color of the top background of the grid cell
                         tempColor = previousGridCell.topBackgroundColor;
                         tempColor.a = gridCellTopBackgroundAlpha;
-                        tempSpriteRendererd = gridCell.transform.Find("background").GetComponent<SpriteRenderer>();
+						tempSpriteRendererd = gridCell.transform.Find("background").GetComponent<Image>();
                         tempSpriteRendererd.color = tempColor;
                         ///Enable the top backgroud of the grid cell
                         tempSpriteRendererd.enabled = true;
@@ -781,6 +778,7 @@ public class PuzzleManager : MonoBehaviour
             levelText.text = "Level " + TableLevel.wantedLevel.ID;
 						ResetGameContents ();
 						BuildTheGrid ();
+			isRunning = true;
 						SettingUpPairs ();
                         SettingUpObstacles();
 						SettingUpNextBackAlpha ();
@@ -799,7 +797,7 @@ public class PuzzleManager : MonoBehaviour
 		{
 				Debug.Log ("Building the Grid " + numberOfRows + "x" + numberOfColumns);
 		if (WorldSpacePuzzle) {
-			worldCells = new GridCell[numberOfRows * numberOfColumns];
+			gridCells = new GridCell[numberOfRows * numberOfColumns];
 			GridCell worldCellComponent;
 			GameObject worldCell = null;
 			int worldCellindex;
@@ -815,7 +813,7 @@ public class PuzzleManager : MonoBehaviour
 					worldCell.transform.SetParent (worldContentsTransform, true);
 					worldCell.transform.localPosition = Vector3.zero;
 					worldCell.name = "GridCell-" + (worldCellindex + 1);
-					worldCells [worldCellindex] = worldCell.GetComponent<GridCell> ();
+					gridCells [worldCellindex] = worldCell.GetComponent<GridCell> ();
 				}
 			}
 
@@ -896,7 +894,7 @@ public class PuzzleManager : MonoBehaviour
 				numberColor = new Color (1 - elementsPair.color.r, 1 - elementsPair.color.g, 1 - elementsPair.color.b, 1);//opposite color
 
 				//Setting up the First Dot(Element)
-				gridCell = worldCells [elementsPair.firstDot.index];
+				gridCell = gridCells [elementsPair.firstDot.index];
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
 				gridCell.topBackgroundColor = elementsPair.lineColor;
@@ -933,7 +931,7 @@ public class PuzzleManager : MonoBehaviour
 //				}
 
 				//Setting up the Second Dot(Element)
-				gridCell = worldCells [elementsPair.secondDot.index];
+				gridCell = gridCells [elementsPair.secondDot.index];
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
 				gridCell.topBackgroundColor = elementsPair.lineColor;
@@ -1118,12 +1116,12 @@ public class PuzzleManager : MonoBehaviour
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				firstElement.name = "barrier" + (i + 1) + "-FirstElement";
-				firstElement.GetComponent<SpriteRenderer> ().sprite = barrier.sprite;
+				firstElement.GetComponent<Image> ().sprite = barrier.sprite;
 
 				numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
 				numberTextmesh.text = "";//empty value
 
-				firstElement.GetComponent<SpriteRenderer> ().color = barrier.color;
+				firstElement.GetComponent<Image> ().color = barrier.color;
 			}
 		}else {
 			/*
@@ -1207,7 +1205,7 @@ public class PuzzleManager : MonoBehaviour
 				}
 		
 				draggingElement.transform.localScale = scale;
-				draggingElementSpriteRenderer = draggingElement.GetComponent<SpriteRenderer> ();
+		draggingElementSpriteRenderer = draggingElement.GetComponent<SpriteRenderer> ();
 				draggingElementSpriteRenderer.color = color;
 				draggingElementSpriteRenderer.enabled = false;
 		}
