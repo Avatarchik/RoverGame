@@ -13,6 +13,7 @@ using Sol;
 [DisallowMultipleComponent]
 public class PuzzleManager : MonoBehaviour
 {
+	public Camera playerCam;
 	public bool WorldSpacePuzzle;
 	public GameObject worldCellPrefab;
 	public GameObject worldContentsPrefab;
@@ -242,6 +243,11 @@ public class PuzzleManager : MonoBehaviour
     /// </summary>
     public Color tempColor;
 
+	/// <summary>
+	/// Temp collider 2d.
+	/// </summary>
+	public Collider tempCollider3D;
+
     /// <summary>
     /// Temp collider 2d.
     /// </summary>
@@ -405,6 +411,13 @@ public class PuzzleManager : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
+		RaycastHit hit;
+		Ray playerRay = playerCam.ScreenPointToRay(Input.mousePosition);
+		Debug.DrawRay (playerRay.origin, playerRay.direction * 50.0f, Color.red, 1.0f, false);
+
+		if (Physics.Raycast (playerRay, out hit)) {
+			tempCollider3D = hit.collider;
+		}
 		Moves = movements;
 				if (!isRunning) {
 						return;
@@ -472,8 +485,8 @@ public class PuzzleManager : MonoBehaviour
 		{
            // Debug.Log("casting!!!");
 				tempClickPosition = mainCamera.ScreenToWorldPoint (clickPosition);
-				tempRayCastHit2D = Physics2D.Raycast (tempClickPosition, Vector2.zero);
-				tempCollider2D = tempRayCastHit2D.collider;
+				//tempRayCastHit2D = Physics2D.Raycast (tempClickPosition, Vector2.zero);
+				//tempCollider2D = tempRayCastHit2D.collider;
 
 				if (tempCollider2D != null) {
              //   Debug.Log("temp collider is not null!");
