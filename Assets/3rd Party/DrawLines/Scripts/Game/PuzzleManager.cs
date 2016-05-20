@@ -17,10 +17,12 @@ public class PuzzleManager : MonoBehaviour
 	public bool WorldSpacePuzzle;
 	public GameObject worldCellPrefab;
 	public GameObject worldContentsPrefab;
+	public GridLayoutGroup contentsGrid;
 	//public static GridCell[] worldCells;
 	public GameObject world;
 	public RectTransform worldContentsTransform;
 	public RectTransform worldLinesTransform;
+	public GameObject worldLinePrefab;
 
 	/// <summary>
 	/// 
@@ -73,8 +75,8 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// The cell content z-position.
 		/// </summary>
-		[Range(-20,20)]
-		public float cellContentZPosition = -5;
+		//[Range(-20,20)]
+		public float cellContentZPosition = -0.005f;
 
 		/// <summary>
 		/// The dragging element prefab.
@@ -556,7 +558,7 @@ public class PuzzleManager : MonoBehaviour
 
 						///Determine the New Line Point
 						tempPoint = currentGridCell.transform.position;
-						tempPoint.z = gridLineZPosition;
+						//tempPoint.z = gridLineZPosition;
 
 						///Add the position of the New Line Point to the current line
 						gridLines [currentGridCell.gridLineIndex].AddPoint (tempPoint);
@@ -662,7 +664,7 @@ public class PuzzleManager : MonoBehaviour
 
             ///Determine the New Line Point
             tempPoint = currentGridCell.transform.position;
-            tempPoint.z = gridLineZPosition;
+            //tempPoint.z = gridLineZPosition;
 
             ///Add the position of the New Line Point to the current line
             gridLines[currentGridCell.gridLineIndex].AddPoint(tempPoint);
@@ -778,7 +780,6 @@ public class PuzzleManager : MonoBehaviour
             levelText.text = "Level " + TableLevel.wantedLevel.ID;
 						ResetGameContents ();
 						BuildTheGrid ();
-			isRunning = true;
 						SettingUpPairs ();
                         SettingUpObstacles();
 						SettingUpNextBackAlpha ();
@@ -801,6 +802,8 @@ public class PuzzleManager : MonoBehaviour
 			GridCell worldCellComponent;
 			GameObject worldCell = null;
 			int worldCellindex;
+
+			world.GetComponent<RectTransform> ().sizeDelta = new Vector2 (0.1f * numberOfColumns, 0.1f * numberOfRows);
 
 			for (int i = 0; i < numberOfRows; i++) {
 				for (int j = 0; j < numberOfColumns; j++) {
@@ -909,7 +912,7 @@ public class PuzzleManager : MonoBehaviour
 
 				firstElement = Instantiate (worldContentsPrefab) as GameObject;
 				firstElement.transform.SetParent (worldCellTransform, true);
-				firstElement.transform.localPosition = Vector3.zero;
+				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
 
 				//firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
@@ -946,7 +949,7 @@ public class PuzzleManager : MonoBehaviour
 
 				secondElement = Instantiate (worldContentsPrefab) as GameObject;
 				secondElement.transform.SetParent (worldCellTransform, true);
-				secondElement.transform.localPosition = Vector3.zero;
+				secondElement.transform.localPosition = cellContentPosition;
 				secondElement.transform.rotation = worldCellTransform.rotation;
 				//secondElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				secondElement.name = "Pair" + (i + 1) + "-SecondElement";
@@ -967,7 +970,7 @@ public class PuzzleManager : MonoBehaviour
 //				}
 
 				///Create Grid Line
-				CreateGridLine (cellContentScale * gridLineWidthFactor, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+				CreateGridLine (0.1f, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
 			}
 
 			Color tempColor = Mission.wantedMission.missionColor;
@@ -1086,6 +1089,7 @@ public class PuzzleManager : MonoBehaviour
     private void SettingUpObstacles()
     {
 		if (WorldSpacePuzzle) {
+			print ("AADDS");
 			Level.Barrier barrier = null;
 			Transform worldCellTransform;
 			GridCell worldCell;
@@ -1111,15 +1115,17 @@ public class PuzzleManager : MonoBehaviour
 				//gridCellScale = gridCellTransform.localScale;
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 
-				firstElement = Instantiate (cellContentPrefab) as GameObject;
+				firstElement = Instantiate (worldContentsPrefab) as GameObject;
+				print ("SDFDSF");
 				firstElement.transform.SetParent (worldCellTransform);
 				firstElement.transform.localPosition = cellContentPosition;
-				firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
+				firstElement.transform.rotation = worldCellTransform.rotation;
+				//firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				firstElement.name = "barrier" + (i + 1) + "-FirstElement";
 				firstElement.GetComponent<Image> ().sprite = barrier.sprite;
 
-				numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
-				numberTextmesh.text = "";//empty value
+				//numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
+				//numberTextmesh.text = "";//empty value
 
 				firstElement.GetComponent<Image> ().color = barrier.color;
 			}
@@ -1174,8 +1180,8 @@ public class PuzzleManager : MonoBehaviour
     /// <param name="index">Index.</param>
     private void CreateGridLine (float lineWidth, Color lineColor, string name, int index)
 		{
-				GameObject gridLine = Instantiate (gridLinePrefab, grid.transform.position, Quaternion.identity) as GameObject;
-				gridLine.transform.parent = gridLinesTransfrom;
+		GameObject gridLine = Instantiate (worldLinePrefab, world.transform.position, world.transform.rotation) as GameObject;
+		gridLine.transform.parent = worldLinesTransform;
 				gridLine.name = name;
 				Line line = gridLine.GetComponent<Line> ();
 				line.SetWidth (lineWidth);
