@@ -24,10 +24,6 @@ namespace Sol
             yield return new WaitForSeconds(0.5f);
             UIManager.GetMenu<MessageMenu>().Open("To Be Continued...");
             yield return new WaitForSeconds(3f);
-            // GameManager.Get<SoundManager>().Stop(10);
-            //   GameManager.Get<SoundManager>().Stop(10);
-           // Destroy(GameManager.Instance.gameObject);
-            //SceneManager.LoadScene(0);
         }
     }
 }

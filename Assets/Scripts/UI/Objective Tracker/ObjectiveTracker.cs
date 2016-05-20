@@ -37,23 +37,6 @@ namespace Sol
 
             Open();
         }
-
-
-        /*public ObjectiveDisplay AddObjective(Objective objective, float displaySpeed = 0f)
-        {
-            if (!IsActive) Open();
-
-            StopAllCoroutines();
-            StartCoroutine(DelayedClose());
-
-            ObjectiveDisplay od = Instantiate(objectivePrefab);
-            od.transform.SetParent(objectiveContainer, false);
-            od.objective = objective;
-            od.Initialize(displaySpeed);
-            displayedObjectives.Add(od);
-
-            return od;
-        }*/
     }
 
 }
