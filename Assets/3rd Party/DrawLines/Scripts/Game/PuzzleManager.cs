@@ -417,6 +417,7 @@ public class PuzzleManager : MonoBehaviour
 
 		if (Physics.Raycast (playerRay, out hit)) {
 			tempCollider3D = hit.collider;
+			print ("FASDSAD");
 		}
 		Moves = movements;
 				if (!isRunning) {
