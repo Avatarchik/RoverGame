@@ -58,13 +58,14 @@ namespace Sol
 
 		public IEnumerator DetonateDelay()
         {
-            OnExplosivePlaced(isLandslide);
+           
             explosiveDevice.SetActive(true);
             CountDown countDown = UIManager.GetMenu<CountDown>();
             countDown.SetText(explosionDelay);
             yield return new WaitForSeconds(explosionDelay);
             TriggerExplosion();
             explosiveDevice.SetActive(false);
+			OnExplosivePlaced(isLandslide);
         }
 
 
