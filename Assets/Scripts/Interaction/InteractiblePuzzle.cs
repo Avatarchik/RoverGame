@@ -13,6 +13,7 @@ namespace Sol
         public UIEvents uiEvents;
 
         public PuzzleManager puzzleManager;
+		public RectTransform puzzleSpot;
 
         public string message;
 
@@ -68,7 +69,9 @@ namespace Sol
 
                 PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu>();
                 pu.Open(this);
+				puzzleManager.SetPuzzleSpecs (puzzleSpot);
                 puzzleManager.InitializePuzzle();
+
 
                 interactible = false;
 
