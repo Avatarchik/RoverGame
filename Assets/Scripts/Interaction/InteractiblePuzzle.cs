@@ -9,7 +9,7 @@ namespace Sol
     {
 
 		public delegate void PuzzleComplete ();
-		public static event PuzzleComplete onPuzzleComlpete;
+		public static event PuzzleComplete onPuzzleComplete;
 
         public AudioClip puzzleCompleteEffect;
         public Object missionObject;
@@ -37,7 +37,6 @@ namespace Sol
                 complete = value;
                 if(complete)
                 {
-					onPuzzleComlpete ();
                     if (questTrigger) GameObject.FindObjectOfType<Intro>().Next();
 
                     foreach(GameObject go in objectsToActivate)
@@ -55,6 +54,7 @@ namespace Sol
                         io.Interact();
                     }
                     if(puzzleCompleteEffect != null) GameManager.Get<SoundManager>().Play(puzzleCompleteEffect);
+					onPuzzleComplete ();
                 }
             }
         }
