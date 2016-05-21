@@ -1,0 +1,256 @@
+fileFormatVersion: 2
+guid: 7c03caf946ab0f24c8b998ea54b9bcd6
+timeCreated: 1463789364
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Airduck
+    100002: Airduck1
+    100004: Arm2
+    100006: Arm4
+    100008: armpart1
+    100010: armpart1 1
+    100012: armpart2
+    100014: armpart2 1
+    100016: armpart3
+    100018: armpart3 1
+    100020: Container
+    100022: Container1
+    100024: Door1
+    100026: light
+    100028: light2
+    100030: //RootNode
+    100032: metal
+    100034: pCube39
+    100036: pCube40
+    100038: pCube5
+    100040: pCube6
+    100042: pCube7
+    100044: pCube70
+    100046: pCube8
+    100048: pCube9
+    100050: pCylinder34
+    100052: pCylinder36
+    100054: pCylinder44
+    100056: pCylinder45
+    100058: pCylinder46
+    100060: pCylinder47
+    100062: pCylinder48
+    100064: pipe04
+    100066: PodEx
+    100068: PodIn
+    100070: pPlane43
+    100072: pPlane44
+    100074: pSphere4
+    100076: pSphere4 1
+    100078: pTorus3
+    400000: Airduck
+    400002: Airduck1
+    400004: Arm2
+    400006: Arm4
+    400008: armpart1
+    400010: armpart1 1
+    400012: armpart2
+    400014: armpart2 1
+    400016: armpart3
+    400018: armpart3 1
+    400020: Container
+    400022: Container1
+    400024: Door1
+    400026: light
+    400028: light2
+    400030: //RootNode
+    400032: metal
+    400034: pCube39
+    400036: pCube40
+    400038: pCube5
+    400040: pCube6
+    400042: pCube7
+    400044: pCube70
+    400046: pCube8
+    400048: pCube9
+    400050: pCylinder34
+    400052: pCylinder36
+    400054: pCylinder44
+    400056: pCylinder45
+    400058: pCylinder46
+    400060: pCylinder47
+    400062: pCylinder48
+    400064: pipe04
+    400066: PodEx
+    400068: PodIn
+    400070: pPlane43
+    400072: pPlane44
+    400074: pSphere4
+    400076: pSphere4 1
+    400078: pTorus3
+    2300000: Airduck
+    2300002: Arm2
+    2300004: Arm4
+    2300006: armpart1
+    2300008: armpart1 1
+    2300010: armpart2
+    2300012: armpart2 1
+    2300014: armpart3
+    2300016: armpart3 1
+    2300018: Container
+    2300020: Container1
+    2300022: Door1
+    2300024: light
+    2300026: pCube39
+    2300028: pCube40
+    2300030: pCube5
+    2300032: pCube6
+    2300034: pCube7
+    2300036: pCube70
+    2300038: pCube8
+    2300040: pCube9
+    2300042: pCylinder34
+    2300044: pCylinder36
+    2300046: pCylinder44
+    2300048: pCylinder45
+    2300050: pCylinder46
+    2300052: pCylinder47
+    2300054: pCylinder48
+    2300056: PodEx
+    2300058: PodIn
+    2300060: pPlane43
+    2300062: pPlane44
+    2300064: pSphere4
+    2300066: pSphere4 1
+    2300068: pTorus3
+    3300000: Airduck
+    3300002: Arm2
+    3300004: Arm4
+    3300006: armpart1
+    3300008: armpart1 1
+    3300010: armpart2
+    3300012: armpart2 1
+    3300014: armpart3
+    3300016: armpart3 1
+    3300018: Container
+    3300020: Container1
+    3300022: Door1
+    3300024: light
+    3300026: pCube39
+    3300028: pCube40
+    3300030: pCube5
+    3300032: pCube6
+    3300034: pCube7
+    3300036: pCube70
+    3300038: pCube8
+    3300040: pCube9
+    3300042: pCylinder34
+    3300044: pCylinder36
+    3300046: pCylinder44
+    3300048: pCylinder45
+    3300050: pCylinder46
+    3300052: pCylinder47
+    3300054: pCylinder48
+    3300056: PodEx
+    3300058: PodIn
+    3300060: pPlane43
+    3300062: pPlane44
+    3300064: pSphere4
+    3300066: pSphere4 1
+    3300068: pTorus3
+    4300000: PodEx
+    4300002: PodIn
+    4300004: Door1
+    4300006: pCube39
+    4300008: pCube40
+    4300010: pCylinder34
+    4300012: pCylinder36
+    4300014: pCylinder48
+    4300016: pCylinder47
+    4300018: pCylinder46
+    4300020: Airduck
+    4300022: pCube70
+    4300024: Arm2
+    4300026: armpart1
+    4300028: armpart2
+    4300030: armpart3
+    4300032: pSphere4
+    4300034: pCylinder44
+    4300036: pCylinder45
+    4300038: light
+    4300040: pCube5
+    4300042: pCube6
+    4300044: pCube7
+    4300046: pCube8
+    4300048: pCube9
+    4300050: pTorus3
+    4300052: Container
+    4300054: Container1
+    4300056: Arm4
+    4300058: armpart1
+    4300060: armpart2
+    4300062: armpart3
+    4300064: pSphere4
+    4300066: pPlane43
+    4300068: pPlane44
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
