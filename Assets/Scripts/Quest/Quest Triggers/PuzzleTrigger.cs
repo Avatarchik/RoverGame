@@ -7,7 +7,7 @@ namespace Sol
     {
         private void Awake()
         {
-            InteractiblePuzzle.onPuzzleComlpete += CompleteObjective;
+            InteractiblePuzzle.onPuzzleComplete += CompleteObjective;
         }
     }
 }
