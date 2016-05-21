@@ -329,70 +329,61 @@ public class PuzzleManager : MonoBehaviour
     /// When the GameObject becomes visible
     /// </summary>
     public void InitializePuzzle()
-    {
-        if (levelText == null)
-        {
-            levelText = GameObject.Find("GameLevel").GetComponent<Text>();
-        }
+	{
+		if (levelText == null) {
+			levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
+		}
 
-        if (missionText == null)
-        {
-            missionText = GameObject.Find("MissionTitle").GetComponent<Text>();
-        }
+		if (missionText == null) {
+			missionText = GameObject.Find ("MissionTitle").GetComponent<Text> ();
+		}
 
-        if (grid == null)
-        {
-            grid = GameObject.Find("Grid");
-        }
+		if (grid == null) {
+			grid = GameObject.Find ("Grid");
+		}
 
-        if (gridContentsTransform == null)
-        {
-            gridContentsTransform = grid.transform.Find("Contents").transform;
-        }
+		if (gridContentsTransform == null) {
+			gridContentsTransform = grid.transform.Find ("Contents").transform;
+		}
 
-        if (gridTopPivotTransform == null)
-        {
-            gridTopPivotTransform = GameObject.Find("GridTopPivot").transform;
-        }
+		if (gridTopPivotTransform == null) {
+			gridTopPivotTransform = GameObject.Find ("GridTopPivot").transform;
+		}
 
-        if (gridBottomPivotTransform == null)
-        {
-            gridBottomPivotTransform = GameObject.Find("GridBottomPivot").transform;
-        }
-        if (gridLinesTransfrom == null)
-        {
-            gridLinesTransfrom = GameObject.Find("GridLines").transform;
-        }
+		if (gridBottomPivotTransform == null) {
+			gridBottomPivotTransform = GameObject.Find ("GridBottomPivot").transform;
+		}
+		if (gridLinesTransfrom == null) {
+			gridLinesTransfrom = GameObject.Find ("GridLines").transform;
+		}
 
-        try
-        {
-            ///Setting up Attributes
-            numberOfRows = Mission.wantedMission.rowsNumber;
-            numberOfColumns = Mission.wantedMission.colsNumber;
-            //levelText.color = Mission.wantedMission.missionColor;
-            missionText.text = Mission.wantedMission.missionTitle;
-            grid.name = numberOfRows + "x" + numberOfRows + "-Grid";
-        }
-        catch (Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
+		try {
+			///Setting up Attributes
+			numberOfRows = Mission.wantedMission.rowsNumber;
+			numberOfColumns = Mission.wantedMission.colsNumber;
+			//levelText.color = Mission.wantedMission.missionColor;
+			missionText.text = Mission.wantedMission.missionTitle;
+			grid.name = numberOfRows + "x" + numberOfRows + "-Grid";
+		} catch (Exception ex) {
+			Debug.Log (ex.Message);
+		}
 
 
-        ///Determine the size of the Grid
-        Vector3 gridTopPivotPostion = gridTopPivotTransform.transform.position;
-        Vector3 gridBottomPiviotPosition = gridBottomPivotTransform.transform.position;
+		///Determine the size of the Grid
+		Vector3 gridTopPivotPostion = gridTopPivotTransform.transform.position;
+		Vector3 gridBottomPiviotPosition = gridBottomPivotTransform.transform.position;
 
-        gridSize = gridBottomPiviotPosition - gridTopPivotPostion;
-        gridSize = new Vector2(Mathf.Abs(gridSize.x), Mathf.Abs(gridSize.y));
+		gridSize = gridBottomPiviotPosition - gridTopPivotPostion;
+		gridSize = new Vector2 (Mathf.Abs (gridSize.x), Mathf.Abs (gridSize.y));
 
-        ///Create New level (the selected level)
+		///Create New level (the selected level);
+		world.SetActive(true);
         CreateNewLevel();
 
         //StartCoroutine(Delay());
     }
 
-    /// <summary>
+    /// <summary	>
     /// When the GameObject becomes invisible.
     /// </summary>
     void OnDisable ()
@@ -498,7 +489,7 @@ public class PuzzleManager : MonoBehaviour
 								if (clickType == ClickType.Began) {
 										previousGridCell = currentGridCell;
 										drawDraggingElement = true;
-										draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = true;
+					draggingElement.GetComponentInChildren<ParticleSystem> ().enableEmission = true;
 										GridCellClickBegan ();
 								} else if (clickType == ClickType.Moved) {
 										drawDraggingElement = true;
@@ -764,17 +755,27 @@ public class PuzzleManager : MonoBehaviour
 				if (draggingElement == null) {
 						return;
 				}
-
 				tempClickPosition = Camera.main.ScreenToWorldPoint (clickPosition);
 				tempClickPosition.z = draggingElementZPosition;
-				draggingElement.transform.position = tempClickPosition;
+				//draggingElement.transform.position = tempClickPosition;
+
+		RaycastHit hit;
+		Ray dragRay = playerCam.ScreenPointToRay(Input.mousePosition);
+		Debug.DrawRay (dragRay.origin, dragRay.direction * 50.0f, Color.green, 1.0f, false);
+
+		if (Physics.Raycast (dragRay, out hit)) {
+			float distRatio = 0.9f;
+			Vector3 dragPosition = Vector3.Lerp (dragRay.origin, hit.point, distRatio);
+			draggingElement.transform.position = dragPosition;
+		}
 		}
 
 	public void SetPuzzleSpecs(RectTransform puzzleSpot){
 		Vector3 puzzlePos = puzzleSpot.transform.position;
 		Quaternion puzzleRot = puzzleSpot.transform.rotation;
-		puzzleWidth = puzzleSpot.sizeDelta.x;
-		puzzleHeight = puzzleSpot.sizeDelta.y;
+		float cellSize = 0.15f;
+		puzzleWidth = cellSize * Mission.wantedMission.colsNumber;
+		puzzleHeight = cellSize * Mission.wantedMission.rowsNumber;
 		world.transform.position = puzzlePos;
 		world.transform.rotation = puzzleRot;
 		world.GetComponent<RectTransform> ().sizeDelta = new Vector2 (puzzleWidth, puzzleHeight);
@@ -909,6 +910,7 @@ public class PuzzleManager : MonoBehaviour
 			gridLines = new Line[currentLevel.dotsPairs.Count];
 
 			for (int i = 0; i < currentLevel.dotsPairs.Count; i++) {
+		
 				elementsPair = currentLevel.dotsPairs [i];
 				numberColor = new Color (1 - elementsPair.color.r, 1 - elementsPair.color.g, 1 - elementsPair.color.b, 1);//opposite color
 
@@ -921,6 +923,7 @@ public class PuzzleManager : MonoBehaviour
 				gridCell.tragetIndex = elementsPair.secondDot.index;
 
 				SetGridPairIngredient (gridCell, elementsPair.wireType);
+			
 
 				worldCellTransform = gridCell.gameObject.transform;
 				//gridCellScale = gridCellTransform.localScale;
@@ -934,6 +937,7 @@ public class PuzzleManager : MonoBehaviour
 				//firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				firstElement.name = "Pair" + (i + 1) + "-FirstElement";
 				firstElement.GetComponent<Image> ().sprite = elementsPair.sprite;
+
 			
 				if (elementsPair.applyColorOnSprite) {
 					firstElement.GetComponent<Image> ().color = elementsPair.color;//apply the sprite color
@@ -959,6 +963,7 @@ public class PuzzleManager : MonoBehaviour
 
 				SetGridPairIngredient (gridCell, elementsPair.wireType);
 
+
 				worldCellTransform = gridCell.gameObject.transform;
 				//gridCellScale = gridCellTransform.localScale;
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
@@ -970,13 +975,13 @@ public class PuzzleManager : MonoBehaviour
 				//secondElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				secondElement.name = "Pair" + (i + 1) + "-SecondElement";
 				secondElement.GetComponent<Image> ().sprite = elementsPair.sprite;
+		
 
 				if (elementsPair.applyColorOnSprite) {
 					secondElement.GetComponent<Image> ().color = elementsPair.color;//apply the sprite color
 				} else {
 					secondElement.GetComponent<Image> ().color = Color.white;//apply the white color
 				}
-
 //				numberTextmesh = secondElement.transform.Find ("Number").GetComponent<TextMesh> ();
 //				if (currentLevel.showPairsNumber) {
 //					numberTextmesh.text = (i + 1).ToString ();
@@ -988,10 +993,8 @@ public class PuzzleManager : MonoBehaviour
 				///Create Grid Line
 				CreateGridLine (0.1f, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
 			}
-
 			Color tempColor = Mission.wantedMission.missionColor;
 			tempColor.a = draggingElementAlpha;
-
 			CreateDraggingElement (tempColor, new Vector3 (cellContentScale * draggingElementScaleFactor, cellContentScale * draggingElementScaleFactor, cellContentScale));
 		} else {
 		/*
@@ -1105,7 +1108,7 @@ public class PuzzleManager : MonoBehaviour
     private void SettingUpObstacles()
     {
 		if (WorldSpacePuzzle) {
-			print ("AADDS");
+			
 			Level.Barrier barrier = null;
 			Transform worldCellTransform;
 			GridCell worldCell;
@@ -1132,7 +1135,7 @@ public class PuzzleManager : MonoBehaviour
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 
 				firstElement = Instantiate (worldContentsPrefab) as GameObject;
-				print ("SDFDSF");
+		
 				firstElement.transform.SetParent (worldCellTransform);
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
@@ -1217,15 +1220,20 @@ public class PuzzleManager : MonoBehaviour
 		{
 				GameObject currentDraggingElement = GameObject.Find ("DraggingElement");
 				if (draggingElement == null) {
+			
+
 						draggingElement = Instantiate (draggingElementPrefab) as GameObject;
 						draggingElement.transform.parent = GameObject.Find ("GameScene").transform;
+
 						draggingElement.name = "DraggingElement";
 						draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = false;
 				} else {
 						draggingElement = currentDraggingElement;
-						draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = false;
+			draggingElement.transform.GetComponentInChildren<ParticleSystem> ().enableEmission = false;
+						//draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = false;
 				}
-		
+	
+
 				draggingElement.transform.localScale = scale;
 		draggingElementSpriteRenderer = draggingElement.GetComponent<SpriteRenderer> ();
 				draggingElementSpriteRenderer.color = color;

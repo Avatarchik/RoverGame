@@ -4,44 +4,48 @@ using System.Collections.Generic;
 
 namespace Sol
 {
-    public class Quest : MonoBehaviour
+    [System.Serializable]
+    public class Quest
     {
+        public string name = "quest";
+
         public List<QuestObjective> objectives = new List<QuestObjective>();
 
         protected int currentObjective = 0;
 
         public QuestObjective CurrentObjective
         {
-            get { return objectives[currentObjective]; }
+            get
+            {
+                return objectives[currentObjective];
+            }
         }
 
 
-        public virtual void Initialize()
+        public void CompleteObjective()
         {
-
-        }
-
-
-        public virtual void CleanUp(QuestObjective questObjective)
-        {
-            questObjective.CleanUp();
-        }
-
-
-        public virtual void CompleteObjective()
-        {
-            //TODO run whatever other effects we want on completion
-            CleanUp(CurrentObjective);
+            //cleanup the old
+            CurrentObjective.Cleanup();
 
             currentObjective++;
-            BeginObjective();
+
+            //initialize the new(if there is one)
+            if(currentObjective < objectives.Count)
+            {
+                CurrentObjective.Initialize();
+            }
+            else
+            {
+                GameManager.Get<QuestManager>().CompleteQuest();
+            }
         }
 
 
-        public virtual void BeginObjective()
+        public void Initialize()
         {
-            //TODO run whatever other effects we want on begin
-            CurrentObjective.Initialize();
+            if(objectives.Count > 0) CurrentObjective.Initialize();
+
+            QuestTrigger.onCompleteObjective += CompleteObjective;
         }
     }
 }
