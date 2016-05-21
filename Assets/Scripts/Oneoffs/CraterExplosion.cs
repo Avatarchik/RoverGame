@@ -15,8 +15,6 @@ namespace Sol
         public GameObject explosionPrefab1;
         public GameObject explosionPrefab2;
         public Transform explosionOrigin;
-        public Ingredient desiredIngredient;
-        public string failString = "You will need an {0} to clear this landslide";
 
         public int explosionDelay = 10;
         public float shakeIntensity = 1f;
@@ -30,25 +28,13 @@ namespace Sol
 
         public override void Interact()
         {
-            Debug.Log("Interacting");
-            Inventory inventory = UIManager.GetMenu<Inventory>();
-            MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
-
-            if (inventory.GetIngredientAmount(desiredIngredient) > 0)
-            {
-                Debug.Log("wakka wakka");
-                triggered = true;
-                inventory.RemoveInventoryItem(desiredIngredient, 1);
-                StartCoroutine(DetonateDelay());
-            }
-            else if (!triggered)
-            {
-                StopAllCoroutines();
-                interactible = false;
-                messageMenu.Open(failString);
-
-            }
+            
         }
+
+		public void Detonate(){
+			Debug.Log("DETONATE");
+			StartCoroutine(DetonateDelay());
+		}
 
         public void TriggerExplosion()
         {
@@ -70,7 +56,7 @@ namespace Sol
         }
 
 
-        private IEnumerator DetonateDelay()
+		public IEnumerator DetonateDelay()
         {
             OnExplosivePlaced(isLandslide);
             explosiveDevice.SetActive(true);
