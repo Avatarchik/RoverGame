@@ -12,6 +12,7 @@ namespace Sol
 
         public SoundControls soundControls; 
         public Speaker speaker = Speaker.Human;
+        [TextArea]
         public string displayText ="";
         public List<GameObject> waypointTargets = new List<GameObject>();
         public bl_HudInfo defaultHudInfo;
