@@ -329,71 +329,61 @@ public class PuzzleManager : MonoBehaviour
     /// When the GameObject becomes visible
     /// </summary>
     public void InitializePuzzle()
-    {
-        if (levelText == null)
-        {
-            levelText = GameObject.Find("GameLevel").GetComponent<Text>();
-        }
+	{
+		if (levelText == null) {
+			levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
+		}
 
-        if (missionText == null)
-        {
-            missionText = GameObject.Find("MissionTitle").GetComponent<Text>();
-        }
+		if (missionText == null) {
+			missionText = GameObject.Find ("MissionTitle").GetComponent<Text> ();
+		}
 
-        if (grid == null)
-        {
-            grid = GameObject.Find("Grid");
-        }
+		if (grid == null) {
+			grid = GameObject.Find ("Grid");
+		}
 
-        if (gridContentsTransform == null)
-        {
-            gridContentsTransform = grid.transform.Find("Contents").transform;
-        }
+		if (gridContentsTransform == null) {
+			gridContentsTransform = grid.transform.Find ("Contents").transform;
+		}
 
-        if (gridTopPivotTransform == null)
-        {
-            gridTopPivotTransform = GameObject.Find("GridTopPivot").transform;
-        }
+		if (gridTopPivotTransform == null) {
+			gridTopPivotTransform = GameObject.Find ("GridTopPivot").transform;
+		}
 
-        if (gridBottomPivotTransform == null)
-        {
-            gridBottomPivotTransform = GameObject.Find("GridBottomPivot").transform;
-        }
-        if (gridLinesTransfrom == null)
-        {
-            gridLinesTransfrom = GameObject.Find("GridLines").transform;
-        }
+		if (gridBottomPivotTransform == null) {
+			gridBottomPivotTransform = GameObject.Find ("GridBottomPivot").transform;
+		}
+		if (gridLinesTransfrom == null) {
+			gridLinesTransfrom = GameObject.Find ("GridLines").transform;
+		}
 
-        try
-        {
-            ///Setting up Attributes
-            numberOfRows = Mission.wantedMission.rowsNumber;
-            numberOfColumns = Mission.wantedMission.colsNumber;
-            //levelText.color = Mission.wantedMission.missionColor;
-            missionText.text = Mission.wantedMission.missionTitle;
-            grid.name = numberOfRows + "x" + numberOfRows + "-Grid";
-        }
-        catch (Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
+		try {
+			///Setting up Attributes
+			numberOfRows = Mission.wantedMission.rowsNumber;
+			numberOfColumns = Mission.wantedMission.colsNumber;
+			//levelText.color = Mission.wantedMission.missionColor;
+			missionText.text = Mission.wantedMission.missionTitle;
+			grid.name = numberOfRows + "x" + numberOfRows + "-Grid";
+		} catch (Exception ex) {
+			Debug.Log (ex.Message);
+		}
 
 
-        ///Determine the size of the Grid
-        Vector3 gridTopPivotPostion = gridTopPivotTransform.transform.position;
-        Vector3 gridBottomPiviotPosition = gridBottomPivotTransform.transform.position;
+		///Determine the size of the Grid
+		Vector3 gridTopPivotPostion = gridTopPivotTransform.transform.position;
+		Vector3 gridBottomPiviotPosition = gridBottomPivotTransform.transform.position;
 
-        gridSize = gridBottomPiviotPosition - gridTopPivotPostion;
-        gridSize = new Vector2(Mathf.Abs(gridSize.x), Mathf.Abs(gridSize.y));
+		gridSize = gridBottomPiviotPosition - gridTopPivotPostion;
+		gridSize = new Vector2 (Mathf.Abs (gridSize.x), Mathf.Abs (gridSize.y));
 
-        ///Create New level (the selected level)
+		///Create New level (the selected level);
 		world.SetActive(true);
         CreateNewLevel();
 
         //StartCoroutine(Delay());
     }
 
-    /// <summary>
+    /// <summary	>
     /// When the GameObject becomes invisible.
     /// </summary>
     void OnDisable ()
