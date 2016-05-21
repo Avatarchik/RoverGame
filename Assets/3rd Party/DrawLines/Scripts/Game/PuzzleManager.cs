@@ -23,6 +23,8 @@ public class PuzzleManager : MonoBehaviour
 	public RectTransform worldContentsTransform;
 	public RectTransform worldLinesTransform;
 	public GameObject worldLinePrefab;
+	private float puzzleWidth;
+	private float puzzleHeight;
 
 	/// <summary>
 	/// 
@@ -768,6 +770,16 @@ public class PuzzleManager : MonoBehaviour
 				draggingElement.transform.position = tempClickPosition;
 		}
 
+	public void SetPuzzleSpecs(RectTransform puzzleSpot){
+		Vector3 puzzlePos = puzzleSpot.transform.position;
+		Quaternion puzzleRot = puzzleSpot.transform.rotation;
+		puzzleWidth = puzzleSpot.sizeDelta.x;
+		puzzleHeight = puzzleSpot.sizeDelta.y;
+		world.transform.position = puzzlePos;
+		world.transform.rotation = puzzleRot;
+		world.GetComponent<RectTransform> ().sizeDelta = new Vector2 (puzzleWidth, puzzleHeight);
+	}
+
 		/// <summary>
 		/// Create a new level.
 		/// </summary>
@@ -802,8 +814,12 @@ public class PuzzleManager : MonoBehaviour
 			GridCell worldCellComponent;
 			GameObject worldCell = null;
 			int worldCellindex;
+			float cellWidth = puzzleWidth / numberOfColumns;
+			float cellHeight = cellWidth;
 
-			world.GetComponent<RectTransform> ().sizeDelta = new Vector2 (0.1f * numberOfColumns, 0.1f * numberOfRows);
+			//contentsGrid.cellSize = new Vector2 (cellWidth, cellHeight);
+
+			//world.GetComponent<RectTransform> ().sizeDelta = new Vector2 (puzzleWidth, puzzleHeight);
 
 			for (int i = 0; i < numberOfRows; i++) {
 				for (int j = 0; j < numberOfColumns; j++) {
