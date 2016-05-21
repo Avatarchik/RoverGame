@@ -387,6 +387,7 @@ public class PuzzleManager : MonoBehaviour
         gridSize = new Vector2(Mathf.Abs(gridSize.x), Mathf.Abs(gridSize.y));
 
         ///Create New level (the selected level)
+		world.SetActive(true);
         CreateNewLevel();
 
         //StartCoroutine(Delay());
@@ -773,8 +774,9 @@ public class PuzzleManager : MonoBehaviour
 	public void SetPuzzleSpecs(RectTransform puzzleSpot){
 		Vector3 puzzlePos = puzzleSpot.transform.position;
 		Quaternion puzzleRot = puzzleSpot.transform.rotation;
-		puzzleWidth = puzzleSpot.sizeDelta.x;
-		puzzleHeight = puzzleSpot.sizeDelta.y;
+		float cellSize = 0.15f;
+		puzzleWidth = cellSize * Mission.wantedMission.colsNumber;
+		puzzleHeight = cellSize * Mission.wantedMission.rowsNumber;
 		world.transform.position = puzzlePos;
 		world.transform.rotation = puzzleRot;
 		world.GetComponent<RectTransform> ().sizeDelta = new Vector2 (puzzleWidth, puzzleHeight);

@@ -7,6 +7,10 @@ namespace Sol
 {
     public class InteractiblePuzzle : InteractibleObject
     {
+
+		public delegate void PuzzleComplete ();
+		public static event PuzzleComplete onPuzzleComlpete;
+
         public AudioClip puzzleCompleteEffect;
         public Object missionObject;
         public Object levelObject;
@@ -23,9 +27,9 @@ namespace Sol
 
         public bool questTrigger = false;
 
-        private bool complete = false;
+		protected  bool complete = false;
 
-        public bool Complete
+        public virtual bool Complete
         {
             get { return complete; }
             set
@@ -33,6 +37,7 @@ namespace Sol
                 complete = value;
                 if(complete)
                 {
+					onPuzzleComlpete ();
                     if (questTrigger) GameObject.FindObjectOfType<Intro>().Next();
 
                     foreach(GameObject go in objectsToActivate)
@@ -71,7 +76,6 @@ namespace Sol
                 pu.Open(this);
 				puzzleManager.SetPuzzleSpecs (puzzleSpot);
                 puzzleManager.InitializePuzzle();
-
 
                 interactible = false;
 
