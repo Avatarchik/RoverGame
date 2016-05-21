@@ -6,12 +6,15 @@ namespace Sol
 {
     public class QuestTrigger : MonoBehaviour
     {
-        public delegate void CompleteObjectiveEvent();
+        public delegate void CompleteObjectiveEvent(bool hasTargetQuest = false, int targetQuest = 0);
         public static event CompleteObjectiveEvent onCompleteObjective;
+
+        public bool isDecision = false;
+        public int targetQuest = 0;
 
         public List<GameObject> triggerObjects = new List<GameObject>();
 
-        private bool initialized = false;
+        public bool initialized = false;
 
         public virtual void  Initialize()
         {
@@ -38,7 +41,7 @@ namespace Sol
             if(initialized)
             {
                 initialized = false;
-                onCompleteObjective();
+                onCompleteObjective(isDecision, targetQuest);
             }
         }
     }

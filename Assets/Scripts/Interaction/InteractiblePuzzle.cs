@@ -37,7 +37,6 @@ namespace Sol
                 complete = value;
                 if(complete)
                 {
-                    if (questTrigger) GameObject.FindObjectOfType<Intro>().Next();
 
                     foreach(GameObject go in objectsToActivate)
                     {

@@ -12,11 +12,15 @@ namespace Sol
 
         public SoundControls soundControls; 
         public Speaker speaker = Speaker.Human;
+        [TextArea]
         public string displayText ="";
         public List<GameObject> waypointTargets = new List<GameObject>();
         public bl_HudInfo defaultHudInfo;
 
         public QuestTrigger questTrigger;
+
+        public bool isQuestChoice = false;
+        public int targetQuest = 0;
 
         public float delayedClose = 4f;
 
@@ -37,6 +41,7 @@ namespace Sol
                 CachedHudManager.RemoveHud(spawnedHudInfo);
             }
 
+            CachedHudManager.RemoveAllHuds();
             spawnedHudInfos.Clear();
         }
 
@@ -48,9 +53,12 @@ namespace Sol
 
             foreach(GameObject target in waypointTargets)
             {
-                bl_HudInfo info = GetHudInfo(target.transform);
-                spawnedHudInfos.Add(info);
-                CachedHudManager.CreateHud(info);
+                if(target != null)
+                {
+                    bl_HudInfo info = GetHudInfo(target.transform);
+                    spawnedHudInfos.Add(info);
+                    CachedHudManager.CreateHud(info);
+                }
             }
 
             if (soundControls.interactEffects.Length > 0)
