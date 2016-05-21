@@ -444,7 +444,7 @@ public class PuzzleManager : MonoBehaviour
 		{
 				clickMoving = false;
 				drawDraggingElement = false;
-				draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = false;
+		draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
 				draggingElementSpriteRenderer.enabled = false;
 
 				if (line != null) {
