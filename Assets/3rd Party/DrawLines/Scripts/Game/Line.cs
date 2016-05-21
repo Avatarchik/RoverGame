@@ -48,7 +48,7 @@ public class Line : MonoBehaviour
 		/// <summary>
 		/// Temporary sprite renderer.
 		/// </summary>
-		private SpriteRenderer tempSpriteRenderer;
+	private Image tempSpriteRenderer;
 
 		/// <summary>
 		/// The number of points in the line.
@@ -267,7 +267,7 @@ public class Line : MonoBehaviour
 		public void ResetGridCell (GridCell gridcell)
 		{
 				gridcell.Reset ();
-				tempSpriteRenderer = gridcell.transform.Find ("background").GetComponent<SpriteRenderer> ();
+				tempSpriteRenderer = gridcell.transform.Find ("background").GetComponent<Image> ();
 				tempSpriteRenderer.color = Color.white;
 				tempSpriteRenderer.enabled = false;
 		}

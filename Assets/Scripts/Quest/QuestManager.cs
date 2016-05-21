@@ -19,13 +19,23 @@ namespace Sol
 
         public virtual void CompleteQuest()
         {
-
+            currentQuest++;
+            if(currentQuest < quests.Count)
+            {
+                BeginQuest();
+            }
         }
 
 
         public virtual void BeginQuest()
         {
+            CurrentQuest.Initialize();
+        }
 
+
+        private void Awake()
+        {
+            BeginQuest();
         }
     }
 }
