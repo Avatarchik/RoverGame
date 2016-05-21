@@ -22,12 +22,6 @@ namespace Sol
         }
 
 
-        public void Open(bool delayedClose = false, float delayedCloseTime = 4f)
-        {
-            Open();
-        }
-
-
         public void Open(string objective, bool admin = true, bool delayedClose = false, float delayedCloseTime = 4f)
         {
             if (admin)
