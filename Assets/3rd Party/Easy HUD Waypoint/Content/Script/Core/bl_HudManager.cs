@@ -293,6 +293,12 @@ public class bl_HudManager : MonoBehaviour
             Debug.Log("Huds list dont contain this hud!");
         }
     }
+
+
+    public void RemoveAllHuds()
+    {
+        Huds.Clear();
+    }
     /// <summary>
     /// 
     /// </summary>

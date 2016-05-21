@@ -19,6 +19,9 @@ namespace Sol
 
         public QuestTrigger questTrigger;
 
+        public bool isQuestChoice = false;
+        public int targetQuest = 0;
+
         public float delayedClose = 4f;
 
         protected bl_HudManager cachedHudManager;
@@ -38,6 +41,7 @@ namespace Sol
                 CachedHudManager.RemoveHud(spawnedHudInfo);
             }
 
+            CachedHudManager.RemoveAllHuds();
             spawnedHudInfos.Clear();
         }
 
@@ -49,9 +53,12 @@ namespace Sol
 
             foreach(GameObject target in waypointTargets)
             {
-                bl_HudInfo info = GetHudInfo(target.transform);
-                spawnedHudInfos.Add(info);
-                CachedHudManager.CreateHud(info);
+                if(target != null)
+                {
+                    bl_HudInfo info = GetHudInfo(target.transform);
+                    spawnedHudInfos.Add(info);
+                    CachedHudManager.CreateHud(info);
+                }
             }
 
             if (soundControls.interactEffects.Length > 0)

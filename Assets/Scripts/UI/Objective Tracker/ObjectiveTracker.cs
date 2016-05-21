@@ -36,6 +36,7 @@ namespace Sol
             }
 
             Open();
+            if (delayedClose) StartCoroutine(DelayedClose(delayedCloseTime));
         }
 
 

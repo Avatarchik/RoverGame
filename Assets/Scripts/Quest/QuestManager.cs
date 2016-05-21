@@ -27,6 +27,16 @@ namespace Sol
         }
 
 
+        public virtual void CompleteQuest(int i)
+        {
+            currentQuest = i;
+            if (currentQuest < quests.Count)
+            {
+                BeginQuest();
+            }
+        }
+
+
         public virtual void BeginQuest()
         {
             CurrentQuest.Initialize();

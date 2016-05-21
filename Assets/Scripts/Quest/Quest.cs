@@ -8,6 +8,7 @@ namespace Sol
     public class Quest
     {
         public string name = "quest";
+        public int nextQuest = 0;
 
         public List<QuestObjective> objectives = new List<QuestObjective>();
 
@@ -22,7 +23,7 @@ namespace Sol
         }
 
 
-        public void CompleteObjective()
+        public void CompleteObjective(bool hasTargetQuest = false, int questChoice = 0)
         {
             //cleanup the old
             CurrentObjective.Cleanup();
@@ -36,7 +37,14 @@ namespace Sol
             }
             else
             {
-                GameManager.Get<QuestManager>().CompleteQuest();
+                if(hasTargetQuest)
+                {
+                    GameManager.Get<QuestManager>().CompleteQuest(questChoice);
+                }
+                else
+                {
+                    GameManager.Get<QuestManager>().CompleteQuest();
+                }
             }
         }
 
