@@ -22,7 +22,13 @@ namespace Sol
         }
 
 
-        public void Open(string objective, bool admin = true)
+        public void Open(bool delayedClose = false, float delayedCloseTime = 4f)
+        {
+            Open();
+        }
+
+
+        public void Open(string objective, bool admin = true, bool delayedClose = false, float delayedCloseTime = 4f)
         {
             if (admin)
             {
@@ -36,6 +42,14 @@ namespace Sol
             }
 
             Open();
+        }
+
+
+        private IEnumerator DelayedClose(float delayedCloseTime)
+        {
+            yield return new WaitForSeconds(delayedCloseTime);
+
+            Close();
         }
     }
 

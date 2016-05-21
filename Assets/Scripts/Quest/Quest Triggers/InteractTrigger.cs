@@ -7,12 +7,7 @@ namespace Sol
     {
         public override void Interact()
         {
-            CompleteObjective();
-        }
-
-        public void CompleteObjective()
-        {
-            GameManager.Get<QuestManager>().CurrentQuest.CompleteObjective();
+            
         }
     }
 }

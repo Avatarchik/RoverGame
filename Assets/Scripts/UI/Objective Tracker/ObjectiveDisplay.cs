@@ -35,8 +35,6 @@ public class ObjectiveDisplay : MonoBehaviour
 
     public void Initialize()
     {
-        permanentText.text = objective.permanentText;
-
         StartCoroutine(FillText(objective.objectiveText));
     }
 
@@ -46,7 +44,6 @@ public class ObjectiveDisplay : MonoBehaviour
     /// <param name="typeSpeed"></param>
     public void Initialize(float typeSpeed)
     {
-        permanentText.text = objective.permanentText;
         fillSpeed = typeSpeed;
         StartCoroutine(FillText(objective.objectiveText));
     }
