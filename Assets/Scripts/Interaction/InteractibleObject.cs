@@ -73,18 +73,23 @@ namespace Sol
 
         public virtual void Interact()
         {
+            Debug.Log(0);
             if (Interactible)
             {
+                Debug.Log(1);
                 if (soundControls.interactEffects.Length > 0)
                 {
+                    Debug.Log(2);
                     SoundManager sm = GameManager.Get<SoundManager>();
                     switch (soundControls.soundPlayType)
                     {
                         case SoundControls.PlayType.PlayAll:
+                            Debug.Log("playing all interact effects!");
                             foreach (AudioClip ac in soundControls.interactEffects) { sm.Play(ac); }
                             break;
 
                         case SoundControls.PlayType.PlayRandom:
+                            Debug.Log("playing random interact effects!");
                             int clipIndex = Mathf.RoundToInt(Random.Range(0, soundControls.interactEffects.Length));
                             sm.Play(soundControls.interactEffects[clipIndex]);
                             break;

@@ -20,6 +20,9 @@ namespace Sol
         public Effect sandStorm;
         public Transform player;
 
+        public AudioClip indoorWindEffect;
+        public AudioClip outdoorWindEffect;
+
         public void StartEffect(EllipsoidParticleEmitter effect)
         {
             Debug.Log("starting effect");
@@ -70,6 +73,7 @@ namespace Sol
         private void Awake()
         {
             IndoorTrigger.OnWeatherEvent += HandleWeatherEvent;
+            GameManager.Get<SoundManager>().Play(outdoorWindEffect);
         }
     }
 }

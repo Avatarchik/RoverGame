@@ -9,7 +9,7 @@ namespace Sol
         public delegate void ExplosiveEvent(bool landslide);
         public static event ExplosiveEvent OnExplosivePlaced;
 
-        private const int EXPLOSION_SOUND_ID = 2091111392;
+        public AudioClip explosionEffect;
 
         public GameObject explosiveDevice;
         public GameObject explosionPrefab1;
@@ -40,7 +40,7 @@ namespace Sol
         {
             Intro intro = GameObject.FindObjectOfType<Intro>();
             CameraShake cameraShakeInstance = GameObject.FindObjectOfType<CameraShake>();
-            GameManager.Get<SoundManager>().Play(EXPLOSION_SOUND_ID);
+            GameManager.Get<SoundManager>().Play(explosionEffect);
 
             GameObject explosion1 = Instantiate(explosionPrefab1, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
             GameObject explosion2 = Instantiate(explosionPrefab2, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;

@@ -242,7 +242,7 @@ namespace Sol
                 case SoundType.Effect:
                 case SoundType.Music:
                 case SoundType.Speech:
-                    if (sources.FindAll(s => { return s.CurrentSoundId == sound.id; }).Count < sound.instanceLimit)
+                    if (sources.FindAll(s => { return s.CurrentSoundId == sound.id; }).Count <= sound.instanceLimit)
                     {
                         source = ObjectPool.Request<SoundSource>(soundSourcePrefab, parent, position, Quaternion.identity);
                         source.StopEvent += OnSoundSourceStop;
@@ -251,7 +251,6 @@ namespace Sol
             }
 
             if (source) sources.Add(source);
-
             return source;
         }
     }

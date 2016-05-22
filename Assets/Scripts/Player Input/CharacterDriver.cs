@@ -8,6 +8,9 @@ namespace Sol
 {
     public class CharacterDriver : MonoBehaviour
     {
+        public AudioClip movementEffect;
+        public AudioClip stopMovementEffect;
+
         public PlayerStats playerStats;
 
         public CameraDriver cameraDriver;
@@ -25,7 +28,7 @@ namespace Sol
         private SoundManager cachedSoundManager;
 
         private bool canFlipSpeed = false;
-
+        private SoundSource cachedSoundSource = null;
 
         public SoundManager CachedSoundManager
         {
@@ -67,7 +70,21 @@ namespace Sol
             float handbrake = CrossPlatformInputManager.GetAxis("Jump");
 
             handbrake = (v == 0 && handbrake == 0) ? 1 : 0;
-            
+
+            if (v != 0)
+            {
+                if(cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
+            }
+            else
+            {
+                if (cachedSoundSource != null)
+                {
+                    Debug.Log("stopping");
+                    CachedSoundManager.Play(stopMovementEffect);
+                    CachedSoundManager.Stop(cachedSoundSource);
+                }
+            }
+
             carController.Move(h, v, v, handbrake);
         }
 

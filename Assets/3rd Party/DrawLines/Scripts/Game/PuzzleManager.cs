@@ -13,6 +13,9 @@ using Sol;
 [DisallowMultipleComponent]
 public class PuzzleManager : MonoBehaviour
 {
+    public AudioClip puzzleInteractEffect;
+    public AudioClip puzzleCompleteEffect;
+
 	public Camera playerCam;
 	public bool WorldSpacePuzzle;
 	public GameObject worldCellPrefab;
@@ -295,10 +298,22 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// The effects audio source.
 		/// </summary>
-		[HideInInspector]
 		private AudioSource effectsAudioSource;
+    private SoundSource cachedSoundSource = null;
+    private SoundManager cachedSoundManager;
 
-		void Awake ()
+    public SoundManager CachedSoundManager
+    {
+        get
+        {
+            if (cachedSoundManager == null) cachedSoundManager = GameManager.Get<SoundManager>();
+            if (cachedSoundManager == null) cachedSoundManager = GameObject.FindObjectOfType<SoundManager>();
+
+            return cachedSoundManager;
+        }
+    }
+
+    void Awake ()
 		{
 				///Setting up the references
 				if (timer == null) {
@@ -415,24 +430,27 @@ public class PuzzleManager : MonoBehaviour
 //		}
 		if (Input.GetMouseButtonDown (0)) {
 				RayCast (Input.mousePosition, ClickType.Began);
-		} else if (Input.GetMouseButtonUp (0)) {
+            if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(puzzleInteractEffect);
+        }
+        else if (Input.GetMouseButtonUp (0)) {
 				Release (currentLine);
-		}
+            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
+        }
 
-		if (clickMoving) {
+        if (clickMoving) {
 				RayCast (Input.mousePosition, ClickType.Moved);
 		}
 
 		if (drawDraggingElement) {
 				if (!draggingElementSpriteRenderer.enabled) {
 						draggingElementSpriteRenderer.enabled = true;
-				}
+            }
 
 				DrawDraggingElement (Input.mousePosition);
 		} else {
 				if (draggingElementSpriteRenderer.enabled) {
 						draggingElementSpriteRenderer.enabled = false;
-				}
+            }
 		}
 	}
 
@@ -1197,7 +1215,7 @@ public class PuzzleManager : MonoBehaviour
     private void CreateGridLine (float lineWidth, Color lineColor, string name, int index)
 		{
 		GameObject gridLine = Instantiate (worldLinePrefab, world.transform.position, world.transform.rotation) as GameObject;
-		gridLine.transform.parent = worldLinesTransform;
+        gridLine.transform.parent = worldLinesTransform;
 				gridLine.name = name;
 				Line line = gridLine.GetComponent<Line> ();
 				line.SetWidth (0.08f);
@@ -1217,15 +1235,15 @@ public class PuzzleManager : MonoBehaviour
 		{
 				GameObject currentDraggingElement = GameObject.Find ("DraggingElement");
 				if (draggingElement == null) {
-			
 
 						draggingElement = Instantiate (draggingElementPrefab) as GameObject;
 						draggingElement.transform.parent = GameObject.Find ("GameScene").transform;
 
-						draggingElement.name = "DraggingElement";
 						draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = false;
 				} else {
-						draggingElement = currentDraggingElement;
+
+            Debug.Log("not dragging?");
+            draggingElement = currentDraggingElement;
 			draggingElement.transform.GetComponentInChildren<ParticleSystem> ().enableEmission = false;
 						//draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = false;
 				}
@@ -1362,7 +1380,10 @@ public class PuzzleManager : MonoBehaviour
 			if (isLevelComplete) {
 				timer.Stop ();
 				isRunning = false;
-			RemoveInventoryWires ();
+            GameManager.Get<SoundManager>().Play(puzzleCompleteEffect);
+            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
+
+            RemoveInventoryWires ();
 				Cleanup(true);
 			}
 		}
