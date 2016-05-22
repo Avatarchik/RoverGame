@@ -13,18 +13,17 @@ namespace Sol{
 			Inventory inventory = UIManager.GetMenu<Inventory>();
 			MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
 
-			if (inventory.GetIngredientAmount(desiredIngredient) > 0)
-			{
-				Debug.Log("wakka wakka");
+			if (inventory.GetIngredientAmount (desiredIngredient) > 0) {
+				Debug.Log ("wakka wakka");
 				triggered = true;
-				inventory.RemoveInventoryItem(desiredIngredient, 1);
+				inventory.RemoveInventoryItem (desiredIngredient, 1);
 				base.Interact ();
-			}
-			else if (!triggered)
-			{
+			} else if (!triggered) {
 				interactible = false;
-				messageMenu.Open(failString);
+				messageMenu.Open (failString);
 
+			} else if (interactible){
+				base.Interact ();
 			}
 		}
 		

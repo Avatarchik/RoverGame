@@ -17,11 +17,12 @@ public class PuzzleManager : MonoBehaviour
 	/// World Space attributes
 	/// </summary>
 	public bool WorldSpacePuzzle;
-	public GameObject gridContentsPrefab;
+	public GameObject contentCellPrefab;
 	GameObject puzzleCanvas;
 	GridLayoutGroup contentsGrid;
 	RectTransform worldLines;
 	public GameObject worldLinePrefab;
+	public float playerDist;
 
 	/// <summary>
 	/// 
@@ -893,7 +894,7 @@ public class PuzzleManager : MonoBehaviour
 
 				//Setting up the First Dot(Element)
 				gridCell = gridCells [elementsPair.firstDot.index];
-				print (gridCell);
+			
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
 				gridCell.topBackgroundColor = elementsPair.lineColor;
@@ -901,14 +902,14 @@ public class PuzzleManager : MonoBehaviour
 				gridCell.tragetIndex = elementsPair.secondDot.index;
 
 				SetGridPairIngredient (gridCell, elementsPair.wireType);
-				print ("SADSA");
+			
 
 				worldCellTransform = gridCell.gameObject.transform;
 				//gridCellScale = gridCellTransform.localScale;
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 
-				firstElement = Instantiate (gridContentsPrefab) as GameObject;
-				print (firstElement);
+				firstElement = Instantiate (contentCellPrefab) as GameObject;
+		
 				firstElement.transform.SetParent (worldCellTransform, true);
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
@@ -947,8 +948,8 @@ public class PuzzleManager : MonoBehaviour
 				//gridCellScale = gridCellTransform.localScale;
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 
-				secondElement = Instantiate (gridContentsPrefab) as GameObject;
-				print ("SEC" + secondElement.name);
+				secondElement = Instantiate (contentCellPrefab) as GameObject;
+
 				secondElement.transform.SetParent (worldCellTransform, true);
 				secondElement.transform.localPosition = cellContentPosition;
 				secondElement.transform.rotation = worldCellTransform.rotation;
@@ -1114,7 +1115,7 @@ public class PuzzleManager : MonoBehaviour
 				//gridCellScale = gridCellTransform.localScale;
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 
-				firstElement = Instantiate (gridContentsPrefab) as GameObject;
+				firstElement = Instantiate (contentCellPrefab) as GameObject;
 		
 				firstElement.transform.SetParent (worldCellTransform);
 				firstElement.transform.localPosition = cellContentPosition;
@@ -1378,9 +1379,10 @@ public class PuzzleManager : MonoBehaviour
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
 
-        foreach (Transform child in gridContentsTransform)
+		foreach (Transform child in gridContentsTransform)
         {
             Destroy(child.gameObject);
+			print ("SAD");
         }
 
         foreach (Line line in GameObject.FindObjectsOfType<Line>())
