@@ -13,6 +13,9 @@ using Sol;
 [DisallowMultipleComponent]
 public class PuzzleManager : MonoBehaviour
 {
+    public AudioClip puzzleCompleteEffect;
+    public AudioClip lineDrawEffect;
+
 	/// <summary>
 	/// World Space attributes
 	/// </summary>
@@ -296,7 +299,23 @@ public class PuzzleManager : MonoBehaviour
 		[HideInInspector]
 		private AudioSource effectsAudioSource;
 
-		void Awake ()
+    private SoundManager cachedSoundManager;
+    private SoundSource cachedSoundSource = null;
+
+    public SoundManager CachedSoundManager
+    {
+        get
+        {
+            if (cachedSoundManager == null) cachedSoundManager = GameManager.Get<SoundManager>();
+            if (cachedSoundManager == null) cachedSoundManager = GameObject.FindObjectOfType<SoundManager>();
+
+            return cachedSoundManager;
+        }
+    }
+
+
+
+    void Awake ()
 		{
 				///Setting up the references
 				if (timer == null) {
@@ -414,9 +433,12 @@ public class PuzzleManager : MonoBehaviour
 //		}
 		if (Input.GetMouseButtonDown (0)) {
 				RayCast (Input.mousePosition, ClickType.Began);
-		} else if (Input.GetMouseButtonUp (0)) {
+            if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(lineDrawEffect);
+        }
+        else if (Input.GetMouseButtonUp (0)) {
 				Release (currentLine);
-		}
+            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
+        }
 
 		if (clickMoving) {
 				RayCast (Input.mousePosition, ClickType.Moved);
@@ -1345,6 +1367,8 @@ public class PuzzleManager : MonoBehaviour
 				}
 
 			if (isLevelComplete) {
+            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
+            CachedSoundManager.Play(puzzleCompleteEffect);
 				timer.Stop ();
 				isRunning = false;
 			RemoveInventoryWires ();

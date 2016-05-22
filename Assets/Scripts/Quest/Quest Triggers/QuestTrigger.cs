@@ -6,10 +6,11 @@ namespace Sol
 {
     public class QuestTrigger : MonoBehaviour
     {
-        public delegate void CompleteObjectiveEvent(int targetQuest = 0);
+        public delegate void CompleteObjectiveEvent(bool endQuest, int targetQuest = 0);
         public static event CompleteObjectiveEvent onCompleteObjective;
 
         public int targetQuest = 0;
+        public bool endQuest = false;
 
         public List<GameObject> triggerObjects = new List<GameObject>();
 
@@ -61,7 +62,7 @@ namespace Sol
             proceed = false;
             initialized = false;
             Debug.Log("finishing objective!");
-            onCompleteObjective(targetQuest);
+            onCompleteObjective(endQuest, targetQuest);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Sol
         public bool autoProceed = true;
 
         public List<QuestObjective> objectives = new List<QuestObjective>();
+        public List<QuestTrigger> triggers = new List<QuestTrigger>();
 
         protected int currentObjective = 0;
 
@@ -24,7 +25,18 @@ namespace Sol
         }
 
 
-        public void CompleteObjective(int questChoice = 0)
+        public void CleanupQuest()
+        {
+            foreach(QuestTrigger trigger in triggers)
+            {
+                trigger.initialized = false;
+                trigger.StopAllCoroutines();
+                trigger.gameObject.SetActive(false);
+            }
+        }
+
+
+        public void CompleteObjective(bool endQuest, int questChoice = 0)
         {
             //cleanup the old
             if(currentObjective < objectives.Count) CurrentObjective.Cleanup();
@@ -32,14 +44,15 @@ namespace Sol
             currentObjective++;
 
             //initialize the new(if there is one)
-            if(currentObjective < objectives.Count)
+            if(currentObjective < objectives.Count && !endQuest)
             {
                 CurrentObjective.Initialize();
             }
             else
             {
                 currentObjective = 0;
-                GameManager.Get<QuestManager>().CompleteQuest(nextQuest);
+                CleanupQuest();
+                GameManager.Get<QuestManager>().CompleteQuest(questChoice);
             }
         }
 

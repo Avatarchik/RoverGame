@@ -18,7 +18,6 @@ namespace Sol
         public bl_HudInfo defaultHudInfo;
 
         public QuestTrigger questTrigger;
-
         public bool isQuestChoice = false;
 
         public float delayedClose = 4f;
