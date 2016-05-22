@@ -16,6 +16,8 @@ namespace Sol
 
         public bool initialized = false;
 
+        private bool proceed = false;
+
         public virtual void  Initialize()
         {
             initialized = true;
@@ -24,6 +26,8 @@ namespace Sol
             {
                 go.SetActive(true);
             }
+
+            StartCoroutine(ProceedCoroutine());
         }
 
 
@@ -41,8 +45,22 @@ namespace Sol
             if(initialized)
             {
                 initialized = false;
-                onCompleteObjective(isDecision, targetQuest);
+                proceed = true;
             }
+        }
+
+
+        private IEnumerator ProceedCoroutine()
+        {
+            ObjectiveTracker ot = UIManager.GetMenu<ObjectiveTracker>();
+
+            while(ot.IsActive || !proceed)
+            {
+                yield return null;
+            }
+            proceed = false;
+
+            onCompleteObjective(isDecision, targetQuest);
         }
     }
 }

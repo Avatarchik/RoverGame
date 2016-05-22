@@ -21,7 +21,7 @@ namespace Sol
         private Transform player;
         private List<SoundSource> sources = new List<SoundSource>();
 
-        private Transform Player
+        private Transform PlayerTransform
         {
             get { return (player != null) ? player : GameObject.FindObjectOfType<PlayerStats>().transform; }
         }
@@ -38,8 +38,8 @@ namespace Sol
 
         private void InitializeMovement()
         {
-            cachedParent = Player.parent;
-            Player.SetParent(this.transform);
+            cachedParent = PlayerTransform.parent;
+            PlayerTransform.SetParent(this.transform);
         }
 
 
@@ -73,12 +73,13 @@ namespace Sol
         private IEnumerator HandleAnimation()
         {
             yield return null;
+            
             liftAnimator.SetBool("Activated", false);
 
-            yield return new WaitForSeconds(12f);
+            yield return new WaitForSeconds(40f);
 
             StopLiftNoises();
-            Player.SetParent(cachedParent);
+            PlayerTransform.SetParent(cachedParent);
             OnLiftStop();
         }
     }

@@ -26,7 +26,7 @@ namespace Sol
         public void CompleteObjective(bool hasTargetQuest = false, int questChoice = 0)
         {
             //cleanup the old
-            CurrentObjective.Cleanup();
+            if(currentObjective < objectives.Count) CurrentObjective.Cleanup();
 
             currentObjective++;
 
@@ -39,10 +39,12 @@ namespace Sol
             {
                 if(hasTargetQuest)
                 {
+                    currentObjective = 0;
                     GameManager.Get<QuestManager>().CompleteQuest(questChoice);
                 }
                 else
                 {
+                    currentObjective = 0;
                     GameManager.Get<QuestManager>().CompleteQuest();
                 }
             }

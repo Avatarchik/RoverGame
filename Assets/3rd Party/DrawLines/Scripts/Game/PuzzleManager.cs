@@ -469,7 +469,6 @@ public class PuzzleManager : MonoBehaviour
 		/// <param name="clickType">The type of the click(touch).</param>
 		private void RayCast (Vector3 clickPosition, ClickType clickType)
 		{
-            Debug.Log("casting!!!");
 				tempClickPosition = mainCamera.ScreenToWorldPoint (clickPosition);
 				//tempRayCastHit2D = Physics2D.Raycast (tempClickPosition, Vector2.zero);
 				//tempCollider2D = tempRayCastHit2D.collider;
@@ -649,8 +648,6 @@ public class PuzzleManager : MonoBehaviour
 
             ///Link the color of top background of the current grid cell with the top background color of the previous grid cell
             currentGridCell.topBackgroundColor = previousGridCell.topBackgroundColor;
-
-            Debug.Log("New GridCell of Index " + currentGridCell.index + " added to the Line Path of index " + currentLine.index);
 
             ///Add the current grid cell index to the current traced grid cells list
             currentLine.path.Add(currentGridCell.index);
@@ -1203,7 +1200,7 @@ public class PuzzleManager : MonoBehaviour
 		gridLine.transform.parent = worldLinesTransform;
 				gridLine.name = name;
 				Line line = gridLine.GetComponent<Line> ();
-				line.SetWidth (lineWidth);
+				line.SetWidth (0.08f);
 				line.SetColor (lineColor);
 				if (gridLines != null) {
 						gridLines [index] = line;

@@ -145,7 +145,7 @@ namespace Sol
                 if (sound != null) break;
             }
 
-            if (sound == null) Debug.LogError(string.Format("Could not find sound with name {0}.", audioClip.name));
+            if (sound == null) Debug.Log(string.Format("Could not find sound with name {0}.", audioClip.name));
 
             return sound;
         }
