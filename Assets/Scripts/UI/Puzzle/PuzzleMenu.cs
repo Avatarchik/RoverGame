@@ -85,6 +85,7 @@ namespace Sol
             else
             {
                 base.Close();
+                Close();
             }
         }
 

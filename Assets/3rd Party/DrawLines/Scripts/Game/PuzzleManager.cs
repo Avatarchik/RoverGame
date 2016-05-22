@@ -1374,6 +1374,14 @@ public class PuzzleManager : MonoBehaviour
 			RemoveInventoryWires ();
 				Cleanup(true);
 			}
+            else
+        {
+            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
+            CachedSoundManager.Play(puzzleCompleteEffect);
+            timer.Stop();
+            isRunning = false;
+            Cleanup(true);
+        }
 		}
 
 	private void SetEndMoves(){
