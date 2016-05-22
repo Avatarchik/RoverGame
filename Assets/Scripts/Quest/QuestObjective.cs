@@ -20,7 +20,6 @@ namespace Sol
         public QuestTrigger questTrigger;
 
         public bool isQuestChoice = false;
-        public int targetQuest = 0;
 
         public float delayedClose = 4f;
 

@@ -76,7 +76,7 @@ namespace Sol
             
             liftAnimator.SetBool("Activated", false);
 
-            yield return new WaitForSeconds(40f);
+            yield return new WaitForSeconds(33f);
 
             StopLiftNoises();
             PlayerTransform.SetParent(cachedParent);

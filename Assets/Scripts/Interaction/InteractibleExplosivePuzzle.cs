@@ -2,8 +2,8 @@
 using System.Collections;
 
 namespace Sol{
-	public class InteractibleExplosivePuzzle : InteractiblePuzzle {
-		
+	public class InteractibleExplosivePuzzle : InteractiblePuzzle
+    {
 		public Ingredient desiredIngredient;
 		public bool triggered;
 		public string failString = "You will need an {0} to clear this landslide";

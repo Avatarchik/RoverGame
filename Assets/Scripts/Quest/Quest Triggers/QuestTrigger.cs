@@ -6,10 +6,9 @@ namespace Sol
 {
     public class QuestTrigger : MonoBehaviour
     {
-        public delegate void CompleteObjectiveEvent(bool hasTargetQuest = false, int targetQuest = 0);
+        public delegate void CompleteObjectiveEvent(int targetQuest = 0);
         public static event CompleteObjectiveEvent onCompleteObjective;
 
-        public bool isDecision = false;
         public int targetQuest = 0;
 
         public List<GameObject> triggerObjects = new List<GameObject>();
@@ -21,7 +20,7 @@ namespace Sol
         public virtual void  Initialize()
         {
             initialized = true;
-
+            proceed = false;
             foreach(GameObject go in triggerObjects)
             {
                 go.SetActive(true);
@@ -42,6 +41,7 @@ namespace Sol
 
         public virtual void CompleteObjective()
         {
+            Debug.Log("calling complete!");
             if(initialized)
             {
                 initialized = false;
@@ -59,8 +59,9 @@ namespace Sol
                 yield return null;
             }
             proceed = false;
-
-            onCompleteObjective(isDecision, targetQuest);
+            initialized = false;
+            Debug.Log("finishing objective!");
+            onCompleteObjective(targetQuest);
         }
     }
 }

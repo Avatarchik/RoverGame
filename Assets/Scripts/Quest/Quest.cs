@@ -9,6 +9,7 @@ namespace Sol
     {
         public string name = "quest";
         public int nextQuest = 0;
+        public bool autoProceed = true;
 
         public List<QuestObjective> objectives = new List<QuestObjective>();
 
@@ -23,7 +24,7 @@ namespace Sol
         }
 
 
-        public void CompleteObjective(bool hasTargetQuest = false, int questChoice = 0)
+        public void CompleteObjective(int questChoice = 0)
         {
             //cleanup the old
             if(currentObjective < objectives.Count) CurrentObjective.Cleanup();
@@ -37,16 +38,8 @@ namespace Sol
             }
             else
             {
-                if(hasTargetQuest)
-                {
-                    currentObjective = 0;
-                    GameManager.Get<QuestManager>().CompleteQuest(questChoice);
-                }
-                else
-                {
-                    currentObjective = 0;
-                    GameManager.Get<QuestManager>().CompleteQuest();
-                }
+                currentObjective = 0;
+                GameManager.Get<QuestManager>().CompleteQuest(nextQuest);
             }
         }
 

@@ -26,7 +26,7 @@ namespace Sol
         {
             Inventory inventory = UIManager.GetMenu<Inventory>();
 
-            while(inventory.GetIngredientAmount(desiredItem) < desiredCount)
+            while(inventory.GetIngredientAmount(desiredItem) != desiredCount)
             {
                 yield return new WaitForSeconds(0.5f);
             }
