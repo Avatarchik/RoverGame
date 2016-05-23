@@ -73,13 +73,10 @@ namespace Sol
 
         public virtual void Interact()
         {
-            Debug.Log(0);
             if (Interactible)
             {
-                Debug.Log(1);
                 if (soundControls.interactEffects.Length > 0)
                 {
-                    Debug.Log(2);
                     SoundManager sm = GameManager.Get<SoundManager>();
                     switch (soundControls.soundPlayType)
                     {

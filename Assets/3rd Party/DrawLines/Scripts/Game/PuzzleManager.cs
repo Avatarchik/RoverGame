@@ -301,6 +301,7 @@ public class PuzzleManager : MonoBehaviour
 
     private SoundManager cachedSoundManager;
     private SoundSource cachedSoundSource = null;
+    private List<GameObject> bullshitInstantiated = new List<GameObject>();
 
     public SoundManager CachedSoundManager
     {
@@ -493,30 +494,38 @@ public class PuzzleManager : MonoBehaviour
 				tempClickPosition = mainCamera.ScreenToWorldPoint (clickPosition);
 				//tempRayCastHit2D = Physics2D.Raycast (tempClickPosition, Vector2.zero);
 				//tempCollider2D = tempRayCastHit2D.collider;
-		RaycastHit hit;
+		RaycastHit[] hits;
 		Ray playerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		Debug.DrawRay (playerRay.origin, playerRay.direction * 50.0f, Color.red, 1.0f, false);
+        hits = Physics.RaycastAll(playerRay);
 
-		if (Physics.Raycast (playerRay, out hit)) {
-			tempCollider3D = hit.collider;
-		}
+		foreach(RaycastHit hit in hits)
+        {
+            tempCollider3D = hit.collider;
 
-				if (tempCollider3D != null) {
-             //   Debug.Log("temp collider is not null!");
-						///When a ray hit a grid cell
-						if (tempCollider3D.tag == "GridCell") {
-								currentGridCell = tempCollider3D.GetComponent<GridCell> ();
-								if (clickType == ClickType.Began) {
-										previousGridCell = currentGridCell;
-										drawDraggingElement = true;
-					draggingElement.GetComponentInChildren<ParticleSystem> ().enableEmission = true;
-										GridCellClickBegan ();
-								} else if (clickType == ClickType.Moved) {
-										drawDraggingElement = true;
-										GridCellClickMoved ();
-								}
-						}
-				}
+            if (tempCollider3D != null)
+            {
+                Debug.Log(tempCollider3D.tag + " : " + tempCollider3D.gameObject.name);
+                ///When a ray hit a grid cell
+                if (tempCollider3D.tag == "GridCell")
+                {
+                    currentGridCell = tempCollider3D.GetComponent<GridCell>();
+                    Debug.Log("clicktype ? " + clickType);
+                    if (clickType == ClickType.Began)
+                    {
+                        previousGridCell = currentGridCell;
+                        drawDraggingElement = true;
+                        draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = true;
+                        GridCellClickBegan();
+                    }
+                    else if (clickType == ClickType.Moved)
+                    {
+                        Debug.Log(4);
+                        drawDraggingElement = true;
+                        GridCellClickMoved();
+                    }
+                }
+            }
+        }
 		}
 
 		/// <summary>
@@ -583,7 +592,7 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		private void GridCellClickMoved ()
 		{
-
+        Debug.Log("grid cell click moved!!");
 		if (EnoughWiresOfType())
         {
             if (currentLine == null)
@@ -591,24 +600,20 @@ public class PuzzleManager : MonoBehaviour
                 Debug.Log("Current Line is undefined");
                 return;
             }
-
             if (currentGridCell == null)
             {
                 Debug.Log("Current GridCell is undefined");
                 return;
             }
-
             if (previousGridCell == null)
             {
                 Debug.Log("Previous GridCell is undefined");
                 return;
             }
-
             if (currentGridCell.index == previousGridCell.index)
             {
                 return;
             }
-
             ///If the current grid cell is not adjacent of the previous grid cell,then ignore it
             if (!previousGridCell.OneOfAdjacents(currentGridCell.index))
             {
@@ -619,7 +624,7 @@ public class PuzzleManager : MonoBehaviour
             ///If the current grid cell is currently used
             if (currentGridCell.currentlyUsed)
             {
-
+                Debug.Log("current grid cell used! index : "+ currentGridCell.gridLineIndex);
                 if (currentGridCell.gridLineIndex == -1)
                 {
                     return;
@@ -630,11 +635,7 @@ public class PuzzleManager : MonoBehaviour
                         gridLines[currentGridCell.gridLineIndex].RemoveElements(currentGridCell.index);
                         previousGridCell = currentGridCell;
                         Debug.Log("Remove some Elements from the Line Path of index " + currentGridCell.gridLineIndex);
-                        ///Decrease the movements counter
-
                         DecreaseMovements();
-
-
                         return;//skip next
                 }
                 else {
@@ -656,7 +657,7 @@ public class PuzzleManager : MonoBehaviour
 
             ///Increase the movements counter
             IncreaseMovements();
-
+            Debug.Log("increasing movement counter");
             ///Setting up the attributes for the current grid cell
             currentGridCell.currentlyUsed = true;
             currentGridCell.gridLineIndex = previousGridCell.gridLineIndex;
@@ -732,6 +733,10 @@ public class PuzzleManager : MonoBehaviour
                 }
             }
             previousGridCell = currentGridCell;
+        }
+        else
+        {
+            Debug.Log("not enough wires!");
         }
 		}
 
@@ -931,7 +936,7 @@ public class PuzzleManager : MonoBehaviour
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 
 				firstElement = Instantiate (contentCellPrefab) as GameObject;
-		
+                bullshitInstantiated.Add(firstElement);
 				firstElement.transform.SetParent (worldCellTransform, true);
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
@@ -971,6 +976,7 @@ public class PuzzleManager : MonoBehaviour
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 
 				secondElement = Instantiate (contentCellPrefab) as GameObject;
+                bullshitInstantiated.Add(secondElement);
 
 				secondElement.transform.SetParent (worldCellTransform, true);
 				secondElement.transform.localPosition = cellContentPosition;
@@ -1138,7 +1144,8 @@ public class PuzzleManager : MonoBehaviour
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
 
 				firstElement = Instantiate (contentCellPrefab) as GameObject;
-		
+                bullshitInstantiated.Add(firstElement);
+
 				firstElement.transform.SetParent (worldCellTransform);
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
@@ -1372,15 +1379,15 @@ public class PuzzleManager : MonoBehaviour
 				timer.Stop ();
 				isRunning = false;
 			RemoveInventoryWires ();
-				Cleanup(true);
-			}
+            Cleanup(true);
+        }
             else
         {
             if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
             CachedSoundManager.Play(puzzleCompleteEffect);
             timer.Stop();
             isRunning = false;
-            Cleanup(true);
+            Cleanup(false);
         }
 		}
 
@@ -1406,20 +1413,22 @@ public class PuzzleManager : MonoBehaviour
 
     private void Cleanup(bool completed)
     {
-        Debug.Log("cleaning up");
-
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
 
 		foreach (Transform child in gridContentsTransform)
         {
             Destroy(child.gameObject);
-			print ("SAD");
         }
 
         foreach (Line line in GameObject.FindObjectsOfType<Line>())
         {
             Destroy(line.gameObject);
+        }
+
+        foreach(GameObject go in bullshitInstantiated)
+        {
+            Destroy(go);
         }
     }
 
