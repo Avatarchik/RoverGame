@@ -516,6 +516,8 @@ public class PuzzleManager : MonoBehaviour
                         drawDraggingElement = true;
                         draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = true;
                         GridCellClickBegan();
+
+                        GridCellClickMoved();
                     }
                     else if (clickType == ClickType.Moved)
                     {
