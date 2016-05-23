@@ -7,6 +7,8 @@ namespace Sol
 {
     public class Inventory : Menu
     {
+        public AudioClip useItemEffect;
+
         public InventorySlot inventorySlotPrefab;
         public Transform InventorySlotContainer;
 
@@ -187,7 +189,7 @@ namespace Sol
         public virtual void RemoveInventoryItem(Ingredient ingredient, int count)
         {
             bool foundNothing = true;
-
+            GameManager.Get<SoundManager>().Play(useItemEffect);
             MessageMenu mm = UIManager.GetMenu<MessageMenu>();
             if (count == 1)
             {
@@ -202,7 +204,7 @@ namespace Sol
 
             while (count > 0)
             {
-				print ("ASDS");
+				
                 for (int i = 0; i < ingredientsInInventory.Count; i++)
                 {
                     if (ingredientsInInventory[i].id == ingredient.id)

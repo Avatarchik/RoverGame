@@ -17,18 +17,9 @@ namespace Sol
         }
 
 
-        public virtual void CompleteQuest()
-        {
-            currentQuest++;
-            if(currentQuest < quests.Count)
-            {
-                BeginQuest();
-            }
-        }
-
-
         public virtual void CompleteQuest(int i)
         {
+            if (!CurrentQuest.autoProceed) return;
             currentQuest = i;
             if (currentQuest < quests.Count)
             {
@@ -39,6 +30,7 @@ namespace Sol
 
         public virtual void BeginQuest()
         {
+            Debug.Log("Beginning Quest : " + currentQuest +" | "+CurrentQuest.name);
             CurrentQuest.Initialize();
         }
 

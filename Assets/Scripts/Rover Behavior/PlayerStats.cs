@@ -206,6 +206,11 @@ namespace Sol
 
         private void Update()
         {
+#if UNITY_WEBGL
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Cursor.SetCursor(cursorImage, new Vector2(cursorImage.width / 2, cursorImage.height / 2), CursorMode.Auto);
+#else
             if (movementEnabled == 0)
             {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -218,6 +223,7 @@ namespace Sol
                 Cursor.visible = true;
                 Cursor.SetCursor(cursorImage, new Vector2(cursorImage.width/2, cursorImage.height/2), CursorMode.Auto);
             }
+#endif
         }
 
 

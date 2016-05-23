@@ -145,7 +145,7 @@ namespace Sol
                 if (sound != null) break;
             }
 
-            if (sound == null) Debug.LogError(string.Format("Could not find sound with name {0}.", audioClip.name));
+            if (sound == null) Debug.Log(string.Format("Could not find sound with name {0}.", audioClip.name));
 
             return sound;
         }
@@ -242,7 +242,7 @@ namespace Sol
                 case SoundType.Effect:
                 case SoundType.Music:
                 case SoundType.Speech:
-                    if (sources.FindAll(s => { return s.CurrentSoundId == sound.id; }).Count < sound.instanceLimit)
+                    if (sources.FindAll(s => { return s.CurrentSoundId == sound.id; }).Count <= sound.instanceLimit)
                     {
                         source = ObjectPool.Request<SoundSource>(soundSourcePrefab, parent, position, Quaternion.identity);
                         source.StopEvent += OnSoundSourceStop;
@@ -251,7 +251,6 @@ namespace Sol
             }
 
             if (source) sources.Add(source);
-
             return source;
         }
     }

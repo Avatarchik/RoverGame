@@ -81,11 +81,11 @@ namespace Sol
                 currentPuzzleObject.Complete = true;
                 base.Close();
 				Close ();
-				print ("SADSAD");
             }
             else
             {
                 base.Close();
+                Close();
             }
         }
 

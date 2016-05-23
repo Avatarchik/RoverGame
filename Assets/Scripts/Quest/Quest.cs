@@ -9,8 +9,10 @@ namespace Sol
     {
         public string name = "quest";
         public int nextQuest = 0;
+        public bool autoProceed = true;
 
         public List<QuestObjective> objectives = new List<QuestObjective>();
+        public List<QuestTrigger> triggers = new List<QuestTrigger>();
 
         protected int currentObjective = 0;
 
@@ -23,28 +25,34 @@ namespace Sol
         }
 
 
-        public void CompleteObjective(bool hasTargetQuest = false, int questChoice = 0)
+        public void CleanupQuest()
+        {
+            foreach(QuestTrigger trigger in triggers)
+            {
+                trigger.initialized = false;
+                trigger.StopAllCoroutines();
+                trigger.gameObject.SetActive(false);
+            }
+        }
+
+
+        public void CompleteObjective(bool endQuest, int questChoice = 0)
         {
             //cleanup the old
-            CurrentObjective.Cleanup();
+            if(currentObjective < objectives.Count) CurrentObjective.Cleanup();
 
             currentObjective++;
 
             //initialize the new(if there is one)
-            if(currentObjective < objectives.Count)
+            if(currentObjective < objectives.Count && !endQuest)
             {
                 CurrentObjective.Initialize();
             }
             else
             {
-                if(hasTargetQuest)
-                {
-                    GameManager.Get<QuestManager>().CompleteQuest(questChoice);
-                }
-                else
-                {
-                    GameManager.Get<QuestManager>().CompleteQuest();
-                }
+                currentObjective = 0;
+                CleanupQuest();
+                GameManager.Get<QuestManager>().CompleteQuest(questChoice);
             }
         }
 

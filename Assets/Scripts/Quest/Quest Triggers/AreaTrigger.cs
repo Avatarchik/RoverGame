@@ -5,7 +5,7 @@ namespace Sol
 {
     public class AreaTrigger : QuestTrigger
     {
-        private void OnTriggerenter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.tag == "Player") CompleteObjective();
         }

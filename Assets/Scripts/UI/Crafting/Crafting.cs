@@ -7,6 +7,8 @@ namespace Sol
 {
     public class Crafting : Menu
     {
+        public AudioClip craftingEffect;
+
         public CraftingInfoPanel craftingInfoPanel;
         public Transform craftingSlotContainer;
         public CraftingSlot craftingSlotPrefab;
@@ -112,6 +114,7 @@ namespace Sol
 
         public IEnumerator CraftingCoroutine()
         {
+            GameManager.Get<SoundManager>().Play(craftingEffect);
             canClose = false;
             craftingInfoPanel.craftButton.interactable = false;
             InventoryIngredient newII = new InventoryIngredient();
