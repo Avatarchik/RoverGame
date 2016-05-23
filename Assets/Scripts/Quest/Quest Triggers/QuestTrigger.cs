@@ -42,7 +42,6 @@ namespace Sol
 
         public virtual void CompleteObjective()
         {
-            Debug.Log("calling complete!");
             if(initialized)
             {
                 initialized = false;
@@ -61,7 +60,6 @@ namespace Sol
             }
             proceed = false;
             initialized = false;
-            Debug.Log("finishing objective!");
             onCompleteObjective(endQuest, targetQuest);
         }
     }

@@ -79,7 +79,6 @@ namespace Sol
             {
                 if (cachedSoundSource != null)
                 {
-                    Debug.Log("stopping");
                     CachedSoundManager.Play(stopMovementEffect);
                     CachedSoundManager.Stop(cachedSoundSource);
                 }

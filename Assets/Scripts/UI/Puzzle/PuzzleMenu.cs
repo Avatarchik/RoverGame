@@ -64,8 +64,6 @@ namespace Sol
 
         public override void Close()
         {
-            Debug.Log("close");
-
             currentPuzzleObject.UiEvents.MissionButtonEvent(null);
             currentPuzzleObject.UiEvents.LevelButtonEvent(null);
 
@@ -92,7 +90,6 @@ namespace Sol
 
         public void Exit()
         {
-            Debug.Log("exit");
             currentPuzzleObject.interactible = true;
             CachedPuzzleManager.Close();
             Close();
