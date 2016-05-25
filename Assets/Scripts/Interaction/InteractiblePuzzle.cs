@@ -81,7 +81,6 @@ namespace Sol
                 PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu>();
                 pu.Open(this);
 				puzzleManager.InitializePuzzle(myPuzzleCanvas);
-				print ("ASDSAD");
 
                 interactible = false;
 

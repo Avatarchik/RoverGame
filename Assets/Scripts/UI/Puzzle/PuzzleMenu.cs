@@ -77,13 +77,11 @@ namespace Sol
             if(completed)
             {
                 currentPuzzleObject.Complete = true;
-                base.Close();
 				Close ();
             }
             else
             {
-                base.Close();
-                Close();
+				Close ();
             }
         }
 
