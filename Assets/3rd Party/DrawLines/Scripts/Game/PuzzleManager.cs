@@ -703,6 +703,7 @@ public class PuzzleManager : MonoBehaviour
                             Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
 							Image bgImage = transform.transform.Find("background").GetComponent<Image>();
 							bgImage.sprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
+							bgImage.transform.localPosition = new Vector3 (0.0f, 0.0f, cellContentZPosition / 2);
 							bgImage.enabled = true;
                         }
                         ///Setting up the color of the top background of the grid cell
@@ -1419,20 +1420,10 @@ public class PuzzleManager : MonoBehaviour
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
 
-		foreach (Transform child in gridContentsTransform)
-        {
-            Destroy(child.gameObject);
-        }
+		if (completed) {
+			puzzleCanvas.GetComponent<Animator> ().enabled = false;
+		}
 
-//        foreach (Line line in GameObject.FindObjectsOfType<Line>())
-//        {
-//            Destroy(line.gameObject);
-//        }
-
-        foreach(GameObject go in bullshitInstantiated)
-        {
-            //Destroy(go);
-        }
     }
 
 		/// <summary>
