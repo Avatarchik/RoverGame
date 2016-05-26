@@ -77,10 +77,10 @@ namespace Sol {
 		}
 
 		public void ScaledTrue () {
-			myInteracter.puzzleScaled = true;
+			InteractiblePuzzle.puzzleScaled = true;
 		}
 		public void ScaledFalse () {
-			myInteracter.puzzleScaled = false;
+			InteractiblePuzzle.puzzleScaled = false;
 		}
 	}
 }

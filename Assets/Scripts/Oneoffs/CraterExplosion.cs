@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sol
 {
-    public class CraterExplosion : InteractibleObject
+	public class CraterExplosion : MonoBehaviour
     {
         public delegate void ExplosiveEvent(bool landslide);
         public static event ExplosiveEvent OnExplosivePlaced;
@@ -25,11 +25,6 @@ namespace Sol
         public List<GameObject> rockWall = new List<GameObject>();
 
         private bool triggered = false;
-
-        public override void Interact()
-        {
-            
-        }
 
 		public void Detonate(){
 			Debug.Log("DETONATE");
@@ -73,7 +68,6 @@ namespace Sol
         {
             yield return new WaitForSeconds(5f);
             UIManager.Close<MessageMenu>();
-            interactible = true;
         }
     }
 }

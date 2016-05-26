@@ -18,7 +18,7 @@ namespace Sol
 
         public PuzzleManager puzzleManager;
 		public GameObject myPuzzleCanvas;
-		public bool puzzleScaled;
+		public static bool puzzleScaled;
 
         public string message;
 
