@@ -77,7 +77,8 @@ namespace Sol
             if(completed)
             {
                 currentPuzzleObject.Complete = true;
-				Close ();
+				currentPuzzleObject.interactible = false;
+				base.Close ();
             }
             else
             {

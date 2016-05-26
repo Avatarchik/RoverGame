@@ -25,6 +25,8 @@ public class PuzzleManager : MonoBehaviour
 	GridLayoutGroup contentsGrid;
 	RectTransform worldLinesTransform;
 	public GameObject worldLinePrefab;
+	public Color cellStartColor;
+	public Color cellTransColor;
 	private Sprite connectedSprite;
 
 	/// <summary>
@@ -840,6 +842,7 @@ public class PuzzleManager : MonoBehaviour
 					worldCellindex = i * numberOfColumns + j;
 					//worldCell = Instantiate (worldCellPrefab, Vector3.zero, world.transform.rotation) as GameObject;
 					worldCell = gridCells[worldCellindex].gameObject;
+					worldCell.GetComponent<Image> ().color = cellStartColor;
 					worldCellComponent = worldCell.GetComponent<GridCell> ();
 					worldCellComponent.index = worldCellindex;
 					worldCellComponent.DefineAdjacents (i, j);
@@ -1422,7 +1425,12 @@ public class PuzzleManager : MonoBehaviour
 
 		if (completed) {
 			puzzleCanvas.GetComponent<Animator> ().enabled = false;
+			puzzleCanvas.GetComponent<PuzzleAnimTrigger> ().blink = true;
 		}
+		foreach (GridCell cell in gridCells) {
+			cell.GetComponent<Image> ().color = cellTransColor;
+		}
+		isRunning = false;
 
     }
 

@@ -18,12 +18,12 @@ namespace Sol
 
         public PuzzleManager puzzleManager;
 		public GameObject myPuzzleCanvas;
+		public bool puzzleScaled;
 
         public string message;
 
         public List<GameObject> objectsToActivate = new List<GameObject>();
         public List<GameObject> objectsToDeactivate = new List<GameObject>();
-		public List<Collider> collidersToDeactivate = new List<Collider>();
         public List<InteractibleObject> objectsToTrigger = new List<InteractibleObject>();
 
         public bool questTrigger = false;
@@ -49,16 +49,11 @@ namespace Sol
                         go.SetActive(false);
                     }
 
-					foreach (Collider co in collidersToDeactivate)
-					{
-						co.enabled = false;
-					}
-
                     foreach(InteractibleObject io in objectsToTrigger)
                     {
                         io.Interact();
                     }
-					myPuzzleCanvas.GetComponent<Animator> ().enabled = true;
+					interactible = false;
                     if(puzzleCompleteEffect != null) GameManager.Get<SoundManager>().Play(puzzleCompleteEffect);
 					onPuzzleComplete ();
                 }
@@ -72,7 +67,7 @@ namespace Sol
 
         public override void Interact()
         {
-            if(interactible)
+			if(interactible && puzzleScaled)
             {
                 base.Interact();
                 UiEvents.MissionButtonEvent(missionObject);
@@ -81,7 +76,7 @@ namespace Sol
                 PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu>();
                 pu.Open(this);
 				puzzleManager.InitializePuzzle(myPuzzleCanvas);
-				myPuzzleCanvas.GetComponent<PuzzleAnimTrigger> ().fadeLight = true;
+				myPuzzleCanvas.GetComponent<PuzzleAnimTrigger> ().activateLight = true;
 
                 interactible = false;
 
