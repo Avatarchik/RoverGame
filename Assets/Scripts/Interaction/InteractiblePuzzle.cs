@@ -81,6 +81,7 @@ namespace Sol
                 PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu>();
                 pu.Open(this);
 				puzzleManager.InitializePuzzle(myPuzzleCanvas);
+				myPuzzleCanvas.GetComponent<PuzzleAnimTrigger> ().fadeLight = true;
 
                 interactible = false;
 
