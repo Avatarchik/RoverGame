@@ -23,9 +23,11 @@ public class PuzzleManager : MonoBehaviour
 	public GameObject contentCellPrefab;
 	GameObject puzzleCanvas;
 	GridLayoutGroup contentsGrid;
-	RectTransform worldLines;
+	RectTransform worldLinesTransform;
 	public GameObject worldLinePrefab;
-	public float playerDist;
+	public Color cellStartColor;
+	public Color cellTransColor;
+	private Sprite connectedSprite;
 
 	/// <summary>
 	/// 
@@ -380,6 +382,7 @@ public class PuzzleManager : MonoBehaviour
 			numberOfRows = Mission.wantedMission.rowsNumber;
 			numberOfColumns = Mission.wantedMission.colsNumber;
 			puzzleCanvas = puzzle_Canvas;
+			worldLinesTransform = puzzleCanvas.transform.GetChild(1).GetComponent<RectTransform>();
 			//levelText.color = Mission.wantedMission.missionColor;
 			missionText.text = Mission.wantedMission.missionTitle;
 			grid.name = numberOfRows + "x" + numberOfRows + "-Grid";
@@ -399,7 +402,6 @@ public class PuzzleManager : MonoBehaviour
 		puzzleCanvas.SetActive(true);
         CreateNewLevel();
 
-        //StartCoroutine(Delay());
     }
 
     /// <summary	>
@@ -416,10 +418,7 @@ public class PuzzleManager : MonoBehaviour
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(0.1f);
-
-		foreach (GridCell gc in gridCells) {
-			gc.currentlyUsed = false;
-		}
+		isRunning = true;
     }
 	
 		// Update is called once per frame
@@ -504,7 +503,7 @@ public class PuzzleManager : MonoBehaviour
 
             if (tempCollider3D != null)
             {
-                Debug.Log(tempCollider3D.tag + " : " + tempCollider3D.gameObject.name);
+                //Debug.Log(tempCollider3D.tag + " : " + tempCollider3D.gameObject.name);
                 ///When a ray hit a grid cell
                 if (tempCollider3D.tag == "GridCell")
                 {
@@ -521,7 +520,7 @@ public class PuzzleManager : MonoBehaviour
                     }
                     else if (clickType == ClickType.Moved)
                     {
-                        Debug.Log(4);
+                        //Debug.Log(4);
                         drawDraggingElement = true;
                         GridCellClickMoved();
                     }
@@ -704,15 +703,20 @@ public class PuzzleManager : MonoBehaviour
 							if (transform == null) transform = gridCell.GetComponentInChildren<Image>().transform;
 
                             Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
-							transform.GetComponent<Image>().sprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
+							Image bgImage = transform.transform.Find("background").GetComponent<Image>();
+							bgImage.sprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
+							bgImage.transform.localPosition = new Vector3 (0.0f, 0.0f, cellContentZPosition / 2);
+							bgImage.enabled = true;
                         }
                         ///Setting up the color of the top background of the grid cell
                         tempColor = previousGridCell.topBackgroundColor;
                         tempColor.a = gridCellTopBackgroundAlpha;
 						tempSpriteRendererd = gridCell.transform.Find("background").GetComponent<Image>();
-                        tempSpriteRendererd.color = tempColor;
+						print ("1 " + gridLines [currentGridCell.gridLineIndex]);
+
+                        //tempSpriteRendererd.color = tempColor;
                         ///Enable the top backgroud of the grid cell
-                        tempSpriteRendererd.enabled = true;
+                        //tempSpriteRendererd.enabled = true;
                     }
 
                     ///Play the connected sound effect at the center of the unity world
@@ -723,6 +727,7 @@ public class PuzzleManager : MonoBehaviour
                     playBubble = false;
                     Release(null);
                     CheckLevelComplete();
+					//print ("2 " + gridLines [currentGridCell.gridLineIndex]);
                     return;
                 }
             }
@@ -761,7 +766,7 @@ public class PuzzleManager : MonoBehaviour
 				timer.Stop ();
 
 				if (gridLines != null) {
-						for (int i = 0; i <gridLines.Length; i++) {
+						for (int i = 0; i < gridLines.Length; i++) {
 								if (gridLines [i].completedLine)
 										gridLines [i].ClearPath ();
 						}
@@ -812,7 +817,7 @@ public class PuzzleManager : MonoBehaviour
 						SettingUpNextBackAlpha ();
 						timer.Stop ();
 						timer.Start ();
-						isRunning = true;
+			StartCoroutine(Delay());
 				} catch (Exception ex) {
 						Debug.Log ("Make sure you have selected a level, and there are no empty references in GameManager component");
 				}
@@ -837,6 +842,7 @@ public class PuzzleManager : MonoBehaviour
 					worldCellindex = i * numberOfColumns + j;
 					//worldCell = Instantiate (worldCellPrefab, Vector3.zero, world.transform.rotation) as GameObject;
 					worldCell = gridCells[worldCellindex].gameObject;
+					worldCell.GetComponent<Image> ().color = cellStartColor;
 					worldCellComponent = worldCell.GetComponent<GridCell> ();
 					worldCellComponent.index = worldCellindex;
 					worldCellComponent.DefineAdjacents (i, j);
@@ -1212,7 +1218,7 @@ public class PuzzleManager : MonoBehaviour
     private void CreateGridLine (float lineWidth, Color lineColor, string name, int index)
 		{
 		GameObject gridLine = Instantiate (worldLinePrefab, puzzleCanvas.transform.position, puzzleCanvas.transform.rotation) as GameObject;
-		gridLine.transform.parent = worldLines;
+		gridLine.transform.parent = worldLinesTransform;
 				gridLine.name = name;
 				Line line = gridLine.GetComponent<Line> ();
 				line.SetWidth (0.08f);
@@ -1346,7 +1352,6 @@ public class PuzzleManager : MonoBehaviour
 				GameObject [] gridCells = GameObject.FindGameObjectsWithTag ("GridCell");
 				foreach (GameObject gridCell in gridCells) {
 						Destroy (gridCell);
-			print ("SADSA");
 				}
 
 				GameObject [] gridLines = GameObject.FindGameObjectsWithTag ("GridLine");
@@ -1418,20 +1423,15 @@ public class PuzzleManager : MonoBehaviour
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
 
-		foreach (Transform child in gridContentsTransform)
-        {
-            Destroy(child.gameObject);
-        }
+		if (completed) {
+			puzzleCanvas.GetComponent<Animator> ().enabled = false;
+			puzzleCanvas.GetComponent<PuzzleAnimTrigger> ().blink = true;
+		}
+		foreach (GridCell cell in gridCells) {
+			cell.GetComponent<Image> ().color = cellTransColor;
+		}
+		isRunning = false;
 
-        foreach (Line line in GameObject.FindObjectsOfType<Line>())
-        {
-            Destroy(line.gameObject);
-        }
-
-        foreach(GameObject go in bullshitInstantiated)
-        {
-            Destroy(go);
-        }
     }
 
 		/// <summary>

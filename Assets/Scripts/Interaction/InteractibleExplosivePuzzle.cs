@@ -20,7 +20,8 @@ namespace Sol{
 				base.Interact ();
 			} else if (!triggered) {
 				interactible = false;
-				messageMenu.Open (failString);
+				failString = string.Format (failString, desiredIngredient);
+				messageMenu.Open (failString, 4, 2.0f);
 
 			} else if (interactible){
 				base.Interact ();
