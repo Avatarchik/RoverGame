@@ -18,7 +18,7 @@ namespace Sol
 
         public PuzzleManager puzzleManager;
 		public GameObject myPuzzleCanvas;
-		public static bool puzzleScaled;
+		public bool puzzleScaled;
 
         public string message;
 
@@ -28,7 +28,7 @@ namespace Sol
 
         public bool questTrigger = false;
 
-		protected  bool complete = false;
+		protected bool complete = false;
 
         public virtual bool Complete
         {

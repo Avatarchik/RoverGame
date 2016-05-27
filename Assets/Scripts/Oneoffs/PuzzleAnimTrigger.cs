@@ -23,7 +23,7 @@ namespace Sol {
 		// Use this for initialization
 		void Start () {
 			canvasAnim = gameObject.GetComponent<Animator> ();
-			myInteracter = transform.parent.GetComponent<InteractiblePuzzle> ();
+			myInteracter = transform.GetComponentInParent<InteractiblePuzzle> ();
 			if (puzzleLight != null) {
 				lightStartIntensity = puzzleLight.intensity;
 				puzzleLight.intensity = 0.0f;
@@ -77,10 +77,10 @@ namespace Sol {
 		}
 
 		public void ScaledTrue () {
-			InteractiblePuzzle.puzzleScaled = true;
+			myInteracter.puzzleScaled = true;
 		}
 		public void ScaledFalse () {
-			InteractiblePuzzle.puzzleScaled = false;
+			myInteracter.puzzleScaled = false;
 		}
 	}
 }

@@ -150,6 +150,8 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		public static Line[] gridLines;
 
+	public Line[] newLines;
+
 		/// <summary>
 		/// The number of rows of the grid.
 		/// </summary>
@@ -424,6 +426,7 @@ public class PuzzleManager : MonoBehaviour
 		// Update is called once per frame
 	void Update (){
 		Moves = movements;
+		newLines = gridLines;
 		if (!isRunning) {
 				return;
 		}
@@ -1363,40 +1366,39 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// Checks Wheter the level is completed.
 		/// </summary>
-		private void CheckLevelComplete ()
-		{
+	private void CheckLevelComplete (){
 		SetEndMoves ();
 		movements = 0;
-				if (gridLines == null) {
-						return;
-				}
-
-				bool isLevelComplete = true;
-
-				for (int i = 0; i < gridLines.Length; i++) {
-						if (!gridLines [i].completedLine) {
-								isLevelComplete = false;
-								break;
-						}
-				}
-
-			if (isLevelComplete) {
-            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
-            CachedSoundManager.Play(puzzleCompleteEffect);
-				timer.Stop ();
-				isRunning = false;
-			RemoveInventoryWires ();
-            Cleanup(true);
-        }
-            else
-        {
-            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
-            CachedSoundManager.Play(puzzleCompleteEffect);
-            timer.Stop();
-            isRunning = false;
-            Cleanup(false);
-        }
+		if (gridLines == null) {
+			return;
 		}
+
+		bool isLevelComplete = true;
+
+		for (int i = 0; i < gridLines.Length; i++) {
+			if (!gridLines [i].completedLine) {
+				isLevelComplete = false;
+				break;
+			}
+		}
+
+		print (isLevelComplete + " HI");
+
+		if (isLevelComplete) {
+			if (cachedSoundSource != null) {
+				CachedSoundManager.Stop (cachedSoundSource);
+				CachedSoundManager.Play (puzzleCompleteEffect);
+				timer.Stop ();
+				Cleanup (true);
+			}
+		} else {
+			if (cachedSoundSource != null) {
+				CachedSoundManager.Stop (cachedSoundSource);
+				CachedSoundManager.Play (puzzleCompleteEffect);
+				timer.Stop ();
+			}
+		}
+	}
 
 	private void SetEndMoves(){
 		if (beginGridCell.gridIngredient == UIManager.GetMenu<PuzzleMenu> ().AluminumWire) {
@@ -1424,14 +1426,15 @@ public class PuzzleManager : MonoBehaviour
         pm.Close(completed);
 
 		if (completed) {
+			isRunning = false;
+			RemoveInventoryWires ();
 			puzzleCanvas.GetComponent<Animator> ().enabled = false;
 			puzzleCanvas.GetComponent<PuzzleAnimTrigger> ().blink = true;
 		}
+
 		foreach (GridCell cell in gridCells) {
 			cell.GetComponent<Image> ().color = cellTransColor;
 		}
-		isRunning = false;
-
     }
 
 		/// <summary>
