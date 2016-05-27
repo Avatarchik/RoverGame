@@ -174,7 +174,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void CapSpeed()
         {
-            Vector3 fakelocity = new Vector3(m_Rigidbody.velocity.x, 1, m_Rigidbody.velocity.z);
+            Vector3 fakelocity = new Vector3(m_Rigidbody.velocity.x, 0, m_Rigidbody.velocity.z);
             float speed = fakelocity.magnitude;
 
             switch (m_SpeedType)
