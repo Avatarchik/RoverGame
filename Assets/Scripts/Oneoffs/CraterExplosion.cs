@@ -53,8 +53,6 @@ namespace Sol
 
 		public IEnumerator DetonateDelay()
         {
-           
-            explosiveDevice.SetActive(true);
             CountDown countDown = UIManager.GetMenu<CountDown>();
             countDown.SetText(explosionDelay);
             yield return new WaitForSeconds(explosionDelay);
