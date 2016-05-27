@@ -19,15 +19,16 @@ public class PuzzleManager : MonoBehaviour
 	/// <summary>
 	/// World Space attributes
 	/// </summary>
-	public bool WorldSpacePuzzle;
+	bool WorldSpacePuzzle = true;
 	public GameObject contentCellPrefab;
-	GameObject puzzleCanvas;
-	GridLayoutGroup contentsGrid;
-	RectTransform worldLinesTransform;
 	public GameObject worldLinePrefab;
 	public Color cellStartColor;
 	public Color cellTransColor;
-	private Sprite connectedSprite;
+	public List <Sprite> circuitSprites;
+	GameObject puzzleCanvas;
+	GameObject previousPuzzleCanvas;
+	GridLayoutGroup contentsGrid;
+	RectTransform worldLinesTransform;
 
 	/// <summary>
 	/// 
@@ -352,6 +353,7 @@ public class PuzzleManager : MonoBehaviour
     /// </summary>
 	public void InitializePuzzle(GameObject puzzle_Canvas)
 	{
+		print ("ASDSAD");
 		if (levelText == null) {
 			levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
 		}
@@ -384,6 +386,7 @@ public class PuzzleManager : MonoBehaviour
 			numberOfRows = Mission.wantedMission.rowsNumber;
 			numberOfColumns = Mission.wantedMission.colsNumber;
 			puzzleCanvas = puzzle_Canvas;
+			previousPuzzleCanvas = puzzleCanvas;
 			worldLinesTransform = puzzleCanvas.transform.GetChild(1).GetComponent<RectTransform>();
 			//levelText.color = Mission.wantedMission.missionColor;
 			missionText.text = Mission.wantedMission.missionTitle;
@@ -417,9 +420,9 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 
-    private IEnumerator Delay()
+    public IEnumerator DelayRun()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.25f);
 		isRunning = true;
     }
 	
@@ -820,7 +823,6 @@ public class PuzzleManager : MonoBehaviour
 						SettingUpNextBackAlpha ();
 						timer.Stop ();
 						timer.Start ();
-			StartCoroutine(Delay());
 				} catch (Exception ex) {
 						Debug.Log ("Make sure you have selected a level, and there are no empty references in GameManager component");
 				}
@@ -1429,7 +1431,7 @@ public class PuzzleManager : MonoBehaviour
 			isRunning = false;
 			RemoveInventoryWires ();
 			puzzleCanvas.GetComponent<Animator> ().enabled = false;
-			puzzleCanvas.GetComponent<PuzzleAnimTrigger> ().blink = true;
+			puzzleCanvas.GetComponent<PuzzleAnimHandler> ().blink = true;
 		}
 
 		foreach (GridCell cell in gridCells) {
