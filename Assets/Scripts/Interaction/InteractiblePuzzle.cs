@@ -18,7 +18,8 @@ namespace Sol
 
         public PuzzleManager puzzleManager;
 		public GameObject myPuzzleCanvas;
-		public bool puzzleScaled;
+		public bool firstInteraction = true;
+		public bool puzzleScaled = false;
 
         public string message;
 
@@ -73,20 +74,24 @@ namespace Sol
 
         public override void Interact()
         {
-			if(interactible && puzzleScaled)
+			if(interactible)
             {
-                base.Interact();
-                UiEvents.MissionButtonEvent(missionObject);
-                UiEvents.LevelButtonEvent(levelObject);
+				if (firstInteraction) {
+					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().FirstInteract ();
+					firstInteraction = false;
+				} else if (puzzleScaled) {
+					base.Interact ();
+					UiEvents.MissionButtonEvent (missionObject);
+					UiEvents.LevelButtonEvent (levelObject);
 
-                PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu>();
-                pu.Open(this);
-				puzzleManager.InitializePuzzle(myPuzzleCanvas);
-				myPuzzleCanvas.GetComponent<PuzzleAnimTrigger> ().activateLight = true;
+					PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu> ();
+					pu.Open (this);
 
-                interactible = false;
+					interactible = false;
+					UIManager.Close<MessageMenu> ();
 
-                UIManager.Close<MessageMenu>();
+					StartCoroutine (puzzleManager.DelayRun ());
+				}
             }
         }
     }
