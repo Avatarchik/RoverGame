@@ -18,17 +18,18 @@ namespace Sol
 
         public PuzzleManager puzzleManager;
 		public GameObject myPuzzleCanvas;
-		public static bool puzzleScaled;
+		public bool puzzleScaled;
 
         public string message;
 
         public List<GameObject> objectsToActivate = new List<GameObject>();
         public List<GameObject> objectsToDeactivate = new List<GameObject>();
+		public List<Collider> collidersToDeactivate = new List<Collider>();
         public List<InteractibleObject> objectsToTrigger = new List<InteractibleObject>();
 
         public bool questTrigger = false;
 
-		protected  bool complete = false;
+		protected bool complete = false;
 
         public virtual bool Complete
         {
@@ -48,6 +49,11 @@ namespace Sol
                     {
                         go.SetActive(false);
                     }
+
+					foreach (Collider co in collidersToDeactivate)
+					{
+						co.enabled = false;
+					}
 
                     foreach(InteractibleObject io in objectsToTrigger)
                     {
