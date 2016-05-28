@@ -22,6 +22,7 @@ public class PuzzleManager : MonoBehaviour
 	bool WorldSpacePuzzle = true;
 	public GameObject contentCellPrefab;
 	public GameObject worldLinePrefab;
+	public GameObject wireLinePrefab;
 	public Color cellStartColor;
 	public Color cellTransColor;
 	public Color cellCompleteColor;
@@ -581,10 +582,11 @@ public class PuzzleManager : MonoBehaviour
 
 						///Determine the New Line Point
 						tempPoint = currentGridCell.transform.position;
+			RectTransform gridRect = currentGridCell.GetComponent<RectTransform> ();
 						//tempPoint.z = gridLineZPosition;
 
 						///Add the position of the New Line Point to the current line
-						gridLines [currentGridCell.gridLineIndex].AddPoint (tempPoint);
+			gridLines [currentGridCell.gridLineIndex].AddPoint (gridRect);
 				}
 		}
 
@@ -677,10 +679,11 @@ public class PuzzleManager : MonoBehaviour
 
             ///Determine the New Line Point
             tempPoint = currentGridCell.transform.position;
+			RectTransform gridRect = currentGridCell.GetComponent<RectTransform> ();
             //tempPoint.z = gridLineZPosition;
 
             ///Add the position of the New Line Point to the current line
-            gridLines[currentGridCell.gridLineIndex].AddPoint(tempPoint);
+			gridLines[currentGridCell.gridLineIndex].AddPoint(gridRect);
 
             bool playBubble = true;
             if (!currentGridCell.isEmpty)
@@ -1008,7 +1011,8 @@ public class PuzzleManager : MonoBehaviour
 //				}
 
 				///Create Grid Line
-				CreateGridLine (0.01f, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+				//CreateGridLine (0.01f, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+				CreateWireLine (0.1f * gridLineWidthFactor, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
 			}
 			Color tempColor = Mission.wantedMission.missionColor;
 			tempColor.a = draggingElementAlpha;
@@ -1228,6 +1232,21 @@ public class PuzzleManager : MonoBehaviour
 						gridLines [index].index = index;
 				}
 		}
+
+	private void CreateWireLine (float lineWidth, Color lineColor, string name, int index)
+	{
+		GameObject wireLine = Instantiate (wireLinePrefab, worldLinesTransform.transform.position, worldLinesTransform.transform.rotation) as GameObject;
+		wireLine.transform.parent = worldLinesTransform;
+		wireLine.GetComponent<RectTransform> ().localScale = Vector3.one;
+		wireLine.name = name;
+		Line line = wireLine.GetComponent<Line> ();
+		line.SetWidth (lineWidth);
+		line.SetColor (lineColor);
+		if (gridLines != null) {
+			gridLines [index] = line;
+			gridLines [index].index = index;
+		}
+	}
 
 		/// <summary>
 		/// Creates the dragging element.
