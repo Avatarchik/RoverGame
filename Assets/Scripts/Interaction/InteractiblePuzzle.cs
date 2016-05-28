@@ -74,23 +74,23 @@ namespace Sol
 
         public override void Interact()
         {
-			if(interactible)
+			if(interactible && puzzleScaled)
             {
+				base.Interact ();
+				UiEvents.MissionButtonEvent (missionObject);
+				UiEvents.LevelButtonEvent (levelObject);
+
+				PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu> ();
+				pu.Open (this);
+
+				puzzleManager.InitializePuzzle (myPuzzleCanvas);
+
+				interactible = false;
+				UIManager.Close<MessageMenu> ();
+
 				if (firstInteraction) {
-					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().FirstInteract ();
+					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().ActivateLight ();
 					firstInteraction = false;
-				} else if (puzzleScaled) {
-					base.Interact ();
-					UiEvents.MissionButtonEvent (missionObject);
-					UiEvents.LevelButtonEvent (levelObject);
-
-					PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu> ();
-					pu.Open (this);
-
-					interactible = false;
-					UIManager.Close<MessageMenu> ();
-
-					StartCoroutine (puzzleManager.DelayRun ());
 				}
             }
         }
