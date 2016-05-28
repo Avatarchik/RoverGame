@@ -24,6 +24,7 @@ public class PuzzleManager : MonoBehaviour
 	public GameObject worldLinePrefab;
 	public Color cellStartColor;
 	public Color cellTransColor;
+	public Color cellCompleteColor;
 	public List <Sprite> circuitSprites;
 	GameObject puzzleCanvas;
 	GameObject previousPuzzleCanvas;
@@ -353,7 +354,6 @@ public class PuzzleManager : MonoBehaviour
     /// </summary>
 	public void InitializePuzzle(GameObject puzzle_Canvas)
 	{
-		print ("ASDSAD");
 		if (levelText == null) {
 			levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
 		}
@@ -418,13 +418,7 @@ public class PuzzleManager : MonoBehaviour
 				if (timer != null)
 						timer.Stop ();
 		}
-
-
-    public IEnumerator DelayRun()
-    {
-        yield return new WaitForSeconds(0.25f);
-		isRunning = true;
-    }
+		
 	
 		// Update is called once per frame
 	void Update (){
@@ -823,6 +817,7 @@ public class PuzzleManager : MonoBehaviour
 						SettingUpNextBackAlpha ();
 						timer.Stop ();
 						timer.Start ();
+			isRunning = true;
 				} catch (Exception ex) {
 						Debug.Log ("Make sure you have selected a level, and there are no empty references in GameManager component");
 				}
@@ -1384,8 +1379,6 @@ public class PuzzleManager : MonoBehaviour
 			}
 		}
 
-		print (isLevelComplete + " HI");
-
 		if (isLevelComplete) {
 			if (cachedSoundSource != null) {
 				CachedSoundManager.Stop (cachedSoundSource);
@@ -1422,7 +1415,7 @@ public class PuzzleManager : MonoBehaviour
 	}
 
 
-    private void Cleanup(bool completed)
+    private void Cleanup (bool completed)
     {
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
@@ -1431,11 +1424,14 @@ public class PuzzleManager : MonoBehaviour
 			isRunning = false;
 			RemoveInventoryWires ();
 			puzzleCanvas.GetComponent<Animator> ().enabled = false;
-			puzzleCanvas.GetComponent<PuzzleAnimHandler> ().blink = true;
-		}
-
-		foreach (GridCell cell in gridCells) {
-			cell.GetComponent<Image> ().color = cellTransColor;
+			puzzleCanvas.GetComponent<PuzzleAnimHandler> ().BlinkLight ();
+			foreach (GridCell cell in gridCells) {
+				cell.GetComponent<Image> ().color = cellCompleteColor;
+			}
+		} else {
+			foreach (GridCell cell in gridCells) {
+				cell.GetComponent<Image> ().color = cellTransColor;
+			}
 		}
     }
 
