@@ -67,7 +67,7 @@ public class PuzzleManager : MonoBehaviour
 		/// The grid line width factor.
 		/// </summary>
 		[Range(0,10)]
-		public float gridLineWidthFactor = 0.5f;
+		public float gridLineWidthFactor;
 
 		/// <summary>
 		/// The cell content prefab.
@@ -581,12 +581,13 @@ public class PuzzleManager : MonoBehaviour
 						currentLine.path.Add (currentGridCell.index);
 
 						///Determine the New Line Point
-						tempPoint = currentGridCell.transform.position;
+
 			RectTransform gridRect = currentGridCell.GetComponent<RectTransform> ();
-						//tempPoint.z = gridLineZPosition;
+			tempPoint = gridRect.position;
+			//tempPoint.z = gridLineZPosition;
 
 						///Add the position of the New Line Point to the current line
-			gridLines [currentGridCell.gridLineIndex].AddPoint (gridRect);
+			gridLines [currentGridCell.gridLineIndex].AddPoint (gridRect, tempPoint);
 				}
 		}
 
@@ -678,12 +679,12 @@ public class PuzzleManager : MonoBehaviour
             currentLine.path.Add(currentGridCell.index);
 
             ///Determine the New Line Point
-            tempPoint = currentGridCell.transform.position;
 			RectTransform gridRect = currentGridCell.GetComponent<RectTransform> ();
+			tempPoint = gridRect.position;
             //tempPoint.z = gridLineZPosition;
 
             ///Add the position of the New Line Point to the current line
-			gridLines[currentGridCell.gridLineIndex].AddPoint(gridRect);
+			gridLines[currentGridCell.gridLineIndex].AddPoint(gridRect, tempPoint);
 
             bool playBubble = true;
             if (!currentGridCell.isEmpty)
@@ -820,7 +821,7 @@ public class PuzzleManager : MonoBehaviour
 						SettingUpNextBackAlpha ();
 						timer.Stop ();
 						timer.Start ();
-			isRunning = true;
+			StartCoroutine (DelayRun());
 				} catch (Exception ex) {
 						Debug.Log ("Make sure you have selected a level, and there are no empty references in GameManager component");
 				}
@@ -1012,7 +1013,7 @@ public class PuzzleManager : MonoBehaviour
 
 				///Create Grid Line
 				//CreateGridLine (0.01f, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
-				CreateWireLine (0.1f * gridLineWidthFactor, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+				CreateWireLine (gridLineWidthFactor, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
 			}
 			Color tempColor = Mission.wantedMission.missionColor;
 			tempColor.a = draggingElementAlpha;
@@ -1225,7 +1226,7 @@ public class PuzzleManager : MonoBehaviour
 		gridLine.transform.parent = worldLinesTransform;
 				gridLine.name = name;
 				Line line = gridLine.GetComponent<Line> ();
-				line.SetWidth (0.08f);
+				//line.SetWidth (0.08f);
 				line.SetColor (lineColor);
 				if (gridLines != null) {
 						gridLines [index] = line;
@@ -1240,7 +1241,7 @@ public class PuzzleManager : MonoBehaviour
 		wireLine.GetComponent<RectTransform> ().localScale = Vector3.one;
 		wireLine.name = name;
 		Line line = wireLine.GetComponent<Line> ();
-		line.SetWidth (lineWidth);
+		line.SetWidth (lineWidth, 0.55f);
 		line.SetColor (lineColor);
 		if (gridLines != null) {
 			gridLines [index] = line;
@@ -1412,6 +1413,11 @@ public class PuzzleManager : MonoBehaviour
 				timer.Stop ();
 			}
 		}
+	}
+
+	private IEnumerator DelayRun() {
+		yield return new WaitForSeconds (0.1f);
+		isRunning = true;
 	}
 
 	private void SetEndMoves(){

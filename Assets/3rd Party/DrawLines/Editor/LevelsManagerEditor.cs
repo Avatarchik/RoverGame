@@ -20,6 +20,8 @@ namespace DrawLinesEditors
 				private Color yellowColor = Color.yellow;
 				private Color redColor = new Color (255, 0, 0, 255) / 255.0f;
 				private Color cyanColor = new Color (0, 255, 255, 255) / 255.0f;
+		private Color aluminumColor = new Color (8, 216, 218, 230) / 255.0f;
+
 		public int wireIndex;
 		public Color wireColor;
 		public Level.WireTypes myWireType;
@@ -236,7 +238,7 @@ namespace DrawLinesEditors
 							switch (attrib.levels [i].dotsPairs [j].wireIndex) {
 							case 0:
 								myWireType = Level.WireTypes.Aluminum;
-								wireColor = Color.cyan;
+								wireColor = aluminumColor;
 								break;
 							case 1:
 								myWireType = Level.WireTypes.Copper;
