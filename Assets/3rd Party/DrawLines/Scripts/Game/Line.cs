@@ -13,6 +13,7 @@ public class Line : MonoBehaviour
 		/// The width of the line renderer.
 		/// </summary>
 		private float lineWidth;
+	private float lineHeight;
 
 		/// <summary>
 		/// The material of the line renderer.
@@ -28,22 +29,26 @@ public class Line : MonoBehaviour
 		/// The Points of the Line .
 		/// </summary>
 		private List<Vector3>points = new List<Vector3>();
+	private List<RectTransform> rects = new List<RectTransform>();
 
 		/// <summary>
 		/// The line pieces.
 		/// A line piece is a line renderer contains only two points
 		/// </summary>
-		private List<LineRenderer> linePieces;
+		//private List<LineRenderer> linePieces;
+
+	private List<Image> linePieces;
 
 		/// <summary>
 		/// The temp line piece game object.
 		/// </summary>
 		private GameObject tempLinePieceGameObject;
+	private RectTransform linePieceRect;
 
 		/// <summary>
 		/// The temp line piece line renderer.
 		/// </summary>
-		private LineRenderer tempLinePieceLineRenderer;
+	private Image tempLinePieceImage;
 
 		/// <summary>
 		/// Temporary sprite renderer.
@@ -91,7 +96,8 @@ public class Line : MonoBehaviour
 		{
 				///Initiate instances
 				points = new List<Vector3> ();
-				linePieces = new List<LineRenderer> ();
+		rects = new List<RectTransform> ();
+		linePieces = new List<Image> ();
 				path = new List<int> ();
 		}
 
@@ -99,8 +105,9 @@ public class Line : MonoBehaviour
 		/// Add a point to the line.
 		/// </summary>
 		/// <param name="point">Vector3 Point.</param>
-		public void AddPoint (Vector3 point)
+	public void AddPoint (RectTransform cellTransform)
 		{
+		Vector3 point = cellTransform.position;
         if (point == null) Debug.LogError("passed point is null!");
 
 				///If the given point already exists ,then skip it
@@ -109,24 +116,34 @@ public class Line : MonoBehaviour
 						return;
 				}
 
+		if (rects.Contains (cellTransform)) {
+			Debug.Log("rect already exists??");
+			return;
+		}
+
 				///Increase the number of points in the line
 				numberOfPoints++;
 				///Add the point to the points list
 				points.Add (point);
+		rects.Add (cellTransform);
         Debug.Log("number of Points! : " + numberOfPoints + " | points count : " + points.Count);
         ///Create new line piece
         if (points.Count > 1) {
             
 						tempFirstPoint = points [points.Count - 2];
 						tempSecondPoint = points [points.Count - 1];
+			RectTransform firstRect = rects [points.Count - 2];
+			RectTransform secondRect = rects [points.Count - 1];
 						//Create Line Piece
-						tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, Quaternion.identity) as GameObject;
+			tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, transform.rotation) as GameObject;
 						tempLinePieceGameObject.transform.parent = transform;
 						tempLinePieceGameObject.name = "LinePiece-[" + (numberOfPoints - 2) + "," + (numberOfPoints - 1) + "]";
-						tempLinePieceLineRenderer = tempLinePieceGameObject.GetComponent<LineRenderer> ();
-						tempLinePieceLineRenderer.material = lineMaterial;
-						tempLinePieceLineRenderer.SetWidth (lineWidth, lineWidth);
-						tempLinePieceLineRenderer.SetVertexCount (2);
+			tempLinePieceImage = tempLinePieceGameObject.GetComponent<Image> ();
+						tempLinePieceImage.material = lineMaterial;
+			linePieceRect = tempLinePieceGameObject.GetComponent<RectTransform> ();
+			tempLinePieceImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (lineWidth, lineWidth);
+						//tempLinePieceImage.SetWidth (lineWidth, lineWidth);
+						//tempLinePieceImage.SetVertexCount (2);
 
 						//Fixing LineRenderer point x-position to make line pieces connected
 						if (tempSecondPoint.x > tempFirstPoint.x) {
@@ -147,13 +164,36 @@ public class Line : MonoBehaviour
 								tempSecondPoint.y -= lineWidth / 2.0f;
 								tempFirstPoint.y += lineWidth / 2.0f;
 						}
-
-						tempLinePieceLineRenderer.SetPosition (0, tempFirstPoint);//first point
-						tempLinePieceLineRenderer.SetPosition (1, tempSecondPoint);//second point
+			Vector3 firstLocalPoint = firstRect.localPosition;
+			Vector3 secondLocalPoint = secondRect.localPosition;
+			SetPosition (tempFirstPoint, tempSecondPoint);
+			SetRotation (firstLocalPoint, secondLocalPoint);
+						//tempLinePieceImage.SetPosition (0, tempFirstPoint);//first point
+						//tempLinePieceImage.SetPosition (1, tempSecondPoint);//second point
 						///Add the line picece to the list
-						linePieces.Add (tempLinePieceLineRenderer);
+						linePieces.Add (tempLinePieceImage);
 				}
 		}
+
+	/// <summary>
+	/// Sets the position of the image.
+	/// </summary>
+	public void SetPosition (Vector3 firstPoint, Vector3 secondPoint) {
+		linePieceRect.localScale = Vector3.one;
+		linePieceRect.position = firstPoint + (secondPoint - firstPoint) / 2;
+	}
+
+	public void SetRotation (Vector3 firstPoint, Vector3 secondPoint) {
+		print ("First y " + firstPoint.y);
+		print ("Second y " + secondPoint.y);
+		float delta = Mathf.Abs (firstPoint.y - secondPoint.y);
+		if (delta == 0.0f) {
+			linePieceRect.localEulerAngles = new Vector3 (0, 0, 90);
+			linePieceRect.localScale = new Vector3 (0.35f, 1.0f, 1.0f);
+		} else {
+			linePieceRect.localScale = new Vector3 (1.0f, 0.45f, 1.0f);
+		}
+	}
 
 		/// <summary>
 		/// Sets the color of the line.
@@ -215,6 +255,7 @@ public class Line : MonoBehaviour
 
 				linePieces.Clear ();
 				points.Clear ();
+		rects.Clear ();
 				Transform gridCellContent = null;
 
 				for (int i = 0; i < path.Count; i++) {
