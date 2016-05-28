@@ -53,7 +53,7 @@ namespace Sol
         {
             if (playerStats.TurnSpeed > 0 && characterDriver.strafing)
             {
-                 transform.Rotate(Vector3.up, playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Mouse X") * playerStats.TurnSpeed * 5);
+               //  transform.Rotate(Vector3.up, playerStats.CurrentMovementSpeed * Time.fixedDeltaTime * Input.GetAxis("Mouse X") * playerStats.TurnSpeed * 5);
             }
         }
 

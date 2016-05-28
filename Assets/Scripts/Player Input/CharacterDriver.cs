@@ -13,7 +13,7 @@ namespace Sol
 
         public PlayerStats playerStats;
 
-        public CameraDriver cameraDriver;
+        public MouseLook mouseLook;
 
         public Light flashLight;
 
@@ -82,6 +82,14 @@ namespace Sol
                     CachedSoundManager.Play(stopMovementEffect);
                     CachedSoundManager.Stop(cachedSoundSource);
                 }
+            }
+
+            if(mouseLook.rotationX != 0 && h == 0 && v != 0)
+            {
+                //if the camera rotation is different than the chassi rotation and theres no horizontal input
+                //then we want to turn anyway
+                mouseLook.rotationX = Mathf.Lerp(mouseLook.rotationX, 0, Time.deltaTime);
+                h = (mouseLook.rotationX / mouseLook.maximumX) * mouseLook.sensitivityX;
             }
 
             carController.Move(h, v, v, handbrake);
