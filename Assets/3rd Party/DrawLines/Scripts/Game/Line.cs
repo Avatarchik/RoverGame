@@ -49,6 +49,7 @@ public class Line : MonoBehaviour
 		/// The temp line piece line renderer.
 		/// </summary>
 	private Image tempLinePieceImage;
+	private Image previousPieceImage;
 
 		/// <summary>
 		/// Temporary sprite renderer.
@@ -91,6 +92,8 @@ public class Line : MonoBehaviour
 		/// </summary>
 		public GameObject linePiecePrefab;
 	public GridCell gridCell;
+	public Sprite wireMiddle;
+	public Sprite wireEnd;
 
 		void Start ()
 		{
@@ -105,9 +108,8 @@ public class Line : MonoBehaviour
 		/// Add a point to the line.
 		/// </summary>
 		/// <param name="point">Vector3 Point.</param>
-	public void AddPoint (RectTransform cellTransform)
+	public void AddPoint (RectTransform cellTransform, Vector3 point)
 		{
-		Vector3 point = cellTransform.position;
         if (point == null) Debug.LogError("passed point is null!");
 
 				///If the given point already exists ,then skip it
@@ -136,34 +138,40 @@ public class Line : MonoBehaviour
 			RectTransform secondRect = rects [points.Count - 1];
 						//Create Line Piece
 			tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, transform.rotation) as GameObject;
+			print ("INASDIN");
+			if (previousPieceImage != null && numberOfPoints > 3) {
+				previousPieceImage.sprite = wireMiddle;
+			}
 						tempLinePieceGameObject.transform.parent = transform;
 						tempLinePieceGameObject.name = "LinePiece-[" + (numberOfPoints - 2) + "," + (numberOfPoints - 1) + "]";
 			tempLinePieceImage = tempLinePieceGameObject.GetComponent<Image> ();
+			previousPieceImage = tempLinePieceImage;
+			tempLinePieceImage.sprite = wireEnd;
 						tempLinePieceImage.material = lineMaterial;
 			linePieceRect = tempLinePieceGameObject.GetComponent<RectTransform> ();
-			tempLinePieceImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (lineWidth, lineWidth);
+			tempLinePieceImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (lineWidth, lineHeight);
 						//tempLinePieceImage.SetWidth (lineWidth, lineWidth);
 						//tempLinePieceImage.SetVertexCount (2);
 
 						//Fixing LineRenderer point x-position to make line pieces connected
-						if (tempSecondPoint.x > tempFirstPoint.x) {
-								tempSecondPoint.x += lineWidth / 2.0f;
-								tempFirstPoint.x -= lineWidth / 2.0f;
-
-						} else if (tempSecondPoint.x < tempFirstPoint.x) {
-								tempSecondPoint.x -= lineWidth / 2.0f;
-								tempFirstPoint.x += lineWidth / 2.0f;
-						}
-
-						//Fixing LineRenderer point y-position to make line pieces connected
-						if (tempSecondPoint.y > tempFirstPoint.y) {
-								tempSecondPoint.y += lineWidth / 2.0f;
-								tempFirstPoint.y -= lineWidth / 2.0f;
-				
-						} else if (tempSecondPoint.y < tempFirstPoint.y) {
-								tempSecondPoint.y -= lineWidth / 2.0f;
-								tempFirstPoint.y += lineWidth / 2.0f;
-						}
+//						if (tempSecondPoint.x > tempFirstPoint.x) {
+//								tempSecondPoint.x += lineWidth / 2.0f;
+//								tempFirstPoint.x -= lineWidth / 2.0f;
+//
+//						} else if (tempSecondPoint.x < tempFirstPoint.x) {
+//								tempSecondPoint.x -= lineWidth / 2.0f;
+//								tempFirstPoint.x += lineWidth / 2.0f;
+//						}
+//
+//						//Fixing LineRenderer point y-position to make line pieces connected
+//						if (tempSecondPoint.y > tempFirstPoint.y) {
+//								tempSecondPoint.y += lineWidth / 2.0f;
+//								tempFirstPoint.y -= lineWidth / 2.0f;
+//				
+//						} else if (tempSecondPoint.y < tempFirstPoint.y) {
+//								tempSecondPoint.y -= lineWidth / 2.0f;
+//								tempFirstPoint.y += lineWidth / 2.0f;
+//						}
 			Vector3 firstLocalPoint = firstRect.localPosition;
 			Vector3 secondLocalPoint = secondRect.localPosition;
 			SetPosition (tempFirstPoint, tempSecondPoint);
@@ -184,13 +192,33 @@ public class Line : MonoBehaviour
 	}
 
 	public void SetRotation (Vector3 firstPoint, Vector3 secondPoint) {
-		print ("First y " + firstPoint.y);
-		print ("Second y " + secondPoint.y);
-		float delta = Mathf.Abs (firstPoint.y - secondPoint.y);
-		if (delta == 0.0f) {
-			linePieceRect.localEulerAngles = new Vector3 (0, 0, 90);
-			linePieceRect.localScale = new Vector3 (0.35f, 1.0f, 1.0f);
+		float deltaY = secondPoint.y - firstPoint.y;
+		float deltaX = secondPoint.x - firstPoint.x;
+		if (deltaY == 0.0f) {
+			if (deltaX < 0) {
+				if (numberOfPoints > 2) {
+					linePieceRect.localEulerAngles = new Vector3 (0, 0, 90);
+				} else {
+					linePieceRect.localEulerAngles = new Vector3 (0, 0, 270);
+				}
+			} else {
+				if (numberOfPoints > 2) {
+					linePieceRect.localEulerAngles = new Vector3 (0, 0, 270);
+				} else {
+					linePieceRect.localEulerAngles = new Vector3 (0, 0, 90);
+				}
+			}
+			linePieceRect.localScale = new Vector3 (0.3f, 1.0f, 1.0f);
 		} else {
+			if (deltaY < 0) {
+				if (numberOfPoints > 2) {
+					linePieceRect.localEulerAngles = new Vector3 (0, 0, 180);
+				}
+			} else {
+				if (numberOfPoints < 2) {
+					linePieceRect.localEulerAngles = new Vector3 (0, 0, 180);
+				}
+			}
 			linePieceRect.localScale = new Vector3 (1.0f, 0.45f, 1.0f);
 		}
 	}
@@ -214,9 +242,10 @@ public class Line : MonoBehaviour
 		/// Set the width of the line.
 		/// </summary>
 		/// <param name="lineWidth">Line width.</param>
-		public void SetWidth (float lineWidth)
+	public void SetWidth (float lineWidth, float lineHeight)
 		{
 				this.lineWidth = lineWidth;
+				this.lineHeight = lineHeight;
 		}
 
 		/// <summary>
