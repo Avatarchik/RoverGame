@@ -12,15 +12,14 @@ namespace Sol
 
         public SoundControls soundControls; 
         public Speaker speaker = Speaker.Human;
-        [TextArea]
-        public string displayText ="";
+
+        public List<string> displayTexts = new List<string>();
+
         public List<GameObject> waypointTargets = new List<GameObject>();
         public bl_HudInfo defaultHudInfo;
 
         public QuestTrigger questTrigger;
         public bool isQuestChoice = false;
-
-        public float delayedClose = 4f;
 
         protected bl_HudManager cachedHudManager;
         protected List<bl_HudInfo> spawnedHudInfos = new List<bl_HudInfo>();
@@ -46,8 +45,7 @@ namespace Sol
 
         public void Initialize()
         {
-            UIManager.GetMenu<ObjectiveTracker>().Open(displayText, speaker == Speaker.Human, true, delayedClose);
-            questTrigger.Initialize();
+            GameManager.Get<QuestManager>().DisplayDialogue(displayTexts, this, speaker == Speaker.Human);
 
             foreach(GameObject target in waypointTargets)
             {
@@ -97,6 +95,6 @@ namespace Sol
             newHudInfo.HideOnLargeDistance = defaultHudInfo.HideOnLargeDistance;
 
             return newHudInfo;
-        }
+        }        
     }
 }
