@@ -19,6 +19,7 @@ public class Line : MonoBehaviour
 		/// The material of the line renderer.
 		/// </summary>
 		private Material lineMaterial;
+	private Color wireColor;
 
 		/// <summary>
 		/// The line texure.
@@ -138,7 +139,6 @@ public class Line : MonoBehaviour
 			RectTransform secondRect = rects [points.Count - 1];
 						//Create Line Piece
 			tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, transform.rotation) as GameObject;
-			print ("INASDIN");
 			if (previousPieceImage != null && numberOfPoints > 3) {
 				previousPieceImage.sprite = wireMiddle;
 			}
@@ -147,7 +147,8 @@ public class Line : MonoBehaviour
 			tempLinePieceImage = tempLinePieceGameObject.GetComponent<Image> ();
 			previousPieceImage = tempLinePieceImage;
 			tempLinePieceImage.sprite = wireEnd;
-						tempLinePieceImage.material = lineMaterial;
+						//tempLinePieceImage.material = lineMaterial;
+			tempLinePieceImage.color = wireColor;
 			linePieceRect = tempLinePieceGameObject.GetComponent<RectTransform> ();
 			tempLinePieceImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (lineWidth, lineHeight);
 						//tempLinePieceImage.SetWidth (lineWidth, lineWidth);
@@ -236,6 +237,7 @@ public class Line : MonoBehaviour
 				}
 				///setting up the color of the material
 				lineMaterial.color = lineColor;
+		wireColor = lineColor;
 		}
 
 		/// <summary>
