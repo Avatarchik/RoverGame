@@ -20,9 +20,11 @@ namespace DrawLinesEditors
 				private Color yellowColor = Color.yellow;
 				private Color redColor = new Color (255, 0, 0, 255) / 255.0f;
 				private Color cyanColor = new Color (0, 255, 255, 255) / 255.0f;
-		private Color aluminumColor = new Color (8, 216, 218, 230) / 255.0f;
+		private Color aluminumSpriteColor = new Color (0, 255, 255, 100) / 255.0f;
+		private Color aluminumWireColor = new Color (8, 216, 218, 195) / 255.0f;
 
 		public int wireIndex;
+		public Color spriteColor;
 		public Color wireColor;
 		public Level.WireTypes myWireType;
 
@@ -238,7 +240,8 @@ namespace DrawLinesEditors
 							switch (attrib.levels [i].dotsPairs [j].wireIndex) {
 							case 0:
 								myWireType = Level.WireTypes.Aluminum;
-								wireColor = aluminumColor;
+								spriteColor = aluminumSpriteColor;
+								wireColor = aluminumWireColor;
 								break;
 							case 1:
 								myWireType = Level.WireTypes.Copper;
@@ -257,7 +260,7 @@ namespace DrawLinesEditors
 							}
 							EditorGUILayout.Separator();
 							attrib.levels [i].dotsPairs [j].wireType = myWireType;
-							attrib.levels [i].dotsPairs [j].color = wireColor;
+							attrib.levels [i].dotsPairs [j].color = spriteColor;
 							attrib.levels [i].dotsPairs [j].lineColor = wireColor;
 
                             attrib.levels[i].dotsPairs[j].color = EditorGUILayout.ColorField("Sprite Color", attrib.levels[i].dotsPairs[j].color);

@@ -31,6 +31,7 @@ public class PuzzleManager : MonoBehaviour
 	GameObject previousPuzzleCanvas;
 	GridLayoutGroup contentsGrid;
 	RectTransform worldLinesTransform;
+	Vector2 pairSizeDelta;
 
 	/// <summary>
 	/// 
@@ -77,8 +78,10 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// The cell content scale factor.
 		/// </summary>
-		[Range(0.1f,1)]
-		public float cellContentScaleFactor = 0.6f;
+		[Range(0.1f,2)]
+		public float cellBarrierScaleFactor = 0.6f;
+	[Range(0.1f,1)]
+	public float cellPairScaleFactor = 0.6f;
 
 		/// <summary>
 		/// The cell content z-position.
@@ -708,7 +711,9 @@ public class PuzzleManager : MonoBehaviour
 
                             Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
 							Image bgImage = transform.transform.Find("background").GetComponent<Image>();
+							bgImage.GetComponent<RectTransform> ().sizeDelta = pairSizeDelta;
 							bgImage.sprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
+							bgImage.color = gridCell.topBackgroundColor;
 							bgImage.transform.localPosition = new Vector3 (0.0f, 0.0f, cellContentZPosition / 2);
 							bgImage.enabled = true;
                         }
@@ -918,11 +923,12 @@ public class PuzzleManager : MonoBehaviour
 			Transform worldCellTransform;
 			GridCell gridCell;
 			Vector3 cellContentPosition = new Vector3 (0, 0, cellContentZPosition);
-			Vector3 gridCellScale = Vector3.zero;
+			Vector2 worldCellSizeDelta = Vector2.zero;
 			GameObject firstElement = null;
 			GameObject secondElement = null;
 			Level.WireTypes gridType;
 			float cellContentScale = 0;
+			float cellContentSize = 0;
 
 			gridLines = new Line[currentLevel.dotsPairs.Count];
 
@@ -936,7 +942,7 @@ public class PuzzleManager : MonoBehaviour
 			
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
-				gridCell.topBackgroundColor = elementsPair.lineColor;
+				gridCell.topBackgroundColor = elementsPair.color;
 				gridCell.isEmpty = false;
 				gridCell.tragetIndex = elementsPair.secondDot.index;
 
@@ -944,14 +950,20 @@ public class PuzzleManager : MonoBehaviour
 			
 
 				worldCellTransform = gridCell.gameObject.transform;
+				worldCellSizeDelta = worldCellTransform.GetComponent<RectTransform> ().sizeDelta;
 				//gridCellScale = gridCellTransform.localScale;
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+				cellContentSize = Mathf.Min (worldCellSizeDelta.x, worldCellSizeDelta.y);
 
 				firstElement = Instantiate (contentCellPrefab) as GameObject;
                 bullshitInstantiated.Add(firstElement);
 				firstElement.transform.SetParent (worldCellTransform, true);
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
+				firstElement.transform.localScale = Vector3.one;
+				firstElement.GetComponent<RectTransform> ().sizeDelta = worldCellSizeDelta * cellPairScaleFactor;
+				pairSizeDelta = worldCellSizeDelta * cellPairScaleFactor;
+				//firstElement.GetComponent<RectTransform> ().sizeDelta = new Vector2 (cellContentSize, cellContentSize);
 
 				//firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				firstElement.name = "Pair" + (i + 1) + "-FirstElement";
@@ -976,7 +988,7 @@ public class PuzzleManager : MonoBehaviour
 				gridCell = gridCells [elementsPair.secondDot.index];
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
-				gridCell.topBackgroundColor = elementsPair.lineColor;
+				gridCell.topBackgroundColor = elementsPair.color;
 				gridCell.isEmpty = false;
 				gridCell.tragetIndex = elementsPair.firstDot.index;
 
@@ -993,6 +1005,8 @@ public class PuzzleManager : MonoBehaviour
 				secondElement.transform.SetParent (worldCellTransform, true);
 				secondElement.transform.localPosition = cellContentPosition;
 				secondElement.transform.rotation = worldCellTransform.rotation;
+				secondElement.transform.localScale = Vector3.one;
+				secondElement.GetComponent<RectTransform> ().sizeDelta = worldCellSizeDelta * cellPairScaleFactor;
 				//secondElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				secondElement.name = "Pair" + (i + 1) + "-SecondElement";
 				secondElement.GetComponent<Image> ().sprite = elementsPair.sprite;
@@ -1135,17 +1149,16 @@ public class PuzzleManager : MonoBehaviour
 			Transform worldCellTransform;
 			GridCell worldCell;
 			Vector3 cellContentPosition = new Vector3 (0, 0, cellContentZPosition);
-			//Vector3 gridCellScale = Vector3.zero;
+			Vector2 worldCellSizeDelta = Vector2.zero;
 			GameObject firstElement = null;
 			TextMesh numberTextmesh;
-			float cellContentScale = 0;
+			Vector2 cellContentSize = Vector2.zero;
 
 			for (int i = 0; i < currentLevel.barriers.Count; i++) {
 				barrier = currentLevel.barriers [i];
 
 				//Setting up the First Dot(Element)
 				worldCell = gridCells [barrier.index];
-
 				worldCell.gridLineIndex = -1;
 				worldCell.elementPairIndex = i;
 				worldCell.currentlyUsed = true;
@@ -1153,8 +1166,9 @@ public class PuzzleManager : MonoBehaviour
 				worldCell.tragetIndex = barrier.index;
 
 				worldCellTransform = worldCell.gameObject.transform;
-				//gridCellScale = gridCellTransform.localScale;
-				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+				worldCellSizeDelta = worldCellTransform.GetComponent<RectTransform> ().sizeDelta;
+				//float cellContentScale = (Mathf.Max (worldCellSizeDelta.x, worldCellSizeDelta.y) / Mathf.Min (worldCellSizeDelta.x, worldCellSizeDelta.y)) * cellContentScaleFactor;
+				//cellContentSize = new Vector2 (cellContentScale, cellContentScale);
 
 				firstElement = Instantiate (contentCellPrefab) as GameObject;
                 bullshitInstantiated.Add(firstElement);
@@ -1162,14 +1176,15 @@ public class PuzzleManager : MonoBehaviour
 				firstElement.transform.SetParent (worldCellTransform);
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
-				//firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
+				firstElement.transform.localScale = Vector3.one;
+				firstElement.GetComponent<RectTransform> ().sizeDelta = worldCellSizeDelta * cellBarrierScaleFactor;
 				firstElement.name = "barrier" + (i + 1) + "-FirstElement";
 				firstElement.GetComponent<Image> ().sprite = barrier.sprite;
 
 				//numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
 				//numberTextmesh.text = "";//empty value
 
-				firstElement.GetComponent<Image> ().color = barrier.color;
+				//firstElement.GetComponent<Image> ().color = barrier.color;
 			}
 		}else {
 			/*
