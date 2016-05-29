@@ -37,7 +37,7 @@ namespace Sol
                 {
                     chargeGraphic.color = midColor;
                 }
-                else if (CachedPlayerStats.OverallCharge > CachedPlayerStats.MaxCharge * 0.01f && CachedPlayerStats.OverallCharge < CachedPlayerStats.MaxCharge * 0.1f)
+                else if (CachedPlayerStats.OverallCharge > CachedPlayerStats.MaxCharge * 0.001f && CachedPlayerStats.OverallCharge < CachedPlayerStats.MaxCharge * 0.1f)
                 {
                     chargeGraphic.color = drainedColor;
                     StartCoroutine(Pulse());

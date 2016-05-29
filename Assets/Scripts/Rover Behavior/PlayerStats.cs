@@ -251,7 +251,7 @@ namespace Sol
                 }
             }
 
-            if((OverallCharge > MaxCharge * 0.01f && OverallCharge < MaxCharge * 0.1f) ||
+            if((OverallCharge > MaxCharge * 0.001f && OverallCharge < MaxCharge * 0.1f) ||
                 (OverallCharge > MaxCharge * 0.49f && OverallCharge < MaxCharge * 0.51f) ||
                 (OverallCharge > MaxCharge * 0.89f && OverallCharge < MaxCharge * 0.91f))
             {
