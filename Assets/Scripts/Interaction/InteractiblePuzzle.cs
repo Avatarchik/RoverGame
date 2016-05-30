@@ -18,6 +18,8 @@ namespace Sol
 
         public PuzzleManager puzzleManager;
 		public GameObject myPuzzleCanvas;
+		public bool firstInteraction = true;
+		public bool puzzleScaled = false;
 
         public string message;
 
@@ -28,7 +30,7 @@ namespace Sol
 
         public bool questTrigger = false;
 
-		protected  bool complete = false;
+		protected bool complete = false;
 
         public virtual bool Complete
         {
@@ -58,7 +60,7 @@ namespace Sol
                     {
                         io.Interact();
                     }
-					myPuzzleCanvas.GetComponent<Animator> ().enabled = true;
+					interactible = false;
                     if(puzzleCompleteEffect != null) GameManager.Get<SoundManager>().Play(puzzleCompleteEffect);
 					onPuzzleComplete ();
                 }
@@ -72,20 +74,24 @@ namespace Sol
 
         public override void Interact()
         {
-            if(interactible)
+			if(interactible && puzzleScaled)
             {
-                base.Interact();
-                UiEvents.MissionButtonEvent(missionObject);
-                UiEvents.LevelButtonEvent(levelObject);
+				base.Interact ();
+				UiEvents.MissionButtonEvent (missionObject);
+				UiEvents.LevelButtonEvent (levelObject);
 
-                PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu>();
-                pu.Open(this);
-				puzzleManager.InitializePuzzle(myPuzzleCanvas);
-				myPuzzleCanvas.GetComponent<PuzzleAnimTrigger> ().fadeLight = true;
+				PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu> ();
+				pu.Open (this);
 
-                interactible = false;
+				puzzleManager.InitializePuzzle (myPuzzleCanvas);
 
-                UIManager.Close<MessageMenu>();
+				interactible = false;
+				UIManager.Close<MessageMenu> ();
+
+				if (firstInteraction) {
+					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().ActivateLight ();
+					firstInteraction = false;
+				}
             }
         }
     }

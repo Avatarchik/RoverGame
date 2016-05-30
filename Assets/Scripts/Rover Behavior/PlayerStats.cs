@@ -229,12 +229,13 @@ namespace Sol
 
         public void FixedUpdate()
         {
-            if (CachedTimeOfDay != null && sun.intensity > 0.6f)
+            if (CachedTimeOfDay != null && sun.intensity > 0.75f)
             {
                 //its light outside, charge the battery!
                 if (OverallCharge < MaxCharge)
                 {
-                    OverallCharge += Time.fixedDeltaTime * RechargeRate * 0.1f;
+                    OverallCharge += Time.fixedDeltaTime * RechargeRate * 0.25f;
+                    UIManager.Close<DeadBatteryMenu>();
                 }
             }
             else
@@ -242,12 +243,23 @@ namespace Sol
                 //its dark outside, dont charge!
                 if (OverallCharge > 0)
                 {
-                    OverallCharge -= Time.fixedDeltaTime * 0.1f;
+                    OverallCharge -= Time.fixedDeltaTime * 0.75f;
                 }
                 else
                 {
-                    Debug.Log("player is dead");
+                    UIManager.Open<DeadBatteryMenu>();
                 }
+            }
+
+            if((OverallCharge > MaxCharge * 0.001f && OverallCharge < MaxCharge * 0.1f) ||
+                (OverallCharge > MaxCharge * 0.49f && OverallCharge < MaxCharge * 0.51f) ||
+                (OverallCharge > MaxCharge * 0.89f && OverallCharge < MaxCharge * 0.91f))
+            {
+                UIManager.Open<ChargeTrackingMenu>();
+            }
+            else
+            {
+                UIManager.GetMenu<ChargeTrackingMenu>().Close();
             }
         }
     

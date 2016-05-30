@@ -19,13 +19,19 @@ public class PuzzleManager : MonoBehaviour
 	/// <summary>
 	/// World Space attributes
 	/// </summary>
-	public bool WorldSpacePuzzle;
+	bool WorldSpacePuzzle = true;
 	public GameObject contentCellPrefab;
+	public GameObject worldLinePrefab;
+	public GameObject wireLinePrefab;
+	public Color cellStartColor;
+	public Color cellTransColor;
+	public Color cellCompleteColor;
+	public List <Sprite> circuitSprites;
 	GameObject puzzleCanvas;
+	GameObject previousPuzzleCanvas;
 	GridLayoutGroup contentsGrid;
 	RectTransform worldLinesTransform;
-	public GameObject worldLinePrefab;
-	private Sprite connectedSprite;
+	Vector2 pairSizeDelta;
 
 	/// <summary>
 	/// 
@@ -62,7 +68,7 @@ public class PuzzleManager : MonoBehaviour
 		/// The grid line width factor.
 		/// </summary>
 		[Range(0,10)]
-		public float gridLineWidthFactor = 0.5f;
+		public float gridLineWidthFactor;
 
 		/// <summary>
 		/// The cell content prefab.
@@ -72,8 +78,10 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// The cell content scale factor.
 		/// </summary>
-		[Range(0.1f,1)]
-		public float cellContentScaleFactor = 0.6f;
+		[Range(0.1f,2)]
+		public float cellBarrierScaleFactor = 0.6f;
+	[Range(0.1f,1)]
+	public float cellPairScaleFactor = 0.6f;
 
 		/// <summary>
 		/// The cell content z-position.
@@ -147,6 +155,8 @@ public class PuzzleManager : MonoBehaviour
 		/// The grid lines in the grid.
 		/// </summary>
 		public static Line[] gridLines;
+
+	public Line[] newLines;
 
 		/// <summary>
 		/// The number of rows of the grid.
@@ -380,6 +390,7 @@ public class PuzzleManager : MonoBehaviour
 			numberOfRows = Mission.wantedMission.rowsNumber;
 			numberOfColumns = Mission.wantedMission.colsNumber;
 			puzzleCanvas = puzzle_Canvas;
+			previousPuzzleCanvas = puzzleCanvas;
 			worldLinesTransform = puzzleCanvas.transform.GetChild(1).GetComponent<RectTransform>();
 			//levelText.color = Mission.wantedMission.missionColor;
 			missionText.text = Mission.wantedMission.missionTitle;
@@ -411,17 +422,12 @@ public class PuzzleManager : MonoBehaviour
 				if (timer != null)
 						timer.Stop ();
 		}
-
-
-    private IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(0.1f);
-		isRunning = true;
-    }
+		
 	
 		// Update is called once per frame
 	void Update (){
 		Moves = movements;
+		newLines = gridLines;
 		if (!isRunning) {
 				return;
 		}
@@ -578,11 +584,13 @@ public class PuzzleManager : MonoBehaviour
 						currentLine.path.Add (currentGridCell.index);
 
 						///Determine the New Line Point
-						tempPoint = currentGridCell.transform.position;
-						//tempPoint.z = gridLineZPosition;
+
+			RectTransform gridRect = currentGridCell.GetComponent<RectTransform> ();
+			tempPoint = gridRect.position;
+			//tempPoint.z = gridLineZPosition;
 
 						///Add the position of the New Line Point to the current line
-						gridLines [currentGridCell.gridLineIndex].AddPoint (tempPoint);
+			gridLines [currentGridCell.gridLineIndex].AddPoint (gridRect, tempPoint);
 				}
 		}
 
@@ -674,11 +682,12 @@ public class PuzzleManager : MonoBehaviour
             currentLine.path.Add(currentGridCell.index);
 
             ///Determine the New Line Point
-            tempPoint = currentGridCell.transform.position;
+			RectTransform gridRect = currentGridCell.GetComponent<RectTransform> ();
+			tempPoint = gridRect.position;
             //tempPoint.z = gridLineZPosition;
 
             ///Add the position of the New Line Point to the current line
-            gridLines[currentGridCell.gridLineIndex].AddPoint(tempPoint);
+			gridLines[currentGridCell.gridLineIndex].AddPoint(gridRect, tempPoint);
 
             bool playBubble = true;
             if (!currentGridCell.isEmpty)
@@ -702,7 +711,10 @@ public class PuzzleManager : MonoBehaviour
 
                             Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
 							Image bgImage = transform.transform.Find("background").GetComponent<Image>();
+							bgImage.GetComponent<RectTransform> ().sizeDelta = pairSizeDelta;
 							bgImage.sprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
+							bgImage.color = gridCell.topBackgroundColor;
+							bgImage.transform.localPosition = new Vector3 (0.0f, 0.0f, cellContentZPosition / 2);
 							bgImage.enabled = true;
                         }
                         ///Setting up the color of the top background of the grid cell
@@ -814,7 +826,7 @@ public class PuzzleManager : MonoBehaviour
 						SettingUpNextBackAlpha ();
 						timer.Stop ();
 						timer.Start ();
-			StartCoroutine(Delay());
+			StartCoroutine (DelayRun());
 				} catch (Exception ex) {
 						Debug.Log ("Make sure you have selected a level, and there are no empty references in GameManager component");
 				}
@@ -839,6 +851,7 @@ public class PuzzleManager : MonoBehaviour
 					worldCellindex = i * numberOfColumns + j;
 					//worldCell = Instantiate (worldCellPrefab, Vector3.zero, world.transform.rotation) as GameObject;
 					worldCell = gridCells[worldCellindex].gameObject;
+					worldCell.GetComponent<Image> ().color = cellStartColor;
 					worldCellComponent = worldCell.GetComponent<GridCell> ();
 					worldCellComponent.index = worldCellindex;
 					worldCellComponent.DefineAdjacents (i, j);
@@ -910,11 +923,12 @@ public class PuzzleManager : MonoBehaviour
 			Transform worldCellTransform;
 			GridCell gridCell;
 			Vector3 cellContentPosition = new Vector3 (0, 0, cellContentZPosition);
-			Vector3 gridCellScale = Vector3.zero;
+			Vector2 worldCellSizeDelta = Vector2.zero;
 			GameObject firstElement = null;
 			GameObject secondElement = null;
 			Level.WireTypes gridType;
 			float cellContentScale = 0;
+			float cellContentSize = 0;
 
 			gridLines = new Line[currentLevel.dotsPairs.Count];
 
@@ -928,7 +942,7 @@ public class PuzzleManager : MonoBehaviour
 			
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
-				gridCell.topBackgroundColor = elementsPair.lineColor;
+				gridCell.topBackgroundColor = elementsPair.color;
 				gridCell.isEmpty = false;
 				gridCell.tragetIndex = elementsPair.secondDot.index;
 
@@ -936,14 +950,20 @@ public class PuzzleManager : MonoBehaviour
 			
 
 				worldCellTransform = gridCell.gameObject.transform;
+				worldCellSizeDelta = worldCellTransform.GetComponent<RectTransform> ().sizeDelta;
 				//gridCellScale = gridCellTransform.localScale;
 				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+				cellContentSize = Mathf.Min (worldCellSizeDelta.x, worldCellSizeDelta.y);
 
 				firstElement = Instantiate (contentCellPrefab) as GameObject;
                 bullshitInstantiated.Add(firstElement);
 				firstElement.transform.SetParent (worldCellTransform, true);
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
+				firstElement.transform.localScale = Vector3.one;
+				firstElement.GetComponent<RectTransform> ().sizeDelta = worldCellSizeDelta * cellPairScaleFactor;
+				pairSizeDelta = worldCellSizeDelta * cellPairScaleFactor;
+				//firstElement.GetComponent<RectTransform> ().sizeDelta = new Vector2 (cellContentSize, cellContentSize);
 
 				//firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				firstElement.name = "Pair" + (i + 1) + "-FirstElement";
@@ -968,7 +988,7 @@ public class PuzzleManager : MonoBehaviour
 				gridCell = gridCells [elementsPair.secondDot.index];
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
-				gridCell.topBackgroundColor = elementsPair.lineColor;
+				gridCell.topBackgroundColor = elementsPair.color;
 				gridCell.isEmpty = false;
 				gridCell.tragetIndex = elementsPair.firstDot.index;
 
@@ -985,6 +1005,8 @@ public class PuzzleManager : MonoBehaviour
 				secondElement.transform.SetParent (worldCellTransform, true);
 				secondElement.transform.localPosition = cellContentPosition;
 				secondElement.transform.rotation = worldCellTransform.rotation;
+				secondElement.transform.localScale = Vector3.one;
+				secondElement.GetComponent<RectTransform> ().sizeDelta = worldCellSizeDelta * cellPairScaleFactor;
 				//secondElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
 				secondElement.name = "Pair" + (i + 1) + "-SecondElement";
 				secondElement.GetComponent<Image> ().sprite = elementsPair.sprite;
@@ -1004,7 +1026,8 @@ public class PuzzleManager : MonoBehaviour
 //				}
 
 				///Create Grid Line
-				CreateGridLine (0.01f, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+				//CreateGridLine (0.01f, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
+				CreateWireLine (gridLineWidthFactor, elementsPair.lineColor, "Line " + elementsPair.firstDot.index + "-" + elementsPair.secondDot.index, i);
 			}
 			Color tempColor = Mission.wantedMission.missionColor;
 			tempColor.a = draggingElementAlpha;
@@ -1126,17 +1149,16 @@ public class PuzzleManager : MonoBehaviour
 			Transform worldCellTransform;
 			GridCell worldCell;
 			Vector3 cellContentPosition = new Vector3 (0, 0, cellContentZPosition);
-			//Vector3 gridCellScale = Vector3.zero;
+			Vector2 worldCellSizeDelta = Vector2.zero;
 			GameObject firstElement = null;
 			TextMesh numberTextmesh;
-			float cellContentScale = 0;
+			Vector2 cellContentSize = Vector2.zero;
 
 			for (int i = 0; i < currentLevel.barriers.Count; i++) {
 				barrier = currentLevel.barriers [i];
 
 				//Setting up the First Dot(Element)
 				worldCell = gridCells [barrier.index];
-
 				worldCell.gridLineIndex = -1;
 				worldCell.elementPairIndex = i;
 				worldCell.currentlyUsed = true;
@@ -1144,8 +1166,9 @@ public class PuzzleManager : MonoBehaviour
 				worldCell.tragetIndex = barrier.index;
 
 				worldCellTransform = worldCell.gameObject.transform;
-				//gridCellScale = gridCellTransform.localScale;
-				//cellContentScale = (Mathf.Max (gridCellScale.x, gridCellScale.y) / Mathf.Min (gridCellScale.x, gridCellScale.y)) * cellContentScaleFactor;
+				worldCellSizeDelta = worldCellTransform.GetComponent<RectTransform> ().sizeDelta;
+				//float cellContentScale = (Mathf.Max (worldCellSizeDelta.x, worldCellSizeDelta.y) / Mathf.Min (worldCellSizeDelta.x, worldCellSizeDelta.y)) * cellContentScaleFactor;
+				//cellContentSize = new Vector2 (cellContentScale, cellContentScale);
 
 				firstElement = Instantiate (contentCellPrefab) as GameObject;
                 bullshitInstantiated.Add(firstElement);
@@ -1153,14 +1176,15 @@ public class PuzzleManager : MonoBehaviour
 				firstElement.transform.SetParent (worldCellTransform);
 				firstElement.transform.localPosition = cellContentPosition;
 				firstElement.transform.rotation = worldCellTransform.rotation;
-				//firstElement.transform.localScale = new Vector3 (cellContentScale, cellContentScale, cellContentScale);
+				firstElement.transform.localScale = Vector3.one;
+				firstElement.GetComponent<RectTransform> ().sizeDelta = worldCellSizeDelta * cellBarrierScaleFactor;
 				firstElement.name = "barrier" + (i + 1) + "-FirstElement";
 				firstElement.GetComponent<Image> ().sprite = barrier.sprite;
 
 				//numberTextmesh = firstElement.transform.Find ("Number").GetComponent<TextMesh> ();
 				//numberTextmesh.text = "";//empty value
 
-				firstElement.GetComponent<Image> ().color = barrier.color;
+				//firstElement.GetComponent<Image> ().color = barrier.color;
 			}
 		}else {
 			/*
@@ -1217,13 +1241,28 @@ public class PuzzleManager : MonoBehaviour
 		gridLine.transform.parent = worldLinesTransform;
 				gridLine.name = name;
 				Line line = gridLine.GetComponent<Line> ();
-				line.SetWidth (0.08f);
+				//line.SetWidth (0.08f);
 				line.SetColor (lineColor);
 				if (gridLines != null) {
 						gridLines [index] = line;
 						gridLines [index].index = index;
 				}
 		}
+
+	private void CreateWireLine (float lineWidth, Color lineColor, string name, int index)
+	{
+		GameObject wireLine = Instantiate (wireLinePrefab, worldLinesTransform.transform.position, worldLinesTransform.transform.rotation) as GameObject;
+		wireLine.transform.parent = worldLinesTransform;
+		wireLine.GetComponent<RectTransform> ().localScale = Vector3.one;
+		wireLine.name = name;
+		Line line = wireLine.GetComponent<Line> ();
+		line.SetWidth (lineWidth, 0.55f);
+		line.SetColor (lineColor);
+		if (gridLines != null) {
+			gridLines [index] = line;
+			gridLines [index].index = index;
+		}
+	}
 
 		/// <summary>
 		/// Creates the dragging element.
@@ -1359,40 +1398,42 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// Checks Wheter the level is completed.
 		/// </summary>
-		private void CheckLevelComplete ()
-		{
+	private void CheckLevelComplete (){
 		SetEndMoves ();
 		movements = 0;
-				if (gridLines == null) {
-						return;
-				}
-
-				bool isLevelComplete = true;
-
-				for (int i = 0; i < gridLines.Length; i++) {
-						if (!gridLines [i].completedLine) {
-								isLevelComplete = false;
-								break;
-						}
-				}
-
-			if (isLevelComplete) {
-            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
-            CachedSoundManager.Play(puzzleCompleteEffect);
-				timer.Stop ();
-				isRunning = false;
-			RemoveInventoryWires ();
-            Cleanup(true);
-        }
-            else
-        {
-            if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
-            CachedSoundManager.Play(puzzleCompleteEffect);
-            timer.Stop();
-            isRunning = false;
-            Cleanup(false);
-        }
+		if (gridLines == null) {
+			return;
 		}
+
+		bool isLevelComplete = true;
+
+		for (int i = 0; i < gridLines.Length; i++) {
+			if (!gridLines [i].completedLine) {
+				isLevelComplete = false;
+				break;
+			}
+		}
+
+		if (isLevelComplete) {
+			if (cachedSoundSource != null) {
+				CachedSoundManager.Stop (cachedSoundSource);
+				CachedSoundManager.Play (puzzleCompleteEffect);
+				timer.Stop ();
+				Cleanup (true);
+			}
+		} else {
+			if (cachedSoundSource != null) {
+				CachedSoundManager.Stop (cachedSoundSource);
+				CachedSoundManager.Play (puzzleCompleteEffect);
+				timer.Stop ();
+			}
+		}
+	}
+
+	private IEnumerator DelayRun() {
+		yield return new WaitForSeconds (0.1f);
+		isRunning = true;
+	}
 
 	private void SetEndMoves(){
 		if (beginGridCell.gridIngredient == UIManager.GetMenu<PuzzleMenu> ().AluminumWire) {
@@ -1414,25 +1455,24 @@ public class PuzzleManager : MonoBehaviour
 	}
 
 
-    private void Cleanup(bool completed)
+    private void Cleanup (bool completed)
     {
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
 
-		foreach (Transform child in gridContentsTransform)
-        {
-            Destroy(child.gameObject);
-        }
-
-//        foreach (Line line in GameObject.FindObjectsOfType<Line>())
-//        {
-//            Destroy(line.gameObject);
-//        }
-
-        foreach(GameObject go in bullshitInstantiated)
-        {
-            //Destroy(go);
-        }
+		if (completed) {
+			isRunning = false;
+			RemoveInventoryWires ();
+			puzzleCanvas.GetComponent<Animator> ().enabled = false;
+			puzzleCanvas.GetComponent<PuzzleAnimHandler> ().BlinkLight ();
+			foreach (GridCell cell in gridCells) {
+				cell.GetComponent<Image> ().color = cellCompleteColor;
+			}
+		} else {
+			foreach (GridCell cell in gridCells) {
+				cell.GetComponent<Image> ().color = cellTransColor;
+			}
+		}
     }
 
 		/// <summary>

@@ -39,7 +39,7 @@ public class MissionCreator : MonoBehaviour
 		}
 
 
-		[MenuItem("Tools/Draw Lines/New Mission #m")]
+		[MenuItem("Tools/Draw Lines/New Mission")]
 		static void CreateNewMission ()
 		{
 				GameObject newMission = new GameObject ();

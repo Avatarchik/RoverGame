@@ -19,6 +19,7 @@ namespace Sol
 
         public virtual void CompleteQuest(int i)
         {
+            CurrentQuest.iscurrentQuest = false;
             if (!CurrentQuest.autoProceed) return;
             currentQuest = i;
             if (currentQuest < quests.Count)
@@ -35,7 +36,26 @@ namespace Sol
         }
 
 
-        private void Awake()
+        public virtual void DisplayDialogue(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
+        {
+            StartCoroutine(DisplayDialogueCoroutine(displayTexts, qo, isHuman));
+        }
+
+
+        protected static IEnumerator DisplayDialogueCoroutine(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
+        {
+            for(int i = 0; i < displayTexts.Count; i++)
+            {
+                if (i == displayTexts.Count - 1) qo.questTrigger.Initialize();
+
+                float delay = displayTexts[i].Length * 0.085f;
+                UIManager.GetMenu<ObjectiveTracker>().Open(displayTexts[i], isHuman, true, delay);
+                yield return new WaitForSeconds(delay + 0.5f);
+            }
+        }
+
+
+        protected void Awake()
         {
             BeginQuest();
         }

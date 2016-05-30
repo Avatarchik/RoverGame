@@ -157,10 +157,14 @@ namespace Sol
         }
 
 
-        private void OpenExternalLink()
+        public void OpenExternalLink()
         {
+#if UNITY_EDITOR
             Debug.Log("Opening URL : "+targetUrl);
             Application.OpenURL(targetUrl);
+#else
+            Application.ExternalCall("OpenInNewTab", "https://www.indiana.edu/");
+#endif
         }
 
 

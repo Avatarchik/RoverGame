@@ -4,6 +4,7 @@ using System.Collections;
 namespace Sol{
 	public class InteractibleExplosivePuzzle : InteractiblePuzzle
     {
+		public GameObject explosiveDevice;
 		public Ingredient desiredIngredient;
 		public bool triggered;
 		public string failString = "You will need an {0} to clear this landslide";
@@ -17,10 +18,12 @@ namespace Sol{
 				Debug.Log ("wakka wakka");
 				triggered = true;
 				inventory.RemoveInventoryItem (desiredIngredient, 1);
+				explosiveDevice.SetActive(true);
 				base.Interact ();
 			} else if (!triggered) {
 				interactible = false;
-				messageMenu.Open (failString);
+				failString = string.Format (failString, desiredIngredient);
+				messageMenu.Open (failString, 4, 2.0f);
 
 			} else if (interactible){
 				base.Interact ();

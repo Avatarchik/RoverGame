@@ -23,17 +23,21 @@ namespace Sol
 
         public void Open(string message, int priority = 0, float delayedClose = 0f)
         {
-            if (!isActive && priority >= CurrentMessagePriority)
+            if (priority >= CurrentMessagePriority)
             {
                 currentMessagePriority = priority;
                 messageText.text = message;
-                Open();
+				if (!isActive) {
+					Open ();
 
-                if (delayedClose != 0f)
-                {
-                    StopAllCoroutines();
-                    StartCoroutine(DelayedClose(delayedClose));
-                }
+				} else {
+					SetText (message, priority);
+				}
+
+				if (delayedClose != 0f) {
+					StopAllCoroutines ();
+					StartCoroutine (DelayedClose (delayedClose));
+				}
             }
         }
 

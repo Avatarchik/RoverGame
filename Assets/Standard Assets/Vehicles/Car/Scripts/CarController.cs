@@ -174,20 +174,22 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void CapSpeed()
         {
-            float speed = m_Rigidbody.velocity.magnitude;
+            Vector3 fakelocity = new Vector3(m_Rigidbody.velocity.x, 0, m_Rigidbody.velocity.z);
+            float speed = fakelocity.magnitude;
+
             switch (m_SpeedType)
             {
                 case SpeedType.MPH:
 
                     speed *= 2.23693629f;
                     if (speed > m_Topspeed)
-                        m_Rigidbody.velocity = (m_Topspeed/2.23693629f) * m_Rigidbody.velocity.normalized;
+                        m_Rigidbody.velocity = (m_Topspeed / 2.23693629f) * new Vector3(fakelocity.x, m_Rigidbody.velocity.y, fakelocity.z).normalized;
                     break;
 
                 case SpeedType.KPH:
                     speed *= 3.6f;
                     if (speed > m_Topspeed)
-                        m_Rigidbody.velocity = (m_Topspeed/3.6f) * m_Rigidbody.velocity.normalized;
+                        m_Rigidbody.velocity = (m_Topspeed/3.6f) * new Vector3(fakelocity.x, m_Rigidbody.velocity.y, fakelocity.z).normalized; ;
                     break;
             }
         }
