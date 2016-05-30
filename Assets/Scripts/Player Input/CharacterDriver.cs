@@ -20,6 +20,9 @@ namespace Sol
         public bool strafing = true;
         public float movementSpeedMultiplier = 1.75f;
 
+        public Animator wheelAnimator;
+        public AnimationState animState;
+
         public List<WheelCollider> frontWheels = new List<WheelCollider>();
         public List<WheelCollider> backWheels = new List<WheelCollider>();
         public CarController carController;
@@ -91,6 +94,7 @@ namespace Sol
                 mouseLook.rotationX = Mathf.Lerp(mouseLook.rotationX, 0, Time.deltaTime);
                 h = (mouseLook.rotationX / mouseLook.maximumX) * mouseLook.sensitivityX;
             }
+            wheelAnimator.SetFloat("speed", v);
 
             carController.Move(h, v, v, handbrake);
         }
