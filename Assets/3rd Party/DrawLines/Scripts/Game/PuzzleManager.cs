@@ -393,7 +393,7 @@ public class PuzzleManager : MonoBehaviour
 			previousPuzzleCanvas = puzzleCanvas;
 			worldLinesTransform = puzzleCanvas.transform.GetChild(1).GetComponent<RectTransform>();
 			//levelText.color = Mission.wantedMission.missionColor;
-			missionText.text = Mission.wantedMission.missionTitle;
+			//missionText.text = Mission.wantedMission.missionTitle;
 			grid.name = numberOfRows + "x" + numberOfRows + "-Grid";
 		} catch (Exception ex) {
 			Debug.Log (ex.Message);
@@ -1144,6 +1144,7 @@ public class PuzzleManager : MonoBehaviour
     private void SettingUpObstacles()
     {
 		if (WorldSpacePuzzle) {
+			print ("YEPP");
 			
 			Level.Barrier barrier = null;
 			Transform worldCellTransform;
@@ -1156,6 +1157,7 @@ public class PuzzleManager : MonoBehaviour
 
 			for (int i = 0; i < currentLevel.barriers.Count; i++) {
 				barrier = currentLevel.barriers [i];
+				print ("SADSAD");
 
 				//Setting up the First Dot(Element)
 				worldCell = gridCells [barrier.index];
@@ -1281,8 +1283,8 @@ public class PuzzleManager : MonoBehaviour
 						draggingElement.name = "DraggingElement";
 						draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = false;
 				} else {
-						draggingElement = currentDraggingElement;
-			draggingElement.transform.GetComponentInChildren<ParticleSystem> ().enableEmission = false;
+						//draggingElement = currentDraggingElement;
+			//draggingElement.transform.GetComponentInChildren<ParticleSystem> ().enableEmission = false;
 						//draggingElement.transform.Find ("ColorsEffect").GetComponent<ParticleEmitter> ().emit = false;
 				}
 	
@@ -1291,6 +1293,7 @@ public class PuzzleManager : MonoBehaviour
 		draggingElementSpriteRenderer = draggingElement.GetComponent<SpriteRenderer> ();
 				draggingElementSpriteRenderer.color = color;
 				draggingElementSpriteRenderer.enabled = false;
+		print ("DAD");
 		}
 
 		/// <summary>

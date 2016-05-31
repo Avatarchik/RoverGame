@@ -7,9 +7,9 @@ namespace Sol {
 
 		Animator canvasAnim;
 		public PuzzleManager puzzleManager;
+		public InteractiblePuzzle myInteracter;
 		public Light puzzleLight;
 		public Color lightBlinkColor;
-		private InteractiblePuzzle myInteracter;
 		private bool blink;
 		private bool activate;
 		private float lightActivateTime = 1.5f;
@@ -22,7 +22,6 @@ namespace Sol {
 		// Use this for initialization
 		void Start () {
 			canvasAnim = gameObject.GetComponent<Animator> ();
-			myInteracter = transform.GetComponentInParent<InteractiblePuzzle> ();
 			if (puzzleLight != null) {
 				lightStartIntensity = puzzleLight.intensity;
 				puzzleLight.intensity = 0.0f;
