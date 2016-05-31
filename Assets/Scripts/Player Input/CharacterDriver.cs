@@ -20,6 +20,9 @@ namespace Sol
         public bool strafing = true;
         public float movementSpeedMultiplier = 1.75f;
 
+        public Animator wheelAnimator;
+        public AnimationState animState;
+
         public List<WheelCollider> frontWheels = new List<WheelCollider>();
         public List<WheelCollider> backWheels = new List<WheelCollider>();
         public CarController carController;
@@ -69,8 +72,6 @@ namespace Sol
             float v = CrossPlatformInputManager.GetAxis("Vertical");
             float handbrake = CrossPlatformInputManager.GetAxis("Jump");
 
-            handbrake = (v == 0 && handbrake == 0) ? 1 : 0;
-
             if (v != 0)
             {
                 if(cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
@@ -91,6 +92,15 @@ namespace Sol
                 mouseLook.rotationX = Mathf.Lerp(mouseLook.rotationX, 0, Time.deltaTime);
                 h = (mouseLook.rotationX / mouseLook.maximumX) * mouseLook.sensitivityX;
             }
+
+            if (h != 0 && v >= 0)
+                v = Mathf.Abs(h);
+            else if (h != 0 && v <= 0)
+                v = Mathf.Abs(h) * -1;
+
+            wheelAnimator.SetFloat("speed", v);
+
+            handbrake = (v == 0 && handbrake == 0) ? 1 : 0;
 
             carController.Move(h, v, v, handbrake);
         }
