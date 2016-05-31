@@ -245,14 +245,17 @@ namespace DrawLinesEditors
 								break;
 							case 1:
 								myWireType = Level.WireTypes.Copper;
+								spriteColor = Color.magenta;
 								wireColor = Color.magenta;
 								break;
 							case 2:
 								myWireType = Level.WireTypes.Gold;
+								spriteColor = Color.yellow;
 								wireColor = Color.yellow;
 								break;
 							case 3:
 								myWireType = Level.WireTypes.Silver;
+								spriteColor = Color.gray;
 								wireColor = Color.gray;
 								break;
 							default:
