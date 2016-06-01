@@ -13,6 +13,7 @@ namespace Sol
         public SoundControls soundControls; 
         public Speaker speaker = Speaker.Human;
 
+        public string objectiveText = "";
         public List<string> displayTexts = new List<string>();
 
         public List<GameObject> waypointTargets = new List<GameObject>();
@@ -45,7 +46,9 @@ namespace Sol
 
         public void Initialize()
         {
-            GameManager.Get<QuestManager>().DisplayDialogue(displayTexts, this, speaker == Speaker.Human);
+            QuestManager qm = GameManager.Get<QuestManager>();
+            qm.DisplayPermanentObjective(objectiveText);
+            qm.DisplayDialogue(displayTexts, this, speaker == Speaker.Human);
 
             foreach(GameObject target in waypointTargets)
             {
