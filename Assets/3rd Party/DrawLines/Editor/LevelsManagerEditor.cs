@@ -50,8 +50,23 @@ namespace DrawLinesEditors
             attrib.numberOfCols = EditorGUILayout.IntSlider("Number of Columns", attrib.numberOfCols, 2, LevelsManager.colsLimit);
             EditorGUILayout.Separator();
 
-            attrib.defaultSprite = EditorGUILayout.ObjectField("Default Sprite", attrib.defaultSprite, typeof(Sprite), true) as Sprite;
+            attrib.defaultPairSprite = EditorGUILayout.ObjectField("Default Pair Sprite", attrib.defaultPairSprite, typeof(Sprite), true) as Sprite;
             EditorGUILayout.Separator();
+
+			attrib.defaultOnConnectSprite = EditorGUILayout.ObjectField("Default Pair Sprite", attrib.defaultOnConnectSprite, typeof(Sprite), true) as Sprite;
+			EditorGUILayout.Separator();
+
+			attrib.defaultBarrierSprite = EditorGUILayout.ObjectField("Default Sprite", attrib.defaultBarrierSprite, typeof(Sprite), true) as Sprite;
+			EditorGUILayout.Separator();
+
+			attrib.defaultPairs = EditorGUILayout.Toggle("Set Pair Sprites To Default", attrib.defaultPairs);
+			EditorGUILayout.Separator();
+
+			attrib.defaulOnConnects = EditorGUILayout.Toggle("Set On Connect Sprites To Default", attrib.defaulOnConnects);
+			EditorGUILayout.Separator();
+
+			attrib.defaultBarriers = EditorGUILayout.Toggle("Set Barrier Sprites To Default", attrib.defaultBarriers);
+			EditorGUILayout.Separator();
 
             attrib.createRandomColor = EditorGUILayout.Toggle("Create Random Color", attrib.createRandomColor);
             EditorGUILayout.Separator();
@@ -219,14 +234,14 @@ namespace DrawLinesEditors
                             GUI.backgroundColor = whiteColor;
 
                             EditorGUILayout.Separator();
-                            if (attrib.levels[i].dotsPairs[j].sprite == null)
+							if (attrib.levels[i].dotsPairs[j].sprite == null || attrib.defaultPairs)
                             {
-                                attrib.levels[i].dotsPairs[j].sprite = attrib.defaultSprite;
+								attrib.levels[i].dotsPairs[j].sprite = attrib.defaultPairSprite;
                             }
 
-                            if (attrib.levels[i].dotsPairs[j].connectSprite == null)
+							if (attrib.levels[i].dotsPairs[j].connectSprite == null || attrib.defaulOnConnects)
                             {
-                                attrib.levels[i].dotsPairs[j].connectSprite = attrib.levels[i].dotsPairs[j].sprite;
+								attrib.levels[i].dotsPairs[j].connectSprite = attrib.defaultOnConnectSprite;
                             }
 
                             attrib.levels[i].dotsPairs[j].sprite = EditorGUILayout.ObjectField("Normal Sprite", attrib.levels[i].dotsPairs[j].sprite, typeof(Sprite), true) as Sprite;
@@ -302,9 +317,9 @@ namespace DrawLinesEditors
                             GUI.backgroundColor = whiteColor;
 
                             EditorGUILayout.Separator();
-                            if (attrib.levels[i].barriers[j].sprite == null)
+							if (attrib.levels[i].barriers[j].sprite == null || attrib.defaultBarriers)
                             {
-                                attrib.levels[i].barriers[j].sprite = attrib.defaultSprite;
+                                attrib.levels[i].barriers[j].sprite = attrib.defaultBarrierSprite;
                             }
 
                             attrib.levels[i].barriers[j].sprite = EditorGUILayout.ObjectField("Normal Sprite", attrib.levels[i].barriers[j].sprite, typeof(Sprite), true) as Sprite;

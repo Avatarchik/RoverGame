@@ -132,25 +132,26 @@ public class Line : MonoBehaviour
         Debug.Log("number of Points! : " + numberOfPoints + " | points count : " + points.Count);
         ///Create new line piece
         if (points.Count > 1) {
-            
-						tempFirstPoint = points [points.Count - 2];
-						tempSecondPoint = points [points.Count - 1];
-			RectTransform firstRect = rects [points.Count - 2];
-			RectTransform secondRect = rects [points.Count - 1];
-						//Create Line Piece
-			tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, transform.rotation) as GameObject;
+			
+			tempFirstPoint = points [points.Count - 2];
+			print ("Temp 1 " + tempFirstPoint);
+			tempSecondPoint = points [points.Count - 1];
+
 			if (previousPieceImage != null && numberOfPoints > 3) {
 				previousPieceImage.sprite = wireMiddle;
 			}
-						tempLinePieceGameObject.transform.parent = transform;
-						tempLinePieceGameObject.name = "LinePiece-[" + (numberOfPoints - 2) + "," + (numberOfPoints - 1) + "]";
+
+			//Create Line Piece
+			tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, transform.rotation) as GameObject;
+			tempLinePieceGameObject.transform.parent = transform;
+			tempLinePieceGameObject.name = "LinePiece-[" + (numberOfPoints - 2) + "," + (numberOfPoints - 1) + "]";
 			tempLinePieceImage = tempLinePieceGameObject.GetComponent<Image> ();
 			previousPieceImage = tempLinePieceImage;
 			tempLinePieceImage.sprite = wireEnd;
-						//tempLinePieceImage.material = lineMaterial;
 			tempLinePieceImage.color = wireColor;
 			linePieceRect = tempLinePieceGameObject.GetComponent<RectTransform> ();
-			tempLinePieceImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (lineWidth, lineHeight);
+			linePieceRect.sizeDelta = new Vector2 (lineWidth, lineHeight);
+
 						//tempLinePieceImage.SetWidth (lineWidth, lineWidth);
 						//tempLinePieceImage.SetVertexCount (2);
 
@@ -173,10 +174,13 @@ public class Line : MonoBehaviour
 //								tempSecondPoint.y -= lineWidth / 2.0f;
 //								tempFirstPoint.y += lineWidth / 2.0f;
 //						}
+
+			RectTransform firstRect = rects [points.Count - 2];
+			RectTransform secondRect = rects [points.Count - 1];
 			Vector3 firstLocalPoint = firstRect.localPosition;
 			Vector3 secondLocalPoint = secondRect.localPosition;
-			SetPosition (tempFirstPoint, tempSecondPoint);
-			SetRotation (firstLocalPoint, secondLocalPoint);
+			SetPosition (firstLocalPoint, tempSecondPoint);
+			//SetRotation (firstLocalPoint, secondLocalPoint);
 						//tempLinePieceImage.SetPosition (0, tempFirstPoint);//first point
 						//tempLinePieceImage.SetPosition (1, tempSecondPoint);//second point
 						///Add the line picece to the list
@@ -188,8 +192,7 @@ public class Line : MonoBehaviour
 	/// Sets the position of the image.
 	/// </summary>
 	public void SetPosition (Vector3 firstPoint, Vector3 secondPoint) {
-		linePieceRect.localScale = Vector3.one;
-		linePieceRect.position = firstPoint + (secondPoint - firstPoint) / 2;
+		linePieceRect.position = firstPoint; // + (secondPoint - firstPoint) / 2;
 	}
 
 	public void SetRotation (Vector3 firstPoint, Vector3 secondPoint) {

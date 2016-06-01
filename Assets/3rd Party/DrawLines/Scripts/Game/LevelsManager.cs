@@ -9,7 +9,12 @@ using System.Collections.Generic;
 public class LevelsManager : MonoBehaviour
 {
 		[SerializeField]
-		public Sprite defaultSprite;
+		public Sprite defaultPairSprite;
+	public Sprite defaultBarrierSprite;
+	public Sprite defaultOnConnectSprite;
+	public bool defaultPairs;
+	public bool defaultBarriers;
+	public bool defaulOnConnects;
 		public bool createRandomColor = true;
 		public readonly static int rowsLimit = 12;
 		public readonly static int colsLimit = 12;
