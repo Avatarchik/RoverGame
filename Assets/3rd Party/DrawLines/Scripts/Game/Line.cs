@@ -304,7 +304,7 @@ public class Line : MonoBehaviour
 								//Reset elements(dots) pair sprites
 								gridCellContent = GameObjectUtil.FindChildByTag (gridCell.transform, "GridCellContent");
 								if (gridCellContent != null) {
-										gridCellContent.GetComponent<SpriteRenderer> ().sprite = PuzzleManager.currentLevel.dotsPairs [gridCell.elementPairIndex].sprite;
+					gridCellContent.GetComponent<Image> ().sprite = PuzzleManager.currentLevel.dotsPairs [gridCell.elementPairIndex].pairSprite;
 								}
 						}
 						ResetGridCell (gridCell);

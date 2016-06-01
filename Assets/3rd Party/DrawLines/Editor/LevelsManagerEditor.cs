@@ -20,11 +20,15 @@ namespace DrawLinesEditors
 				private Color yellowColor = Color.yellow;
 				private Color redColor = new Color (255, 0, 0, 255) / 255.0f;
 				private Color cyanColor = new Color (0, 255, 255, 255) / 255.0f;
-		private Color aluminumSpriteColor = new Color (0, 255, 255, 100) / 255.0f;
+		private Color aluminumColor = new Color (0, 255, 255, 100) / 255.0f;
+		private Color aluminumOnConnectColor = new Color (0, 255, 255, 255) / 255.0f;
+		private Color aluminumOnConnectBGColor = new Color (0, 255, 255, 154) / 255.0f;
 		private Color aluminumWireColor = new Color (8, 216, 218, 195) / 255.0f;
 
 		public int wireIndex;
 		public Color spriteColor;
+		public Color onConnectColor;
+		public Color onConnectBGColor;
 		public Color wireColor;
 		public Level.WireTypes myWireType;
 
@@ -53,16 +57,22 @@ namespace DrawLinesEditors
             attrib.defaultPairSprite = EditorGUILayout.ObjectField("Default Pair Sprite", attrib.defaultPairSprite, typeof(Sprite), true) as Sprite;
             EditorGUILayout.Separator();
 
-			attrib.defaultOnConnectSprite = EditorGUILayout.ObjectField("Default Pair Sprite", attrib.defaultOnConnectSprite, typeof(Sprite), true) as Sprite;
+			attrib.defaultOnConnectPairSprite = EditorGUILayout.ObjectField("Default Pair Sprite", attrib.defaultOnConnectPairSprite, typeof(Sprite), true) as Sprite;
 			EditorGUILayout.Separator();
 
-			attrib.defaultBarrierSprite = EditorGUILayout.ObjectField("Default Sprite", attrib.defaultBarrierSprite, typeof(Sprite), true) as Sprite;
+			attrib.defaultOnConnectBGSprite = EditorGUILayout.ObjectField("Default Background Sprite", attrib.defaultOnConnectBGSprite, typeof(Sprite), true) as Sprite;
+			EditorGUILayout.Separator();
+
+			attrib.defaultBarrierSprite = EditorGUILayout.ObjectField("Default Barrier Sprite", attrib.defaultBarrierSprite, typeof(Sprite), true) as Sprite;
 			EditorGUILayout.Separator();
 
 			attrib.defaultPairs = EditorGUILayout.Toggle("Set Pair Sprites To Default", attrib.defaultPairs);
 			EditorGUILayout.Separator();
 
-			attrib.defaulOnConnects = EditorGUILayout.Toggle("Set On Connect Sprites To Default", attrib.defaulOnConnects);
+			attrib.defaulOnConnectPairs = EditorGUILayout.Toggle("Set On Connect Sprites To Default", attrib.defaulOnConnectPairs);
+			EditorGUILayout.Separator();
+
+			attrib.defaulOnConnectBGs = EditorGUILayout.Toggle("Set On Connect Background Sprites To Default", attrib.defaulOnConnectBGs);
 			EditorGUILayout.Separator();
 
 			attrib.defaultBarriers = EditorGUILayout.Toggle("Set Barrier Sprites To Default", attrib.defaultBarriers);
@@ -234,43 +244,59 @@ namespace DrawLinesEditors
                             GUI.backgroundColor = whiteColor;
 
                             EditorGUILayout.Separator();
-							if (attrib.levels[i].dotsPairs[j].sprite == null || attrib.defaultPairs)
+							if (attrib.levels[i].dotsPairs[j].pairSprite == null || attrib.defaultPairs)
                             {
-								attrib.levels[i].dotsPairs[j].sprite = attrib.defaultPairSprite;
+								attrib.levels[i].dotsPairs[j].pairSprite = attrib.defaultPairSprite;
                             }
 
-							if (attrib.levels[i].dotsPairs[j].connectSprite == null || attrib.defaulOnConnects)
+							if (attrib.levels[i].dotsPairs[j].connectSprite == null || attrib.defaulOnConnectPairs)
                             {
-								attrib.levels[i].dotsPairs[j].connectSprite = attrib.defaultOnConnectSprite;
+								attrib.levels[i].dotsPairs[j].connectSprite = attrib.defaultOnConnectPairSprite;
                             }
 
-                            attrib.levels[i].dotsPairs[j].sprite = EditorGUILayout.ObjectField("Normal Sprite", attrib.levels[i].dotsPairs[j].sprite, typeof(Sprite), true) as Sprite;
+							if (attrib.levels[i].dotsPairs[j].connectBGSprite == null || attrib.defaulOnConnectBGs)
+							{
+								attrib.levels[i].dotsPairs[j].connectBGSprite = attrib.defaultOnConnectBGSprite;
+							}
+
+							attrib.levels[i].dotsPairs[j].pairSprite = EditorGUILayout.ObjectField("Normal Sprite", attrib.levels[i].dotsPairs[j].pairSprite, typeof(Sprite), true) as Sprite;
                             EditorGUILayout.Separator();
 
                             attrib.levels[i].dotsPairs[j].connectSprite = EditorGUILayout.ObjectField("OnConnect Sprite", attrib.levels[i].dotsPairs[j].connectSprite, typeof(Sprite), true) as Sprite;
                             EditorGUILayout.Separator();
+
+							attrib.levels[i].dotsPairs[j].connectBGSprite = EditorGUILayout.ObjectField("OnConnect Background Sprite", attrib.levels[i].dotsPairs[j].connectBGSprite, typeof(Sprite), true) as Sprite;
+							EditorGUILayout.Separator();
 
 							attrib.levels [i].dotsPairs [j].wireIndex = EditorGUILayout.Popup(attrib.levels [i].dotsPairs [j].wireIndex, new string[] {"Aluminum", "Copper", "Gold", "Silver"});
 
 							switch (attrib.levels [i].dotsPairs [j].wireIndex) {
 							case 0:
 								myWireType = Level.WireTypes.Aluminum;
-								spriteColor = aluminumSpriteColor;
+								spriteColor = aluminumColor;
+								onConnectColor = aluminumOnConnectColor;
+								onConnectBGColor = aluminumOnConnectBGColor;
 								wireColor = aluminumWireColor;
 								break;
 							case 1:
 								myWireType = Level.WireTypes.Copper;
 								spriteColor = Color.magenta;
+								onConnectColor = Color.magenta;
+								onConnectBGColor = Color.magenta;
 								wireColor = Color.magenta;
 								break;
 							case 2:
 								myWireType = Level.WireTypes.Gold;
 								spriteColor = Color.yellow;
+								onConnectColor = Color.yellow;
+								onConnectBGColor = Color.yellow;
 								wireColor = Color.yellow;
 								break;
 							case 3:
 								myWireType = Level.WireTypes.Silver;
 								spriteColor = Color.gray;
+								onConnectColor = Color.gray;
+								onConnectBGColor = Color.gray;
 								wireColor = Color.gray;
 								break;
 							default:
@@ -278,11 +304,19 @@ namespace DrawLinesEditors
 							}
 							EditorGUILayout.Separator();
 							attrib.levels [i].dotsPairs [j].wireType = myWireType;
-							attrib.levels [i].dotsPairs [j].color = spriteColor;
+							attrib.levels [i].dotsPairs [j].pairColor = spriteColor;
+							attrib.levels [i].dotsPairs [j].onConnectColor = onConnectColor;
+							attrib.levels [i].dotsPairs [j].bgColor = onConnectBGColor;
 							attrib.levels [i].dotsPairs [j].lineColor = wireColor;
 
-                            attrib.levels[i].dotsPairs[j].color = EditorGUILayout.ColorField("Sprite Color", attrib.levels[i].dotsPairs[j].color);
+							attrib.levels[i].dotsPairs[j].pairColor = EditorGUILayout.ColorField("Pair Sprite Color", attrib.levels[i].dotsPairs[j].pairColor);
                             EditorGUILayout.Separator();
+
+							attrib.levels[i].dotsPairs[j].onConnectColor = EditorGUILayout.ColorField("On Connect Color", attrib.levels[i].dotsPairs[j].onConnectColor);
+							EditorGUILayout.Separator();
+
+							attrib.levels[i].dotsPairs[j].bgColor = EditorGUILayout.ColorField("Background Color", attrib.levels[i].dotsPairs[j].bgColor);
+							EditorGUILayout.Separator();
 
                             attrib.levels[i].dotsPairs[j].lineColor = EditorGUILayout.ColorField("Line Color", attrib.levels[i].dotsPairs[j].lineColor);
                             EditorGUILayout.Separator();
@@ -358,7 +392,7 @@ namespace DrawLinesEditors
 								tempColor = whiteColor;
 						}
 
-						lvl.dotsPairs.Add (new Level.DotsPair () { color = tempColor, lineColor = tempColor });
+			lvl.dotsPairs.Add (new Level.DotsPair () { pairColor = tempColor, lineColor = tempColor });
 				}
 
         private void CreateNewBarrier(LevelsManager attrib, Level lvl)

@@ -220,7 +220,7 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		private Vector3 tempClickPosition;
 
-		private GridCell beginGridCell;
+	public GridCell beginGridCell;
 	public Ingredient beginWireIngredient;
 	public int beginWireCount;
 	private int AlumEndMoves;
@@ -472,8 +472,11 @@ public class PuzzleManager : MonoBehaviour
 		{
 				clickMoving = false;
 				drawDraggingElement = false;
-		draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
+				beginGridCell = null;
+				draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
 				draggingElementSpriteRenderer.enabled = false;
+
+		print ("liner" + line);
 
 				if (line != null) {
 			if (!line.completedLine) {
@@ -705,16 +708,35 @@ public class PuzzleManager : MonoBehaviour
                         {
                             //Setting up the connect pairs
                             if (gridCell == null) Debug.LogError("gridcell is null!");
-                            Transform transform = GameObjectUtil.FindChildByTag(gridCell.transform, "GridCellContent");
-							if (transform == null) transform = gridCell.GetComponentInChildren<Image>().transform;
+							Image pairImage = null;
+							Image backgroundImage = null;
+							Sprite connectPairSprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
+							Sprite connectBGSprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectBGSprite;
+							Color connectPairColor = currentLevel.dotsPairs[gridCell.elementPairIndex].onConnectColor;
+							Color connectBGColor = currentLevel.dotsPairs[gridCell.elementPairIndex].bgColor;
 
-                            Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
-							Image bgImage = transform.transform.Find("background").GetComponent<Image>();
-							bgImage.GetComponent<RectTransform> ().sizeDelta = pairSizeDelta;
-							bgImage.sprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
-							bgImage.color = gridCell.topBackgroundColor;
-							bgImage.transform.localPosition = new Vector3 (0.0f, 0.0f, cellContentZPosition / 2);
-							bgImage.enabled = true;
+
+							Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
+
+							foreach (Transform child in gridCell.transform) {
+								if (child.tag == "GridCellContent") {
+									pairImage = child.GetComponent<Image> ();
+								} else {
+									backgroundImage = child.GetComponent<Image> ();
+								}
+							}
+
+							RectTransform pairTransform = pairImage.GetComponent<RectTransform> ();
+							RectTransform bgTransform = backgroundImage.GetComponent<RectTransform> ();
+
+							pairImage.sprite = connectPairSprite;
+							pairImage.color = connectPairColor;
+
+							backgroundImage.sprite = connectBGSprite;
+							backgroundImage.color = connectBGColor;
+							bgTransform.localPosition = new Vector3 (0.0f, 0.0f, cellContentZPosition / 2);
+							bgTransform.sizeDelta = pairTransform.sizeDelta * 1.25f;
+							backgroundImage.enabled = true;
                         }
                         ///Setting up the color of the top background of the grid cell
                         tempColor = previousGridCell.topBackgroundColor;
@@ -733,6 +755,7 @@ public class PuzzleManager : MonoBehaviour
                         AudioSource.PlayClipAtPoint(connectedSFX, Vector3.zero, effectsAudioSource.volume);
                     }
                     playBubble = false;
+					SetEndMoves ();
                     Release(null);
                     CheckLevelComplete();
 					//print ("2 " + gridLines [currentGridCell.gridLineIndex]);
@@ -940,7 +963,7 @@ public class PuzzleManager : MonoBehaviour
 			
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
-				gridCell.topBackgroundColor = elementsPair.color;
+				gridCell.topBackgroundColor = elementsPair.bgColor;
 				gridCell.isEmpty = false;
 				gridCell.tragetIndex = elementsPair.secondDot.index;
 			
@@ -963,11 +986,11 @@ public class PuzzleManager : MonoBehaviour
 				SetGridPairIngredient (gridCell, elementsPair.wireType);
 
 				firstElement.name = "Pair" + (i + 1) + "-FirstElement";
-				firstElement.GetComponent<Image> ().sprite = elementsPair.sprite;
+				firstElement.GetComponent<Image> ().sprite = elementsPair.pairSprite;
 
 			
 				if (elementsPair.applyColorOnSprite) {
-					firstElement.GetComponent<Image> ().color = elementsPair.color;//apply the sprite color
+					firstElement.GetComponent<Image> ().color = elementsPair.pairColor;//apply the sprite color
 				} else {
 					firstElement.GetComponent<Image> ().color = Color.white;//apply the white color
 				}
@@ -984,7 +1007,7 @@ public class PuzzleManager : MonoBehaviour
 				gridCell = gridCells [elementsPair.secondDot.index];
 				gridCell.gridLineIndex = i;
 				gridCell.elementPairIndex = i;
-				gridCell.topBackgroundColor = elementsPair.color;
+				gridCell.topBackgroundColor = elementsPair.bgColor;
 				gridCell.isEmpty = false;
 				gridCell.tragetIndex = elementsPair.firstDot.index;
 
@@ -1003,11 +1026,11 @@ public class PuzzleManager : MonoBehaviour
 				SetGridPairIngredient (gridCell, elementsPair.wireType);
 
 				secondElement.name = "Pair" + (i + 1) + "-SecondElement";
-				secondElement.GetComponent<Image> ().sprite = elementsPair.sprite;
+				secondElement.GetComponent<Image> ().sprite = elementsPair.pairSprite;
 
 
 				if (elementsPair.applyColorOnSprite) {
-					secondElement.GetComponent<Image> ().color = elementsPair.color;//apply the sprite color
+					secondElement.GetComponent<Image> ().color = elementsPair.pairColor;//apply the sprite color
 				} else {
 					secondElement.GetComponent<Image> ().color = Color.white;//apply the white color
 				}
@@ -1393,7 +1416,6 @@ public class PuzzleManager : MonoBehaviour
 		/// Checks Wheter the level is completed.
 		/// </summary>
 	private void CheckLevelComplete (){
-		SetEndMoves ();
 		movements = 0;
 		if (gridLines == null) {
 			return;

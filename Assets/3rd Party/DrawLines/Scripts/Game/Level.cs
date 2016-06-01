@@ -61,7 +61,7 @@ public class Level
 				/// <summary>
 				/// The sprite of the pair.
 				/// </summary>
-				public Sprite sprite;
+				public Sprite pairSprite;
 
 				/// <summary>
 				/// The connect sprite.
@@ -69,9 +69,24 @@ public class Level
 				public Sprite connectSprite;
 
 				/// <summary>
+				/// The connect sprite.
+				/// </summary>
+				public Sprite connectBGSprite;
+
+				/// <summary>
 				/// The color of the pair.
 				/// </summary>
-				public Color color = Color.red;
+				public Color pairColor = Color.red;
+
+				/// <summary>
+				/// The color of the pair.
+				/// </summary>
+				public Color onConnectColor = Color.red;
+
+				/// <summary>
+				/// The color of the pair.
+				/// </summary>
+				public Color bgColor = Color.red;
 
 		    	/// <summary>
 		   	 	/// The color of the line.

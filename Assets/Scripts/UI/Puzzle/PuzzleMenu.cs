@@ -74,7 +74,6 @@ namespace Sol
 
         public void Close(bool completed)
         {
-			print (completed);
             if(completed)
             {
                 currentPuzzleObject.Complete = true;
