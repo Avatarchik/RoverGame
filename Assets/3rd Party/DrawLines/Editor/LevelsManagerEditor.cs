@@ -20,10 +20,22 @@ namespace DrawLinesEditors
 				private Color yellowColor = Color.yellow;
 				private Color redColor = new Color (255, 0, 0, 255) / 255.0f;
 				private Color cyanColor = new Color (0, 255, 255, 255) / 255.0f;
-		private Color aluminumColor = new Color (0, 255, 255, 100) / 255.0f;
-		private Color aluminumOnConnectColor = new Color (0, 255, 255, 255) / 255.0f;
-		private Color aluminumOnConnectBGColor = new Color (0, 255, 255, 154) / 255.0f;
-		private Color aluminumWireColor = new Color (8, 216, 218, 195) / 255.0f;
+		private Color aluminumColor = new Color (0, 255, 170, 255) / 255.0f;
+		private Color aluminumOnConnectColor = new Color (0, 255, 170, 115) / 255.0f;
+		private Color aluminumOnConnectBGColor = new Color (0, 255, 255, 125) / 255.0f;
+		private Color aluminumWireColor = new Color (0, 255, 210, 220) / 255.0f;
+		private Color copperColor = new Color (232, 115, 52, 255) / 255.0f;
+		private Color copperOnConnectColor = new Color (232, 114, 52, 115) / 255.0f;
+		private Color copperOnConnectBGColor = new Color (255, 160, 0, 125) / 255.0f;
+		private Color copperWireColor = new Color (232, 114, 52, 220) / 255.0f;
+		private Color goldColor = new Color (255, 200, 0, 255) / 255.0f;
+		private Color goldOnConnectColor = new Color (255, 200, 0, 115) / 255.0f;
+		private Color goldOnConnectBGColor = new Color (255, 225, 0, 125) / 255.0f;
+		private Color goldWireColor = new Color (255, 233, 0, 220) / 255.0f;
+		private Color silverColor = new Color (134, 179, 186, 255) / 255.0f;
+		private Color silverOnConnectColor = new Color (134, 179, 186, 115) / 255.0f;
+		private Color silverOnConnectBGColor = new Color (133, 195, 223, 125) / 255.0f;
+		private Color silverWireColor = new Color (154, 205, 213, 220) / 255.0f;
 
 		public int wireIndex;
 		public Color spriteColor;
@@ -280,24 +292,24 @@ namespace DrawLinesEditors
 								break;
 							case 1:
 								myWireType = Level.WireTypes.Copper;
-								spriteColor = Color.magenta;
-								onConnectColor = Color.magenta;
-								onConnectBGColor = Color.magenta;
-								wireColor = Color.magenta;
+								spriteColor = copperColor;
+								onConnectColor = copperOnConnectColor;
+								onConnectBGColor = copperOnConnectBGColor;
+								wireColor = copperWireColor;
 								break;
 							case 2:
 								myWireType = Level.WireTypes.Gold;
-								spriteColor = Color.yellow;
-								onConnectColor = Color.yellow;
-								onConnectBGColor = Color.yellow;
-								wireColor = Color.yellow;
+								spriteColor = goldColor;
+								onConnectColor = goldOnConnectColor;
+								onConnectBGColor = goldOnConnectBGColor;
+								wireColor = goldWireColor;
 								break;
 							case 3:
 								myWireType = Level.WireTypes.Silver;
-								spriteColor = Color.gray;
-								onConnectColor = Color.gray;
-								onConnectBGColor = Color.gray;
-								wireColor = Color.gray;
+								spriteColor = silverColor;
+								onConnectColor = silverOnConnectColor;
+								onConnectBGColor = silverOnConnectBGColor;
+								wireColor = silverWireColor;
 								break;
 							default:
 								break;

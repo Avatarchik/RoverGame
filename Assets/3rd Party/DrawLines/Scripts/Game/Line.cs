@@ -305,6 +305,7 @@ public class Line : MonoBehaviour
 								gridCellContent = GameObjectUtil.FindChildByTag (gridCell.transform, "GridCellContent");
 								if (gridCellContent != null) {
 					gridCellContent.GetComponent<Image> ().sprite = PuzzleManager.currentLevel.dotsPairs [gridCell.elementPairIndex].pairSprite;
+					gridCellContent.GetComponent<Image> ().color = PuzzleManager.currentLevel.dotsPairs [gridCell.elementPairIndex].pairColor;
 								}
 						}
 						ResetGridCell (gridCell);
@@ -331,7 +332,8 @@ public class Line : MonoBehaviour
 						linePieceIndex = i - 1;//setting up line piece index
 						ResetGridCell (PuzzleManager.gridCells [path [i]]);//reset the grid cell
 						points.RemoveAt (i);//remove point from points list
-			rects.RemoveAt (i);//remove rect from rects list
+						rects.RemoveAt (i);//remove rect from rects list
+			PuzzleManager.movements--;
 						if (linePieceIndex >= 0 && linePieceIndex < linePieces.Count) {
 								GameObject.Destroy (linePieces [linePieceIndex].gameObject);//destroy line piece
 								linePieces.RemoveAt (linePieceIndex);//remove line piece reference

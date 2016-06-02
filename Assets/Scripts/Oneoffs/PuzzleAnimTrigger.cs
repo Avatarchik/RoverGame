@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PuzzleAnimTrigger : MonoBehaviour {
 
-	public Animator canvasAnim;
+	public List<Animator> canvasAnimators;
 
 	// Use this for initialization
 	void Start () {
@@ -17,13 +18,17 @@ public class PuzzleAnimTrigger : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.tag == "Player") {
-			canvasAnim.SetTrigger ("FadeForward");
+			foreach (Animator anim in canvasAnimators) {
+				anim.SetTrigger ("FadeForward");
+			}
 		}
 	}
 
 	void OnTriggerExit (Collider other) {
 		if (other.tag == "Player") {
-			canvasAnim.SetTrigger ("FadeBackward");
+			foreach (Animator anim in canvasAnimators) {
+				anim.SetTrigger ("FadeBackward");
+			}
 		}
 	}
 }
