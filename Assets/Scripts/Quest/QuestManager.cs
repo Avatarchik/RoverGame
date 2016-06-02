@@ -42,6 +42,12 @@ namespace Sol
         }
 
 
+        public virtual void DisplayPermanentObjective(string objective)
+        {
+            UIManager.GetMenu<ObjectiveTracker>().ShowPermanentObjective(objective);
+        }
+
+
         protected static IEnumerator DisplayDialogueCoroutine(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
         {
             for(int i = 0; i < displayTexts.Count; i++)

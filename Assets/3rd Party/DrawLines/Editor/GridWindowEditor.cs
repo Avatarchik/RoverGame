@@ -103,12 +103,12 @@ namespace DrawLinesEditors
 
 								if (dotPair.firstDot.index == gridCellndex || dotPair.secondDot.index == gridCellndex) {
 										if (dotPair.applyColorOnSprite)  
-												GUI.contentColor = dotPair.color;
+						GUI.contentColor = dotPair.pairColor;
 										else
 												GUI.contentColor = Color.white;
 
-										if (dotPair.sprite != null)
-												texture = dotPair.sprite.texture;
+					if (dotPair.pairSprite != null)
+						texture = dotPair.pairSprite.texture;
 								}
 						}
 

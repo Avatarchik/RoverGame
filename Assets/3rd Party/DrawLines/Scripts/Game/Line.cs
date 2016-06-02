@@ -13,7 +13,7 @@ public class Line : MonoBehaviour
 		/// The width of the line renderer.
 		/// </summary>
 		private float lineWidth;
-	private float lineHeight;
+	private GridLayoutGroup contentsGridLayout;
 
 		/// <summary>
 		/// The material of the line renderer.
@@ -132,25 +132,26 @@ public class Line : MonoBehaviour
         Debug.Log("number of Points! : " + numberOfPoints + " | points count : " + points.Count);
         ///Create new line piece
         if (points.Count > 1) {
-            
-						tempFirstPoint = points [points.Count - 2];
-						tempSecondPoint = points [points.Count - 1];
-			RectTransform firstRect = rects [points.Count - 2];
-			RectTransform secondRect = rects [points.Count - 1];
-						//Create Line Piece
-			tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, transform.rotation) as GameObject;
+			
+			tempFirstPoint = points [points.Count - 2];
+			print ("Temp 1 " + tempFirstPoint);
+			tempSecondPoint = points [points.Count - 1];
+
 			if (previousPieceImage != null && numberOfPoints > 3) {
 				previousPieceImage.sprite = wireMiddle;
 			}
-						tempLinePieceGameObject.transform.parent = transform;
-						tempLinePieceGameObject.name = "LinePiece-[" + (numberOfPoints - 2) + "," + (numberOfPoints - 1) + "]";
+
+			//Create Line Piece
+			tempLinePieceGameObject = Instantiate (linePiecePrefab, transform.position, transform.rotation) as GameObject;
+			tempLinePieceGameObject.transform.SetParent (transform);
+			tempLinePieceGameObject.name = "LinePiece-[" + (numberOfPoints - 2) + "," + (numberOfPoints - 1) + "]";
 			tempLinePieceImage = tempLinePieceGameObject.GetComponent<Image> ();
 			previousPieceImage = tempLinePieceImage;
 			tempLinePieceImage.sprite = wireEnd;
-						//tempLinePieceImage.material = lineMaterial;
 			tempLinePieceImage.color = wireColor;
 			linePieceRect = tempLinePieceGameObject.GetComponent<RectTransform> ();
-			tempLinePieceImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (lineWidth, lineHeight);
+			linePieceRect.sizeDelta = new Vector2 (lineWidth, 0.0f);
+
 						//tempLinePieceImage.SetWidth (lineWidth, lineWidth);
 						//tempLinePieceImage.SetVertexCount (2);
 
@@ -173,6 +174,9 @@ public class Line : MonoBehaviour
 //								tempSecondPoint.y -= lineWidth / 2.0f;
 //								tempFirstPoint.y += lineWidth / 2.0f;
 //						}
+
+			RectTransform firstRect = rects [points.Count - 2];
+			RectTransform secondRect = rects [points.Count - 1];
 			Vector3 firstLocalPoint = firstRect.localPosition;
 			Vector3 secondLocalPoint = secondRect.localPosition;
 			SetPosition (tempFirstPoint, tempSecondPoint);
@@ -188,11 +192,15 @@ public class Line : MonoBehaviour
 	/// Sets the position of the image.
 	/// </summary>
 	public void SetPosition (Vector3 firstPoint, Vector3 secondPoint) {
-		linePieceRect.localScale = Vector3.one;
 		linePieceRect.position = firstPoint + (secondPoint - firstPoint) / 2;
 	}
 
 	public void SetRotation (Vector3 firstPoint, Vector3 secondPoint) {
+		float xCellSize = contentsGridLayout.cellSize.x;
+		float yCellSize = contentsGridLayout.cellSize.y;
+		float xGridSpacing = contentsGridLayout.spacing.x;
+		float yGridSpacing = contentsGridLayout.spacing.y;
+
 		float deltaY = secondPoint.y - firstPoint.y;
 		float deltaX = secondPoint.x - firstPoint.x;
 		if (deltaY == 0.0f) {
@@ -209,18 +217,20 @@ public class Line : MonoBehaviour
 					linePieceRect.localEulerAngles = new Vector3 (0, 0, 90);
 				}
 			}
-			linePieceRect.localScale = new Vector3 (0.3f, 1.0f, 1.0f);
+
+			linePieceRect.sizeDelta = new Vector2 (linePieceRect.sizeDelta.x, xCellSize + xGridSpacing);
 		} else {
 			if (deltaY < 0) {
 				if (numberOfPoints > 2) {
 					linePieceRect.localEulerAngles = new Vector3 (0, 0, 180);
 				}
 			} else {
-				if (numberOfPoints < 2) {
+				if (numberOfPoints == 2) {
 					linePieceRect.localEulerAngles = new Vector3 (0, 0, 180);
 				}
 			}
-			linePieceRect.localScale = new Vector3 (1.0f, 0.45f, 1.0f);
+
+			linePieceRect.sizeDelta = new Vector2 (linePieceRect.sizeDelta.x, yCellSize + yGridSpacing);
 		}
 	}
 
@@ -244,11 +254,10 @@ public class Line : MonoBehaviour
 		/// Set the width of the line.
 		/// </summary>
 		/// <param name="lineWidth">Line width.</param>
-	public void SetWidth (float lineWidth, float lineHeight)
-		{
-				this.lineWidth = lineWidth;
-				this.lineHeight = lineHeight;
-		}
+	public void SetWidthGrid (float lineWidth, GridLayoutGroup contentsGrid){
+		this.lineWidth = lineWidth;
+		contentsGridLayout = contentsGrid;
+	}
 
 		/// <summary>
 		/// Get the first path element.
@@ -295,7 +304,7 @@ public class Line : MonoBehaviour
 								//Reset elements(dots) pair sprites
 								gridCellContent = GameObjectUtil.FindChildByTag (gridCell.transform, "GridCellContent");
 								if (gridCellContent != null) {
-										gridCellContent.GetComponent<SpriteRenderer> ().sprite = PuzzleManager.currentLevel.dotsPairs [gridCell.elementPairIndex].sprite;
+					gridCellContent.GetComponent<Image> ().sprite = PuzzleManager.currentLevel.dotsPairs [gridCell.elementPairIndex].pairSprite;
 								}
 						}
 						ResetGridCell (gridCell);
