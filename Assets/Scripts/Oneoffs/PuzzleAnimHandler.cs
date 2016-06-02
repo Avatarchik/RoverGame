@@ -73,7 +73,6 @@ namespace Sol {
 
 		public void ScaledTrue() {
 			myInteracter.puzzleScaled = true;
-
 		}
 		public void ScaledFalse() {
 			myInteracter.puzzleScaled = false;

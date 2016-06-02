@@ -62,6 +62,7 @@ namespace Sol
                     }
 					interactible = false;
                     if(puzzleCompleteEffect != null) GameManager.Get<SoundManager>().Play(puzzleCompleteEffect);
+					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().BlinkLight ();
 					onPuzzleComplete ();
                 }
             }

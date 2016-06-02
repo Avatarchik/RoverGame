@@ -55,6 +55,7 @@ namespace Sol
         {
             CountDown countDown = UIManager.GetMenu<CountDown>();
             countDown.SetText(explosionDelay);
+			StartCoroutine (DelayedClose ());
             yield return new WaitForSeconds(explosionDelay);
             TriggerExplosion();
             explosiveDevice.SetActive(false);
@@ -64,7 +65,7 @@ namespace Sol
 
         private IEnumerator DelayedClose()
         {
-            yield return new WaitForSeconds(5f);
+			yield return new WaitForSeconds(explosionDelay);
             UIManager.Close<MessageMenu>();
         }
     }

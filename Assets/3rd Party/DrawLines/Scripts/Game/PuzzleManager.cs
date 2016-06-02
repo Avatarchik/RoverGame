@@ -1478,12 +1478,11 @@ public class PuzzleManager : MonoBehaviour
     {
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
+		if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
 		isRunning = false;
 
 		if (completed) {
 			RemoveInventoryWires ();
-			puzzleCanvas.GetComponent<Animator> ().enabled = false;
-			puzzleCanvas.GetComponent<PuzzleAnimHandler> ().BlinkLight ();
 			foreach (GridCell cell in gridCells) {
 				cell.GetComponent<Image> ().color = cellCompleteColor;
 			}
