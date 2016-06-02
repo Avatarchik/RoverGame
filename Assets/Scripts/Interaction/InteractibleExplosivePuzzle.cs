@@ -6,6 +6,7 @@ namespace Sol{
     {
 		public GameObject explosiveDevice;
 		public Ingredient desiredIngredient;
+		public Collider scaleTriggerColl;
 		public bool triggered;
 		public string failString = "You will need an {0} to clear this landslide";
 
@@ -19,7 +20,7 @@ namespace Sol{
 				triggered = true;
 				inventory.RemoveInventoryItem (desiredIngredient, 1);
 				explosiveDevice.SetActive(true);
-				base.Interact ();
+				scaleTriggerColl.enabled = true;
 			} else if (!triggered) {
 				interactible = false;
 				failString = string.Format (failString, desiredIngredient);
@@ -38,6 +39,7 @@ namespace Sol{
 				base.Complete = value;
 				if (complete) {
 					gameObject.GetComponent<CraterExplosion>().Detonate ();
+					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeBackward");
 				}
 			}
 		}

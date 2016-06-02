@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace Sol {
 	public class PuzzleAnimHandler : MonoBehaviour {
 
-		Animator canvasAnim;
 		public PuzzleManager puzzleManager;
 		public InteractiblePuzzle myInteracter;
 		public Light puzzleLight;
@@ -21,7 +20,6 @@ namespace Sol {
 
 		// Use this for initialization
 		void Start () {
-			canvasAnim = gameObject.GetComponent<Animator> ();
 			if (puzzleLight != null) {
 				lightStartIntensity = puzzleLight.intensity;
 				puzzleLight.intensity = 0.0f;
@@ -75,7 +73,6 @@ namespace Sol {
 
 		public void ScaledTrue() {
 			myInteracter.puzzleScaled = true;
-
 		}
 		public void ScaledFalse() {
 			myInteracter.puzzleScaled = false;

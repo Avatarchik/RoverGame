@@ -85,7 +85,7 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// The cell content scale factor.
 		/// </summary>
-		[Range(0.1f,1)]
+		[Range(0.1f,2)]
 		public float cellObstacleScaleFactor = 0.6f;
 	[Range(0.1f,1)]
 	public float cellPairScaleFactor = 0.6f;
@@ -464,35 +464,31 @@ public class PuzzleManager : MonoBehaviour
 		}
 	}
 
-		/// <summary>
-		/// On Click Release event.
-		/// </summary>
-		/// <param name="line">The current Line.</param>
-		private void Release (Line line)
-		{
-				clickMoving = false;
-				drawDraggingElement = false;
-				beginGridCell = null;
-				draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
-				draggingElementSpriteRenderer.enabled = false;
+	/// <summary>
+	/// On Click Release event.
+	/// </summary>
+	/// <param name="line">The current Line.</param>
+	private void Release (Line line) {
+		clickMoving = false;
+		drawDraggingElement = false;
+		beginGridCell = null;
+		draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
+		draggingElementSpriteRenderer.enabled = false;
 
-		print ("liner" + line);
-
-				if (line != null) {
+		if (line != null) {
 			if (!line.completedLine) {
 				line.ClearPath ();
+				UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount);
+				movements = 0;
 			}
-			UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount);
-			movements = 0;
-						
 
-				}
-
-				previousGridCell = null;
-				currentGridCell = null;
-				currentLine = null;
 		}
 
+		previousGridCell = null;
+		currentGridCell = null;
+		currentLine = null;
+	}
+		
 		/// <summary>
 		/// Raycast the click (touch) on the screen.
 		/// </summary>
@@ -544,7 +540,11 @@ public class PuzzleManager : MonoBehaviour
 				if (currentGridCell.isEmpty && !currentGridCell.currentlyUsed) {
 						Debug.Log ("Current grid cell of index " + currentGridCell.index + " is Ignored [Reason : Empty,Not Currently Used]");
 						return;
-				} 
+				}
+
+		beginGridCell = currentGridCell;
+		beginWireIngredient = beginGridCell.gridIngredient;
+		beginWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (beginWireIngredient);
 
 				///Increase the movements counter
 				//IncreaseMovements ();
@@ -574,7 +574,7 @@ public class PuzzleManager : MonoBehaviour
 
 						///Setting up the attributes for the current grid cell
 						clickMoving = true;
-						beginGridCell = currentGridCell;
+				
 						currentGridCell.currentlyUsed = true;
 						if (currentLine == null) {
 								currentLine = gridLines [currentGridCell.gridLineIndex];
@@ -779,8 +779,6 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 	public bool EnoughWiresOfType(){
-		beginWireIngredient = beginGridCell.gridIngredient;
-		beginWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (beginWireIngredient);
 		if (beginWireCount > movements) {
 			return true;
 		} else {
@@ -1189,7 +1187,7 @@ public class PuzzleManager : MonoBehaviour
 				firstElement = Instantiate (contentCellPrefab) as GameObject;
 				firstElement.transform.SetParent (worldCellTransform);
 				firstElement.transform.localPosition = cellContentPosition;
-				firstElement.transform.rotation = worldCellTransform.rotation;
+				firstElement.transform.localEulerAngles = new Vector3 (0, 0, UnityEngine.Random.Range (0, 360));
 				firstElement.transform.localScale = Vector3.one;
 				firstElement.GetComponent<RectTransform> ().sizeDelta = cellContentSize;
 				firstElement.name = "barrier" + (i + 1) + "-FirstElement";
@@ -1407,6 +1405,11 @@ public class PuzzleManager : MonoBehaviour
 			Destroy (content);
 		}
 		foreach (GridCell cell in gridCells) {
+			foreach (Image content in cell.GetComponentsInChildren<Image>()) {
+				if (content.gameObject != cell.gameObject) {
+					content.enabled = false;
+				}
+			}
 			cell.GetComponent<Image> ().color = cellTransColor;
 			cell.currentlyUsed = false;
 		}
@@ -1475,12 +1478,11 @@ public class PuzzleManager : MonoBehaviour
     {
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
+		if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
 		isRunning = false;
 
 		if (completed) {
 			RemoveInventoryWires ();
-			puzzleCanvas.GetComponent<Animator> ().enabled = false;
-			puzzleCanvas.GetComponent<PuzzleAnimHandler> ().BlinkLight ();
 			foreach (GridCell cell in gridCells) {
 				cell.GetComponent<Image> ().color = cellCompleteColor;
 			}
@@ -1500,9 +1502,9 @@ public class PuzzleManager : MonoBehaviour
 	/// <summary>
 	/// Decrease the movements counter.
 	/// </summary>
-	private void DecreaseMovements ()
+	public void DecreaseMovements ()
 	{
-		movements--;
+		//movements--;
 		UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount - movements);
 	}
 
