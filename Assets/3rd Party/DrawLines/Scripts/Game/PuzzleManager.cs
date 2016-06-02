@@ -395,7 +395,7 @@ public class PuzzleManager : MonoBehaviour
 		foreach (Transform child in puzzleCanvas.transform) {
 			if (child.GetComponent<GridLayoutGroup> () != null) {
 				contentsGrid = child.GetComponent<GridLayoutGroup>();
-			} else {
+			} else if (child.tag == "WorldLines") {
 				worldLinesTransform = child.GetComponent<RectTransform>();
 			}
 		}
