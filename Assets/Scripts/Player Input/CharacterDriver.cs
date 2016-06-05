@@ -27,6 +27,8 @@ namespace Sol
         public List<WheelCollider> backWheels = new List<WheelCollider>();
         public CarController carController;
 
+        private PlayerStats cachedPlayerStats;
+
         private bool flashLightActive = false;
         private SoundManager cachedSoundManager;
 
@@ -42,6 +44,12 @@ namespace Sol
 
                 return cachedSoundManager;
             }
+        }
+
+
+        public PlayerStats CachedPlayerStats
+        {
+            get { return (cachedPlayerStats != null) ? cachedPlayerStats : cachedPlayerStats = GameManager.Get<PlayerStats>(); }
         }
 
 
@@ -68,13 +76,20 @@ namespace Sol
         {
             if (carController.MaxSpeed != playerStats.CurrentMovementSpeed) carController.MaxSpeed = playerStats.CurrentMovementSpeed;
 
-            float h = CrossPlatformInputManager.GetAxis("Horizontal");
+            float h = 0; 
             float v = CrossPlatformInputManager.GetAxis("Vertical");
             float handbrake = CrossPlatformInputManager.GetAxis("Jump");
 
             if (v != 0)
             {
-                if(cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
+                h = CrossPlatformInputManager.GetAxis("Horizontal");
+                if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
+            }
+            else if (CrossPlatformInputManager.GetAxis("Horizontal") != 0)
+            {
+                float rotationAngle = CachedPlayerStats.MovementSpeed * movementSpeedMultiplier * Time.deltaTime * CrossPlatformInputManager.GetAxis("Horizontal");
+                transform.Rotate(Vector3.up, rotationAngle);
+                if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
             }
             else
             {
