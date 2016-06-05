@@ -1,0 +1,111 @@
+fileFormatVersion: 2
+guid: a102b874a1dcd0e4a9778b83782a865d
+timeCreated: 1465102196
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: copierMesh10
+    100002: copierMesh10_MeshPart0
+    100004: copierMesh10_MeshPart1
+    100006: copierMesh10_MeshPart2
+    100008: copierMesh10_MeshPart3
+    100010: elevation4
+    100012: instman___polySurface7___trashbags
+    100014: //RootNode
+    100016: polySurface7
+    100018: scatter4
+    100020: Trashbag01
+    400000: copierMesh10
+    400002: copierMesh10_MeshPart0
+    400004: copierMesh10_MeshPart1
+    400006: copierMesh10_MeshPart2
+    400008: copierMesh10_MeshPart3
+    400010: elevation4
+    400012: instman___polySurface7___trashbags
+    400014: //RootNode
+    400016: polySurface7
+    400018: scatter4
+    400020: Trashbag01
+    2300000: copierMesh10_MeshPart0
+    2300002: copierMesh10_MeshPart1
+    2300004: copierMesh10_MeshPart2
+    2300006: copierMesh10_MeshPart3
+    2300008: polySurface7
+    2300010: Trashbag01
+    3300000: copierMesh10_MeshPart0
+    3300002: copierMesh10_MeshPart1
+    3300004: copierMesh10_MeshPart2
+    3300006: copierMesh10_MeshPart3
+    3300008: polySurface7
+    3300010: Trashbag01
+    4300000: Trashbag01
+    4300002: polySurface7
+    4300004: copierMesh10_MeshPart0
+    4300006: copierMesh10_MeshPart1
+    4300008: copierMesh10_MeshPart2
+    4300010: copierMesh10_MeshPart3
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
