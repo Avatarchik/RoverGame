@@ -108,11 +108,6 @@ namespace Sol
                 h = (mouseLook.rotationX / mouseLook.maximumX) * mouseLook.sensitivityX;
             }
 
-            if (h != 0 && v >= 0)
-                v = Mathf.Abs(h);
-            else if (h != 0 && v <= 0)
-                v = Mathf.Abs(h) * -1;
-
             wheelAnimator.SetFloat("speed", v);
 
             handbrake = (v == 0 && handbrake == 0) ? 1 : 0;
