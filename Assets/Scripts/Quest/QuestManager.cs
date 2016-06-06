@@ -9,6 +9,8 @@ namespace Sol
         
         public List<Quest> quests = new List<Quest>();
 
+        public float characterDelay = 0.1f;
+
         protected int currentQuest = 0;
 
         public Quest CurrentQuest
@@ -48,13 +50,13 @@ namespace Sol
         }
 
 
-        protected static IEnumerator DisplayDialogueCoroutine(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
+        protected IEnumerator DisplayDialogueCoroutine(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
         {
             for(int i = 0; i < displayTexts.Count; i++)
             {
                 if (i == displayTexts.Count - 1) qo.questTrigger.Initialize();
 
-                float delay = displayTexts[i].Length * 0.085f;
+                float delay = displayTexts[i].Length * characterDelay;
                 UIManager.GetMenu<ObjectiveTracker>().Open(displayTexts[i], isHuman, true, delay);
                 yield return new WaitForSeconds(delay + 0.5f);
             }
