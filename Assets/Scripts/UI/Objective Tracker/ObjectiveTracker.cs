@@ -26,6 +26,8 @@ namespace Sol
         public Text objectiveTextAdmin;
         public Text objectiveTextAI;
 
+        public PersistentHUD persistentHud;
+
         public List<PermanentObjectiveDisplay> permanentlyDisplayedObjectives = new List<PermanentObjectiveDisplay>();
         public List<ObjectiveDisplay> displayedObjectives = new List<ObjectiveDisplay>();
 
@@ -92,16 +94,11 @@ namespace Sol
 
         public void ShowPermanentObjective(string objective)
         {
+            if (!persistentHud.IsActive) persistentHud.Open();
+
             if(permanentlyDisplayedObjectives.Count > 0)
                 StartCoroutine(FadeOldObjective(permanentlyDisplayedObjectives[permanentlyDisplayedObjectives.Count - 1]));
-            else
-            {
-                PermanentObjectiveDisplay testPod = Instantiate(permanentObjectivePrefab);
-                testPod.transform.SetParent(permanentObjectiveContainer);
-                testPod.objectiveText.text = objective;
 
-                permanentlyDisplayedObjectives.Add(testPod);
-            }
             PermanentObjectiveDisplay newPod = Instantiate(permanentObjectivePrefab);
             newPod.transform.SetParent(permanentObjectiveContainer);
             newPod.objectiveText.text = objective;

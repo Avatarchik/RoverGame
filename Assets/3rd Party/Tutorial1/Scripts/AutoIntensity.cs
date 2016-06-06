@@ -38,6 +38,13 @@ public class AutoIntensity : MonoBehaviour
 
 	float skySpeed = 1;
 
+    public float currentTime = 0f;
+
+    public float CurrentTime
+    {
+        get { return currentTime; }
+    }
+
 
 	Light mainLight;
 	Skybox sky;
@@ -94,9 +101,15 @@ public class AutoIntensity : MonoBehaviour
                 skyMat.SetFloat("_AtmosphereThickness", i);
 
                 if (dot > 0)
+                {
                     transform.Rotate(dayRotateSpeed * Time.deltaTime * skySpeed);
+                }
                 else
+                {
                     transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
+                }
+
+                currentTime += Time.deltaTime;
             }
         }
 	}

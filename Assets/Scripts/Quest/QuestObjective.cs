@@ -47,7 +47,7 @@ namespace Sol
         public void Initialize()
         {
             QuestManager qm = GameManager.Get<QuestManager>();
-            qm.DisplayPermanentObjective(objectiveText);
+            if(objectiveText != "") qm.DisplayPermanentObjective(objectiveText);
             qm.DisplayDialogue(displayTexts, this, speaker == Speaker.Human);
 
             foreach(GameObject target in waypointTargets)
