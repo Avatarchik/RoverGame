@@ -6,9 +6,6 @@ namespace Sol
 {
     public class PuzzleMenu : Menu
     {
-        public const string WIRES_IN_INVENTORY_FORMAT = "Wires in Inventory : {0}";
-        public const string WIRES_USED_FORMAT = "Wires Used : {0}";
-
         public Button exitButton;
         public Text messageText;
         public Text wiresInInventory;
@@ -55,6 +52,14 @@ namespace Sol
         public void Open(InteractiblePuzzle ip)
         {
             messageText.text = ip.message;
+			if (exitButton == null) {
+				foreach (Button child in ip.GetComponentsInChildren<Button>()) {
+					if (child.tag == "ExitButton") {
+						exitButton = child;
+					}
+				}
+				exitButton.onClick.AddListener (Exit);
+			}
             //TODO make this down here less gross
 			//wiresInInventory.text = string.Format(WIRES_IN_INVENTORY_FORMAT, UIManager.GetMenu<Inventory>().GetIngredientAmount(AluminumWire));
             currentPuzzleObject = ip;
@@ -67,6 +72,7 @@ namespace Sol
             currentPuzzleObject.UiEvents.MissionButtonEvent(null);
             currentPuzzleObject.UiEvents.LevelButtonEvent(null);
 
+
             currentPuzzleObject.interactible = true;
             base.Close();
         }
@@ -78,6 +84,7 @@ namespace Sol
             {
                 currentPuzzleObject.Complete = true;
 				currentPuzzleObject.interactible = false;
+				exitButton = null;
 				base.Close ();
             }
             else
@@ -97,7 +104,7 @@ namespace Sol
 
         public void Awake()
         {
-            exitButton.onClick.AddListener(Exit);
+            
         }
     }
 }
