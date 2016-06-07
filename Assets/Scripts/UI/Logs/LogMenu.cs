@@ -7,6 +7,8 @@ namespace Sol
 {
     public class LogMenu : Menu
     {
+        private const string NEW_RADIO_LOG_FORMAT = "\n \n <color=#{0}>{1}</color>";
+
         public LogInfoPanel logInfoPanel;
         public Transform logSlotContainer;
         public LogSlot logSlotPrefab;
@@ -32,6 +34,15 @@ namespace Sol
             {
                 base.Close();
             }
+        }
+
+
+        public void AddRadioLog(string radioLog, string color)
+        {
+            Log masterLog = logs[0];
+            masterLog.content += string.Format(NEW_RADIO_LOG_FORMAT, color, radioLog);
+
+            if (logInfoPanel.SelectedLog == masterLog) logInfoPanel.SelectedLog = masterLog;
         }
 
 
@@ -79,6 +90,8 @@ namespace Sol
         private void Awake()
         {
             LogSlot.OnSelectLogSlot += SelectLogSlot;
+
+            logs[0].content = "";
         }
     }
 

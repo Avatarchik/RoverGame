@@ -26,6 +26,9 @@ namespace Sol
         public Text objectiveTextAdmin;
         public Text objectiveTextAI;
 
+        public string aiHexColor = "96C8FF";
+        public string humanHexColor = "FFFFFF";
+
         public PersistentHUD persistentHud;
 
         public List<PermanentObjectiveDisplay> permanentlyDisplayedObjectives = new List<PermanentObjectiveDisplay>();
@@ -78,11 +81,13 @@ namespace Sol
             {
                 objectiveTextAdmin.text = objective;
                 objectiveTextAI.text = "";
+                UIManager.GetMenu<LogMenu>().AddRadioLog("Jennifer > " + objective, humanHexColor);
             }
             else
             {
                 objectiveTextAdmin.text = "";
                 objectiveTextAI.text = objective;
+                UIManager.GetMenu<LogMenu>().AddRadioLog("AI > " + objective, aiHexColor);
             }
 
             Open();
