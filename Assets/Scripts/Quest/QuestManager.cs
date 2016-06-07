@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Colorful;
+
 
 namespace Sol
 {
@@ -10,6 +12,8 @@ namespace Sol
         public List<Quest> quests = new List<Quest>();
 
         public float characterDelay = 0.1f;
+
+        public Glitch glitchEffect;
 
         protected int currentQuest = 0;
 
@@ -74,9 +78,20 @@ namespace Sol
         }
 
 
+        protected IEnumerator GlitchOut(float waitTime = 1f)
+        {
+            glitchEffect.enabled = true;
+
+            yield return new WaitForSeconds(waitTime);
+
+            glitchEffect.enabled = false;
+        }
+
+
         protected void Awake()
         {
             BeginQuest();
+            StartCoroutine(GlitchOut(3));
         }
     }
 }
