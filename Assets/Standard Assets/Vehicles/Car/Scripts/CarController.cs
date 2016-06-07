@@ -158,6 +158,8 @@ namespace UnityStandardAssets.Vehicles.Car
             if (handbrake > 0f)
             {
                 var hbTorque = handbrake*m_MaxHandbrakeTorque;
+                m_WheelColliders[0].brakeTorque = hbTorque;
+                m_WheelColliders[1].brakeTorque = hbTorque;
                 m_WheelColliders[2].brakeTorque = hbTorque;
                 m_WheelColliders[3].brakeTorque = hbTorque;
             }
