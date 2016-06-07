@@ -6,9 +6,6 @@ namespace Sol
 {
     public class PuzzleMenu : Menu
     {
-        public const string WIRES_IN_INVENTORY_FORMAT = "Wires in Inventory : {0}";
-        public const string WIRES_USED_FORMAT = "Wires Used : {0}";
-
         public Button exitButton;
         public Text messageText;
         public Text wiresInInventory;
@@ -55,9 +52,16 @@ namespace Sol
         public void Open(InteractiblePuzzle ip)
         {
             messageText.text = ip.message;
-            //TODO make this down here less gross
-			//wiresInInventory.text = string.Format(WIRES_IN_INVENTORY_FORMAT, UIManager.GetMenu<Inventory>().GetIngredientAmount(AluminumWire));
+			if (exitButton == null) {
+				foreach (Button child in ip.GetComponentsInChildren<Button>(true)) {
+					if (child.tag == "ExitButton") {
+						exitButton = child;
+					}
+				}
+				exitButton.onClick.AddListener (Exit);
+			}
             currentPuzzleObject = ip;
+			ActivateExit (true);
             base.Open();
         }
 
@@ -66,6 +70,8 @@ namespace Sol
         {
             currentPuzzleObject.UiEvents.MissionButtonEvent(null);
             currentPuzzleObject.UiEvents.LevelButtonEvent(null);
+
+			ActivateExit (false);
 
             currentPuzzleObject.interactible = true;
             base.Close();
@@ -78,6 +84,8 @@ namespace Sol
             {
                 currentPuzzleObject.Complete = true;
 				currentPuzzleObject.interactible = false;
+				ActivateExit (false);
+				exitButton = null;
 				base.Close ();
             }
             else
@@ -95,9 +103,8 @@ namespace Sol
         }
 
 
-        public void Awake()
-        {
-            exitButton.onClick.AddListener(Exit);
-        }
+		public void ActivateExit (bool active) {
+			exitButton.transform.parent.gameObject.SetActive (active);
+		}
     }
 }
