@@ -448,7 +448,6 @@ public class PuzzleManager : MonoBehaviour
 //		}
 		if (Input.GetMouseButtonDown (0)) {
 				RayCast (Input.mousePosition, ClickType.Began);
-            if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(lineDrawEffect);
         }
         else if (Input.GetMouseButtonUp (0)) {
 				Release (currentLine);
@@ -461,6 +460,7 @@ public class PuzzleManager : MonoBehaviour
 
 		if (drawDraggingElement) {
 				DrawDraggingElement (Input.mousePosition);
+				if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(lineDrawEffect);
 		}
 	}
 

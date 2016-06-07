@@ -53,16 +53,15 @@ namespace Sol
         {
             messageText.text = ip.message;
 			if (exitButton == null) {
-				foreach (Button child in ip.GetComponentsInChildren<Button>()) {
+				foreach (Button child in ip.GetComponentsInChildren<Button>(true)) {
 					if (child.tag == "ExitButton") {
 						exitButton = child;
 					}
 				}
 				exitButton.onClick.AddListener (Exit);
 			}
-            //TODO make this down here less gross
-			//wiresInInventory.text = string.Format(WIRES_IN_INVENTORY_FORMAT, UIManager.GetMenu<Inventory>().GetIngredientAmount(AluminumWire));
             currentPuzzleObject = ip;
+			ActivateExit (true);
             base.Open();
         }
 
@@ -72,6 +71,7 @@ namespace Sol
             currentPuzzleObject.UiEvents.MissionButtonEvent(null);
             currentPuzzleObject.UiEvents.LevelButtonEvent(null);
 
+			ActivateExit (false);
 
             currentPuzzleObject.interactible = true;
             base.Close();
@@ -84,6 +84,7 @@ namespace Sol
             {
                 currentPuzzleObject.Complete = true;
 				currentPuzzleObject.interactible = false;
+				ActivateExit (false);
 				exitButton = null;
 				base.Close ();
             }
@@ -102,9 +103,8 @@ namespace Sol
         }
 
 
-        public void Awake()
-        {
-            
-        }
+		public void ActivateExit (bool active) {
+			exitButton.transform.parent.gameObject.SetActive (active);
+		}
     }
 }
