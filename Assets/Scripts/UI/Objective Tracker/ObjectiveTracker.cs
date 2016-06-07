@@ -141,6 +141,16 @@ namespace Sol
 
             Close();
         }
+
+
+        private void Update()
+        {
+            if (GameManager.Get<QuestManager>().testMode && Input.GetKeyDown(KeyCode.Return))
+            {
+                StopCoroutine("DelayedClose");
+                Close();
+            }
+        }
     }
 
 }

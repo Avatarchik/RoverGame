@@ -28,7 +28,7 @@ namespace Sol
 
             while(inventory.GetIngredientAmount(desiredItem) != desiredCount)
             {
-                yield return new WaitForSeconds(0.5f);
+                yield return null;
             }
 
             CompleteObjective();

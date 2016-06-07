@@ -6,7 +6,7 @@ namespace Sol
 {
     public class QuestManager : MonoBehaviour
     {
-        
+        public bool testMode = true;
         public List<Quest> quests = new List<Quest>();
 
         public float characterDelay = 0.1f;
@@ -58,7 +58,18 @@ namespace Sol
 
                 float delay = displayTexts[i].Length * characterDelay;
                 UIManager.GetMenu<ObjectiveTracker>().Open(displayTexts[i], isHuman, true, delay);
-                yield return new WaitForSeconds(delay + 0.5f);
+
+                
+
+                float elapsedTime = 0f;
+                float desiredTime = delay + 0.75f;
+
+                while(elapsedTime < desiredTime)
+                {
+                    elapsedTime += Time.deltaTime;
+                    if (GameManager.Get<QuestManager>().testMode && Input.GetKeyDown(KeyCode.Return)) break;
+                    yield return null;
+                }
             }
         }
 

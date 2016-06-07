@@ -30,13 +30,13 @@ namespace Sol
             bool proceed = true;
             while(true)
             {
+                proceed = true;
                 for (int i = 0; i < desiredItems.Count; i++)
                 {
                     if (inventory.GetIngredientAmount(desiredItems[i]) != desiredItemCounts[i]) proceed = false;
                 }
 
                 if (proceed) break;
-
                 yield return null;
             }
 

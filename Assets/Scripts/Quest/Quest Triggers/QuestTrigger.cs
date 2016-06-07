@@ -56,11 +56,26 @@ namespace Sol
 
             while(ot.IsActive || !proceed)
             {
+                
                 yield return null;
             }
             proceed = false;
             initialized = false;
             onCompleteObjective(endQuest, targetQuest);
+        }
+
+
+        protected void Update()
+        {
+            if (GameManager.Get<QuestManager>().testMode && Input.GetKeyDown(KeyCode.Return) && initialized)
+            {
+                StopAllCoroutines();
+                proceed = false;
+                initialized = false;
+                onCompleteObjective(endQuest, targetQuest);
+
+                Debug.Log("skip!");
+            }
         }
     }
 }
