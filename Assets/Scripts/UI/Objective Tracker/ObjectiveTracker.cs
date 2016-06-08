@@ -20,7 +20,6 @@ namespace Sol
         public ObjectiveDisplay objectivePrefab;
         public PermanentObjectiveDisplay permanentObjectivePrefab;
 
-        public Transform objectiveContainer;
         public Transform permanentObjectiveContainer;
 
         public Text objectiveTextAdmin;
