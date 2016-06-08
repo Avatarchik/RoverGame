@@ -639,7 +639,8 @@ public class PuzzleManager : MonoBehaviour
 				cachedSoundSource = CachedSoundManager.Play (beginDrawEffect);
 				Vector3 sparksPosition = Vector3.Lerp (playerRay.origin, currentGridCell.transform.position, 0.9f);
 				GameObject newSparks = (GameObject) Instantiate (pairSparks, sparksPosition, puzzleCanvas.transform.rotation);
-				newSparks.transform.eulerAngles += Vector3.up * 180;
+				newSparks.transform.SetParent (puzzleCanvas.transform);
+				newSparks.transform.localEulerAngles += Vector3.up * 180;
 			} else {
 				cachedSoundSource = CachedSoundManager.Play (beginShortedEffect);
 			}
