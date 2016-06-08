@@ -22,6 +22,7 @@ public class PuzzleManager : MonoBehaviour
 	bool WorldSpacePuzzle = true;
 	public GameObject contentCellPrefab;
 	public GameObject worldLinePrefab;
+	public GameObject wirePairCounter;
 	public Color cellStartColor;
 	public Color cellTransColor;
 	public Color cellCompleteColor;
@@ -89,6 +90,8 @@ public class PuzzleManager : MonoBehaviour
 		public float cellObstacleScaleFactor = 0.6f;
 	[Range(0.1f,1)]
 	public float cellPairScaleFactor = 0.6f;
+	[Range(0.1f,1)]
+	public float wireCounterScaleFactor = 0.6f;
 
 		/// <summary>
 		/// The cell content z-position.
@@ -223,10 +226,15 @@ public class PuzzleManager : MonoBehaviour
 	public GridCell beginGridCell;
 	public Ingredient beginWireIngredient;
 	public int beginWireCount;
+	public Transform beginWireCounter;
 	private int AlumEndMoves;
 	private int CopperEndMoves;
 	private int GoldEndMoves;
 	private int SilverEndMoves;
+	public RaycastHit[] hits;
+	public Ray playerRay;
+	public GridCell pairCell;
+	public Transform previousRayCell;
 
 		/// <summary>
 		/// The current(selected) grid cell.
@@ -348,6 +356,7 @@ public class PuzzleManager : MonoBehaviour
 				if (effectsAudioSource == null) {
 						//effectsAudioSource = GameObject.Find ("AudioSources").GetComponents<AudioSource> () [1];
 				}
+		previousRayCell = transform;
 		}
 
 
@@ -439,15 +448,51 @@ public class PuzzleManager : MonoBehaviour
 		// Update is called once per frame
 	void Update (){
 		Moves = movements;
+
+		if (beginWireCounter != null) {
+			float currentWireCount = beginWireCount - movements;
+			beginWireCounter.GetComponent<Image> ().fillAmount = Mathf.Lerp (0.0f, 1.0f, currentWireCount/beginWireCount);
+			beginWireCounter.GetComponentInChildren<TextMesh> ().text = currentWireCount.ToString ();
+		}
+
 		if (!isRunning) {
-				return;
+			return;
+		} else {
+			playerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			hits = Physics.RaycastAll(playerRay);
+		}
+
+		foreach (RaycastHit hit in hits) {
+			if (hit.collider.tag == "GridCell" && previousRayCell != hit.transform && !clickMoving) {
+				if (CheckForPair (hit)) {
+					if (pairCell != null) {
+						Destroy (beginWireCounter.gameObject);
+					}
+					pairCell = hit.transform.GetComponent<GridCell>();
+					GameObject newWireCounter = (GameObject)Instantiate (wirePairCounter, transform.position, transform.rotation);
+					beginWireCounter = newWireCounter.transform;
+					beginWireCounter.SetParent (pairCell.transform);
+					beginWireCounter.localPosition = Vector3.zero;
+					beginWireCounter.rotation = pairCell.transform.rotation;
+					beginWireCounter.GetComponent<Image> ().color = pairCell.myPairColor;
+					beginWireCounter.GetComponent<RectTransform> ().sizeDelta = pairCell.myPairSize * wireCounterScaleFactor;
+					beginWireIngredient = pairCell.gridIngredient;
+					beginWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (beginWireIngredient);
+				} else {
+					if (pairCell != null) {
+						Destroy (beginWireCounter.gameObject);
+						pairCell = null;
+					}
+				}
+				previousRayCell = hit.transform;
+			}
 		}
 
 //		if (gridLines == null || gridCells == null) {
 //				return;
 //		}
 		if (Input.GetMouseButtonDown (0)) {
-				RayCast (Input.mousePosition, ClickType.Began);
+				RayCast (ClickType.Began);
         }
         else if (Input.GetMouseButtonUp (0)) {
 				Release (currentLine);
@@ -455,13 +500,22 @@ public class PuzzleManager : MonoBehaviour
         }
 
 		if (clickMoving) {
-				RayCast (Input.mousePosition, ClickType.Moved);
+				RayCast (ClickType.Moved);
 		}
 
 		if (drawDraggingElement) {
 				DrawDraggingElement (Input.mousePosition);
 				if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(lineDrawEffect);
 		}
+	}
+
+	private bool CheckForPair(RaycastHit hitter){
+		foreach (Transform child in hitter.transform) {
+			if (child.tag == "GridCellContent") {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/// <summary>
@@ -472,13 +526,16 @@ public class PuzzleManager : MonoBehaviour
 		clickMoving = false;
 		drawDraggingElement = false;
 		beginGridCell = null;
+		if (beginWireCounter != null) {
+			Destroy (beginWireCounter.gameObject);
+			pairCell = null;
+		}
 		draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
 		draggingElementSpriteRenderer.enabled = false;
 
 		if (line != null) {
 			if (!line.completedLine) {
 				line.ClearPath ();
-				UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount);
 				movements = 0;
 			}
 
@@ -494,14 +551,9 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 		/// <param name="clickPosition">The position of the click (touch).</param>
 		/// <param name="clickType">The type of the click(touch).</param>
-		private void RayCast (Vector3 clickPosition, ClickType clickType)
+		private void RayCast (ClickType clickType)
 		{
-				tempClickPosition = mainCamera.ScreenToWorldPoint (clickPosition);
-				//tempRayCastHit2D = Physics2D.Raycast (tempClickPosition, Vector2.zero);
 				//tempCollider2D = tempRayCastHit2D.collider;
-		RaycastHit[] hits;
-		Ray playerRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        hits = Physics.RaycastAll(playerRay);
 
 		foreach(RaycastHit hit in hits)
         {
@@ -543,8 +595,6 @@ public class PuzzleManager : MonoBehaviour
 				}
 
 		beginGridCell = currentGridCell;
-		beginWireIngredient = beginGridCell.gridIngredient;
-		beginWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (beginWireIngredient);
 
 				///Increase the movements counter
 				//IncreaseMovements ();
@@ -644,16 +694,12 @@ public class PuzzleManager : MonoBehaviour
                         gridLines[currentGridCell.gridLineIndex].RemoveElements(currentGridCell.index);
                         previousGridCell = currentGridCell;
                         Debug.Log("Remove some Elements from the Line Path of index " + currentGridCell.gridLineIndex);
-                        DecreaseMovements();
                         return;//skip next
                 }
                 else {
                     Debug.Log("Clear the Line Path of index " + currentGridCell.gridLineIndex);
 					Line pathLine = gridLines [currentGridCell.gridLineIndex];
 					pathLine.ClearPath();
-					Ingredient gridIng = pathLine.gridCell.gridIngredient;
-					int count = UIManager.GetMenu<Inventory> ().GetIngredientAmount (gridIng);
-					UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (gridIng, count);
                 }
             }
 
@@ -814,14 +860,11 @@ public class PuzzleManager : MonoBehaviour
 				return;
 		}
 
-		RaycastHit[] hits;
-		Ray dragRay = Camera.main.ScreenPointToRay(clickPosition);
-		hits = Physics.RaycastAll(dragRay);
 		float distRatio = 0.9f;
 
 		foreach (RaycastHit hit in hits) {
 			if (hit.collider.tag == "GridCell") {
-				Vector3 dragPosition = Vector3.Lerp (dragRay.origin, hit.point, distRatio);
+				Vector3 dragPosition = Vector3.Lerp (playerRay.origin, hit.point, distRatio);
 				draggingElementSpriteRenderer.enabled = true;
 				draggingElement.transform.position = dragPosition;
 			}
@@ -835,7 +878,6 @@ public class PuzzleManager : MonoBehaviour
 		{
 				try {
 						movements = 0;
-			UIManager.GetMenu<PuzzleMenu>().SetInitialWireCounts();
 
             levelText.text = "Level " + TableLevel.wantedLevel.ID;
 						BuildTheGrid ();
@@ -972,6 +1014,7 @@ public class PuzzleManager : MonoBehaviour
 				worldCellMaxSize = Mathf.Max (worldCellSize.x, worldCellSize.y);
 
 				cellContentSize = new Vector2 (worldCellMinSize, worldCellMinSize) * cellPairScaleFactor;
+				gridCell.myPairSize = cellContentSize;
 
 				firstElement = Instantiate (contentCellPrefab) as GameObject;
 				firstElement.transform.SetParent (worldCellTransform, false);
@@ -989,6 +1032,7 @@ public class PuzzleManager : MonoBehaviour
 			
 				if (elementsPair.applyColorOnSprite) {
 					firstElement.GetComponent<Image> ().color = elementsPair.pairColor;//apply the sprite color
+					gridCell.myPairColor = elementsPair.pairColor;
 				} else {
 					firstElement.GetComponent<Image> ().color = Color.white;//apply the white color
 				}
@@ -1012,6 +1056,7 @@ public class PuzzleManager : MonoBehaviour
 				worldCellTransform = gridCell.GetComponent<RectTransform> ();
 				worldCellSize = worldCellTransform.sizeDelta;
 				cellContentSize = new Vector2 (worldCellMinSize, worldCellMinSize) * cellPairScaleFactor;
+				gridCell.myPairSize = cellContentSize;
 
 				secondElement = Instantiate (contentCellPrefab) as GameObject;
 				secondElement.transform.SetParent (worldCellTransform, false);
@@ -1029,6 +1074,7 @@ public class PuzzleManager : MonoBehaviour
 
 				if (elementsPair.applyColorOnSprite) {
 					secondElement.GetComponent<Image> ().color = elementsPair.pairColor;//apply the sprite color
+					gridCell.myPairColor = elementsPair.pairColor;
 				} else {
 					secondElement.GetComponent<Image> ().color = Color.white;//apply the white color
 				}
@@ -1499,17 +1545,12 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 	private void IncreaseMovements (){
 		movements++;
-		UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount - movements);
 	}
 
 	/// <summary>
 	/// Decrease the movements counter.
 	/// </summary>
-	public void DecreaseMovements ()
-	{
-		//movements--;
-		UIManager.GetMenu<PuzzleMenu> ().SetCurrentWireCounts (beginWireIngredient, beginWireCount - movements);
-	}
+
 
 		public enum ClickType
 		{

@@ -12,6 +12,8 @@ public class GridCell : MonoBehaviour
 		/// The color of the top background.
 		/// </summary>
 		public Color topBackgroundColor;
+	public Color myPairColor;
+	public Vector2 myPairSize;
 
 		/// <summary>
 		/// Whether the GridCell is used.

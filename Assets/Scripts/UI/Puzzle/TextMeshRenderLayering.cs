@@ -6,7 +6,7 @@ public class TextMeshRenderLayering : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//gameObject.GetComponent<MeshRenderer>().sortingOrder = transform.parent.GetComponent<Image>()
+		gameObject.GetComponent<MeshRenderer> ().sortingLayerName = "PuzzleForeground";
 	}
 	
 	// Update is called once per frame
