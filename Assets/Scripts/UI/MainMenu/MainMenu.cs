@@ -2,16 +2,14 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using Colorful;
 
 namespace Sol
 {
     public class MainMenu : Menu
     {
         public Button startGameButton;
-        public Button loadGameButton;
-        public Button optionsButton;
-        public Button exitGameButton;
-
+        public Glitch glitch;
 
         public override void Open()
         {
@@ -28,6 +26,8 @@ namespace Sol
         public void StartGame()
         {
             SceneManager.LoadScene(1);
+            StopAllCoroutines();
+            glitch.enabled = false;
         }
 
 
@@ -43,11 +43,21 @@ namespace Sol
         }
 
 
+        private IEnumerator GlitchOut()
+        {
+            yield return new WaitForSeconds(Random.Range(1f, 5f));
+            glitch.enabled = true;
+            yield return new WaitForSeconds(Random.Range(0.3f, 1f));
+            glitch.enabled = false;
+
+            StartCoroutine(GlitchOut());
+        }
+
+
         private void Awake()
         {
+            StartCoroutine(GlitchOut());
             startGameButton.onClick.AddListener(StartGame);
-            exitGameButton.onClick.AddListener(QuitGame);
-            optionsButton.onClick.AddListener(OpenOptions);
         }
     }
 }
