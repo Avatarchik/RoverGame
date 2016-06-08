@@ -10,6 +10,9 @@ namespace Sol
     {
         public Button startGameButton;
         public Glitch glitch;
+        public CanvasGroup cg;
+
+        public float fadeTime = 3f;
 
         public override void Open()
         {
@@ -25,9 +28,7 @@ namespace Sol
 
         public void StartGame()
         {
-            SceneManager.LoadScene(1);
-            StopAllCoroutines();
-            glitch.enabled = false;
+            StartCoroutine(Fade());
         }
 
 
@@ -40,6 +41,26 @@ namespace Sol
         public void OpenOptions()
         {
             //nothing for now
+        }
+
+
+        private IEnumerator Fade()
+        {
+            float elapsedTime = 0f;
+
+            while(elapsedTime < fadeTime)
+            {
+                cg.alpha = 1f - (elapsedTime / fadeTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            cg.alpha = 0;
+
+            SceneManager.LoadScene(1);
+            StopAllCoroutines();
+            glitch.enabled = false;
         }
 
 
