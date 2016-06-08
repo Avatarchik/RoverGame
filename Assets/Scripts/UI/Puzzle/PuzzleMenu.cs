@@ -53,7 +53,7 @@ namespace Sol
         {
             messageText.text = ip.message;
 			if (exitButton == null) {
-				foreach (Button child in ip.GetComponentsInChildren<Button>(true)) {
+				foreach (Button child in ip.myPuzzleCanvas.GetComponentsInChildren<Button>(true)) {
 					if (child.tag == "ExitButton") {
 						exitButton = child;
 					}

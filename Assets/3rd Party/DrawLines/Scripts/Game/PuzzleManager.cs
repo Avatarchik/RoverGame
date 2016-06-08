@@ -1479,7 +1479,10 @@ public class PuzzleManager : MonoBehaviour
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
         pm.Close(completed);
 		if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
+		drawDraggingElement = false;
+		draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
 		isRunning = false;
+
 
 		if (completed) {
 			RemoveInventoryWires ();

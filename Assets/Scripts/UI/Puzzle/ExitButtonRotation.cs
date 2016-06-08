@@ -9,6 +9,7 @@ public class ExitButtonRotation : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		playerCam = Camera.main.transform;
+		gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame
