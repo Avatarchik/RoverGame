@@ -6,6 +6,7 @@ namespace Sol
     public class LiftPanel : InteractibleObject
     {
         public Lift controlledLift;
+		public Animator liftCanvasAnim;
 
 
         public override void Interact()
@@ -15,6 +16,8 @@ namespace Sol
             if (Interactible)
             {
                 controlledLift.MoveLift();
+				liftCanvasAnim.speed = 2.0f;
+				liftCanvasAnim.SetTrigger ("FadeBackward");
                 interactible = false;
             }
         }
