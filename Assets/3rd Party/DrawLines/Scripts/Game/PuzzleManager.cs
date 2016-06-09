@@ -18,6 +18,7 @@ public class PuzzleManager : MonoBehaviour
 	public AudioClip pairHoverEffect;
 	public AudioClip beginDrawEffect;
 	public AudioClip drawShortedEffect;
+	public AudioClip resetLineEffect;
 
 	/// <summary>
 	/// World Space attributes
@@ -42,6 +43,7 @@ public class PuzzleManager : MonoBehaviour
 	public float pulseGridTime;
 	public Color pulsateColor;
 	private bool pulseTimerStarted;
+	public bool ignorePair;
 
 	/// <summary>
 	/// 
@@ -219,7 +221,7 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// current line in the grid.
 		/// </summary>
-		private Line currentLine;
+		public Line currentLine;
 
 		/// <summary>
 		/// Temp ray cast hit 2d for ray casting.
@@ -242,6 +244,7 @@ public class PuzzleManager : MonoBehaviour
 	public RaycastHit[] hits;
 	public Ray playerRay;
 	public GridCell pairCell;
+	public Transform currentRayCell;
 	public Transform previousRayCell;
 	public bool rayCellChange;
 
@@ -332,7 +335,7 @@ public class PuzzleManager : MonoBehaviour
 		private AudioSource effectsAudioSource;
 
     private SoundManager cachedSoundManager;
-    private SoundSource cachedSoundSource = null;
+	public SoundSource cachedSoundSource = null;
 	private SoundSource cachedSoundSource02 = null;
 
     public SoundManager CachedSoundManager
@@ -474,7 +477,8 @@ public class PuzzleManager : MonoBehaviour
 
 		foreach (RaycastHit hit in hits) {
 			if (hit.collider.tag == "GridCell") {
-				if (previousRayCell != null && previousRayCell != hit.transform) {
+				currentRayCell = hit.transform;
+				if (previousRayCell != currentRayCell) {
 					rayCellChange = true;
 					if (!clickMoving) {
 						if (CheckForPair (hit)) {
@@ -502,7 +506,6 @@ public class PuzzleManager : MonoBehaviour
 				} else {
 					rayCellChange = false;
 				}
-				previousRayCell = hit.transform;
 			}
 		}
 
@@ -513,7 +516,10 @@ public class PuzzleManager : MonoBehaviour
 			RayCast (ClickType.Began);
         }
         else if (Input.GetMouseButtonUp (0)) {
-			Release (currentLine);
+			if (currentLine != null) {
+				print (currentLine);
+				Release (currentLine);
+			}
             if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
         }
 
@@ -525,6 +531,7 @@ public class PuzzleManager : MonoBehaviour
 			DrawDraggingElement (Input.mousePosition);
 			if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(lineDrawEffect);
 		}
+		previousRayCell = currentRayCell;
 	}
 
 	private bool CheckForPair(RaycastHit hitter){
@@ -546,10 +553,17 @@ public class PuzzleManager : MonoBehaviour
 		clickMoving = false;
 		drawDraggingElement = false;
 		beginGridCell = null;
-		if (beginWireCounter != null ) {
-			Destroy (beginWireCounter.gameObject);
-			pairCell = null;
+		if (beginWireCounter != null) {
+			if (line == null || line.path.Count > 1 || ignorePair) {
+				Destroy (beginWireCounter.gameObject);
+				pairCell = null;
+				if (ignorePair) {
+					ignorePair = false;
+					currentRayCell = transform;
+				}
+			}
 		}
+
 		draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
 		draggingElementSpriteRenderer.enabled = false;
 
@@ -572,34 +586,25 @@ public class PuzzleManager : MonoBehaviour
 		/// <param name="clickPosition">The position of the click (touch).</param>
 		/// <param name="clickType">The type of the click(touch).</param>
 	private void RayCast (ClickType clickType){
-		foreach(RaycastHit hit in hits)
-		{
+		foreach (RaycastHit hit in hits) {
 			tempCollider3D = hit.collider;
 
-			if (tempCollider3D != null)
-			{
+			if (tempCollider3D != null) {
 				//Debug.Log(tempCollider3D.tag + " : " + tempCollider3D.gameObject.name);
 				///When a ray hit a grid cell
-				if (tempCollider3D.tag == "GridCell")
-				{
+				if (tempCollider3D.tag == "GridCell") {
 					currentGridCell = tempCollider3D.GetComponent<GridCell>();
 					//Debug.Log("clicktype ? " + clickType);
-					if (clickType == ClickType.Began)
-					{
+					if (clickType == ClickType.Began) {
 						previousGridCell = currentGridCell;
-						GridCellClickBegan();
-					}
-					else if (clickType == ClickType.Moved)
-					{
+						GridCellClickBegan ();
+					} else if (clickType == ClickType.Moved) {
 						GridCellClickMoved();
 						if (EnoughWiresOfType ()) {
 							GridCell previousCell = previousRayCell.GetComponent<GridCell> ();
 							GridCell currentCell = hit.transform.GetComponent<GridCell> ();
-							if (previousCell.OneOfAdjacents (currentCell.index)) {
-								print ("SADASDASD");
-								if (currentCell.isEmpty) {
-									drawDraggingElement = true;
-								}
+							if (previousCell.OneOfAdjacents (currentCell.index) && currentCell.isEmpty) {
+								drawDraggingElement = true;
 							}
 						}
 					}
@@ -633,8 +638,9 @@ public class PuzzleManager : MonoBehaviour
 			///If the grid line of the current grid cell is completed,then reset the grid cells of the line
 			if (gridLines [currentGridCell.gridLineIndex].completedLine) {
 				Debug.Log ("Reset Grid cells of the Line Path of the index " + currentGridCell.gridLineIndex);
+				CachedSoundManager.Play (resetLineEffect);
 				gridLines [currentGridCell.gridLineIndex].completedLine = false;
-				//TODO - Bug on asana, UI count does not reset after this event happens
+				currentRayCell = transform;
 				Release (gridLines [currentGridCell.gridLineIndex]);
 				return;
 			} 
@@ -723,6 +729,7 @@ public class PuzzleManager : MonoBehaviour
 			}
 			else {
 				Debug.Log("Clear the Line Path of index " + currentGridCell.gridLineIndex);
+				CachedSoundManager.Play (resetLineEffect);
 				Line pathLine = gridLines [currentGridCell.gridLineIndex];
 				pathLine.ClearPath();
 			}
@@ -731,10 +738,11 @@ public class PuzzleManager : MonoBehaviour
 		///If the current grid cell is not empty or it's not a partner of the previous grid cell
 		if (!currentGridCell.isEmpty && currentGridCell.index != previousGridCell.tragetIndex) {
 			Debug.Log("Current grid cell of index " + currentGridCell.index + " is Ignored [Reason : Not the wanted Traget]");
+			ignorePair = true;
 			return;//skip next
 		}
 		if (!EnoughWiresOfType ()) {
-			if (rayCellChange) {
+			if (rayCellChange && gridLines [beginGridCell.gridLineIndex].path.Count > 1) {
 				CachedSoundManager.Play (drawShortedEffect);
 			}
 			return;
