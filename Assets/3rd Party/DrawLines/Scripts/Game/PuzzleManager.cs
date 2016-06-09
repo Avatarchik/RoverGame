@@ -17,7 +17,7 @@ public class PuzzleManager : MonoBehaviour
     public AudioClip lineDrawEffect;
 	public AudioClip pairHoverEffect;
 	public AudioClip beginDrawEffect;
-	public AudioClip beginShortedEffect;
+	public AudioClip drawShortedEffect;
 
 	/// <summary>
 	/// World Space attributes
@@ -38,6 +38,10 @@ public class PuzzleManager : MonoBehaviour
 	private List <GameObject> contentsInstantiated = new List<GameObject> ();
 	private float worldCellMinSize;
 	private float worldCellMaxSize;
+	public float pulsateDelay;
+	public float pulseGridTime;
+	public Color pulsateColor;
+	private bool pulseTimerStarted;
 
 	/// <summary>
 	/// 
@@ -239,16 +243,17 @@ public class PuzzleManager : MonoBehaviour
 	public Ray playerRay;
 	public GridCell pairCell;
 	public Transform previousRayCell;
+	public bool rayCellChange;
 
 		/// <summary>
 		/// The current(selected) grid cell.
 		/// </summary>
-		private GridCell currentGridCell;
+		public GridCell currentGridCell;
 
 		/// <summary>
 		/// The previous grid cell.
 		/// </summary>
-		private GridCell previousGridCell;
+		public GridCell previousGridCell;
 		
 		/// <summary>
 		/// The current level.
@@ -328,6 +333,7 @@ public class PuzzleManager : MonoBehaviour
 
     private SoundManager cachedSoundManager;
     private SoundSource cachedSoundSource = null;
+	private SoundSource cachedSoundSource02 = null;
 
     public SoundManager CachedSoundManager
     {
@@ -360,7 +366,6 @@ public class PuzzleManager : MonoBehaviour
 				if (effectsAudioSource == null) {
 						//effectsAudioSource = GameObject.Find ("AudioSources").GetComponents<AudioSource> () [1];
 				}
-		previousRayCell = transform;
 		}
 
 
@@ -377,6 +382,7 @@ public class PuzzleManager : MonoBehaviour
 	{
 		puzzleCanvas = puzzle_Canvas;
 		previousPuzzleCanvas = puzzleCanvas;
+
 
 		if (levelText == null) {
 			levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
@@ -467,27 +473,34 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 		foreach (RaycastHit hit in hits) {
-			if (hit.collider.tag == "GridCell" && previousRayCell != hit.transform && !clickMoving) {
-				if (CheckForPair (hit)) {
-					if (pairCell != null) {
-						Destroy (beginWireCounter.gameObject);
+			if (hit.collider.tag == "GridCell") {
+				if (previousRayCell != null && previousRayCell != hit.transform) {
+					rayCellChange = true;
+					if (!clickMoving) {
+						if (CheckForPair (hit)) {
+							if (pairCell != null) {
+								Destroy (beginWireCounter.gameObject);
+							}
+							pairCell = hit.transform.GetComponent<GridCell> ();
+							GameObject newWireCounter = (GameObject)Instantiate (wirePairCounter, transform.position, transform.rotation);
+							beginWireCounter = newWireCounter.transform;
+							beginWireCounter.SetParent (pairCell.transform);
+							beginWireCounter.localPosition = Vector3.zero;
+							beginWireCounter.rotation = pairCell.transform.rotation;
+							beginWireCounter.GetComponent<Image> ().color = pairCell.myPairColor;
+							beginWireCounter.GetComponent<RectTransform> ().sizeDelta = pairCell.myPairSize * wireCounterScaleFactor;
+							beginWireIngredient = pairCell.gridIngredient;
+							beginWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (beginWireIngredient);
+							CachedSoundManager.Play (pairHoverEffect);
+						} else {
+							if (pairCell != null) {
+								Destroy (beginWireCounter.gameObject);
+								pairCell = null;
+							}
+						}
 					}
-					pairCell = hit.transform.GetComponent<GridCell>();
-					GameObject newWireCounter = (GameObject)Instantiate (wirePairCounter, transform.position, transform.rotation);
-					beginWireCounter = newWireCounter.transform;
-					beginWireCounter.SetParent (pairCell.transform);
-					beginWireCounter.localPosition = Vector3.zero;
-					beginWireCounter.rotation = pairCell.transform.rotation;
-					beginWireCounter.GetComponent<Image> ().color = pairCell.myPairColor;
-					beginWireCounter.GetComponent<RectTransform> ().sizeDelta = pairCell.myPairSize * wireCounterScaleFactor;
-					beginWireIngredient = pairCell.gridIngredient;
-					beginWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (beginWireIngredient);
-					if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(pairHoverEffect);
 				} else {
-					if (pairCell != null) {
-						Destroy (beginWireCounter.gameObject);
-						pairCell = null;
-					}
+					rayCellChange = false;
 				}
 				previousRayCell = hit.transform;
 			}
@@ -497,20 +510,20 @@ public class PuzzleManager : MonoBehaviour
 //				return;
 //		}
 		if (Input.GetMouseButtonDown (0)) {
-				RayCast (ClickType.Began);
+			RayCast (ClickType.Began);
         }
         else if (Input.GetMouseButtonUp (0)) {
-				Release (currentLine);
+			Release (currentLine);
             if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
         }
 
 		if (clickMoving) {
-				RayCast (ClickType.Moved);
+			RayCast (ClickType.Moved);
 		}
 
 		if (drawDraggingElement) {
-				DrawDraggingElement (Input.mousePosition);
-				if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(lineDrawEffect);
+			DrawDraggingElement (Input.mousePosition);
+			if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(lineDrawEffect);
 		}
 	}
 
@@ -533,10 +546,9 @@ public class PuzzleManager : MonoBehaviour
 		clickMoving = false;
 		drawDraggingElement = false;
 		beginGridCell = null;
-		if (beginWireCounter != null) {
+		if (beginWireCounter != null ) {
 			Destroy (beginWireCounter.gameObject);
 			pairCell = null;
-			previousRayCell = transform;
 		}
 		draggingElement.GetComponentInChildren<ParticleSystem>().enableEmission = false;
 		draggingElementSpriteRenderer.enabled = false;
@@ -583,9 +595,11 @@ public class PuzzleManager : MonoBehaviour
 						if (EnoughWiresOfType ()) {
 							GridCell previousCell = previousRayCell.GetComponent<GridCell> ();
 							GridCell currentCell = hit.transform.GetComponent<GridCell> ();
-							if (previousCell.OneOfAdjacents(currentCell.index) &&
-								currentCell.isEmpty) {
-								drawDraggingElement = true;
+							if (previousCell.OneOfAdjacents (currentCell.index)) {
+								print ("SADASDASD");
+								if (currentCell.isEmpty) {
+									drawDraggingElement = true;
+								}
 							}
 						}
 					}
@@ -636,13 +650,13 @@ public class PuzzleManager : MonoBehaviour
 			clickMoving = true;
 
 			if (EnoughWiresOfType ()) {
-				cachedSoundSource = CachedSoundManager.Play (beginDrawEffect);
+				CachedSoundManager.Play (beginDrawEffect);
 				Vector3 sparksPosition = Vector3.Lerp (playerRay.origin, currentGridCell.transform.position, 0.9f);
 				GameObject newSparks = (GameObject) Instantiate (pairSparks, sparksPosition, puzzleCanvas.transform.rotation);
 				newSparks.transform.SetParent (puzzleCanvas.transform);
 				newSparks.transform.localEulerAngles += Vector3.up * 180;
 			} else {
-				cachedSoundSource = CachedSoundManager.Play (beginShortedEffect);
+				CachedSoundManager.Play (drawShortedEffect);
 			}
 
 
@@ -669,180 +683,168 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// When a click(touch) moved over the GridCell.
 		/// </summary>
-		private void GridCellClickMoved ()
-		{
-        //Debug.Log("grid cell click moved!!");
-		if (EnoughWiresOfType())
-        {
-            if (currentLine == null)
-            {
-                Debug.Log("Current Line is undefined");
-                return;
-            }
-            if (currentGridCell == null)
-            {
-                Debug.Log("Current GridCell is undefined");
-                return;
-            }
-            if (previousGridCell == null)
-            {
-                Debug.Log("Previous GridCell is undefined");
-                return;
-            }
-            if (currentGridCell.index == previousGridCell.index)
-            {
-                return;
-            }
-            ///If the current grid cell is not adjacent of the previous grid cell,then ignore it
-            if (!previousGridCell.OneOfAdjacents(currentGridCell.index))
-            {
-                Debug.Log("Current grid cell of index " + currentGridCell.index + " is Ignored [Reason : Not Adjacent Of Previous GridCell " + previousGridCell.index);
-                return;
-            }
-
-            ///If the current grid cell is currently used
-            if (currentGridCell.currentlyUsed)
-            {
-                Debug.Log("current grid cell used! index : "+ currentGridCell.gridLineIndex);
-                if (currentGridCell.gridLineIndex == -1)
-                {
-                    return;
-                }
-
-                if (currentGridCell.gridLineIndex == previousGridCell.gridLineIndex)
-                {
-                        gridLines[currentGridCell.gridLineIndex].RemoveElements(currentGridCell.index);
-                        previousGridCell = currentGridCell;
-                        Debug.Log("Remove some Elements from the Line Path of index " + currentGridCell.gridLineIndex);
-                        return;//skip next
-                }
-                else {
-                    Debug.Log("Clear the Line Path of index " + currentGridCell.gridLineIndex);
-					Line pathLine = gridLines [currentGridCell.gridLineIndex];
-					pathLine.ClearPath();
-                }
-            }
-
-            ///If the current grid cell is not empty or it's not a partner of the previous grid cell
-            if (!currentGridCell.isEmpty && currentGridCell.index != previousGridCell.tragetIndex)
-            {
-                Debug.Log("Current grid cell of index " + currentGridCell.index + " is Ignored [Reason : Not the wanted Traget]");
-                return;//skip next
-            }
-
-            ///Increase the movements counter
-            IncreaseMovements();
-            //Debug.Log("increasing movement counter");
-            ///Setting up the attributes for the current grid cell
-            currentGridCell.currentlyUsed = true;
-            currentGridCell.gridLineIndex = previousGridCell.gridLineIndex;
-            if (currentGridCell.gridLineIndex == -1)
-            {
-                return;
-            }
-            if (currentGridCell.isEmpty)
-                currentGridCell.tragetIndex = previousGridCell.tragetIndex;
-
-            ///Link the color of top background of the current grid cell with the top background color of the previous grid cell
-            currentGridCell.topBackgroundColor = previousGridCell.topBackgroundColor;
-
-            ///Add the current grid cell index to the current traced grid cells list
-            currentLine.path.Add(currentGridCell.index);
-
-            ///Determine the New Line Point
-			RectTransform gridRect = currentGridCell.GetComponent<RectTransform> ();
-			tempPoint = gridRect.position;
-            //tempPoint.z = gridLineZPosition;
-
-            ///Add the position of the New Line Point to the current line
-			gridLines[currentGridCell.gridLineIndex].AddPoint(gridRect, tempPoint);
-
-            bool playBubble = true;
-            if (!currentGridCell.isEmpty)
-            {
-                //Two pairs connected
-                if (previousGridCell.tragetIndex == currentGridCell.index)
-                {
-                    Debug.Log("Two GridCells connected [GridCell " + (gridLines[currentGridCell.gridLineIndex].GetFirstPathElement()) + " with GridCell " + (gridLines[currentGridCell.gridLineIndex].GetLastPathElement()) + "]");
-                    currentLine.completedLine = true;
-                    GridCell gridCell = null;
-                    for (int i = 0; i < currentLine.path.Count; i++)
-                    {
-                        gridCell = gridCells[currentLine.path[i]];
-
-                        if (i == 0 || i == currentLine.path.Count - 1)
-                        {
-                            //Setting up the connect pairs
-                            if (gridCell == null) Debug.LogError("gridcell is null!");
-							Image pairImage = null;
-							Image backgroundImage = null;
-							Sprite connectPairSprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
-							Sprite connectBGSprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectBGSprite;
-							Color connectPairColor = currentLevel.dotsPairs[gridCell.elementPairIndex].onConnectColor;
-							Color connectBGColor = currentLevel.dotsPairs[gridCell.elementPairIndex].bgColor;
-
-
-							Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
-
-							foreach (Transform child in gridCell.transform) {
-								if (child.tag == "GridCellContent") {
-									pairImage = child.GetComponent<Image> ();
-								} else if (child.tag != "WireCounter"){
-									backgroundImage = child.GetComponent<Image> ();
-								}
-							}
-
-							RectTransform pairTransform = pairImage.GetComponent<RectTransform> ();
-							RectTransform bgTransform = backgroundImage.GetComponent<RectTransform> ();
-
-							pairImage.sprite = connectPairSprite;
-							pairImage.color = connectPairColor;
-
-							backgroundImage.sprite = connectBGSprite;
-							backgroundImage.color = connectBGColor;
-							bgTransform.localPosition = new Vector3 (0.0f, 0.0f, cellContentZPosition / 2);
-							bgTransform.sizeDelta = pairTransform.sizeDelta * 1.25f;
-							backgroundImage.enabled = true;
-                        }
-                        ///Setting up the color of the top background of the grid cell
-                        tempColor = previousGridCell.topBackgroundColor;
-                        tempColor.a = gridCellTopBackgroundAlpha;
-						tempSpriteRendererd = gridCell.transform.Find("background").GetComponent<Image>();
-						//print ("1 " + gridLines [currentGridCell.gridLineIndex]);
-
-                        //tempSpriteRendererd.color = tempColor;
-                        ///Enable the top backgroud of the grid cell
-                        //tempSpriteRendererd.enabled = true;
-                    }
-
-                    ///Play the connected sound effect at the center of the unity world
-                    if (connectedSFX != null && effectsAudioSource != null)
-                    {
-                        AudioSource.PlayClipAtPoint(connectedSFX, Vector3.zero, effectsAudioSource.volume);
-                    }
-                    playBubble = false;
-					SetEndMoves ();
-                    Release(null);
-                    CheckLevelComplete();
-					//print ("2 " + gridLines [currentGridCell.gridLineIndex]);
-                    return;
-                }
-            }
-            if (playBubble)
-            {
-                ///Play the water buttle sound effect at the center of the unity world
-                if (waterBubbleSFX != null && effectsAudioSource != null)
-                {
-                    AudioSource.PlayClipAtPoint(waterBubbleSFX, Vector3.zero, effectsAudioSource.volume);
-                }
-            }
-            previousGridCell = currentGridCell;
-        }
-        else
-        {
-            //Debug.Log("not enough wires!");
-        }
+	private void GridCellClickMoved () {
+		if (currentLine == null) {
+			Debug.Log("Current Line is undefined");
+			return;
 		}
+		if (currentGridCell == null) {
+			Debug.Log("Current GridCell is undefined");
+			return;
+		}
+		if (previousGridCell == null) {
+			Debug.Log("Previous GridCell is undefined");
+			return;
+		}
+		if (currentGridCell.index == previousGridCell.index) {
+			return;
+		}
+
+		///If the current grid cell is not adjacent of the previous grid cell,then ignore it
+		if (!previousGridCell.OneOfAdjacents (currentGridCell.index)) {
+			Debug.Log("Current grid cell of index " + currentGridCell.index + " is Ignored [Reason : Not Adjacent Of Previous GridCell " + previousGridCell.index);
+			return;
+		}
+
+		///If the current grid cell is currently used
+		if (currentGridCell.currentlyUsed) {
+			Debug.Log("current grid cell used! index : "+ currentGridCell.gridLineIndex);
+			if (currentGridCell.gridLineIndex == -1)
+			{
+				return;
+			}
+
+			if (currentGridCell.gridLineIndex == previousGridCell.gridLineIndex)
+			{
+				gridLines[currentGridCell.gridLineIndex].RemoveElements(currentGridCell.index);
+				previousGridCell = currentGridCell;
+				Debug.Log("Remove some Elements from the Line Path of index " + currentGridCell.gridLineIndex);
+				return;//skip next
+			}
+			else {
+				Debug.Log("Clear the Line Path of index " + currentGridCell.gridLineIndex);
+				Line pathLine = gridLines [currentGridCell.gridLineIndex];
+				pathLine.ClearPath();
+			}
+		}
+
+		///If the current grid cell is not empty or it's not a partner of the previous grid cell
+		if (!currentGridCell.isEmpty && currentGridCell.index != previousGridCell.tragetIndex) {
+			Debug.Log("Current grid cell of index " + currentGridCell.index + " is Ignored [Reason : Not the wanted Traget]");
+			return;//skip next
+		}
+		if (!EnoughWiresOfType ()) {
+			if (rayCellChange) {
+				CachedSoundManager.Play (drawShortedEffect);
+			}
+			return;
+		}
+		///Increase the movements counter
+		IncreaseMovements();
+
+		//Debug.Log("increasing movement counter");
+		///Setting up the attributes for the current grid cell
+		currentGridCell.currentlyUsed = true;
+		currentGridCell.gridLineIndex = previousGridCell.gridLineIndex;
+		if (currentGridCell.gridLineIndex == -1) {
+			return;
+		}
+		if (currentGridCell.isEmpty) {
+			currentGridCell.tragetIndex = previousGridCell.tragetIndex;
+		}
+
+		///Link the color of top background of the current grid cell with the top background color of the previous grid cell
+		currentGridCell.topBackgroundColor = previousGridCell.topBackgroundColor;
+
+		///Add the current grid cell index to the current traced grid cells list
+		currentLine.path.Add(currentGridCell.index);
+
+		///Determine the New Line Point
+		RectTransform gridRect = currentGridCell.GetComponent<RectTransform> ();
+		tempPoint = gridRect.position;
+		//tempPoint.z = gridLineZPosition;
+
+		///Add the position of the New Line Point to the current line
+		gridLines[currentGridCell.gridLineIndex].AddPoint(gridRect, tempPoint);
+
+		bool playBubble = true;
+		if (!currentGridCell.isEmpty) {
+			//Two pairs connected
+			if (previousGridCell.tragetIndex == currentGridCell.index) {
+				Debug.Log("Two GridCells connected [GridCell " + (gridLines[currentGridCell.gridLineIndex].GetFirstPathElement()) + " with GridCell " + (gridLines[currentGridCell.gridLineIndex].GetLastPathElement()) + "]");
+				currentLine.completedLine = true;
+				GridCell gridCell = null;
+				for (int i = 0; i < currentLine.path.Count; i++) {
+					gridCell = gridCells[currentLine.path[i]];
+
+					if (i == 0 || i == currentLine.path.Count - 1) {
+						//Setting up the connect pairs
+						if (gridCell == null) Debug.LogError("gridcell is null!");
+						Image pairImage = null;
+						Image backgroundImage = null;
+						Sprite connectPairSprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectSprite;
+						Sprite connectBGSprite = currentLevel.dotsPairs[gridCell.elementPairIndex].connectBGSprite;
+						Color connectPairColor = currentLevel.dotsPairs[gridCell.elementPairIndex].onConnectColor;
+						Color connectBGColor = currentLevel.dotsPairs[gridCell.elementPairIndex].bgColor;
+
+
+						Debug.Log("pair index : " + gridCell.elementPairIndex + " | pair count : " + currentLevel.dotsPairs.Count);
+
+						foreach (Transform child in gridCell.transform) {
+							if (child.tag == "GridCellContent") {
+								pairImage = child.GetComponent<Image> ();
+							} else if (child.tag != "WireCounter"){
+								backgroundImage = child.GetComponent<Image> ();
+							}
+						}
+
+						RectTransform pairTransform = pairImage.GetComponent<RectTransform> ();
+						RectTransform bgTransform = backgroundImage.GetComponent<RectTransform> ();
+
+						pairImage.sprite = connectPairSprite;
+						pairImage.color = connectPairColor;
+
+						backgroundImage.sprite = connectBGSprite;
+						backgroundImage.color = connectBGColor;
+						bgTransform.localPosition = new Vector3 (0.0f, 0.0f, cellContentZPosition / 2);
+						bgTransform.sizeDelta = pairTransform.sizeDelta * 1.25f;
+						backgroundImage.enabled = true;
+					}
+					///Setting up the color of the top background of the grid cell
+					tempColor = previousGridCell.topBackgroundColor;
+					tempColor.a = gridCellTopBackgroundAlpha;
+					tempSpriteRendererd = gridCell.transform.Find("background").GetComponent<Image>();
+					//print ("1 " + gridLines [currentGridCell.gridLineIndex]);
+				}
+
+				CachedSoundManager.Play (connectedSFX);
+
+
+				///Play the connected sound effect at the center of the unity world
+				if (connectedSFX != null && effectsAudioSource != null) {
+					//AudioSource.PlayClipAtPoint(connectedSFX, Vector3.zero, effectsAudioSource.volume);
+					//print ("Asdas");
+				}
+				playBubble = false;
+				SetEndMoves ();
+				Release(null);
+				CheckLevelComplete();
+				//print ("2 " + gridLines [currentGridCell.gridLineIndex]);
+				return;
+			}
+		}
+		if (playBubble)
+		{
+			///Play the water buttle sound effect at the center of the unity world
+			if (waterBubbleSFX != null && effectsAudioSource != null)
+			{
+				AudioSource.PlayClipAtPoint(waterBubbleSFX, Vector3.zero, effectsAudioSource.volume);
+			}
+		}
+		previousGridCell = currentGridCell;
+	}
+
+            
 
 	public bool EnoughWiresOfType(){
 		if (beginWireCount > movements) {
@@ -895,23 +897,29 @@ public class PuzzleManager : MonoBehaviour
 		/// <summary>
 		/// Create a new level.
 		/// </summary>
-		private void CreateNewLevel ()
-		{
-				try {
-						movements = 0;
+	private void CreateNewLevel (){
+		try {
+			movements = 0;
 
-            levelText.text = "Level " + TableLevel.wantedLevel.ID;
-						BuildTheGrid ();
-						SettingUpPairs ();
-                        SettingUpObstacles();
-						SettingUpNextBackAlpha ();
-						timer.Stop ();
-						timer.Start ();
+			levelText.text = "Level " + TableLevel.wantedLevel.ID;
+			BuildTheGrid ();
+			SettingUpPairs ();
+			SettingUpObstacles();
+			SettingUpNextBackAlpha ();
+			PulsateGrid();
+			timer.Stop ();
+			timer.Start ();
 			StartCoroutine (DelayRun());
-				} catch (Exception ex) {
-						Debug.Log ("Make sure you have selected a level, and there are no empty references in GameManager component");
-				}
+		} catch (Exception ex) {
+			Debug.Log ("Make sure you have selected a level, and there are no empty references in GameManager component");
 		}
+	}
+
+	private void PulsateGrid() {
+		StartCoroutine (PulsateWait ());
+		pulsateDelay = 0.025f * gridCells.Length;
+		pulseGridTime = 0.15f * gridCells.Length;
+	}
 
 		/// <summary>
 		/// Build the grid.
@@ -1487,6 +1495,7 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 	private void CheckLevelComplete (){
 		movements = 0;
+		print ("check");
 		if (gridLines == null) {
 			return;
 		}
@@ -1496,23 +1505,25 @@ public class PuzzleManager : MonoBehaviour
 		for (int i = 0; i < gridLines.Length; i++) {
 			if (!gridLines [i].completedLine) {
 				isLevelComplete = false;
+				print ("false");
 				break;
 			}
 		}
 
 		if (isLevelComplete) {
+			print ("true");
 			if (cachedSoundSource != null) {
 				CachedSoundManager.Stop (cachedSoundSource);
 				CachedSoundManager.Play (puzzleCompleteEffect);
-				timer.Stop ();
-				Cleanup (true);
 			}
+			timer.Stop ();
+			Cleanup (true);
 		} else {
 			if (cachedSoundSource != null) {
 				CachedSoundManager.Stop (cachedSoundSource);
 				CachedSoundManager.Play (puzzleCompleteEffect);
-				timer.Stop ();
 			}
+			timer.Stop ();
 		}
 	}
 
@@ -1567,6 +1578,19 @@ public class PuzzleManager : MonoBehaviour
 	private void IncreaseMovements (){
 		movements++;
 	}
+
+	public IEnumerator PulsateWait() {
+		pulseTimerStarted = true;
+		yield return new WaitForSeconds (pulsateDelay);
+		int gridIndex = Mathf.RoundToInt (UnityEngine.Random.Range (0, gridCells.Length));
+		GridCell pulseGrid = gridCells [gridIndex];
+		pulseGrid.pulseColor = pulsateColor;
+		pulseGrid.pulseTime = pulseGridTime;
+		pulseGrid.PulsateGrid = true;
+		pulseTimerStarted = false;
+		StartCoroutine (PulsateWait ());
+	}
+
 
 	/// <summary>
 	/// Decrease the movements counter.
