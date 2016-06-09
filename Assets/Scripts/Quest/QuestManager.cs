@@ -14,6 +14,7 @@ namespace Sol
         public float characterDelay = 0.1f;
 
         public Glitch glitchEffect;
+        public bl_HudInfo defaultHudInfo;
 
         protected int currentQuest = 0;
 
@@ -42,7 +43,7 @@ namespace Sol
         }
 
 
-        public virtual void DisplayDialogue(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
+        public virtual void DisplayDialogue(List<DisplayDialogue> displayTexts, QuestObjective qo, bool isHuman = true)
         {
             StartCoroutine(DisplayDialogueCoroutine(displayTexts, qo, isHuman));
         }
@@ -54,19 +55,43 @@ namespace Sol
         }
 
 
-        protected IEnumerator DisplayDialogueCoroutine(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
+        protected IEnumerator DisplayDialogueCoroutine(List<DisplayDialogue> displayTexts, QuestObjective qo, bool isHuman = true)
         {
             for(int i = 0; i < displayTexts.Count; i++)
             {
                 if (i == displayTexts.Count - 1) qo.questTrigger.Initialize();
+                DisplayDialogue dd = displayTexts[i];
 
-                float delay = displayTexts[i].Length * characterDelay;
-                UIManager.GetMenu<ObjectiveTracker>().Open(displayTexts[i], isHuman, true, delay);
+                float delay = dd.displayText.Length * characterDelay;
+                UIManager.GetMenu<ObjectiveTracker>().Open(dd.displayText, isHuman, true, delay);
+                float desiredTime = delay + 0.75f;
 
+                if (dd.clip != null)
+                {
+                    desiredTime = dd.clip.length;
+                    GameManager.Get<SoundManager>().Play(dd.clip);
+                }
                 
+                switch(dd.effect)
+                {
+                    case Sol.DisplayDialogue.DisplayEffect.Glitch:
+                        StartCoroutine(GlitchOut(dd.duration));
+                        break;
+
+                    case Sol.DisplayDialogue.DisplayEffect.FadeIn:
+                        UIManager.GetMenu<FadeMenu>().Fade(dd.duration, Color.black, Color.clear);
+                        break;
+
+                    case Sol.DisplayDialogue.DisplayEffect.FadeOut:
+                        UIManager.GetMenu<FadeMenu>().Fade(dd.duration, Color.clear, Color.black);
+                        break;
+
+                    case Sol.DisplayDialogue.DisplayEffect.None:
+                    default:
+                        break;
+                }
 
                 float elapsedTime = 0f;
-                float desiredTime = delay + 0.75f;
 
                 while(elapsedTime < desiredTime)
                 {
