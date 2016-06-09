@@ -43,7 +43,8 @@ public class PuzzleManager : MonoBehaviour
 	public float pulseGridTime;
 	public Color pulsateColor;
 	private bool pulseTimerStarted;
-	public bool ignorePair;
+	private bool ignorePair;
+	private bool pulsateGrid = true;
 
 	/// <summary>
 	/// 
@@ -336,7 +337,6 @@ public class PuzzleManager : MonoBehaviour
 
     private SoundManager cachedSoundManager;
 	public SoundSource cachedSoundSource = null;
-	private SoundSource cachedSoundSource02 = null;
 
     public SoundManager CachedSoundManager
     {
@@ -639,6 +639,7 @@ public class PuzzleManager : MonoBehaviour
 			if (gridLines [currentGridCell.gridLineIndex].completedLine) {
 				Debug.Log ("Reset Grid cells of the Line Path of the index " + currentGridCell.gridLineIndex);
 				CachedSoundManager.Play (resetLineEffect);
+				print ("asdasdasda");
 				gridLines [currentGridCell.gridLineIndex].completedLine = false;
 				currentRayCell = transform;
 				Release (gridLines [currentGridCell.gridLineIndex]);
@@ -825,8 +826,6 @@ public class PuzzleManager : MonoBehaviour
 					//print ("1 " + gridLines [currentGridCell.gridLineIndex]);
 				}
 
-				CachedSoundManager.Play (connectedSFX);
-
 
 				///Play the connected sound effect at the center of the unity world
 				if (connectedSFX != null && effectsAudioSource != null) {
@@ -924,7 +923,7 @@ public class PuzzleManager : MonoBehaviour
 	}
 
 	private void PulsateGrid() {
-		StartCoroutine (PulsateWait ());
+		StartCoroutine ("PulsateWait");
 		pulsateDelay = 0.025f * gridCells.Length;
 		pulseGridTime = 0.15f * gridCells.Length;
 	}
@@ -1503,7 +1502,6 @@ public class PuzzleManager : MonoBehaviour
 		/// </summary>
 	private void CheckLevelComplete (){
 		movements = 0;
-		print ("check");
 		if (gridLines == null) {
 			return;
 		}
@@ -1513,26 +1511,21 @@ public class PuzzleManager : MonoBehaviour
 		for (int i = 0; i < gridLines.Length; i++) {
 			if (!gridLines [i].completedLine) {
 				isLevelComplete = false;
-				print ("false");
 				break;
 			}
 		}
 
 		if (isLevelComplete) {
-			print ("true");
 			if (cachedSoundSource != null) {
 				CachedSoundManager.Stop (cachedSoundSource);
 				CachedSoundManager.Play (puzzleCompleteEffect);
 			}
-			timer.Stop ();
 			Cleanup (true);
 		} else {
-			if (cachedSoundSource != null) {
-				CachedSoundManager.Stop (cachedSoundSource);
-				CachedSoundManager.Play (puzzleCompleteEffect);
-			}
-			timer.Stop ();
+			CachedSoundManager.Play (connectedSFX);
 		}
+
+		timer.Stop ();
 	}
 
 	private IEnumerator DelayRun() {
@@ -1572,6 +1565,11 @@ public class PuzzleManager : MonoBehaviour
 
 		if (completed) {
 			RemoveInventoryWires ();
+			pulsateGrid = false;
+			StopCoroutine ("PulsateWait");
+			foreach (GridCell cell in gridCells) {
+				cell.PulsateGrid = false;
+			}
 			foreach (GridCell cell in gridCells) {
 				cell.GetComponent<Image> ().color = cellCompleteColor;
 			}
@@ -1594,9 +1592,11 @@ public class PuzzleManager : MonoBehaviour
 		GridCell pulseGrid = gridCells [gridIndex];
 		pulseGrid.pulseColor = pulsateColor;
 		pulseGrid.pulseTime = pulseGridTime;
-		pulseGrid.PulsateGrid = true;
-		pulseTimerStarted = false;
-		StartCoroutine (PulsateWait ());
+		if (pulsateGrid) {
+			pulseGrid.PulsateGrid = true;
+			pulseTimerStarted = false;
+			StartCoroutine (PulsateWait ());
+		}
 	}
 
 
