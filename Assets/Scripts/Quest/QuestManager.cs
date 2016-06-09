@@ -59,7 +59,7 @@ namespace Sol
         {
             for(int i = 0; i < displayTexts.Count; i++)
             {
-                if (i == displayTexts.Count - 1) qo.questTrigger.Initialize();
+                qo.questTrigger.Initialize();
                 DisplayDialogue dd = displayTexts[i];
 
                 float delay = dd.displayText.Length * characterDelay;
