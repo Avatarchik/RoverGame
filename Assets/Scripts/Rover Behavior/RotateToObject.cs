@@ -34,7 +34,7 @@ public class RotateToObject : MonoBehaviour {
 			}
 		}
 
-		if (instantRotate) {
+		if (instantRotate && targetObject != null) {
 			targetDirection = targetObject.position - transform.position;
 			if (gameObject.GetComponent<Canvas> () != null) {
 				targetDirection *= -1;
@@ -44,16 +44,21 @@ public class RotateToObject : MonoBehaviour {
 		}
 	}
 
-	public void RotateTo (Transform target) {
-		targetObject = target;
-		startRotation = transform.rotation;
-		targetDirection = targetObject.position - transform.position;
-		targetRotation = Quaternion.LookRotation (targetDirection);
-		targetRotation = Quaternion.LookRotation (targetDirection, targetRotation * Vector3.up);
-		rotate = true;
-		if (gameObject.GetComponent<MouseLook> () != null) {
-			gameObject.GetComponent<MouseLook> ().enabled = false;
-		}
+	public void RotateTo (Transform target)
+    {
+        if(target != null)
+        {
+            targetObject = target;
+            startRotation = transform.rotation;
+            targetDirection = targetObject.position - transform.position;
+            targetRotation = Quaternion.LookRotation(targetDirection);
+            targetRotation = Quaternion.LookRotation(targetDirection, targetRotation * Vector3.up);
+            rotate = true;
+            if (gameObject.GetComponent<MouseLook>() != null)
+            {
+                gameObject.GetComponent<MouseLook>().enabled = false;
+            }
+        }
 	}
 
 	public void ConvertAngles(Vector3 currentEulers) {
