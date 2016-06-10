@@ -503,7 +503,6 @@ namespace Sol
             //StartCoroutine(Load());
             StartCoroutine(RunTutorial());
 
-            CraterExplosion.OnExplosivePlaced += SetExplosive;
             OnQuestEvent += Next;
         }
     }

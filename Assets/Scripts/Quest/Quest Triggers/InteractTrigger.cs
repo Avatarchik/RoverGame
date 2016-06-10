@@ -14,7 +14,7 @@ namespace Sol
 
         public override void Interact()
         {
-            if (interactible) CompleteObjective();
+            if (interactible && initialized) CompleteObjective();
         }
     }
 }
