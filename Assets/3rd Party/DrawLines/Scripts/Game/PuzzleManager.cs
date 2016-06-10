@@ -922,7 +922,6 @@ public class PuzzleManager : MonoBehaviour
 			PulsateGrid();
 			timer.Stop ();
 			timer.Start ();
-			StartCoroutine (DelayRun());
 		} catch (Exception ex) {
 			Debug.Log ("Make sure you have selected a level, and there are no empty references in GameManager component");
 		}
@@ -1532,6 +1531,10 @@ public class PuzzleManager : MonoBehaviour
 		}
 
 		timer.Stop ();
+	}
+
+	public void RunPuzzle(){
+		StartCoroutine (DelayRun ());
 	}
 
 	private IEnumerator DelayRun() {

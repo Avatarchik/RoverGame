@@ -21,6 +21,9 @@ namespace Sol
 		public Collider scaleTriggerColl;
 		private bool firstInteraction = true;
 		public bool puzzleScaled = false;
+		private bool checkEntered;
+		private bool checkScaled;
+		private bool checkRunner;
 
         public string message;
 
@@ -76,27 +79,62 @@ namespace Sol
 
         public override void Interact()
         {
-			if(interactible && puzzleScaled)
+			if(interactible)
             {
 				base.Interact ();
 				UiEvents.MissionButtonEvent (missionObject);
 				UiEvents.LevelButtonEvent (levelObject);
 
-				PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu> ();
-				pu.Open (this);
-				puzzleManager.InitializePuzzle (myPuzzleCanvas);
-
-				Camera.main.GetComponentInParent<RotateToObject> ().RotateTo (myPuzzleCanvas.transform);
-				scaleTriggerColl.enabled = false;
-
-				interactible = false;
-				UIManager.Close<MessageMenu> ();
+				myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
+				scaleTriggerColl.enabled = true;
+				checkScaled = true;
+				checkEntered = true;
 
 				if (firstInteraction) {
 					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().ActivateLight ();
 					firstInteraction = false;
 				}
+				interactible = false;
             }
         }
+
+		void InitiatePuzzle(){
+			PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu> ();
+			pu.Open (this);
+			if (myPuzzleCanvas.GetComponent<RotateToObject> () != null) {
+				myPuzzleCanvas.GetComponent<RotateToObject> ().enabled = true;
+			}
+			Camera.main.GetComponentInParent<RotateToObject> ().RotateTo (myPuzzleCanvas.transform);
+			checkRunner = true;
+			UIManager.Close<MessageMenu> ();
+		}
+
+		void Update(){
+			if (checkEntered) {
+				if (scaleTriggerColl.GetComponent<PuzzleAnimTrigger> ().hasEntered) {
+					InitiatePuzzle ();
+					checkEntered = false;
+				}
+			}
+			if (checkScaled) {
+				if (puzzleScaled) {
+					puzzleManager.InitializePuzzle (myPuzzleCanvas);
+					checkScaled = false;
+				}
+			}
+			if (checkRunner) {
+				if (puzzleScaled) {
+					puzzleManager.RunPuzzle ();
+					checkRunner = false;
+				}
+			}
+		}
+
+		IEnumerator DelayAnimTrigger(){
+			yield return new WaitForSeconds (0.1f);
+			if (!scaleTriggerColl.GetComponent<PuzzleAnimTrigger> ().hasEntered) {
+				
+			}
+		}
     }
 }

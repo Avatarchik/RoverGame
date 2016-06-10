@@ -20,18 +20,12 @@ public class PuzzleAnimTrigger : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 		if (other.tag == "Player") {
 			hasEntered = true;
-			foreach (Animator anim in canvasAnimators) {
-				anim.SetTrigger ("FadeForward");
-			}
 		}
 	}
 
 	void OnTriggerExit (Collider other) {
 		if (other.tag == "Player") {
 			hasEntered = false;
-			foreach (Animator anim in canvasAnimators) {
-				anim.SetTrigger ("FadeBackward");
-			}
 		}
 	}
 }
