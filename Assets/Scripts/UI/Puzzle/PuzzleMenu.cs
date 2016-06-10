@@ -26,6 +26,24 @@ namespace Sol
             get { return (cachedPuzzleManager != null) ? cachedPuzzleManager : cachedPuzzleManager = GameObject.FindObjectOfType<PuzzleManager>(); }
         }
 
+		public void SetInitialWireCounts(){
+			foreach (WireInventoryCount counter in gameObject.GetComponentsInChildren<WireInventoryCount>()) {
+				if (counter.myWireType == WireInventoryCount.WireType.Aluminum) {
+					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (AluminumWire);
+					counter.SetWireCount (wireCount);
+				} else if (counter.myWireType == WireInventoryCount.WireType.Copper) {
+					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (CopperWire);
+					counter.SetWireCount (wireCount);
+				} else if (counter.myWireType == WireInventoryCount.WireType.Silver) {
+					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (SilverWire);
+					counter.SetWireCount (wireCount);
+				} else if (counter.myWireType == WireInventoryCount.WireType.Gold) {
+					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (GoldWire);
+					counter.SetWireCount (wireCount);
+				}
+			}
+		}
+
         public void Open(InteractiblePuzzle ip)
         {
             messageText.text = ip.message;

@@ -386,6 +386,8 @@ public class PuzzleManager : MonoBehaviour
 		puzzleCanvas = puzzle_Canvas;
 		previousPuzzleCanvas = puzzleCanvas;
 
+		UIManager.GetMenu<PuzzleMenu> ().SetInitialWireCounts ();
+
 
 		if (levelText == null) {
 			levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
