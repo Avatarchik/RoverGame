@@ -81,17 +81,6 @@ namespace Sol
         }
 
 
-        private IEnumerator GlitchOut()
-        {
-            yield return new WaitForSeconds(Random.Range(1f, 5f));
-            glitch.enabled = true;
-            yield return new WaitForSeconds(Random.Range(0.3f, 1f));
-            glitch.enabled = false;
-
-            StartCoroutine(GlitchOut());
-        }
-
-
         private void Update()
         {
             Cursor.lockState = CursorLockMode.None;
@@ -102,7 +91,6 @@ namespace Sol
 
         private void Awake()
         {
-            StartCoroutine(GlitchOut());
             StartCoroutine(FadeIn());
             startGameButton.onClick.AddListener(StartGame);
         }

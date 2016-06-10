@@ -11,12 +11,10 @@ namespace Sol{
 		private bool checkScaled = true;
 
 		public override void Interact(){
-			Debug.Log("Interacting");
 			Inventory inventory = UIManager.GetMenu<Inventory>();
 			MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
 
 			if (inventory.GetIngredientAmount (desiredIngredient) > 0) {
-				Debug.Log ("wakka wakka");
 				triggered = true;
 				inventory.RemoveInventoryItem (desiredIngredient, 1);
 				explosiveDevice.SetActive(true);
@@ -53,5 +51,11 @@ namespace Sol{
 				}
 			}
 		}
+
+
+        private void Awake()
+        {
+            checkScaled = false;
+        }
 	}
 }

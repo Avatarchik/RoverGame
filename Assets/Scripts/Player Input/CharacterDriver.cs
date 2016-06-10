@@ -74,45 +74,48 @@ namespace Sol
 
         private void FixedUpdate()
         {
-            if (carController.MaxSpeed != playerStats.CurrentMovementSpeed) carController.MaxSpeed = playerStats.CurrentMovementSpeed;
+            if(CachedPlayerStats.MovementSpeed > 0)
+            {
+                if (carController.MaxSpeed != playerStats.CurrentMovementSpeed) carController.MaxSpeed = playerStats.CurrentMovementSpeed;
 
-            float h = 0; 
-            float v = CrossPlatformInputManager.GetAxis("Vertical");
-            float handbrake = CrossPlatformInputManager.GetAxis("Jump");
+                float h = 0;
+                float v = CrossPlatformInputManager.GetAxis("Vertical");
+                float handbrake = CrossPlatformInputManager.GetAxis("Jump");
 
-            if (v != 0)
-            {
-                h = CrossPlatformInputManager.GetAxis("Horizontal");
-                if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
-            }
-            else if (CrossPlatformInputManager.GetAxis("Horizontal") != 0)
-            {
-                float rotationAngle = CachedPlayerStats.MovementSpeed * movementSpeedMultiplier * Time.deltaTime * CrossPlatformInputManager.GetAxis("Horizontal");
-                transform.Rotate(Vector3.up, rotationAngle);
-                if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
-            }
-            else
-            {
-                if (cachedSoundSource != null)
+                if (v != 0)
                 {
-                    CachedSoundManager.Play(stopMovementEffect);
-                    CachedSoundManager.Stop(cachedSoundSource);
+                    h = CrossPlatformInputManager.GetAxis("Horizontal");
+                    if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
                 }
+                else if (CrossPlatformInputManager.GetAxis("Horizontal") != 0)
+                {
+                    float rotationAngle = CachedPlayerStats.MovementSpeed * movementSpeedMultiplier * Time.deltaTime * CrossPlatformInputManager.GetAxis("Horizontal");
+                    transform.Rotate(Vector3.up, rotationAngle);
+                    if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
+                }
+                else
+                {
+                    if (cachedSoundSource != null)
+                    {
+                        CachedSoundManager.Play(stopMovementEffect);
+                        CachedSoundManager.Stop(cachedSoundSource);
+                    }
+                }
+
+                if (mouseLook.rotationX != 0 && h == 0 && v != 0)
+                {
+                    //if the camera rotation is different than the chassi rotation and theres no horizontal input
+                    //then we want to turn anyway
+                    mouseLook.rotationX = Mathf.Lerp(mouseLook.rotationX, 0, Time.deltaTime);
+                    h = (mouseLook.rotationX / mouseLook.maximumX) * mouseLook.sensitivityX;
+                }
+
+                wheelAnimator.SetFloat("speed", v);
+
+                handbrake = (v == 0 && handbrake == 0) ? 1 : 0;
+
+                carController.Move(h, v, v, handbrake);
             }
-
-            if(mouseLook.rotationX != 0 && h == 0 && v != 0)
-            {
-                //if the camera rotation is different than the chassi rotation and theres no horizontal input
-                //then we want to turn anyway
-                mouseLook.rotationX = Mathf.Lerp(mouseLook.rotationX, 0, Time.deltaTime);
-                h = (mouseLook.rotationX / mouseLook.maximumX) * mouseLook.sensitivityX;
-            }
-
-            wheelAnimator.SetFloat("speed", v);
-
-            handbrake = (v == 0 && handbrake == 0) ? 1 : 0;
-
-            carController.Move(h, v, v, handbrake);
         }
 
 
