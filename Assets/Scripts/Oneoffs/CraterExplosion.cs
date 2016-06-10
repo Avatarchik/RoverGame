@@ -56,6 +56,7 @@ namespace Sol
             yield return new WaitForSeconds(explosionDelay);
             TriggerExplosion();
             explosiveDevice.SetActive(false);
+            GameManager.Get<QuestManager>().CleanupAndRestart();
         }
 
 
