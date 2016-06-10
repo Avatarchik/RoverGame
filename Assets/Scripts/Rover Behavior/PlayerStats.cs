@@ -215,7 +215,7 @@ namespace Sol
             if (movementEnabled == 0)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = true;
+                Cursor.visible = false;
                 Cursor.SetCursor(cursorImage, new Vector2(cursorImage.width / 2, cursorImage.height / 2), CursorMode.Auto);
             }
             else

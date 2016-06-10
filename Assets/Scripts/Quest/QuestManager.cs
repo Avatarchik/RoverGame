@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using Colorful;
@@ -66,6 +67,22 @@ namespace Sol
         public virtual void DisplayPermanentObjective(string objective)
         {
             UIManager.GetMenu<ObjectiveTracker>().ShowPermanentObjective(objective);
+        }
+
+
+        public void CleanupAndRestart()
+        {
+            StartCoroutine(Restart());
+        }
+
+
+        protected IEnumerator Restart()
+        {
+            yield return new WaitForSeconds(1.5f);
+            UIManager.GetMenu<FadeMenu>().Fade(0.2f, Color.clear, Color.black, true);
+            yield return new WaitForSeconds(4f);
+            SceneManager.LoadScene(0);
+            Destroy(GameManager.Instance.gameObject);
         }
 
 

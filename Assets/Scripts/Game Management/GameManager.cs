@@ -83,12 +83,5 @@ namespace Sol
                 Instance.singletons.Remove(typeof(T));
             }
         }
-
-
-        private void Awake()
-        {
-            //DontDestroyOnLoad(gameObject);
-        }
     }
-
 }

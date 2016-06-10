@@ -11,6 +11,7 @@ namespace Sol
         public Button startGameButton;
         public Glitch glitch;
         public CanvasGroup cg;
+        public Texture2D cursorImage;
 
         public float fadeTime = 3f;
 
@@ -28,7 +29,7 @@ namespace Sol
 
         public void StartGame()
         {
-            StartCoroutine(Fade());
+            StartCoroutine(FadeOut());
         }
 
 
@@ -44,7 +45,7 @@ namespace Sol
         }
 
 
-        private IEnumerator Fade()
+        private IEnumerator FadeOut()
         {
             float elapsedTime = 0f;
 
@@ -64,6 +65,22 @@ namespace Sol
         }
 
 
+        private IEnumerator FadeIn()
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < fadeTime)
+            {
+                cg.alpha = elapsedTime / fadeTime;
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            cg.alpha = 1;
+        }
+
+
         private IEnumerator GlitchOut()
         {
             yield return new WaitForSeconds(Random.Range(1f, 5f));
@@ -75,9 +92,18 @@ namespace Sol
         }
 
 
+        private void Update()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Cursor.SetCursor(cursorImage, new Vector2(cursorImage.width / 2, cursorImage.height / 2), CursorMode.Auto);
+        }
+
+
         private void Awake()
         {
             StartCoroutine(GlitchOut());
+            StartCoroutine(FadeIn());
             startGameButton.onClick.AddListener(StartGame);
         }
     }
