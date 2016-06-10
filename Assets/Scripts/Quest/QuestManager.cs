@@ -13,14 +13,28 @@ namespace Sol
 
         public float characterDelay = 0.1f;
 
-        public Glitch glitchEffect;
+        public Glitch[] glitchEffects;
         public bl_HudInfo defaultHudInfo;
 
         protected int currentQuest = 0;
 
+        [HideInInspector]
+        public bool canProceed = false;
+
+        private bool endQuest = false;
+        private int targetQuest = 0;
+
         public Quest CurrentQuest
         {
             get { return quests[currentQuest]; }
+        }
+
+
+        public virtual void SetProceed(bool b, int i)
+        {
+            canProceed = true;
+            endQuest = b;
+            targetQuest = i;
         }
 
 
@@ -83,7 +97,7 @@ namespace Sol
                         break;
 
                     case Sol.DisplayDialogue.DisplayEffect.FadeOut:
-                        UIManager.GetMenu<FadeMenu>().Fade(dd.duration, Color.clear, Color.black);
+                        UIManager.GetMenu<FadeMenu>().Fade(dd.duration, Color.clear, Color.black, true);
                         break;
 
                     case Sol.DisplayDialogue.DisplayEffect.None:
@@ -100,16 +114,30 @@ namespace Sol
                     yield return null;
                 }
             }
+
+            while(!canProceed)
+            {
+                yield return null;
+            }
+
+            CurrentQuest.CompleteObjective(endQuest, targetQuest);
+            canProceed = false;
         }
 
 
         protected IEnumerator GlitchOut(float waitTime = 1f)
         {
-            glitchEffect.enabled = true;
+            foreach(Glitch glitchEffect in glitchEffects)
+            {
+                glitchEffect.enabled = true;
+            }
 
             yield return new WaitForSeconds(waitTime);
 
-            glitchEffect.enabled = false;
+            foreach (Glitch glitchEffect in glitchEffects)
+            {
+                glitchEffect.enabled = false;
+            }
         }
 
 

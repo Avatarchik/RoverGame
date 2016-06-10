@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sol
 {
-    public class QuestTrigger : MonoBehaviour
+    public class QuestTrigger : InteractibleObject
     {
         public delegate void CompleteObjectiveEvent(bool endQuest, int targetQuest = 0);
         public static event CompleteObjectiveEvent onCompleteObjective;
@@ -17,6 +17,11 @@ namespace Sol
         public bool initialized = false;
 
         private bool proceed = false;
+
+        public override void HoverEnterInteractible() { }
+        public override void HoverEnterSeen() { }
+        public override void HoverExitInteractible() { }
+        public override void HoverExitSeen() { }
 
         public virtual void  Initialize()
         {

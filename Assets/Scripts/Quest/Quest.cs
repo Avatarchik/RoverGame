@@ -38,6 +38,12 @@ namespace Sol
         }
 
 
+        public void MarkCompletable(bool b, int i)
+        {
+            GameManager.Get<QuestManager>().canProceed = true;
+        }
+
+
         public void CompleteObjective(bool endQuest, int questChoice = 0)
         {
             if(iscurrentQuest)
@@ -66,7 +72,7 @@ namespace Sol
         {
             if(objectives.Count > 0) CurrentObjective.Initialize();
             iscurrentQuest = true;
-            QuestTrigger.onCompleteObjective += CompleteObjective;
+            QuestTrigger.onCompleteObjective += MarkCompletable;
         }
     }
 }
