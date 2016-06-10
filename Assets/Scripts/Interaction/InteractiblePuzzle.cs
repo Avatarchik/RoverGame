@@ -18,7 +18,8 @@ namespace Sol
 
         public PuzzleManager puzzleManager;
 		public GameObject myPuzzleCanvas;
-		public bool firstInteraction = true;
+		public Collider scaleTriggerColl;
+		private bool firstInteraction = true;
 		public bool puzzleScaled = false;
 
         public string message;
@@ -83,8 +84,10 @@ namespace Sol
 
 				PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu> ();
 				pu.Open (this);
-
 				puzzleManager.InitializePuzzle (myPuzzleCanvas);
+
+				Camera.main.GetComponentInParent<RotateToObject> ().RotateTo (myPuzzleCanvas.transform);
+				scaleTriggerColl.enabled = false;
 
 				interactible = false;
 				UIManager.Close<MessageMenu> ();

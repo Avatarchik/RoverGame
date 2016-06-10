@@ -6,9 +6,9 @@ namespace Sol{
     {
 		public GameObject explosiveDevice;
 		public Ingredient desiredIngredient;
-		public Collider scaleTriggerColl;
 		public bool triggered;
 		public string failString = "You will need an {0} to clear this landslide";
+		private bool checkScaled = true;
 
 		public override void Interact(){
 			Debug.Log("Interacting");
@@ -28,6 +28,16 @@ namespace Sol{
 
 			} else if (interactible){
 				base.Interact ();
+			}
+			checkScaled = true;
+		}
+
+		void Update() {
+			if (checkScaled) {
+				if (puzzleScaled) {
+					base.Interact ();
+					checkScaled = false;
+				}
 			}
 		}
 		
