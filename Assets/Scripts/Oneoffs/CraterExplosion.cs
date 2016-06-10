@@ -57,9 +57,9 @@ namespace Sol
             countDown.SetText(explosionDelay);
 			StartCoroutine (DelayedClose ());
             yield return new WaitForSeconds(explosionDelay);
+            OnExplosivePlaced(isLandslide);
             TriggerExplosion();
             explosiveDevice.SetActive(false);
-			OnExplosivePlaced(isLandslide);
         }
 
 

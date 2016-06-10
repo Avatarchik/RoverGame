@@ -7,10 +7,10 @@ public class RangeFinder : MonoBehaviour
     public Scrollbar scrollbar;
 
     private bool scrolling = false;
-    private float target = Random.Range(0f, 1f);
+    private float target = 0f;
     private float current = 0f;
     private float elapsedTime = 0f;
-    private float desiredTime = Random.Range(1f, 5f);
+    private float desiredTime = 0f;
 
     private void Update()
     {
