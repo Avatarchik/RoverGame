@@ -498,12 +498,16 @@ public class PuzzleManager : MonoBehaviour
 							beginWireIngredient = pairCell.gridIngredient;
 							beginWireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (beginWireIngredient);
 							CachedSoundManager.Play (pairHoverEffect);
+							UIManager.GetMenu<PuzzleMenu> ().SetWireText (pairCell.gridIngredient, true);
 						} else {
 							if (pairCell != null) {
 								Destroy (beginWireCounter.gameObject);
 								pairCell = null;
 							}
 						}
+					}
+					if (previousRayCell != null) {
+						UIManager.GetMenu<PuzzleMenu> ().SetWireText (previousRayCell.GetComponent<GridCell> ().gridIngredient, false);
 					}
 				} else {
 					rayCellChange = false;

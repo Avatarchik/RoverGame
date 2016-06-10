@@ -31,15 +31,31 @@ namespace Sol
 				if (counter.myWireType == WireInventoryCount.WireType.Aluminum) {
 					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (AluminumWire);
 					counter.SetWireCount (wireCount);
+					counter.myIngredient = AluminumWire;
 				} else if (counter.myWireType == WireInventoryCount.WireType.Copper) {
 					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (CopperWire);
 					counter.SetWireCount (wireCount);
+					counter.myIngredient = CopperWire;
 				} else if (counter.myWireType == WireInventoryCount.WireType.Silver) {
 					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (SilverWire);
 					counter.SetWireCount (wireCount);
+					counter.myIngredient = SilverWire;
 				} else if (counter.myWireType == WireInventoryCount.WireType.Gold) {
 					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (GoldWire);
 					counter.SetWireCount (wireCount);
+					counter.myIngredient = GoldWire;
+				}
+			}
+		}
+
+		public void SetWireText (Ingredient gridIngredient, bool scaleUp) {
+			foreach (WireInventoryCount counter in gameObject.GetComponentsInChildren<WireInventoryCount>()) {
+				if (counter.myIngredient == gridIngredient) {
+					if (scaleUp) {
+						counter.SetTextSizeUp ();
+					} else {
+						counter.SetTextSizeDown ();
+					}
 				}
 			}
 		}
@@ -47,14 +63,12 @@ namespace Sol
         public void Open(InteractiblePuzzle ip)
         {
             messageText.text = ip.message;
-			if (exitButton == null) {
-				foreach (Button child in ip.myPuzzleCanvas.GetComponentsInChildren<Button>(true)) {
-					if (child.tag == "ExitButton") {
-						exitButton = child;
-					}
+			foreach (Button child in ip.myPuzzleCanvas.GetComponentsInChildren<Button>(true)) {
+				if (child.tag == "ExitButton") {
+					exitButton = child;
 				}
-				exitButton.onClick.AddListener (Exit);
 			}
+			exitButton.onClick.AddListener (Exit);
             currentPuzzleObject = ip;
 			ActivateExit (true);
             base.Open();
@@ -80,7 +94,6 @@ namespace Sol
                 currentPuzzleObject.Complete = true;
 				currentPuzzleObject.interactible = false;
 				ActivateExit (false);
-				exitButton = null;
 				base.Close ();
             }
             else

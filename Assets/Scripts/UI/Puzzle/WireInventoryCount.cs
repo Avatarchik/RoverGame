@@ -12,11 +12,14 @@ public class WireInventoryCount : MonoBehaviour {
 	}
 
 	public WireType myWireType;
-	Text countText;
+	public Text titleText;
+	public Text countText;
+	int startFontSize;
+	public Ingredient myIngredient;
 
 	// Use this for initialization
 	void Start () {
-		countText = gameObject.GetComponent<Text> ();
+		startFontSize = titleText.fontSize;
 	}
 	
 	// Update is called once per frame
@@ -26,5 +29,13 @@ public class WireInventoryCount : MonoBehaviour {
 
 	public void SetWireCount (int count) {
 		countText.text = count.ToString ();
+	}
+
+	public void SetTextSizeUp(){
+		titleText.fontSize = 45;
+	}
+
+	public void SetTextSizeDown(){
+		titleText.fontSize = startFontSize;
 	}
 }
