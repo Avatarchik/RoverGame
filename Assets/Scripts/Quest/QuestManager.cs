@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using Colorful;
@@ -13,13 +14,28 @@ namespace Sol
 
         public float characterDelay = 0.1f;
 
-        public Glitch glitchEffect;
+        public Glitch[] glitchEffects;
+        public bl_HudInfo defaultHudInfo;
 
         protected int currentQuest = 0;
+
+        [HideInInspector]
+        public bool canProceed = false;
+
+        private bool endQuest = false;
+        private int targetQuest = 0;
 
         public Quest CurrentQuest
         {
             get { return quests[currentQuest]; }
+        }
+
+
+        public virtual void SetProceed(bool b, int i)
+        {
+            canProceed = true;
+            endQuest = b;
+            targetQuest = i;
         }
 
 
@@ -42,7 +58,7 @@ namespace Sol
         }
 
 
-        public virtual void DisplayDialogue(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
+        public virtual void DisplayDialogue(List<DisplayDialogue> displayTexts, QuestObjective qo, bool isHuman = true)
         {
             StartCoroutine(DisplayDialogueCoroutine(displayTexts, qo, isHuman));
         }
@@ -54,19 +70,59 @@ namespace Sol
         }
 
 
-        protected IEnumerator DisplayDialogueCoroutine(List<string> displayTexts, QuestObjective qo, bool isHuman = true)
+        public void CleanupAndRestart()
+        {
+            StartCoroutine(Restart());
+        }
+
+
+        protected IEnumerator Restart()
+        {
+            yield return new WaitForSeconds(1.5f);
+            UIManager.GetMenu<FadeMenu>().Fade(0.2f, Color.clear, Color.black, true);
+            yield return new WaitForSeconds(4f);
+            SceneManager.LoadScene(0);
+            Destroy(GameManager.Instance.gameObject);
+        }
+
+
+        protected IEnumerator DisplayDialogueCoroutine(List<DisplayDialogue> displayTexts, QuestObjective qo, bool isHuman = true)
         {
             for(int i = 0; i < displayTexts.Count; i++)
             {
-                if (i == displayTexts.Count - 1) qo.questTrigger.Initialize();
+                qo.questTrigger.Initialize();
+                DisplayDialogue dd = displayTexts[i];
 
-                float delay = displayTexts[i].Length * characterDelay;
-                UIManager.GetMenu<ObjectiveTracker>().Open(displayTexts[i], isHuman, true, delay);
+                float delay = dd.displayText.Length * characterDelay;
+                UIManager.GetMenu<ObjectiveTracker>().Open(dd.displayText, isHuman, true, delay);
+                float desiredTime = delay + 0.75f;
 
+                if (dd.clip != null)
+                {
+                    desiredTime = dd.clip.length;
+                    GameManager.Get<SoundManager>().Play(dd.clip);
+                }
                 
+                switch(dd.effect)
+                {
+                    case Sol.DisplayDialogue.DisplayEffect.Glitch:
+                        StartCoroutine(GlitchOut(dd.duration));
+                        break;
+
+                    case Sol.DisplayDialogue.DisplayEffect.FadeIn:
+                        UIManager.GetMenu<FadeMenu>().Fade(dd.duration, Color.black, Color.clear);
+                        break;
+
+                    case Sol.DisplayDialogue.DisplayEffect.FadeOut:
+                        UIManager.GetMenu<FadeMenu>().Fade(dd.duration, Color.clear, Color.black, true);
+                        break;
+
+                    case Sol.DisplayDialogue.DisplayEffect.None:
+                    default:
+                        break;
+                }
 
                 float elapsedTime = 0f;
-                float desiredTime = delay + 0.75f;
 
                 while(elapsedTime < desiredTime)
                 {
@@ -75,16 +131,30 @@ namespace Sol
                     yield return null;
                 }
             }
+
+            while(!canProceed)
+            {
+                yield return null;
+            }
+
+            CurrentQuest.CompleteObjective(endQuest, targetQuest);
+            canProceed = false;
         }
 
 
         protected IEnumerator GlitchOut(float waitTime = 1f)
         {
-            glitchEffect.enabled = true;
+            foreach(Glitch glitchEffect in glitchEffects)
+            {
+                glitchEffect.enabled = true;
+            }
 
             yield return new WaitForSeconds(waitTime);
 
-            glitchEffect.enabled = false;
+            foreach (Glitch glitchEffect in glitchEffects)
+            {
+                glitchEffect.enabled = false;
+            }
         }
 
 

@@ -6,18 +6,29 @@ using System.Collections.Generic;
 namespace Sol
 {
     [System.Serializable]
+    public class DisplayDialogue
+    {
+        public enum DisplayEffect { None, Glitch, FadeIn, FadeOut }
+
+        public string displayText = "";
+        public DisplayEffect effect = DisplayEffect.None;
+        public float duration = 0f;
+        public AudioClip clip = null;
+    }
+
+
+    [System.Serializable]
     public class QuestObjective 
     {
         public enum Speaker { AI, Human };
+        public string objectiveText = "";
 
         public SoundControls soundControls; 
         public Speaker speaker = Speaker.Human;
 
-        public string objectiveText = "";
-        public List<string> displayTexts = new List<string>();
+        public List<DisplayDialogue> displayTexts = new List<DisplayDialogue>();
 
         public List<GameObject> waypointTargets = new List<GameObject>();
-        public bl_HudInfo defaultHudInfo;
 
         public QuestTrigger questTrigger;
         public bool isQuestChoice = false;
@@ -81,21 +92,22 @@ namespace Sol
         private bl_HudInfo GetHudInfo(Transform target)
         {
             bl_HudInfo newHudInfo = new bl_HudInfo();
+            QuestManager qm = GameManager.Get<QuestManager>();
 
             newHudInfo.m_Target = target;
-            newHudInfo.m_Color = defaultHudInfo.m_Color;
-            newHudInfo.m_Icon = defaultHudInfo.m_Icon;
-            newHudInfo.m_MaxSize = defaultHudInfo.m_MaxSize;
-            newHudInfo.m_Text = defaultHudInfo.m_Text;
-            newHudInfo.m_TypeHud = defaultHudInfo.m_TypeHud;
-            newHudInfo.Offset = defaultHudInfo.Offset;
-            newHudInfo.ShowDistance = defaultHudInfo.ShowDistance;
-            newHudInfo.ShowDynamically = defaultHudInfo.ShowDynamically;
-            newHudInfo.tip = defaultHudInfo.tip;
-            newHudInfo.Arrow = defaultHudInfo.Arrow;
-            newHudInfo.Hide = defaultHudInfo.Hide;
-            newHudInfo.HideOnCloseDistance = defaultHudInfo.HideOnCloseDistance;
-            newHudInfo.HideOnLargeDistance = defaultHudInfo.HideOnLargeDistance;
+            newHudInfo.m_Color = qm.defaultHudInfo.m_Color;
+            newHudInfo.m_Icon = qm.defaultHudInfo.m_Icon;
+            newHudInfo.m_MaxSize = qm.defaultHudInfo.m_MaxSize;
+            newHudInfo.m_Text = qm.defaultHudInfo.m_Text;
+            newHudInfo.m_TypeHud = qm.defaultHudInfo.m_TypeHud;
+            newHudInfo.Offset = qm.defaultHudInfo.Offset;
+            newHudInfo.ShowDistance = qm.defaultHudInfo.ShowDistance;
+            newHudInfo.ShowDynamically = qm.defaultHudInfo.ShowDynamically;
+            newHudInfo.tip = qm.defaultHudInfo.tip;
+            newHudInfo.Arrow = qm.defaultHudInfo.Arrow;
+            newHudInfo.Hide = qm.defaultHudInfo.Hide;
+            newHudInfo.HideOnCloseDistance = qm.defaultHudInfo.HideOnCloseDistance;
+            newHudInfo.HideOnLargeDistance = qm.defaultHudInfo.HideOnLargeDistance;
 
             return newHudInfo;
         }        

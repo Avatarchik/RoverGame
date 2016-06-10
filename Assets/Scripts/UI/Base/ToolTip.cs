@@ -45,7 +45,7 @@ namespace Sol
             titleText.text = ingredient.displayName;
             descriptionText.text = ingredient.description;
 
-            gameObject.GetComponent<RectTransform>().position = Input.mousePosition;
+            gameObject.GetComponent<RectTransform>().position = new Vector3 (Input.mousePosition.x - 1024f, Input.mousePosition.y - 768f, 0f);
         }
 
 

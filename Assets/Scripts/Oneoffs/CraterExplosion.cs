@@ -6,9 +6,6 @@ namespace Sol
 {
 	public class CraterExplosion : MonoBehaviour
     {
-        public delegate void ExplosiveEvent(bool landslide);
-        public static event ExplosiveEvent OnExplosivePlaced;
-
         public AudioClip explosionEffect;
 
         public GameObject explosiveDevice;
@@ -59,7 +56,7 @@ namespace Sol
             yield return new WaitForSeconds(explosionDelay);
             TriggerExplosion();
             explosiveDevice.SetActive(false);
-			OnExplosivePlaced(isLandslide);
+            GameManager.Get<QuestManager>().CleanupAndRestart();
         }
 
 

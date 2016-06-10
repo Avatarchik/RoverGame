@@ -3,11 +3,18 @@ using System.Collections;
 
 namespace Sol
 {
-    public class InteractTrigger : InteractibleObject
+    public class InteractTrigger : QuestTrigger
     {
+        public override void Initialize()
+        {
+            base.Initialize();
+            interactible = true;
+        }
+
+
         public override void Interact()
         {
-            
+            if (interactible && initialized) CompleteObjective();
         }
     }
 }

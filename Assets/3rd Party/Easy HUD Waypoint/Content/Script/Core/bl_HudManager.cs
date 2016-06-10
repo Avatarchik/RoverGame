@@ -29,7 +29,6 @@ public class bl_HudManager : MonoBehaviour
     public bool AutoScale = true;
     public GUIStyle TextStyle;
 
-
     private static bl_HudManager _instance;
 
     //Get singleton

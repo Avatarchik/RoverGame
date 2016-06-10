@@ -129,12 +129,11 @@ public class Line : MonoBehaviour
 				///Add the point to the points list
 				points.Add (point);
 		rects.Add (cellTransform);
-        Debug.Log("number of Points! : " + numberOfPoints + " | points count : " + points.Count);
+        //Debug.Log("number of Points! : " + numberOfPoints + " | points count : " + points.Count);
         ///Create new line piece
         if (points.Count > 1) {
 			
 			tempFirstPoint = points [points.Count - 2];
-			print ("Temp 1 " + tempFirstPoint);
 			tempSecondPoint = points [points.Count - 1];
 
 			if (previousPieceImage != null && numberOfPoints > 3) {

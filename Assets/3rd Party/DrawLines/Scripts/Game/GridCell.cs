@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 ///Developed by Indie Games Studio
 ///https://www.assetstore.unity3d.com/en/#!/publisher/9268
@@ -12,6 +13,16 @@ public class GridCell : MonoBehaviour
 		/// The color of the top background.
 		/// </summary>
 		public Color topBackgroundColor;
+	public Color myPairColor;
+	public Vector2 myPairSize;
+	public bool PulsateGrid;
+	public bool pulseUp;
+	public float pulseTime;
+	public Color pulseColor;
+	private Color startColor;
+	private float currentTime01;
+	private Image gridImage;
+
 
 		/// <summary>
 		/// Whether the GridCell is used.
@@ -109,4 +120,35 @@ public class GridCell : MonoBehaviour
 						gridLineIndex = -1;
 				}
 		}
+
+	void Start(){
+		gridImage = gameObject.GetComponent<Image> ();
+		startColor = gridImage.color;
+		pulseUp = true;
+	}
+
+	void Update(){
+		if (PulsateGrid) {
+			if (pulseUp) {
+				if (currentTime01 < pulseTime) {
+					currentTime01 += Time.unscaledDeltaTime;
+					float lerp = currentTime01 / pulseTime;
+					gridImage.color = Color.Lerp (startColor, pulseColor, lerp);
+				} else {
+					currentTime01 = 0.0f;
+					pulseUp = false;
+				}
+			} else {
+				if (currentTime01 < pulseTime) {
+					currentTime01 += Time.unscaledDeltaTime;
+					float lerp = currentTime01 / pulseTime;
+					gridImage.color = Color.Lerp (pulseColor, startColor, lerp);
+				} else {
+					currentTime01 = 0.0f;
+					pulseUp = true;
+					PulsateGrid = false;
+				}
+			}
+		}
+	}
 }

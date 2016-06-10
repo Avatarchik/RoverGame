@@ -2,16 +2,18 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using Colorful;
 
 namespace Sol
 {
     public class MainMenu : Menu
     {
         public Button startGameButton;
-        public Button loadGameButton;
-        public Button optionsButton;
-        public Button exitGameButton;
+        public Glitch glitch;
+        public CanvasGroup cg;
+        public Texture2D cursorImage;
 
+        public float fadeTime = 3f;
 
         public override void Open()
         {
@@ -27,7 +29,7 @@ namespace Sol
 
         public void StartGame()
         {
-            SceneManager.LoadScene(1);
+            StartCoroutine(FadeOut());
         }
 
 
@@ -43,11 +45,66 @@ namespace Sol
         }
 
 
+        private IEnumerator FadeOut()
+        {
+            float elapsedTime = 0f;
+
+            while(elapsedTime < fadeTime)
+            {
+                cg.alpha = 1f - (elapsedTime / fadeTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            cg.alpha = 0;
+
+            SceneManager.LoadScene(1);
+            StopAllCoroutines();
+            glitch.enabled = false;
+        }
+
+
+        private IEnumerator FadeIn()
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < fadeTime)
+            {
+                cg.alpha = elapsedTime / fadeTime;
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            cg.alpha = 1;
+        }
+
+
+        private IEnumerator GlitchOut()
+        {
+            yield return new WaitForSeconds(Random.Range(1f, 5f));
+            glitch.enabled = true;
+            yield return new WaitForSeconds(Random.Range(0.3f, 1f));
+            glitch.enabled = false;
+
+            StartCoroutine(GlitchOut());
+        }
+
+
+        private void Update()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Cursor.SetCursor(cursorImage, new Vector2(cursorImage.width / 2, cursorImage.height / 2), CursorMode.Auto);
+        }
+
+
         private void Awake()
         {
+            StartCoroutine(GlitchOut());
+            StartCoroutine(FadeIn());
             startGameButton.onClick.AddListener(StartGame);
-            exitGameButton.onClick.AddListener(QuitGame);
-            optionsButton.onClick.AddListener(OpenOptions);
         }
     }
 }
