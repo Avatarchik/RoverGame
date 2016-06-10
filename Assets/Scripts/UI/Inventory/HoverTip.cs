@@ -20,11 +20,11 @@ namespace Sol
 
             if(inventory)
             {
-                openPosition = new Vector3(location.x + background.rect.width / 2, location.y + background.rect.height / 2, location.z);
+                openPosition = new Vector3(Input.mousePosition.x - 512f + background.rect.width / 2, Input.mousePosition.y - 384f + background.rect.height / 2, 0f);//new Vector3(location.x + background.rect.width / 2, location.y + background.rect.height / 2, location.z);
             }
             else
             {
-                openPosition = new Vector3(location.x - background.rect.width / 2, location.y + background.rect.height / 2, location.z);
+                openPosition = new Vector3(Input.mousePosition.x - 512f + background.rect.width / 2, Input.mousePosition.y - 384f + background.rect.height / 2, 0f);//new Vector3(location.x - background.rect.width / 2, location.y + background.rect.height / 2, location.z);
             }
 
             GetComponent<RectTransform>().position = openPosition;
