@@ -6,7 +6,6 @@ namespace Sol{
     {
 		public GameObject explosiveDevice;
 		public Ingredient desiredIngredient;
-		public Collider scaleTriggerColl;
 		public bool triggered;
 		public string failString = "You will need an {0} to clear this landslide";
 		private bool checkScaled = true;

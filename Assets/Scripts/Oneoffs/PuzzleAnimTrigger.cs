@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class PuzzleAnimTrigger : MonoBehaviour {
 
 	public List<Animator> canvasAnimators;
+	public bool hasEntered;
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +19,7 @@ public class PuzzleAnimTrigger : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.tag == "Player") {
+			hasEntered = true;
 			foreach (Animator anim in canvasAnimators) {
 				anim.SetTrigger ("FadeForward");
 			}
@@ -26,6 +28,7 @@ public class PuzzleAnimTrigger : MonoBehaviour {
 
 	void OnTriggerExit (Collider other) {
 		if (other.tag == "Player") {
+			hasEntered = false;
 			foreach (Animator anim in canvasAnimators) {
 				anim.SetTrigger ("FadeBackward");
 			}

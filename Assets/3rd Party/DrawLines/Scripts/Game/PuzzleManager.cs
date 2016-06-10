@@ -1562,6 +1562,7 @@ public class PuzzleManager : MonoBehaviour
     private void Cleanup (bool completed)
     {
         PuzzleMenu pm = UIManager.GetMenu<PuzzleMenu>();
+		Camera.main.GetComponentInParent<RotateToObject> ().EndRotation ();
         pm.Close(completed);
 		if (cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
 		drawDraggingElement = false;
