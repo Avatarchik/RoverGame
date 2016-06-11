@@ -42,11 +42,5 @@ namespace Sol{
 				}
 			}
 		}
-
-
-        private void Awake()
-        {
-            checkScaled = false;
-        }
 	}
 }

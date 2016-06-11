@@ -74,7 +74,7 @@ namespace Sol
 
         private void FixedUpdate()
         {
-            if(CachedPlayerStats.MovementSpeed > 0)
+            if(CachedPlayerStats.CurrentMovementSpeed > 0)
             {
                 if (carController.MaxSpeed != playerStats.CurrentMovementSpeed) carController.MaxSpeed = playerStats.CurrentMovementSpeed;
 
@@ -115,6 +115,11 @@ namespace Sol
                 handbrake = (v == 0 && handbrake == 0) ? 1 : 0;
 
                 carController.Move(h, v, v, handbrake);
+            }
+            else
+            {
+                carController.Move(0, 0, 0, 1);
+                if(cachedSoundSource != null) CachedSoundManager.Stop(cachedSoundSource);
             }
         }
 
