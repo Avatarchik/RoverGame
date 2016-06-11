@@ -72,6 +72,12 @@ namespace Sol
         }
 
 
+        public void ForceEquip()
+        {
+            Initialize(false);
+        }
+
+
         private void Initialize(bool b)
         {
             Inventory inventory = UIManager.GetMenu<Inventory>();
@@ -101,14 +107,32 @@ namespace Sol
                 //not exchanging!!
                 if(slotIngredient as EquipableItem)
                 {
-                    EquipableItem ei = (EquipableItem)slotIngredient;
-                    inventory.RemoveInventoryItem(slotIngredient, 1);
+                    if(GetComponent<DragHandler>().dragLength < 0.1f)
+                    {
+                        //they just clicked
+                        Debug.Log("equipping");
+                        EquipableItem ei = (EquipableItem)slotIngredient;
+                        inventory.RemoveInventoryItem(slotIngredient, 1);
 
-                    inventory.equipmentPanel.EquipItem(ei);
+                        inventory.equipmentPanel.EquipItem(ei);
 
-                    inventory.InitializeInventorySlots();
+                        inventory.InitializeInventorySlots();
 
-                    inventory.equipmentPanel.Initialize();
+                        inventory.equipmentPanel.Initialize();
+                    }
+                    else
+                    {
+                        //they dragged and we need to handle this differently
+                        Debug.Log("drag equipping");
+                        EquipableItem ei = (EquipableItem)slotIngredient;
+                        inventory.RemoveInventoryItem(slotIngredient, 1);
+
+                        inventory.equipmentPanel.EquipItem(ei);
+
+                        inventory.InitializeInventorySlots();
+
+                        inventory.equipmentPanel.Initialize();
+                    }
                 }
                 else
                 {
