@@ -23,12 +23,15 @@ namespace Sol
         public void Fade(float fadeTime, Color from, Color to, bool close = false)
         {
             if (!IsActive) Open();
+            StopCoroutine("FadeCoroutine");
             StartCoroutine(FadeCoroutine(fadeTime, from, to));
         }
 
 
         private IEnumerator FadeCoroutine(float fadeTime, Color from, Color to, bool close = false)
         {
+            background.color = from;
+
             float elapsedTime = 0f;
             while (elapsedTime < fadeTime)
             {
