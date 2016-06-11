@@ -11,16 +11,14 @@ namespace Sol{
 
 
 		public override void Interact(){
-			Debug.Log("Interacting");
 			Inventory inventory = UIManager.GetMenu<Inventory>();
 			MessageMenu messageMenu = UIManager.GetMenu<MessageMenu>();
 
 			if (inventory.GetIngredientAmount (desiredIngredient) > 0) {
-				Debug.Log ("wakka wakka");
 				triggered = true;
 				inventory.RemoveInventoryItem (desiredIngredient, 1);
 				explosiveDevice.SetActive(true);
-				scaleTriggerColl.enabled = true;
+				base.Interact ();
 			} else if (!triggered) {
 				interactible = false;
 				failString = string.Format (failString, desiredIngredient);
@@ -29,6 +27,14 @@ namespace Sol{
 			} else if (interactible){
 				base.Interact ();
 			}
+		}
+
+		void InitiatePuzzle(){
+			base.InitiatePuzzle ();
+		}
+
+		void Update() {
+			base.Update ();
 		}
 
 		

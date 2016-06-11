@@ -12,6 +12,12 @@ namespace Sol
         private List<InteractibleObject> seenInteractibleObjects = new List<InteractibleObject>();
         private List<InteractibleObject> interactibleInteractibleObjects = new List<InteractibleObject>();
 
+        private ReticleBehavior cachedReticleBehavior;
+
+        public ReticleBehavior CachedReticleBehavior
+        {
+            get { return (cachedReticleBehavior != null) ? cachedReticleBehavior : cachedReticleBehavior = GameManager.Get<ReticleBehavior>(); }
+        }
 
         public void Update()
         {
@@ -117,6 +123,11 @@ namespace Sol
             {
                 if (Input.GetMouseButtonDown(0)) io.Interact();
             }
+
+            if(interactibleInteractibleObjects.Count > 0)
+                CachedReticleBehavior.ToggleInteractibleImage(true);
+            else
+                CachedReticleBehavior.ToggleInteractibleImage(false);
         }
     }
 }

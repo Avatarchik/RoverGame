@@ -10,7 +10,7 @@ public class RotateToObject : MonoBehaviour {
 	private float currentTime;
 	public float rotateTime;
 	public bool instantRotate;
-	private bool rotate;
+	public bool rotate;
 
 
 	// Use this for initialization
@@ -30,11 +30,10 @@ public class RotateToObject : MonoBehaviour {
 			} else {
 				rotate = false;
 				currentTime = 0.0f;
-				instantRotate = true;
 			}
 		}
 
-		if (instantRotate) {
+		if (instantRotate && targetObject != null) {
 			targetDirection = targetObject.position - transform.position;
 			if (gameObject.GetComponent<Canvas> () != null) {
 				targetDirection *= -1;
@@ -44,16 +43,21 @@ public class RotateToObject : MonoBehaviour {
 		}
 	}
 
-	public void RotateTo (Transform target) {
-		targetObject = target;
-		startRotation = transform.rotation;
-		targetDirection = targetObject.position - transform.position;
-		targetRotation = Quaternion.LookRotation (targetDirection);
-		targetRotation = Quaternion.LookRotation (targetDirection, targetRotation * Vector3.up);
-		rotate = true;
-		if (gameObject.GetComponent<MouseLook> () != null) {
-			gameObject.GetComponent<MouseLook> ().enabled = false;
-		}
+	public void RotateTo (Transform target)
+    {
+        if(target != null)
+        {
+            targetObject = target;
+            startRotation = transform.rotation;
+            targetDirection = targetObject.position - transform.position;
+            targetRotation = Quaternion.LookRotation(targetDirection);
+            targetRotation = Quaternion.LookRotation(targetDirection, targetRotation * Vector3.up);
+            rotate = true;
+            if (gameObject.GetComponent<MouseLook>() != null)
+            {
+                gameObject.GetComponent<MouseLook>().enabled = false;
+            }
+        }
 	}
 
 	public void ConvertAngles(Vector3 currentEulers) {
@@ -75,6 +79,8 @@ public class RotateToObject : MonoBehaviour {
 
 	public void EndRotation(){
 		instantRotate = false;
+		rotate = false;
+		currentTime = 0.0f;
 		if (gameObject.GetComponent<MouseLook> () != null) {
 			ConvertAngles (transform.localEulerAngles);
 			gameObject.GetComponent<MouseLook> ().enabled = true;

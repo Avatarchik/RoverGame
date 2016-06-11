@@ -81,7 +81,7 @@ namespace Sol
             yield return new WaitForSeconds(1.5f);
             UIManager.GetMenu<FadeMenu>().Fade(0.2f, Color.clear, Color.black, true);
             yield return new WaitForSeconds(4f);
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(3);
             Destroy(GameManager.Instance.gameObject);
         }
 

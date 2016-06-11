@@ -17,6 +17,7 @@ namespace Sol
 
         public GameObject root;
         public bool stopsMovement = true;
+        public bool useTransitionEffect = true;
 
         protected bool isActive = false;
         protected float menuFadeTime = 0.2f;
@@ -56,7 +57,7 @@ namespace Sol
                 if (openEffect != null) CachedSoundManager.Play(openEffect);
 
                 CanvasGroup cg = root.GetComponent<CanvasGroup>();
-                if (cg != null)
+                if (cg != null && useTransitionEffect)
                 {
                     StopAllCoroutines();
                     StartCoroutine(FadeMenu(cg, 0f, 1f));
@@ -78,7 +79,7 @@ namespace Sol
                 if (closeEffect != null) CachedSoundManager.Play(closeEffect);
 
                 CanvasGroup cg = root.GetComponent<CanvasGroup>();
-                if (cg != null)
+                if (cg != null && useTransitionEffect)
                 {
                     StopAllCoroutines();
                     StartCoroutine(FadeMenu(cg, 1f, 0f, true));

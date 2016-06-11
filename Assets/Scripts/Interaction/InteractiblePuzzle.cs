@@ -85,7 +85,10 @@ namespace Sol
 				UiEvents.MissionButtonEvent (missionObject);
 				UiEvents.LevelButtonEvent (levelObject);
 
-				myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
+				StartCoroutine (DelayAnimTrigger ());
+				if (!puzzleScaled) {
+					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
+				}
 				scaleTriggerColl.enabled = true;
 				checkScaled = true;
 				checkEntered = true;
@@ -98,7 +101,7 @@ namespace Sol
             }
         }
 
-		void InitiatePuzzle(){
+		public void InitiatePuzzle(){
 			PuzzleMenu pu = UIManager.GetMenu<PuzzleMenu> ();
 			pu.Open (this);
 			if (myPuzzleCanvas.GetComponent<RotateToObject> () != null) {
@@ -109,7 +112,7 @@ namespace Sol
 			UIManager.Close<MessageMenu> ();
 		}
 
-		void Update(){
+		public void Update(){
 			if (checkEntered) {
 				if (scaleTriggerColl.GetComponent<PuzzleAnimTrigger> ().hasEntered) {
 					InitiatePuzzle ();
