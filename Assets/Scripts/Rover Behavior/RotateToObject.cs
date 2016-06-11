@@ -10,7 +10,7 @@ public class RotateToObject : MonoBehaviour {
 	private float currentTime;
 	public float rotateTime;
 	public bool instantRotate;
-	private bool rotate;
+	public bool rotate;
 
 
 	// Use this for initialization
@@ -30,7 +30,6 @@ public class RotateToObject : MonoBehaviour {
 			} else {
 				rotate = false;
 				currentTime = 0.0f;
-				instantRotate = true;
 			}
 		}
 
@@ -80,6 +79,8 @@ public class RotateToObject : MonoBehaviour {
 
 	public void EndRotation(){
 		instantRotate = false;
+		rotate = false;
+		currentTime = 0.0f;
 		if (gameObject.GetComponent<MouseLook> () != null) {
 			ConvertAngles (transform.localEulerAngles);
 			gameObject.GetComponent<MouseLook> ().enabled = true;

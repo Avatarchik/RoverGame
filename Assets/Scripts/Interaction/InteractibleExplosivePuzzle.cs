@@ -18,7 +18,7 @@ namespace Sol{
 				triggered = true;
 				inventory.RemoveInventoryItem (desiredIngredient, 1);
 				explosiveDevice.SetActive(true);
-				scaleTriggerColl.enabled = true;
+				base.Interact ();
 			} else if (!triggered) {
 				interactible = false;
 				failString = string.Format (failString, desiredIngredient);
@@ -27,6 +27,14 @@ namespace Sol{
 			} else if (interactible){
 				base.Interact ();
 			}
+		}
+
+		void InitiatePuzzle(){
+			base.InitiatePuzzle ();
+		}
+
+		void Update() {
+			base.Update ();
 		}
 
 		
