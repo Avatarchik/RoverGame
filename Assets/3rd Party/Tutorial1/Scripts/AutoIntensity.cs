@@ -116,7 +116,11 @@ public class AutoIntensity : MonoBehaviour
                 else
                 {
                     isDay = false;
-                    if (isDay != wasDay && nightSong != null) GameManager.Get<SoundManager>().Play(nightSong);
+                    if (isDay != wasDay)
+                    {
+                        if(nightSong != null) GameManager.Get<SoundManager>().Play(nightSong);
+                        UIManager.GetMenu<MessageMenu>().Open("F to toggle flashlight.", 3, 5f);
+                    }
                     transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
                 }
 

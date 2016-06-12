@@ -7,6 +7,9 @@ namespace Sol
 {
     public class PlayerStats : MonoBehaviour
     {
+        public delegate void EquipAction();
+        public static event EquipAction OnItemEquipped;
+
         public enum Effect { EquipCamera, EquipWheels }
 
         public Texture2D cursorImage;
