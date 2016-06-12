@@ -8,7 +8,7 @@ namespace Sol
         public enum TurbineBehavior { Rotate, Still }
         private const string ANIMATION_STATE = "randomnumber01";
 
-        private TurbineBehavior currentTurbineBehavior = TurbineBehavior.Rotate;
+        public TurbineBehavior currentTurbineBehavior = TurbineBehavior.Rotate;
 
         public Animator anim;
 
