@@ -35,7 +35,7 @@ namespace Sol
 				}
 
 				if (delayedClose != 0f) {
-					StopAllCoroutines ();
+					StopCoroutine ("DelayedClose");
 					StartCoroutine (DelayedClose (delayedClose));
 				}
             }

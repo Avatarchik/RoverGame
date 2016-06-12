@@ -30,6 +30,8 @@ namespace Sol
 
         public PersistentHUD persistentHud;
 
+        public float typeSpeed = 0.1f;
+
         public List<PermanentObjectiveDisplay> permanentlyDisplayedObjectives = new List<PermanentObjectiveDisplay>();
         public List<ObjectiveDisplay> displayedObjectives = new List<ObjectiveDisplay>();
 
@@ -103,11 +105,25 @@ namespace Sol
             if(permanentlyDisplayedObjectives.Count > 0)
                 StartCoroutine(FadeOldObjective(permanentlyDisplayedObjectives[permanentlyDisplayedObjectives.Count - 1]));
 
+            StartCoroutine(TypeObjective(objective));
+        }
+
+
+        private IEnumerator TypeObjective(string objective)
+        {
             PermanentObjectiveDisplay newPod = Instantiate(permanentObjectivePrefab);
             newPod.transform.SetParent(permanentObjectiveContainer);
-            newPod.objectiveText.text = objective;
-
+            
             permanentlyDisplayedObjectives.Add(newPod);
+            char[] chars = objective.ToCharArray();
+
+            foreach(char c in chars)
+            {
+                newPod.objectiveText.text += c;
+                yield return new WaitForSeconds(typeSpeed);
+            }
+
+            newPod.objectiveText.text = objective;
         }
 
 

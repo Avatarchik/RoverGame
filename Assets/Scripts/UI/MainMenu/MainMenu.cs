@@ -9,9 +9,12 @@ namespace Sol
     public class MainMenu : Menu
     {
         public Button startGameButton;
+        public Button quitbutton;
         public Glitch glitch;
         public CanvasGroup cg;
         public Texture2D cursorImage;
+
+        public AudioSource audioSource;
 
         public float fadeTime = 3f;
 
@@ -29,13 +32,18 @@ namespace Sol
 
         public void StartGame()
         {
+            audioSource.Play();
             StartCoroutine(FadeOut());
         }
 
 
         public void QuitGame()
         {
-            Application.Quit();
+            audioSource.Play();
+
+            Debug.Log("quitting");
+
+            StartCoroutine(FadeOut());
         }
 
 
@@ -45,7 +53,7 @@ namespace Sol
         }
 
 
-        private IEnumerator FadeOut()
+        private IEnumerator FadeOut(bool quit = false)
         {
             float elapsedTime = 0f;
 
@@ -62,6 +70,8 @@ namespace Sol
             SceneManager.LoadScene(1);
             StopAllCoroutines();
             glitch.enabled = false;
+
+            if (quit) Application.Quit();
         }
 
 
@@ -93,6 +103,7 @@ namespace Sol
         {
             StartCoroutine(FadeIn());
             startGameButton.onClick.AddListener(StartGame);
+            quitbutton.onClick.AddListener(QuitGame);
         }
     }
 }
