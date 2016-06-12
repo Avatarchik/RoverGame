@@ -94,15 +94,18 @@ namespace Sol
                 DisplayDialogue dd = displayTexts[i];
 
                 float delay = dd.displayText.Length * characterDelay;
-                UIManager.GetMenu<ObjectiveTracker>().Open(dd.displayText, isHuman, true, delay);
-                float desiredTime = delay + 0.75f;
+                
+                float desiredTime = delay;
 
                 if (dd.clip != null)
                 {
                     desiredTime = dd.clip.length;
+                    delay = dd.clip.length;
                     GameManager.Get<SoundManager>().Play(dd.clip);
                 }
-                
+                UIManager.GetMenu<ObjectiveTracker>().Open(dd.displayText, isHuman, true, delay);
+                desiredTime += 0.75f;
+
                 switch(dd.effect)
                 {
                     case Sol.DisplayDialogue.DisplayEffect.Glitch:
