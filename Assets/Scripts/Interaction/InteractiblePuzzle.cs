@@ -86,8 +86,10 @@ namespace Sol
 				UiEvents.LevelButtonEvent (levelObject);
 
 				StartCoroutine (DelayAnimTrigger ());
+				print ("SADAS");
 				if (!puzzleScaled) {
 					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
+					print ("DSFF");
 				}
 				scaleTriggerColl.enabled = true;
 				checkScaled = true;
