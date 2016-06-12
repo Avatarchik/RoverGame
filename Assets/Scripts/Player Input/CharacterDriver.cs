@@ -11,6 +11,9 @@ namespace Sol
         public AudioClip movementEffect;
         public AudioClip stopMovementEffect;
 
+        public AudioClip movementBrokenEffect;
+        public AudioClip stopMovementBrokenEffect;
+
         public PlayerStats playerStats;
 
         public MouseLook mouseLook;
@@ -26,6 +29,8 @@ namespace Sol
         public List<WheelCollider> frontWheels = new List<WheelCollider>();
         public List<WheelCollider> backWheels = new List<WheelCollider>();
         public CarController carController;
+
+        public PlayerAnimationController animController;
 
         private PlayerStats cachedPlayerStats;
 
@@ -50,6 +55,18 @@ namespace Sol
         public PlayerStats CachedPlayerStats
         {
             get { return (cachedPlayerStats != null) ? cachedPlayerStats : cachedPlayerStats = GameManager.Get<PlayerStats>(); }
+        }
+
+
+        public AudioClip CurrentMovementClip
+        {
+            get { return (animController.UseAlternateAnimation) ? movementBrokenEffect : movementEffect; }
+        }
+
+
+        public AudioClip CurrentStopClip
+        {
+            get { return (animController.UseAlternateAnimation) ? stopMovementBrokenEffect : stopMovementEffect; }
         }
 
 
@@ -85,19 +102,19 @@ namespace Sol
                 if (v != 0)
                 {
                     h = CrossPlatformInputManager.GetAxis("Horizontal");
-                    if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
+                    if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(CurrentMovementClip);
                 }
                 else if (CrossPlatformInputManager.GetAxis("Horizontal") != 0)
                 {
                     float rotationAngle = CachedPlayerStats.MovementSpeed * movementSpeedMultiplier * Time.deltaTime * CrossPlatformInputManager.GetAxis("Horizontal");
                     transform.Rotate(Vector3.up, rotationAngle);
-                    if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(movementEffect);
+                    if (cachedSoundSource == null) cachedSoundSource = CachedSoundManager.Play(CurrentMovementClip);
                 }
                 else
                 {
                     if (cachedSoundSource != null)
                     {
-                        CachedSoundManager.Play(stopMovementEffect);
+                        CachedSoundManager.Play(CurrentStopClip);
                         CachedSoundManager.Stop(cachedSoundSource);
                     }
                 }
@@ -129,5 +146,4 @@ namespace Sol
             gameObject.GetComponent<Animator>().enabled = false;
         }
     }
-
 }
