@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using ScionEngine;
+using Sol;
 
 public class AutoIntensity : MonoBehaviour
 {
@@ -33,6 +34,12 @@ public class AutoIntensity : MonoBehaviour
     public bool go = false;
 
     public bool colorOnly = false;
+
+    public AudioClip morningSong;
+    public AudioClip nightSong;
+
+    private bool isDay = true;
+    private bool wasDay = false;
 
     public List<ParticleSystem> affectedParticles = new List<ParticleSystem>();
 
@@ -102,14 +109,19 @@ public class AutoIntensity : MonoBehaviour
 
                 if (dot > 0)
                 {
+                    isDay = true;
+                    if (isDay != wasDay && morningSong != null) GameManager.Get<SoundManager>().Play(morningSong);
                     transform.Rotate(dayRotateSpeed * Time.deltaTime * skySpeed);
                 }
                 else
                 {
+                    isDay = false;
+                    if (isDay != wasDay && nightSong != null) GameManager.Get<SoundManager>().Play(nightSong);
                     transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
                 }
 
                 currentTime += Time.deltaTime;
+                wasDay = isDay;
             }
         }
 	}
