@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,9 @@ namespace Sol
 {
     public class QuestManager : MonoBehaviour
     {
+        public AudioMixerGroup radioAmg;
+        public AudioMixerGroup aiAmg;
+
         public bool testMode = true;
         public List<Quest> quests = new List<Quest>();
 
@@ -101,7 +105,9 @@ namespace Sol
                 {
                     desiredTime = dd.clip.length;
                     delay = dd.clip.length;
-                    GameManager.Get<SoundManager>().Play(dd.clip);
+                    SoundSource ss = GameManager.Get<SoundManager>().Play(dd.clip);
+                    if(isHuman && radioAmg != null) ss.cachedAudioSource.outputAudioMixerGroup = radioAmg;
+                    if (!isHuman && aiAmg != null) ss.cachedAudioSource.outputAudioMixerGroup = aiAmg;
                 }
                 UIManager.GetMenu<ObjectiveTracker>().Open(dd.displayText, isHuman, true, delay);
                 desiredTime += 0.75f;

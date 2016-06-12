@@ -13,7 +13,8 @@ namespace Sol
         public int soundId;
         public bool playOnEnable = false;
 
-        private AudioSource cachedAudioSource;
+        [HideInInspector]
+        public AudioSource cachedAudioSource;
         private bool isPlaying = false;
         private Sound currentSound;
 
