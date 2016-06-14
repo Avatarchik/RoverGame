@@ -36,10 +36,11 @@ namespace Sol
                     if (inventory.GetIngredientAmount(desiredItems[i]) != desiredItemCounts[i]) proceed = false;
                 }
 
-                if (proceed) break;
+                if (proceed) goto Completed;
                 yield return null;
             }
 
+            Completed:
             CompleteObjective();
         }
     }
