@@ -1535,6 +1535,9 @@ public class PuzzleManager : MonoBehaviour
 
 	public void RunPuzzle(){
 		StartCoroutine (DelayRun ());
+		if (puzzleCanvas.GetComponentInChildren<TrailRenderer> () != null) {
+			puzzleCanvas.GetComponentInChildren<TrailRenderer> ().GetComponent<Animator> ().SetTrigger ("StartTrail");
+		}
 	}
 
 	private IEnumerator DelayRun() {
