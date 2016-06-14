@@ -33,7 +33,7 @@ namespace Sol
                 proceed = true;
                 for (int i = 0; i < desiredItems.Count; i++)
                 {
-                    if (inventory.GetIngredientAmount(desiredItems[i]) != desiredItemCounts[i]) proceed = false;
+                    if (inventory.GetIngredientAmount(desiredItems[i]) < desiredItemCounts[i]) proceed = false;
                 }
 
                 if (proceed) goto Completed;
