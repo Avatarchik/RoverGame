@@ -16,7 +16,7 @@ namespace Sol
         [HideInInspector]
         public AudioSource cachedAudioSource;
         private bool isPlaying = false;
-        private Sound currentSound;
+		private Sound currentSound;
 
 
         public void Play()

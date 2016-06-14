@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Audio;
 
 namespace Sol
 {
@@ -11,6 +12,8 @@ namespace Sol
         public List<SoundCollection> collections = new List<SoundCollection>();
 
         private List<SoundSource> sources = new List<SoundSource>();
+		public AudioMixer masterMixer;
+
 
         /// <summary>
         /// Play sound source of given ID
@@ -49,6 +52,7 @@ namespace Sol
         /// <returns></returns>
         public SoundSource Play(AudioClip audioClip, float fadeTime = 0f, Transform parent = null, Vector3 position = default(Vector3))
         {
+			//Debug.Log("playing sound by audio clip");
             return Play(Find(audioClip), fadeTime, parent, position);
         }
 
@@ -239,10 +243,10 @@ namespace Sol
 
             switch (sound.type)
             {
-                case SoundType.Effect:
+			case SoundType.Effect:
                 case SoundType.Music:
                 case SoundType.Speech:
-                    if (sources.FindAll(s => { return s.CurrentSoundId == sound.id; }).Count <= sound.instanceLimit)
+				if (sources.FindAll(s => { return s.name == sound.name; }).Count <= sound.instanceLimit)
                     {
                         source = ObjectPool.Request<SoundSource>(soundSourcePrefab, parent, position, Quaternion.identity);
                         source.StopEvent += OnSoundSourceStop;
