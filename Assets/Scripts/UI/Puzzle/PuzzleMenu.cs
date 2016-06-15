@@ -62,7 +62,6 @@ namespace Sol
 
         public void Open(InteractiblePuzzle ip)
         {
-            Debug.Log("opening puzzle menu for some reason??");
             messageText.text = ip.message;
 			foreach (Button child in ip.myPuzzleCanvas.GetComponentsInChildren<Button>(true)) {
 				if (child.tag == "ExitButton") {

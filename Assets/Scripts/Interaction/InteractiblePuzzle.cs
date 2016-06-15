@@ -11,7 +11,6 @@ namespace Sol
 		public delegate void PuzzleComplete ();
 		public static event PuzzleComplete onPuzzleComplete;
 
-        public AudioClip puzzleCompleteEffect;
         public Object missionObject;
         public Object levelObject;
         public UIEvents uiEvents;
@@ -65,7 +64,6 @@ namespace Sol
                         io.Interact();
                     }
 					interactible = false;
-                    if(puzzleCompleteEffect != null) GameManager.Get<SoundManager>().Play(puzzleCompleteEffect);
 					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().BlinkLight ();
 					onPuzzleComplete ();
                 }
@@ -86,7 +84,6 @@ namespace Sol
 				UiEvents.LevelButtonEvent (levelObject);
 
 				StartCoroutine (DelayAnimTrigger ());
-				print ("SADAS");
 				if (!puzzleScaled) {
 					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
 					//print ("DSFF");

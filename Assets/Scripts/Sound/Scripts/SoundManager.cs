@@ -11,7 +11,7 @@ namespace Sol
         public SoundSource soundSourcePrefab;
         public List<SoundCollection> collections = new List<SoundCollection>();
 
-        private List<SoundSource> sources = new List<SoundSource>();
+        public List<SoundSource> sources = new List<SoundSource>();
 		public AudioMixer masterMixer;
 		public AudioMixerGroup effectsGroup;
 		public AudioMixerGroup voicesGroup;
@@ -227,7 +227,7 @@ namespace Sol
                 case SoundType.Effect:
                 case SoundType.Music:
                 case SoundType.Speech:
-                    sources.FindAll(s => { return s.CurrentSoundId != sound.id && s.Type == sound.type && s.IsPlaying; }).ForEach(s => s.Stop(fadeTime));
+				sources.FindAll(s => { return s.CurrentSoundId != sound.id && s.name == sound.name && s.IsPlaying; }).ForEach(s => s.Stop(fadeTime));
                     break;
             }
         }
@@ -272,7 +272,6 @@ namespace Sol
 
 				sources.Add (source);
 			}
-			//source.GetComponent<AudioSource> ().outputAudioMixerGroup = masterMixer.FindMatchingGroups ("Effects")[0];
             return source;
         }
     }
