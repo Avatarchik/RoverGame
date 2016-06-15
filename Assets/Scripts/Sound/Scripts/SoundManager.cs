@@ -13,6 +13,9 @@ namespace Sol
 
         private List<SoundSource> sources = new List<SoundSource>();
 		public AudioMixer masterMixer;
+		public AudioMixerGroup effectsGroup;
+		public AudioMixerGroup voicesGroup;
+		public AudioMixerGroup musicGroup;
 
 
         /// <summary>
@@ -254,7 +257,22 @@ namespace Sol
                     break;
             }
 
-            if (source) sources.Add(source);
+			if (source) {
+				switch (sound.type) {
+				case SoundType.Effect:
+					source.GetComponent<AudioSource> ().outputAudioMixerGroup = effectsGroup;
+					break;
+				case SoundType.Speech:
+					source.GetComponent<AudioSource> ().outputAudioMixerGroup = voicesGroup;
+					break;
+				case SoundType.Music:
+					source.GetComponent<AudioSource> ().outputAudioMixerGroup = musicGroup;
+					break;
+				}
+
+				sources.Add (source);
+			}
+			//source.GetComponent<AudioSource> ().outputAudioMixerGroup = masterMixer.FindMatchingGroups ("Effects")[0];
             return source;
         }
     }
