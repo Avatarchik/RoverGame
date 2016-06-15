@@ -27,7 +27,7 @@ namespace Sol
         }
 
 		public void SetInitialWireCounts(){
-			foreach (WireInventoryCount counter in gameObject.GetComponentsInChildren<WireInventoryCount>()) {
+			foreach (WireInventoryCount counter in gameObject.GetComponentsInChildren<WireInventoryCount>(true)) {
 				if (counter.myWireType == WireInventoryCount.WireType.Aluminum) {
 					int wireCount = UIManager.GetMenu<Inventory> ().GetIngredientAmount (AluminumWire);
 					counter.SetWireCount (wireCount);
