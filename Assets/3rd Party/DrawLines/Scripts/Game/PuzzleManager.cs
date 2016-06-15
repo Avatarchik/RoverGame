@@ -1529,8 +1529,6 @@ public class PuzzleManager : MonoBehaviour
 		} else {
 			CachedSoundManager.Play (connectedSFX);
 		}
-
-		timer.Stop ();
 	}
 
 	public void RunPuzzle(){
@@ -1558,10 +1556,18 @@ public class PuzzleManager : MonoBehaviour
 	}
 
 	private void RemoveInventoryWires(){
-		UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().AluminumWire, AlumEndMoves);
-		UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().CopperWire, CopperEndMoves);
-		UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().GoldWire, GoldEndMoves);
-		UIManager.GetMenu<Inventory>().RemoveInventoryItem(UIManager.GetMenu<PuzzleMenu>().SilverWire, SilverEndMoves);
+		if (AlumEndMoves > 0) {
+			UIManager.GetMenu<Inventory> ().RemoveInventoryItem (UIManager.GetMenu<PuzzleMenu> ().AluminumWire, AlumEndMoves);
+		}
+		if (CopperEndMoves > 0) {
+			UIManager.GetMenu<Inventory> ().RemoveInventoryItem (UIManager.GetMenu<PuzzleMenu> ().CopperWire, CopperEndMoves);
+		}
+		if (GoldEndMoves > 0) {
+			UIManager.GetMenu<Inventory> ().RemoveInventoryItem (UIManager.GetMenu<PuzzleMenu> ().GoldWire, GoldEndMoves);
+		}
+		if (SilverEndMoves > 0) {
+			UIManager.GetMenu<Inventory> ().RemoveInventoryItem (UIManager.GetMenu<PuzzleMenu> ().SilverWire, SilverEndMoves);
+		}
 	}
 
 
