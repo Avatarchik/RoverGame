@@ -49,7 +49,8 @@ namespace Sol
 
         public void AddLog(Log log)
         {
-            if (!logs.Contains(log)) logs.Insert(0, log);
+			if (!logs.Contains (log))
+				logs.Add (log);
         }
 
 

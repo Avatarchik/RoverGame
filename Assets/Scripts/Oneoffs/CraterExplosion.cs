@@ -30,20 +30,25 @@ namespace Sol
 
         public void TriggerExplosion()
         {
+			print ("Trigger");
             Intro intro = GameObject.FindObjectOfType<Intro>();
             CameraShake cameraShakeInstance = GameObject.FindObjectOfType<CameraShake>();
             GameManager.Get<SoundManager>().Play(explosionEffect);
-
+			print ("explosion");
             GameObject explosion1 = Instantiate(explosionPrefab1, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
             GameObject explosion2 = Instantiate(explosionPrefab2, explosionOrigin.transform.position, explosionOrigin.transform.rotation) as GameObject;
             explosion1.transform.SetParent(explosionOrigin);
             explosion2.transform.SetParent(explosionOrigin);
-
+			print ("shake");
             cameraShakeInstance.Shake(shakeIntensity, shakeDecay);
 
             foreach (GameObject go in rockWall)
             {
-                go.SetActive(false);
+				if (!isLandslide) {
+					go.SetActive (false);
+				} else {
+					go.GetComponent<MeshRenderer> ().enabled = false;
+				}
             }
         }
 
@@ -53,7 +58,9 @@ namespace Sol
             CountDown countDown = UIManager.GetMenu<CountDown>();
             countDown.SetText(explosionDelay);
 			StartCoroutine (DelayedClose ());
+			print ("close");
             yield return new WaitForSeconds(explosionDelay);
+			print ("delay");
             TriggerExplosion();
             explosiveDevice.SetActive(false);
             GameManager.Get<QuestManager>().CleanupAndRestart();
