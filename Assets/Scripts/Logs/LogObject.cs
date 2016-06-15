@@ -16,6 +16,8 @@ namespace Sol
 
                 logMenu.AddLog(log);
                 igmm.OpenLogs();
+
+				Destroy (gameObject);
             }
         }
     }

@@ -12,6 +12,7 @@ namespace Sol
         public LogInfoPanel logInfoPanel;
         public Transform logSlotContainer;
         public LogSlot logSlotPrefab;
+		public LogSlot radioLogSlotPrefab;
 
         public List<Log> logs = new List<Log>();
         private List<LogSlot> logSlots = new List<LogSlot>();
@@ -57,6 +58,8 @@ namespace Sol
             foreach (LogSlot ls in logSlots)
             {
                 ls.IsSelected = false;
+				print ("DSFS");
+				ls.selectToggle.isOn = false;
             }
 
             logSlot.IsSelected = true;
@@ -75,7 +78,12 @@ namespace Sol
 
             foreach (Log log in logs)
             {
-                LogSlot newLogSlot = Instantiate(logSlotPrefab) as LogSlot;
+				LogSlot newLogSlot = null;
+				if (log.header == "Radio Log") {
+					newLogSlot = Instantiate (radioLogSlotPrefab) as LogSlot;
+				} else {
+					newLogSlot = Instantiate (logSlotPrefab) as LogSlot;
+				}
                 newLogSlot.transform.SetParent(logSlotContainer);
                 newLogSlot.titleText.text = log.header;
                 newLogSlot.log = log;

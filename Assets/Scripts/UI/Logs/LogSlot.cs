@@ -25,6 +25,7 @@ public class LogSlot : MonoBehaviour
     private void SelectMe(bool b)
     {
         if(b) OnSelectLogSlot(this);
+		print ("ASDAS");
     }
 
     private void Awake()
