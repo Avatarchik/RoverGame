@@ -103,7 +103,7 @@ public class Mission : MonoBehaviour
 				}
 		
 				if (Application.isPlaying) {
-						Debug.Log ("Setting up Mission <b>" + missionTitle + "</b> of ID " + ID);
+						//Debug.Log ("Setting up Mission <b>" + missionTitle + "</b> of ID " + ID);
 				}
 
 				///Get the Number of Rows from LevelsManager Component

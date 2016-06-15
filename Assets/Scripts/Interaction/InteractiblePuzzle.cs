@@ -89,7 +89,7 @@ namespace Sol
 				print ("SADAS");
 				if (!puzzleScaled) {
 					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
-					print ("DSFF");
+					//print ("DSFF");
 				}
 				scaleTriggerColl.enabled = true;
 				checkScaled = true;
