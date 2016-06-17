@@ -389,32 +389,32 @@ public class PuzzleManager : MonoBehaviour
 		UIManager.GetMenu<PuzzleMenu> ().SetInitialWireCounts ();
 
 
-		if (levelText == null) {
-			levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
-		}
-
-		if (missionText == null) {
-			missionText = GameObject.Find ("MissionTitle").GetComponent<Text> ();
-		}
-
-		if (grid == null) {
-			grid = GameObject.Find ("Grid");
-		}
-
-		if (gridContentsTransform == null) {
-			gridContentsTransform = grid.transform.Find ("Contents").transform;
-		}
-
-		if (gridTopPivotTransform == null) {
-			gridTopPivotTransform = GameObject.Find ("GridTopPivot").transform;
-		}
-
-		if (gridBottomPivotTransform == null) {
-			gridBottomPivotTransform = GameObject.Find ("GridBottomPivot").transform;
-		}
-		if (gridLinesTransfrom == null) {
-			gridLinesTransfrom = GameObject.Find ("GridLines").transform;
-		}
+//		if (levelText == null) {
+//			levelText = GameObject.Find ("GameLevel").GetComponent<Text> ();
+//		}
+//
+//		if (missionText == null) {
+//			missionText = GameObject.Find ("MissionTitle").GetComponent<Text> ();
+//		}
+//
+//		if (grid == null) {
+//			grid = GameObject.Find ("Grid");
+//		}
+//
+//		if (gridContentsTransform == null) {
+//			gridContentsTransform = grid.transform.Find ("Contents").transform;
+//		}
+//
+//		if (gridTopPivotTransform == null) {
+//			gridTopPivotTransform = GameObject.Find ("GridTopPivot").transform;
+//		}
+//
+//		if (gridBottomPivotTransform == null) {
+//			gridBottomPivotTransform = GameObject.Find ("GridBottomPivot").transform;
+//		}
+//		if (gridLinesTransfrom == null) {
+//			gridLinesTransfrom = GameObject.Find ("GridLines").transform;
+//		}
 
 		foreach (Transform child in puzzleCanvas.transform) {
 			if (child.GetComponent<GridLayoutGroup> () != null) {

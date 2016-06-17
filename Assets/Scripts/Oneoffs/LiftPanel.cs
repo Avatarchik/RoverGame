@@ -7,13 +7,16 @@ namespace Sol
     {
         public Lift controlledLift;
 		public Animator liftCanvasAnim;
+		public bool withinDistance;
+		public float playerDistance;
+		public float maxInteractDistance;
 
 
         public override void Interact()
         {
             base.Interact();
 
-            if (Interactible)
+			if (Interactible && withinDistance)
             {
                 controlledLift.MoveLift();
 				liftCanvasAnim.speed = 2.0f;
@@ -21,6 +24,15 @@ namespace Sol
                 interactible = false;
             }
         }
+
+		void Update() {
+			playerDistance = Mathf.Abs (Vector3.Distance (transform.position, Camera.main.transform.position));
+			if (playerDistance <= maxInteractDistance) {
+				withinDistance = true;
+			} else {
+				withinDistance = false;
+			}
+		}
 
 
         private void ResetLiftPanel()

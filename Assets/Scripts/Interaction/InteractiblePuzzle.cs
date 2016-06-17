@@ -17,7 +17,6 @@ namespace Sol
 
         public PuzzleManager puzzleManager;
 		public GameObject myPuzzleCanvas;
-		public Collider scaleTriggerColl;
 		private bool firstInteraction = true;
 		public bool puzzleScaled = false;
 		private bool checkEntered;
@@ -83,12 +82,9 @@ namespace Sol
 				UiEvents.MissionButtonEvent (missionObject);
 				UiEvents.LevelButtonEvent (levelObject);
 
-				StartCoroutine (DelayAnimTrigger ());
 				if (!puzzleScaled) {
 					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
-					//print ("DSFF");
 				}
-				scaleTriggerColl.enabled = true;
 				checkScaled = true;
 				checkEntered = true;
 
@@ -113,7 +109,7 @@ namespace Sol
 
 		public void Update(){
 			if (checkEntered) {
-				if (scaleTriggerColl.GetComponent<PuzzleAnimTrigger> ().hasEntered) {
+				if (transform.GetComponentInChildren<PuzzleTriggerZone>().inPuzzleZone) {
 					InitiatePuzzle ();
 					checkEntered = false;
 				}
@@ -129,13 +125,6 @@ namespace Sol
 					puzzleManager.RunPuzzle ();
 					checkRunner = false;
 				}
-			}
-		}
-
-		IEnumerator DelayAnimTrigger(){
-			yield return new WaitForSeconds (0.1f);
-			if (!scaleTriggerColl.GetComponent<PuzzleAnimTrigger> ().hasEntered) {
-				
 			}
 		}
     }
