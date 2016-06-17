@@ -136,7 +136,7 @@ namespace Sol
                 while(elapsedTime < desiredTime)
                 {
                     elapsedTime += Time.deltaTime;
-                    if (GameManager.Get<QuestManager>().testMode && Input.GetKeyDown(KeyCode.Return)) break;
+                    //if (GameManager.Get<QuestManager>().testMode && Input.GetKeyDown(KeyCode.Return)) break;
                     yield return null;
                 }
             }
