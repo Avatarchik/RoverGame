@@ -7,7 +7,6 @@ namespace Sol
 {
     public class InteractiblePuzzle : InteractibleObject
     {
-
 		public delegate void PuzzleComplete ();
 		public static event PuzzleComplete onPuzzleComplete;
 
@@ -82,16 +81,16 @@ namespace Sol
 				UiEvents.MissionButtonEvent (missionObject);
 				UiEvents.LevelButtonEvent (levelObject);
 
-				if (!puzzleScaled) {
-					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
-				}
 				checkScaled = true;
 				checkEntered = true;
 
 				if (firstInteraction) {
+					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
 					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().ActivateLight ();
 					firstInteraction = false;
-				}
+				} else if (!puzzleScaled) {
+						myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
+					}
 				interactible = false;
             }
         }

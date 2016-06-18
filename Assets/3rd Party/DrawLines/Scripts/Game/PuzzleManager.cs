@@ -1584,6 +1584,8 @@ public class PuzzleManager : MonoBehaviour
 
 		if (completed) {
 			RemoveInventoryWires ();
+			puzzleCanvas.GetComponentInChildren<TrailRenderer> ().GetComponent<Animator> ().enabled = false;
+			puzzleCanvas.GetComponentInChildren<TrailRenderer> ().enabled = false;
 			pulsateGrid = false;
 			StopCoroutine ("PulsateWait");
 			foreach (GridCell cell in gridCells) {
