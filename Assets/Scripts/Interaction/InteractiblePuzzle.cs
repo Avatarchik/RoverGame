@@ -75,19 +75,24 @@ namespace Sol
 
         public override void Interact()
         {
+			print ("interact");
 			if(interactible)
             {
+				print ("YEPP");
 				base.Interact ();
+				print ("interact");
 				UiEvents.MissionButtonEvent (missionObject);
 				UiEvents.LevelButtonEvent (levelObject);
-
+				print ("buttons");
 				checkScaled = true;
 				checkEntered = true;
-
+				print ("checks");
 				if (firstInteraction) {
+					print ("first");
 					myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
 					myPuzzleCanvas.GetComponent<PuzzleAnimHandler> ().ActivateLight ();
 					firstInteraction = false;
+					print ("done");
 				} else if (!puzzleScaled) {
 						myPuzzleCanvas.GetComponent<Animator> ().SetTrigger ("FadeForward");
 					}
