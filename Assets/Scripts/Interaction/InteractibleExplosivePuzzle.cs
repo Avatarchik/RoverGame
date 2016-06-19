@@ -20,7 +20,6 @@ namespace Sol{
 				explosiveDevice.SetActive(true);
 				base.Interact ();
 			} else if (!triggered) {
-				interactible = false;
 				failString = string.Format (failString, desiredIngredient);
 				messageMenu.Open (failString, 4, 2.0f);
 
