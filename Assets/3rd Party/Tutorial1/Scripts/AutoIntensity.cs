@@ -40,6 +40,8 @@ public class AutoIntensity : MonoBehaviour
 
     private bool isDay = true;
     private bool wasDay = false;
+	public float elapsedTime;
+	public float flashlightActivateTime;
 
     public List<ParticleSystem> affectedParticles = new List<ParticleSystem>();
 
@@ -63,6 +65,17 @@ public class AutoIntensity : MonoBehaviour
 		mainLight = GetComponent<Light>();
 		skyMat = RenderSettings.skybox;
 
+	}
+
+	void Update() {
+		if (isDay) {
+			if (elapsedTime < flashlightActivateTime) {
+				elapsedTime += Time.deltaTime;
+			} else {
+				UIManager.GetMenu<MessageMenu> ().Open ("F to toggle flashlight.", 3, 5f);
+				elapsedTime = 0.0f;
+			}
+		}
 	}
 
 	void FixedUpdate () 
@@ -119,7 +132,6 @@ public class AutoIntensity : MonoBehaviour
                     if (isDay != wasDay)
                     {
                         if(nightSong != null) GameManager.Get<SoundManager>().Play(nightSong);
-                        UIManager.GetMenu<MessageMenu>().Open("F to toggle flashlight.", 3, 5f);
                     }
                     transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
                 }
