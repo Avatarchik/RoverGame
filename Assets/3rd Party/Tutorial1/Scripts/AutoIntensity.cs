@@ -40,6 +40,8 @@ public class AutoIntensity : MonoBehaviour
 
     private bool isDay = true;
     private bool wasDay = false;
+	public float elapsedTime;
+	public float flashlightActivateTime;
 
     public List<ParticleSystem> affectedParticles = new List<ParticleSystem>();
 
@@ -63,6 +65,15 @@ public class AutoIntensity : MonoBehaviour
 		mainLight = GetComponent<Light>();
 		skyMat = RenderSettings.skybox;
 
+	}
+
+	void Update() {
+		if (isDay) {
+			elapsedTime += Time.deltaTime;
+			if (elapsedTime >= flashlightActivateTime) {
+
+			}
+		}
 	}
 
 	void FixedUpdate () 
