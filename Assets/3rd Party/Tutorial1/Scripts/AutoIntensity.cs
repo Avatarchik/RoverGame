@@ -69,9 +69,11 @@ public class AutoIntensity : MonoBehaviour
 
 	void Update() {
 		if (isDay) {
-			elapsedTime += Time.deltaTime;
-			if (elapsedTime >= flashlightActivateTime) {
-
+			if (elapsedTime < flashlightActivateTime) {
+				elapsedTime += Time.deltaTime;
+			} else {
+				UIManager.GetMenu<MessageMenu> ().Open ("F to toggle flashlight.", 3, 5f);
+				elapsedTime = 0.0f;
 			}
 		}
 	}
@@ -130,7 +132,6 @@ public class AutoIntensity : MonoBehaviour
                     if (isDay != wasDay)
                     {
                         if(nightSong != null) GameManager.Get<SoundManager>().Play(nightSong);
-                        UIManager.GetMenu<MessageMenu>().Open("F to toggle flashlight.", 3, 5f);
                     }
                     transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
                 }
