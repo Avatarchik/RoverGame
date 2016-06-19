@@ -71,8 +71,8 @@ public class AutoIntensity : MonoBehaviour
 		if (isDay) {
 			if (elapsedTime < flashlightActivateTime) {
 				elapsedTime += Time.deltaTime;
-			} else {
-				//UIManager.GetMenu<MessageMenu> ().Open ("F to toggle flashlight.", 3, 5f);
+			} else if(!colorOnly){
+				UIManager.GetMenu<MessageMenu> ().Open ("F to toggle flashlight.", 3, 5f);
 				elapsedTime = 0.0f;
 			}
 		}
