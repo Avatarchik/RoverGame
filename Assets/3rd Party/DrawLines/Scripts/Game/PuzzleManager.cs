@@ -44,7 +44,7 @@ public class PuzzleManager : MonoBehaviour
 	public Color pulsateColor;
 	private bool pulseTimerStarted;
 	private bool ignorePair;
-	private bool pulsateGrid = true;
+	public bool pulsateGrid = true;
 
 	/// <summary>
 	/// 
@@ -1265,6 +1265,8 @@ public class PuzzleManager : MonoBehaviour
 				worldCell.currentlyUsed = true;
 				worldCell.isEmpty = false;
 				worldCell.tragetIndex = barrier.index;
+
+				worldCell.GetComponent<Image> ().enabled = false;
 
 				worldCellTransform = worldCell.GetComponent<RectTransform> ();
 				worldCellSize = worldCellTransform.sizeDelta;

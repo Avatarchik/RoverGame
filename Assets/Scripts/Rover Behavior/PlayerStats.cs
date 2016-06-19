@@ -248,7 +248,7 @@ namespace Sol
                 //its dark outside, dont charge!
                 if (OverallCharge > 0)
                 {
-                    OverallCharge -= Time.fixedDeltaTime * 0.75f;
+                    OverallCharge -= Time.fixedDeltaTime * 0.25f;
                 }
                 else
                 {
