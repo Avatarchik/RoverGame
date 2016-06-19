@@ -42,7 +42,6 @@ public class AutoIntensity : MonoBehaviour
     private bool wasDay = false;
 	public float elapsedTime;
 	public float flashlightActivateTime;
-	public float elapsedTimeSpeed;
 
     public List<ParticleSystem> affectedParticles = new List<ParticleSystem>();
 
@@ -71,7 +70,7 @@ public class AutoIntensity : MonoBehaviour
 	void Update() {
 		if (isDay) {
 			if (elapsedTime < flashlightActivateTime) {
-				//elapsedTime += Time.deltaTime * skySpeed;
+				elapsedTime += Time.deltaTime;
 			} else {
 				//UIManager.GetMenu<MessageMenu> ().Open ("F to toggle flashlight.", 3, 5f);
 				elapsedTime = 0.0f;

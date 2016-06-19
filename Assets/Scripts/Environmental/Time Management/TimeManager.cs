@@ -17,7 +17,6 @@ namespace Sol
 
         public Vector3 dayRotateSpeed;
         public Vector3 nightRotateSpeed;
-		private float elapsedTimeSpeed = 1.0f;
 
         public float fastForwardFactor = 20;
 
@@ -27,7 +26,6 @@ namespace Sol
         {
             sunManager.dayRotateSpeed *= fastForwardFactor * 2;
             sunManager.nightRotateSpeed *= fastForwardFactor * 2;
-			sunManager.elapsedTimeSpeed *= fastForwardFactor * 2;
 
             while (Input.GetKey(KeyCode.P))
             {
@@ -36,7 +34,6 @@ namespace Sol
 
             sunManager.dayRotateSpeed = dayRotateSpeed;
             sunManager.nightRotateSpeed = nightRotateSpeed;
-			sunManager.elapsedTimeSpeed *= elapsedTimeSpeed;
         }
 
 
