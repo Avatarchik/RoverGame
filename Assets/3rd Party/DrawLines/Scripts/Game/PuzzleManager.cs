@@ -44,7 +44,7 @@ public class PuzzleManager : MonoBehaviour
 	public Color pulsateColor;
 	private bool pulseTimerStarted;
 	private bool ignorePair;
-	private bool pulsateGrid = true;
+	public bool pulsateGrid = true;
 
 	/// <summary>
 	/// 
@@ -1266,6 +1266,8 @@ public class PuzzleManager : MonoBehaviour
 				worldCell.isEmpty = false;
 				worldCell.tragetIndex = barrier.index;
 
+				worldCell.GetComponent<Image> ().enabled = false;
+
 				worldCellTransform = worldCell.GetComponent<RectTransform> ();
 				worldCellSize = worldCellTransform.sizeDelta;
 				worldCellMinSize = Mathf.Min (worldCellSize.x, worldCellSize.y);
@@ -1584,6 +1586,8 @@ public class PuzzleManager : MonoBehaviour
 
 		if (completed) {
 			RemoveInventoryWires ();
+			puzzleCanvas.GetComponentInChildren<TrailRenderer> ().GetComponent<Animator> ().enabled = false;
+			puzzleCanvas.GetComponentInChildren<TrailRenderer> ().enabled = false;
 			pulsateGrid = false;
 			StopCoroutine ("PulsateWait");
 			foreach (GridCell cell in gridCells) {

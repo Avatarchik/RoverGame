@@ -26,7 +26,7 @@ public class LevelLoader : MonoBehaviour
         }
         Debug.Log(0);
         float elapsedTime = 0f;
-        float desiredTime = 8f;
+        float desiredTime = 12f;
 
         while (elapsedTime < desiredTime)
         {
