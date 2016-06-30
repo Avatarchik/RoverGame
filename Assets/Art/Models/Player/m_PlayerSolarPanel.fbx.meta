@@ -10,7 +10,9 @@ ModelImporter:
     400000: //RootNode
     400002: SolarPanelRover
     2300000: SolarPanelRover
+    2300002: //RootNode
     3300000: SolarPanelRover
+    3300002: //RootNode
     4300000: SolarPanelRover
   materials:
     importMaterials: 1
